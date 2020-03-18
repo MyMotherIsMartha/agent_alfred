@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:agent_alfred/application.dart';
+import 'package:agent_alfred/components/border.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -17,6 +19,11 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  /// 登录
+  login() {
+    print('login test');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,8 +39,8 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(bottom: 20),
-              width: G.setWidth(120),
-              height: G.setWidth(120),
+              width: Application.setWidth(120),
+              height: Application.setWidth(120),
               child: Image.asset(
                 'lib/assets/images/logo.png',
                 fit: BoxFit.contain,
@@ -41,8 +48,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Container(
               margin: EdgeInsets.only(bottom: 96),
-              width: G.setWidth(186),
-              height: G.setWidth(50),
+              width: Application.setWidth(186),
+              height: Application.setWidth(50),
               child: Image.asset(
                 'lib/assets/images/logo_text.png',
                 fit: BoxFit.scaleDown,
@@ -59,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                     counterText: "",
-                    prefixIcon: iconmobile(color: hex('#666')),
+                    // prefixIcon: iconmobile(color: hex('#666')),
                     border: InputBorder.none,
                     hintText: '请输入手机号',
                     hintStyle: TextStyle(
@@ -89,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                       maxLength: 4,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                          prefixIcon: iconsafety(color: hex('#666')),
+                          // prefixIcon: iconsafety(color: hex('#666')),
                           counterText: '',
                           border: InputBorder.none,
                           hintText: '请输入验证码',
@@ -98,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                       onChanged: (e) {
                         setState(() {
-                          hintMsg = null;
                           code['value'] = e;
                           code['verify'] = e.length == 4 ? true : false;
                         });
@@ -107,26 +113,26 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Container(
                     height: 25,
-                    margin: EdgeInsets.only(left: G.setWidth(40)),
+                    margin: EdgeInsets.only(left: Application.setWidth(40)),
                     decoration: BoxDecoration(
                         border: Border(
                             left: BorderSide(color: rgba(242, 242, 242, 1)))),
                   ),
-                  buildgetVerCode()
+                  // buildgetVerCode()
                 ],
               ),
             ),
             Container(
-                height: G.setWidth(30),
-                margin: EdgeInsets.only(top: G.setHeight(20)),
-                child: _hintWidget()
+                height: Application.setWidth(30),
+                margin: EdgeInsets.only(top: Application.setHeight(20)),
+                // child: _hintWidget()
                 ),
 
             /// 确认
             Container(
-              width: G.setWidth(650),
-              height: G.setHeight(100),
-              margin: EdgeInsets.only(top: G.setHeight(60)),
+              width: Application.setWidth(650),
+              height: Application.setHeight(100),
+              margin: EdgeInsets.only(top: Application.setHeight(60)),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                   gradient: mobile['verify'] == true && code['verify'] == true
@@ -141,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text("登录",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: G.setSp(36),
+                        fontSize: Application.setSp(36),
                         fontWeight: FontWeight.w300)),
                 onPressed: mobile['verify'] == true && code['verify'] == true
                     ? () => login()
