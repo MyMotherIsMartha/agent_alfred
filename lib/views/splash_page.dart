@@ -50,7 +50,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     // } else {
     //   G.router.navigateTo(context, '/login');
     // }
-    G.router.navigateTo(context, '/login', replace: true);
+    G.router.navigateTo(context, '/uploadEnterPrisePic', replace: true);
   }
 
   @override
