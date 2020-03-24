@@ -2,6 +2,7 @@ import 'package:agent37_flutter/provide/currentIndex.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
+import 'package:color_dart/color_dart.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: '37度管家',
       onGenerateRoute: G.router.generator,
-      theme: ThemeData(primaryColor: Colors.white),
+      theme: ThemeData(
+        primaryColor: hex('#6982FF'),
+        fontFamily: 'Georgia',
+        textTheme: TextTheme(
+          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
+      ),
       home: SplashPage(),
       navigatorKey: G.key,
     );

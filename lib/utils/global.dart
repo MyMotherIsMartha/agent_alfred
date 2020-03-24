@@ -15,8 +15,6 @@ class G {
     sp = await SharedPreferences.getInstance();
   }
 
-  static bool isLogin = false;
-
   // 获取当前的state
   static NavigatorState getCurrentState() => key.currentState;
 
