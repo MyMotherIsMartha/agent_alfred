@@ -43,19 +43,19 @@ Dio service() {
     // return e; //continue
   }));
 
-  // dio.interceptors.add(
-  //   LogInterceptor(responseBody: true),
-  // );
-  (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-      (client) {
-    // config the http client
-    client.findProxy = (uri) {
-      //proxy all request to localhost:8888
-      return "PROXY localhost:8888";
-    };
-    // you can also create a HttpClient to dio
-    // return HttpClient();
-  };
+  dio.interceptors.add(
+    LogInterceptor(responseBody: true),
+  );
+  // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+  //     (client) {
+  //   // config the http client
+  //   client.findProxy = (uri) {
+  //     //proxy all request to localhost:8888
+  //     return "PROXY localhost:8888";
+  //   };
+  //   // you can also create a HttpClient to dio
+  //   // return HttpClient();
+  // };
 
   return dio;
 }
