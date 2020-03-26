@@ -8,6 +8,7 @@ class Routes {
   static String index = '/index';
   static String loginPage = '/login';
   static String uploadEnterPrisePic = '/uploadEnterPrisePic';
+  static String uploadLicenseForm = '/uploadLicenseForm';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -18,5 +19,6 @@ class Routes {
     router.define(index, handler: indexHandler);
     router.define(loginPage, handler: loginHandler);
     router.define(uploadEnterPrisePic, handler: uploadEnterPrisePicHandler);
+    router.define(uploadLicenseForm, handler: uploadLicenseFormHandler);
   }
 }
