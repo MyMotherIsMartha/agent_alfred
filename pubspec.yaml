@@ -1,4 +1,4 @@
-name: agent_alfred
+name: agent_alfred_test
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   fluro: ^1.6.0
   color_dart: ^0.2.1
+  fluttertoast: ^3.1.3
   flutter_screenutil: ^1.0.2
 
 dev_dependencies:
@@ -43,6 +44,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - lib/assets/images/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

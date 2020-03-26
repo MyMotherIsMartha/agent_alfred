@@ -1,4 +1,4 @@
-package com.example.agent_alfred
+package com.example.agent_alfred_test
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

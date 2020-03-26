@@ -1,8 +1,15 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import './pages/home.dart';
+import 'package:agent_alfred_test/route/routes.dart';
+import './pages/login.dart';
 import 'application.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  Router router = Router();
+  Routes.configureRoutes(router);
+  Application.router = router;
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -23,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: Application.router.generator,
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: LoginPage(),
     );
   }
 }

@@ -2,8 +2,8 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:netease_cloud_music/pages/splash_page.dart';
-import 'package:agent_alfred/pages/home.dart';
-import 'package:agent_alfred/pages/login.dart';
+import 'package:agent_alfred_test/pages/home.dart';
+import 'package:agent_alfred_test/pages/login.dart';
 // import 'package:netease_cloud_music/model/comment_head.dart';
 // import 'package:netease_cloud_music/model/recommend.dart';
 // import 'package:netease_cloud_music/pages/comment/comment_page.dart';
