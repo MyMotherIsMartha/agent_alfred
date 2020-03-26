@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/views/index.dart';
 import 'package:agent37_flutter/views/login/login.dart';
+import 'package:agent37_flutter/views/login/register.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadPic.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadForm.dart';
@@ -24,6 +25,12 @@ Handler indexHandler = Handler(
 Handler loginHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return LoginPage();
+  }
+);
+
+Handler registerHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return RegisterPage();
   }
 );
 

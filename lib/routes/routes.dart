@@ -7,6 +7,7 @@ class Routes {
   static String root = '/';
   static String index = '/index';
   static String loginPage = '/login';
+  static String registerPage = '/register';
   static String uploadEnterPrisePic = '/uploadEnterPrisePic';
   static String uploadLicenseForm = '/uploadLicenseForm';
   static void configureRoutes(Router router) {
@@ -18,6 +19,7 @@ class Routes {
     router.define(root, handler: splashHandler);
     router.define(index, handler: indexHandler);
     router.define(loginPage, handler: loginHandler);
+    router.define(registerPage, handler: registerHandler);
     router.define(uploadEnterPrisePic, handler: uploadEnterPrisePicHandler);
     router.define(uploadLicenseForm, handler: uploadLicenseFormHandler);
   }

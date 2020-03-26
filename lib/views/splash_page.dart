@@ -55,7 +55,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, width: 750, height: 1206);
+    ScreenUtil.init(context, width: 750, height: 1334);
     G.setContext(context);
     return Scaffold(
       backgroundColor: Colors.white,
