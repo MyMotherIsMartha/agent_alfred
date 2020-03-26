@@ -1,45 +1,47 @@
+import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
 Icon iconmobile({double size = 18.0, Color color}) => Icon(
-  IconData(0xe606, fontFamily: 'iconfont'),
+  IconData(0xe60d, fontFamily: 'iconfont'),
   size: size,
   color: color,
+);
+
+
+Icon iconclose({double size = 18.0, Color color}) => Icon(
+  IconData(0xe618, fontFamily: 'iconfont'),
+  size: size,
+  color: hex('#d7d7d7')
 );
 
 Icon iconsafety({double size = 18.0, Color color}) => Icon(
-  IconData(0xe607, fontFamily: 'iconfont'),
+  IconData(0xe623, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );
 
-Icon iconhint({double size = 18.0, Color color}) => Icon(
-  IconData(0xe61b, fontFamily: 'iconfont'),
+Icon iconpwd({double size = 18.0, Color color}) => Icon(
+  IconData(0xe738, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );
 
-Icon iconhome({double size = 18.0, Color color}) => Icon(
-  IconData(0xe612, fontFamily: 'iconfont'),
+Icon iconeye({double size = 18.0}) => Icon(
+  IconData(0xe750, fontFamily: 'iconfont'),
   size: size,
-  color: color,
+  color: hex('#999'),
 );
 
-Icon iconmine({double size = 18.0, Color color}) => Icon(
-  IconData(0xe611, fontFamily: 'iconfont'),
+Icon iconcloseeye({double size = 18.0}) => Icon(
+  IconData(0xe7d1, fontFamily: 'iconfont'),
   size: size,
-  color: color,
+  color: hex('#999'),
 );
 
-Icon iconstore({double size = 18.0, Color color}) => Icon(
-  IconData(0xe61d, fontFamily: 'iconfont'),
+Icon iconkey({double size = 18.0}) => Icon(
+  IconData(0xe738, fontFamily: 'iconfont'),
   size: size,
-  color: color,
-);
-
-Icon iconjifen({double size = 18.0, Color color}) => Icon(
-  IconData(0xe60e, fontFamily: 'iconfont'),
-  size: size,
-  color: color,
+  color: hex('#999'),
 );
 
 Icon icondqr({double size = 18.0, Color color}) => Icon(

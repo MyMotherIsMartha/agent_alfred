@@ -44,6 +44,11 @@ class G {
     return ScreenUtil().setSp(fontsize);
   }
 
+  // 状态栏高度 刘海屏会更高  单位px
+  static double statusHeight = ScreenUtil.statusBarHeight;
+  // 底部安全区距离，适用于全面屏下面有按键的
+  static double bottomHeight = ScreenUtil.bottomBarHeight;
+
   /// 获取时间戳
   /// 不传值 代表获取当前时间戳
   static int getTime([DateTime time]) {
@@ -54,11 +59,11 @@ class G {
     }
   }
 
-  static String getPref(key) {
+  static getPref(key) {
     return sp.getString(key);
   }
 
-  static String setPref(key, value) {
+  static setPref(key, value) {
     sp.setString(key, value);
     return value;
   }
@@ -82,4 +87,8 @@ class G {
   // static setupLocator() {
   //   getIt.registerSingleton(NavigateService());
   // }
+
+  static Widget spacing(double height) {
+    return Container(height: G.setHeight(height));
+  }
 }
