@@ -50,8 +50,14 @@ Icon iconarrow({double size = 18.0, Color color}) => Icon(
   color: color ?? hex('#999'),
 );
 
-Icon icondfh({double size = 18.0, Color color}) => Icon(
-  IconData(0xe617, fontFamily: 'iconfont'),
+Icon iconfemale({double size = 18.0, Color color}) => Icon(
+  IconData(0xe695, fontFamily: 'iconfont'),
+  size: size,
+  color: color,
+);
+
+Icon iconmale({double size = 18.0, Color color}) => Icon(
+  IconData(0xe694, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );

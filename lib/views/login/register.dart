@@ -1,6 +1,7 @@
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-circle-input.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import '../../api/login.dart';
@@ -137,17 +138,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             // maxLength: 11,
                             validator: (value) {
                               if (errorMsg == null || errorMsg.isEmpty) {
-                                if (value == null || value.isEmpty) {
+                                String eStr = Validate.checkMobile(value);
+                                if (eStr != null) {
                                   setState(() {
-                                    errorMsg = '请输入手机号';
-                                  });
-                                } else {
-                                  const regExp = r"^1[3456789]\d{9}$";
-                                  if (!RegExp(regExp).hasMatch(value)) {
-                                    setState(() {
-                                      errorMsg = '手机号格式错误';
+                                      errorMsg = eStr;
                                     });
-                                  }
                                 }
                               }
                               return null;
