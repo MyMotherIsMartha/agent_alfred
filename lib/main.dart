@@ -41,7 +41,8 @@ class MyApp extends StatelessWidget {
       title: '37度管家',
       onGenerateRoute: G.router.generator,
       theme: ThemeData(
-        primaryColor: hex('#6982FF'),
+        // primaryColor: hex('#6982FF'),
+        primaryColor: hex('#fff'),
         fontFamily: 'Georgia',
         textTheme: TextTheme(
           subhead: TextStyle(textBaseline: TextBaseline.alphabetic)

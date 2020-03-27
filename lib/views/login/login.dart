@@ -1,6 +1,8 @@
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-circle-input.dart';
+import 'package:agent37_flutter/components/v-hint.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import '../../api/login.dart';
@@ -87,56 +89,39 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           _loginTypeTab('pwd')
                         ]),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: G.setWidth(25)),
-                      margin: EdgeInsets.only(top: G.setHeight(30)),
-                      alignment: Alignment.centerLeft,
-                      height: G.setHeight(30),
-                      child: errorMsg != null
-                          ? Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.error,
-                                  color: hex('#f33'),
-                                  size: G.setSp(28),
-                                ),
-                                Container(width: G.setWidth(8)),
-                                Text(errorMsg,
-                                    style: TextStyle(
-                                        color: hex('#f33'),
-                                        height: 1,
-                                        fontSize: G.setSp(24)))
-                              ],
-                            )
-                          : null,
-                    ),
+                    G.spacing(30),
+                    VHint(errorMsg),
                     Container(
                       margin: EdgeInsets.only(
                           top: G.setHeight(10), bottom: G.setHeight(50)),
                       child: Form(
                         key: _formKey,
+                        // autovalidate: _formKey.currentState.validate(),
                         child: Column(children: <Widget>[
                           VCircleInput(
                             controller: _mobileController,
                             prefixIcon: iconmobile(),
                             type: TextInputType.phone,
                             hintText: '请输入手机号',
-                            // maxLength: 11,
+                            maxLength: 11,
                             validator: (value) {
                               if (errorMsg == null || errorMsg.isEmpty) {
-                                if (value == null || value.isEmpty) {
                                   setState(() {
-                                    errorMsg = '请输入手机号';
+                                    errorMsg = Validate.checkMobile(value)??'';
+                                    // errorMsg = '请输入手机号';
                                   });
-                                } else {
-                                  const regExp = r"^1[3456789]\d{9}$";
-                                  if (!RegExp(regExp).hasMatch(value)) {
-                                    setState(() {
-                                      errorMsg = '手机号格式错误';
-                                    });
-                                  }
-                                }
+                                // if (value == null || value.isEmpty) {
+                                //   setState(() {
+                                //     errorMsg = '请输入手机号';
+                                //   });
+                                // } else {
+                                //   const regExp = r"^1[3456789]\d{9}$";
+                                //   if (!RegExp(regExp).hasMatch(value)) {
+                                //     setState(() {
+                                //       errorMsg = '手机号格式错误';
+                                //     });
+                                //   }
+                                // }
                               }
                               return null;
                             },
@@ -161,12 +146,11 @@ class _LoginPageState extends State<LoginPage> {
                           errorMsg = null;
                         });
                         _formKey.currentState.validate();
-                        print(errorMsg);
                         if (errorMsg == null) {
                           LoginApi().login(mobile, sms: sms, pwd: pwd);
                         }
                       },
-                      disabled: !(formValidate['mobile'] ? loginType == 'sms' ? formValidate['sms'] :  formValidate['pwd'] : false)
+                      disabled: (formValidate['mobile'] ? loginType == 'sms' ? formValidate['sms'] :  formValidate['pwd'] : false)
                     )
                   ],
                 ),
@@ -286,7 +270,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _forgetPwd() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        G.router.navigateTo(context, '/forget');
+      },
       child: Text('忘记密码',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#434343'))),
     );

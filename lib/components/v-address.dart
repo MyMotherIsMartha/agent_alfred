@@ -1,0 +1,101 @@
+import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/utils/citys.dart';
+import 'package:agent37_flutter/utils/global.dart';
+import 'package:city_pickers/city_pickers.dart';
+import 'package:color_dart/color_dart.dart';
+import 'package:flutter/material.dart';
+
+class VAddress extends StatelessWidget {
+  final TextEditingController controller;
+  final String areaId;
+  final Function cb;
+  VAddress({this.controller, this.areaId, this.cb});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+                          alignment: Alignment.center,
+                          height: G.setHeight(100),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: hex('#eee'),
+                                      width: G.setWidth(1)))),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: G.setWidth(30)),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                  padding:
+                                      EdgeInsets.only(right: G.setWidth(20)),
+                                  child: Text('地区',
+                                      style: TextStyle(
+                                          fontSize: G.setSp(30),
+                                          color: hex('#666')))),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    _addressSelect(context);
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: TextFormField(
+                                          controller: controller,
+                                          // initialValue: '1234',
+                                          onTap: () {
+                                            _addressSelect(context);
+                                          },
+                                          readOnly: true,
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none),
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return '请选择省市区';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+                                      // Text(city ?? '请选择'),
+                                      iconarrow(size: G.setWidth(50))
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+  }
+
+  _addressSelect(context) async {
+    Result result2 = await CityPickers.showCityPicker(
+        context: context,
+        locationCode: areaId ?? '820100',
+        height: G.setHeight(500),
+        cancelWidget: Text('取消',
+            style: TextStyle(fontSize: G.setSp(32), color: hex('#999'))),
+        confirmWidget: Text('确认',
+            style: TextStyle(fontSize: G.setSp(32), color: hex('#108EE9'))),
+        citiesData: citiesData,
+        provincesData: provincesData);
+    // if (result2 != null) {
+    //   String area;
+    //   String areaName;
+    //     if (result2.areaId != null && result2.areaId.isNotEmpty) {
+    //       area = result2.areaId;
+    //       areaName = result2.provinceName +
+    //           ',' +
+    //           result2.cityName +
+    //           ',' +
+    //           result2.areaName;
+    //     } else {
+    //       area = result2.cityId;
+    //       areaName = result2.provinceName + ',' + result2.cityName;
+    //     }
+    //   controller.value = TextEditingValue(text: areaName);
+    //   cb(area);
+    // }
+  }
+}

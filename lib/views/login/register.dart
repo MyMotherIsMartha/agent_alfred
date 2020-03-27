@@ -177,10 +177,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           _formKey.currentState.validate();
                           print(errorMsg);
                           if (errorMsg == null) {
-                            LoginApi().login(mobile, sms: sms);
+                            // LoginApi().login(mobile, sms: sms);
+                            G.router.navigateTo(context, '/update-user');
                           }
                         },
-                        disabled: !formValidate['mobile'] && !formValidate['sms']),
+                        disabled: formValidate.containsValue(false)),
                     _agreement()
                   ],
                 ),

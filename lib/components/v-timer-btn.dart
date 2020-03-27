@@ -7,7 +7,9 @@ import '../utils/global.dart';
 
 class VTimerBtn extends StatefulWidget {
   final bool disabled;
-  VTimerBtn(this.disabled);
+  final String color;
+  VTimerBtn(this.disabled, {this.color});
+  
   @override
   _VTimerBtnState createState() => _VTimerBtnState();
 }
@@ -60,13 +62,16 @@ class _VTimerBtnState extends State<VTimerBtn> {
   Widget build(BuildContext context) {
     return Container(
       child: InkWell(
-        child: Text(countDownTime <= 0
+        child: Opacity(
+          opacity: widget.disabled ? .5 : 1,
+          child: Text(countDownTime <= 0
             ? "获取验证码"
             : countDownTime < 10 ? '0$countDownTime' + 'S' : '$countDownTime' + 'S', style: TextStyle(
               fontSize: G.setSp(30),
-              color: !widget.disabled ? hex('#999') : hex('#333'),
+              color: widget.color != null ? hex(widget.color):  hex('#333'),
               height: 1.5
             )),
+        ),
         onTap: () {
           if (countDownTime > 0) return;
           if (!widget.disabled) return;

@@ -44,10 +44,10 @@ Icon iconkey({double size = 18.0}) => Icon(
   color: hex('#999'),
 );
 
-Icon icondqr({double size = 18.0, Color color}) => Icon(
-  IconData(0xe61a, fontFamily: 'iconfont'),
+Icon iconarrow({double size = 18.0, Color color}) => Icon(
+  Icons.keyboard_arrow_right,
   size: size,
-  color: color,
+  color: color ?? hex('#999'),
 );
 
 Icon icondfh({double size = 18.0, Color color}) => Icon(

@@ -1,6 +1,8 @@
 import 'package:agent37_flutter/views/index.dart';
+import 'package:agent37_flutter/views/login/forget.dart';
 import 'package:agent37_flutter/views/login/login.dart';
 import 'package:agent37_flutter/views/login/register.dart';
+import 'package:agent37_flutter/views/login/update-user.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -28,5 +30,16 @@ Handler loginHandler = Handler(
 Handler registerHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return RegisterPage();
+  }
+);
+
+Handler forgetHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return ForgetPage();
+  }
+);
+Handler updateUserHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return UpdateUserPage();
   }
 );
