@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:agent37_flutter/api/login.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,8 @@ import '../utils/global.dart';
 class VTimerBtn extends StatefulWidget {
   final bool disabled;
   final String color;
-  VTimerBtn(this.disabled, {this.color});
+  final Function cb;
+  VTimerBtn(this.disabled, this.cb, {this.color});
   
   @override
   _VTimerBtnState createState() => _VTimerBtnState();
@@ -36,7 +38,6 @@ class _VTimerBtnState extends State<VTimerBtn> {
         G.removePref('startTime');
         _timer?.cancel();
       }
-      print('result: $result');
       setState(() {
         countDownTime = result;
       });
@@ -46,7 +47,6 @@ class _VTimerBtnState extends State<VTimerBtn> {
   @override
   void initState() {
     super.initState();
-    print(G.getPref('startTime') != null);
     if (G.getPref('startTime') != null) {
       startTime = int.parse(G.getPref('startTime'));
     }
@@ -72,10 +72,15 @@ class _VTimerBtnState extends State<VTimerBtn> {
               height: 1.5
             )),
         ),
-        onTap: () {
+        onTap: () async {
           if (countDownTime > 0) return;
-          if (!widget.disabled) return;
-          countDown();
+          if (widget.disabled) return;
+          var result = await widget.cb();
+          if (result.data['code'] == 200) {
+            countDown();
+          } else {
+            print(result.data['code']);
+          }
         },
       ),
       // padding: EdgeInsets.only(left: 10),

@@ -45,7 +45,7 @@ Icon iconkey({double size = 18.0}) => Icon(
 );
 
 Icon iconarrow({double size = 18.0, Color color}) => Icon(
-  Icons.keyboard_arrow_right,
+  IconData(0xe642, fontFamily: 'iconfont'),
   size: size,
   color: color ?? hex('#999'),
 );
@@ -62,8 +62,8 @@ Icon iconmale({double size = 18.0, Color color}) => Icon(
   color: color,
 );
 
-Icon icondsh({double size = 18.0, Color color}) => Icon(
-  IconData(0xe618, fontFamily: 'iconfont'),
+Icon iconmap({double size = 18.0, Color color}) => Icon(
+  IconData(0xe606, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );

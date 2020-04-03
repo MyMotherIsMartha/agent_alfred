@@ -86,7 +86,9 @@ class _VInputState extends State<VInput> {
                   controller: widget.controller,
                   focusNode: _focus,
                   onTap: () {
-                    widget.onTap();
+                    if (widget.onTap != null) {
+                      widget.onTap();
+                    }
                   },
                   readOnly: widget.readOnly??false,
                   obscureText: widget.type == TextInputType.visiblePassword,
@@ -117,6 +119,7 @@ class _VInputState extends State<VInput> {
                                   icon: iconclose(),
                                   onPressed: () {
                                     clearText(widget.controller);
+                                    widget.onChange(null);
                                   },
                                 )
                               : null,

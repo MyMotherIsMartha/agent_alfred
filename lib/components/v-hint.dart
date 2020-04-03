@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class VHint extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(25)),
       alignment: Alignment.centerLeft,
       height: G.setHeight(30),
-      child: errorMsg != null
+      child: !Validate.isNon(errorMsg)
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[

@@ -2,9 +2,11 @@ import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-circle-input.dart';
 import 'package:agent37_flutter/components/v-hint.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../api/login.dart';
 import '../../components/Icon.dart';
 import '../../utils/global.dart';
@@ -129,28 +131,34 @@ class _LoginPageState extends State<LoginPage> {
                               const regExp = r"^1[3456789]\d{9}$";
                               setState(() {
                                 formValidate['mobile'] = RegExp(regExp).hasMatch(e);
+                                mobile = e;
                               });
                             },
                           ),
                           Container(height: G.setHeight(30)),
-                          _loginSmsInput(formValidate['mobile']),
+                          _loginSmsInput(!formValidate['mobile']),
                           _loginPwdInput()
                         ]),
                       ),
                     ),
                     VButton(
                       text: '登录',
-                      fn: () {
+                      fn: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
                         setState(() {
                           errorMsg = null;
                         });
                         _formKey.currentState.validate();
-                        if (errorMsg == null) {
-                          LoginApi().login(mobile, sms: sms, pwd: pwd);
+                        if (Validate.isNon(errorMsg)) {
+                          var result = await LoginApi().login(mobile, sms: sms, pwd: pwd);
+                          if (result.data['code'] == 200) {
+                            String token = result.data['data']['jwtToken'];
+                            G.setPref('token', 'bearer ' + token);
+                            Provider.of<UserProvide>(context).updateUserAuth();
+                          }
                         }
                       },
-                      disabled: (formValidate['mobile'] ? loginType == 'sms' ? formValidate['sms'] :  formValidate['pwd'] : false)
+                      disabled: !(formValidate['mobile'] ? loginType == 'sms' ? formValidate['sms'] :  formValidate['pwd'] : false)
                     )
                   ],
                 ),
@@ -212,9 +220,10 @@ class _LoginPageState extends State<LoginPage> {
             hintText: '请输入验证码',
             prefixIcon: iconsafety(),
             type: TextInputType.number,
-            suffix: VTimerBtn(disabled),
+            suffix: VTimerBtn(disabled, () async {return await LoginApi().getLoginSmsCode(mobile);}),
             maxLength: 4,
             validator: (value) {
+              if (loginType != 'sms') return null;
               if (errorMsg == null || errorMsg.isEmpty) {
                 if (value == null || value.isEmpty) {
                   setState(() {
@@ -257,6 +266,7 @@ class _LoginPageState extends State<LoginPage> {
               icon: pwdVisible ? iconeye() : iconcloseeye(),
             ),
             validator: (value) {
+              if (loginType != 'pwd') return null;
               if (errorMsg == null || errorMsg.isEmpty) {
                 if (value == null || value.isEmpty) {
                   setState(() {

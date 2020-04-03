@@ -30,7 +30,7 @@ class G {
           timeInSecForIos: 1,
           backgroundColor: bgColor,
           textColor: color,
-          fontSize: G.setSp(18));
+          fontSize: G.setSp(32));
 
   static setWidth(double width) {
     return ScreenUtil().setWidth(width);
@@ -88,7 +88,17 @@ class G {
   //   getIt.registerSingleton(NavigateService());
   // }
 
-  static Widget spacing(double height) {
-    return Container(height: G.setHeight(height));
+  static Widget spacing(double height, {Color color}) {
+    return Container(
+      height: G.setHeight(height),
+      color: color,
+    );
+  }
+
+  static setTextEdit(String val) {
+    return TextEditingValue(
+        text: val,
+        selection: TextSelection.fromPosition(TextPosition(
+            affinity: TextAffinity.downstream, offset: val.length)));
   }
 }

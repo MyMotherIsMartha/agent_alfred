@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:agent37_flutter/provide/address.dart';
 import 'package:agent37_flutter/provide/currentIndex.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
@@ -24,6 +26,8 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: CurrentIndexProvide()),
+      ChangeNotifierProvider.value(value: UserProvide()),
+      ChangeNotifierProvider.value(value: AddressProvide()),
       // Provider.value(value: '0.0.1'),
       // ChangeNotifierProvider.value(
       //   value: currentIndexProvide,

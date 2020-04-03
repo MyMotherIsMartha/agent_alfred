@@ -1,4 +1,6 @@
 import 'package:agent37_flutter/views/index.dart';
+import 'package:agent37_flutter/views/login/address.dart';
+import 'package:agent37_flutter/views/login/create-account.dart';
 import 'package:agent37_flutter/views/login/forget.dart';
 import 'package:agent37_flutter/views/login/login.dart';
 import 'package:agent37_flutter/views/login/register.dart';
@@ -38,8 +40,21 @@ Handler forgetHandler = Handler(
     return ForgetPage();
   }
 );
+
 Handler updateUserHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return UpdateUserPage();
+  }
+);
+
+Handler createAccountHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return CreateAccountPage();
+  }
+);
+
+Handler addressHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return AddressPage();
   }
 );

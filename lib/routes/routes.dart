@@ -10,6 +10,8 @@ class Routes {
   static String registerPage = '/register';
   static String forgetPage = '/forget';
   static String updateUserPage = '/update-user';
+  static String createAccountPage = '/create-account';
+  static String addressPage = '/address';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -22,5 +24,7 @@ class Routes {
     router.define(registerPage, handler: registerHandler);
     router.define(forgetPage, handler: forgetHandler);
     router.define(updateUserPage, handler: updateUserHandler);
+    router.define(createAccountPage, handler: createAccountHandler);
+    router.define(addressPage, handler: addressHandler);
   }
 }

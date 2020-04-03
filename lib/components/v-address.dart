@@ -37,7 +37,6 @@ class VAddress extends StatelessWidget {
                   Expanded(
                     child: TextFormField(
                       controller: controller,
-                      // initialValue: '1234',
                       onTap: () {
                         _addressSelect(context);
                       },
@@ -47,7 +46,7 @@ class VAddress extends StatelessWidget {
                     ),
                   ),
                   // Text(city ?? '请选择'),
-                  iconarrow(size: G.setWidth(50))
+                  iconarrow(size: G.setWidth(35))
                 ],
               ),
             ),
@@ -83,7 +82,7 @@ class VAddress extends StatelessWidget {
         areaName = result2.provinceName + ',' + result2.cityName;
       }
       controller.value = TextEditingValue(text: areaName);
-      cb(area);
+      cb(area, areaName);
     }
   }
 }

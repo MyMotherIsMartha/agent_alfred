@@ -95,6 +95,7 @@ class _ForgetPageState extends State<ForgetPage> {
                           },
                           suffix: VTimerBtn(
                             smsDisabled,
+                            () {},
                             color: '#0091F0',
                           ),
                         ),
