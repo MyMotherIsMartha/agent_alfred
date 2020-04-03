@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/models/address.dart';
 import 'package:agent37_flutter/models/gift-packages.dart';
 import 'package:agent37_flutter/provide/address.dart';
@@ -249,7 +250,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               child: Text(giftList[0].name),
             );
           } else {
-            return Container();
+            return VLoading();
           }
         },
       ),
