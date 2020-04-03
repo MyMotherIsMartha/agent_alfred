@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/api/dic.dart';
 import 'package:city_pickers/city_pickers.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:dio/dio.dart';
@@ -7,14 +8,16 @@ import 'package:flutter/material.dart';
 // import 'package:agent37_flutter/provide/userinfo.dart';
 import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
+import 'package:flutter_picker/flutter_picker.dart';
+import 'package:agent37_flutter/api/oss.dart';
+import 'package:agent37_flutter/model/license.dart';
 import 'package:provider/provider.dart';
 
 class UploadLicenseForm extends StatefulWidget {
-  final String name;
-  final int age;
-  final String personJson;
+  final String uploadJson;
 
-  UploadLicenseForm({this.name, this.age, this.personJson});
+  UploadLicenseForm({this.uploadJson});
   @override
   _UploadLicenseFormState createState() => _UploadLicenseFormState();
 }
@@ -31,9 +34,30 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
   String name;
   String memberId;
   String id;
+  Future<List<dynamic>> _jobList;
+  
   final myController = TextEditingController();
+
+
+  // 获取职业数据
+  Future<List> getJobList() async {
+    var response = await DicApi().getOccupations();
+    List<dynamic> tempList = response.data['data'];
+    return tempList;
+  }
+
+
+  
   @override
   Widget build(BuildContext context) {
+    // Person person =
+    //     Person.fromJson(FluroConvertUtils.string2map(widget.personJson));
+    print(FluroConvertUtils.string2map(widget.uploadJson));
+    Map uploadData = FluroConvertUtils.string2map(widget.uploadJson);
+
+    print(uploadData);
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('企业认证'),
@@ -43,11 +67,14 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
         color: hex('#F3F4F6'),
         child: Column(
           children: <Widget>[
+            // Container(
+            //   padding: EdgeInsets.all(15),
+            //   alignment: Alignment.centerLeft,
+            //   child: Text('收货地址',
+            //       style: TextStyle(color: hex('#999'), fontSize: G.setSp(30))),
+            // ),
             Container(
-              padding: EdgeInsets.all(15),
-              alignment: Alignment.centerLeft,
-              child: Text('收货地址',
-                  style: TextStyle(color: hex('#999'), fontSize: G.setSp(30))),
+              height: G.setHeight(20)
             ),
             Container(
               color: hex('#FFF'),
@@ -67,24 +94,51 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         children: <Widget>[
                           Container(
                             width: G.setWidth(186),
-                            child: Text('收货人'),
+                            child: Text('所属行业'),
                           ),
                           Expanded(
-                            child: TextFormField(
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
-                              onChanged: (e) {
-                                setState(() {
-                                  name = e;
-                                });
-                              },
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return '请输入收货人';
+                            child: FutureBuilder(
+                              future: getJobList(),
+                              builder: (context, shopshot) {
+                                if (shopshot.hasData) {
+                                  print(shopshot.data);
+                                  return InkWell(
+                                    onTap: () {
+                                      _showPickerJobs(context, shopshot.data);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: TextFormField(
+                                            controller: myController,
+                                            // initialValue: '1234',
+                                            onTap: () {
+                                              _showPickerJobs(context, shopshot.data);
+                                            },
+                                            readOnly: true,
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none, hintText: '请选择行业'),
+                                            validator: (value) {
+                                              if (value.isEmpty) {
+                                                return '请选择行业';
+                                              }
+                                              return null;
+                                            },
+                                          ),
+                                        ),
+                                        // Text(city ?? '请选择'),
+                                        Icon(Icons.keyboard_arrow_right)
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return Text('我没有啊');
                                 }
-                                return null;
                               },
                             ),
+                            // child: 
                           )
                         ],
                       ),
@@ -100,13 +154,13 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         children: <Widget>[
                           Container(
                             width: G.setWidth(186),
-                            child: Text('手机号码'),
+                            child: Text('企业名称'),
                           ),
                           Expanded(
                             child: TextFormField(
                               keyboardType: TextInputType.phone,
                               decoration:
-                                  InputDecoration(border: InputBorder.none),
+                                  InputDecoration(border: InputBorder.none, hintText: '请输入企业名称'),
                               onChanged: (e) {
                                 setState(() {
                                   mobile = e;
@@ -130,6 +184,37 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                     Container(
                       height: G.setHeight(100),
                       decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(color: hex('#E5E6E5'), width: 1))),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: G.setWidth(186),
+                            child: Text('营业执照号'),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              decoration:
+                                  InputDecoration(border: InputBorder.none, hintText: '请输入统一社会信用代码'),
+                              onChanged: (e) {
+                                setState(() {
+                                  name = e;
+                                });
+                              },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return '请输入统一社会信用代码';
+                                }
+                                return null;
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: G.setHeight(100),
+                      decoration: BoxDecoration(
                           border: Border(
                               bottom:
                                   BorderSide(color: hex('#E5E6E5'), width: 1))),
@@ -137,7 +222,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         children: <Widget>[
                           Container(
                             width: G.setWidth(186),
-                            child: Text('省市区'),
+                            child: Text('注册地区'),
                           ),
                           Expanded(
                             child: InkWell(
@@ -157,7 +242,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                       },
                                       readOnly: true,
                                       decoration: InputDecoration(
-                                          border: InputBorder.none),
+                                          border: InputBorder.none, hintText: '请选择省市区'),
                                       validator: (value) {
                                         if (value.isEmpty) {
                                           return '请选择省市区';
@@ -182,14 +267,14 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         children: <Widget>[
                           Container(
                             width: G.setWidth(186),
-                            child: Text('详细地址'),
+                            child: Text('注册地址'),
                           ),
                           Expanded(
                             child: TextFormField(
                               maxLines: 3,
                               keyboardType: TextInputType.phone,
                               decoration:
-                                  InputDecoration(border: InputBorder.none),
+                                  InputDecoration(border: InputBorder.none, hintText: '请输入详细注册地址'),
                               onChanged: (e) {
                                 setState(() {
                                   address = e;
@@ -206,38 +291,47 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         ],
                       ),
                     ),
+                    Container(
+                      height: G.setHeight(100),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: G.setWidth(186),
+                            child: Text('法人姓名'),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              maxLines: 3,
+                              keyboardType: TextInputType.phone,
+                              decoration:
+                                  InputDecoration(border: InputBorder.none, hintText: '请输入企业法人名称'),
+                              onChanged: (e) {
+                                setState(() {
+                                  address = e;
+                                });
+                              },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return '请输入详细地址';
+                                }
+                                return null;
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
             ),
             Container(
-                margin: EdgeInsets.only(top: 20),
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                height: G.setHeight(100),
-                color: hex('#fff'),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('设置为默认地址',
-                        style: TextStyle(
-                            fontSize: G.setSp(32), color: hex('#363636'))),
-                    CupertinoSwitch(
-                      activeColor: hex('#E5B760'),
-                      value: isDefault == 1,
-                      onChanged: (e) {
-                        setState(() {
-                          isDefault = e ? 1 : 0;
-                        });
-                      },
-                    ),
-                  ],
-                )),
-            Container(
               width: G.setWidth(710),
               height: G.setHeight(100),
               margin: EdgeInsets.only(top: 60),
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [hex('#F3C774'), hex('#E2B55D')]),
+                gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
                 borderRadius: BorderRadius.circular(G.setHeight(50))
               ),
               child: FlatButton(
@@ -268,7 +362,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                     //     SnackBar(content: Text('Processing Data')));
                   }
                 },
-                child: Text('确定', style: TextStyle(
+                child: Text('提交审核', style: TextStyle(
                   fontSize: G.setSp(36),
                   color: Colors.white
                 )),
@@ -278,6 +372,22 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
         ),
       ),
     );
+  }
+
+  
+
+  _showPickerJobs(BuildContext context, options) {
+    Picker picker = new Picker(
+      adapter: PickerDataAdapter<String>(pickerdata: options),
+      changeToFirst: true,
+      textAlign: TextAlign.left,
+      columnPadding: const EdgeInsets.all(8.0),
+      onConfirm: (Picker picker, List value) {
+        print(value.toString());
+        print(picker.getSelectedValues());
+      }
+    );
+    picker.showModal(context);
   }
 
   _addressSelect(context) async {

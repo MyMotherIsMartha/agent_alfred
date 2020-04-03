@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:agent37_flutter/model/license.dart';
+import 'package:agent37_flutter/routes/routes.dart';
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import '../../utils/global.dart';
@@ -93,17 +95,22 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     FormData data = FormData.fromMap({
         "file": await MultipartFile.fromFile(path,filename: name + '.' + suffix)
     });
-    var result = await OssApi().uploadEnterpriseLicense(data);
-    print(result.toString());
+    var resultInfo = await OssApi().uploadEnterpriseLicense(data);
+    if (resultInfo.data['success'] == true) {
+      print('success');
+      Map uploadData = resultInfo.data['data'];
+      var uploadJson = FluroConvertUtils.object2string(uploadData);
+      G.router.navigateTo(
+        context, Routes.uploadLicenseForm + "?uploadJson=$uploadJson");
+    } else {
+      print(resultInfo.data['message']);
+    }
   }
 
   void goToUploadForm() {
-    String name = "来自第一个界面测试一下";
-    int age = 14;
-    bool sex = true;
-    Person person = new Person(name: 'Zeking', age: 18, sex: true);
-    G.router.navigateTo(
-        context, "/uploadLicenseForm?name=$name&age=$age&personjson=$person");
+    // License license = new License(name: 'Zeking', age: 18, sex: true);
+    // G.router.navigateTo(
+    //     context, Routes.uploadLicenseForm + "?name=$mName&age=$age&personjson=$personJson");
   }
 
   @override
@@ -170,9 +177,9 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
               ),
             ),
             // _ImageView(_imgPath)
-            RaisedButton(
-              onPressed: goToUploadForm, 
-              child: Text('go upload form'),)
+            // RaisedButton(
+            //   onPressed: goToUploadForm, 
+            //   child: Text('go upload form'),)
           ],
         )
       ),

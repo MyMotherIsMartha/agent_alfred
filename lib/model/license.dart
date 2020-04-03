@@ -1,21 +1,32 @@
-class Person{
-  String name;
-  int age;
-  bool sex;
+class License {
+  String enterpriseName;
+  String registerCode;
+  String legalPerson;
+  String address;
+  String businessLicenseUrl;
 
-  Person({this.name, this.age,this.sex});
+  License(
+      {this.enterpriseName,
+      this.registerCode,
+      this.legalPerson,
+      this.address,
+      this.businessLicenseUrl});
 
-  Person.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    age = json['age'];
-    sex = json['sex'];
+  License.fromJson(Map<String, dynamic> json) {
+    enterpriseName = json['enterpriseName'];
+    registerCode = json['registerCode'];
+    legalPerson = json['legalPerson'];
+    address = json['address'];
+    businessLicenseUrl = json['businessLicenseUrl'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['age'] = this.age;
-    data['sex'] = this.sex;
+    data['enterpriseName'] = this.enterpriseName;
+    data['registerCode'] = this.registerCode;
+    data['legalPerson'] = this.legalPerson;
+    data['address'] = this.address;
+    data['businessLicenseUrl'] = this.businessLicenseUrl;
     return data;
   }
 }

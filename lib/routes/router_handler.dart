@@ -41,15 +41,11 @@ Handler uploadEnterPrisePicHandler = Handler(
 );
 
 Handler uploadLicenseFormHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    String name = params["name"]?.first; 
-    String age = params["age"]?.first;
-    String personjson = params['personjson']?.first;
+  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+    String uploadJson = params['uploadJson']?.first;
     
     return UploadLicenseForm(
-      name: name,
-      age: FluroConvertUtils.string2int(age),
-      personJson: personjson,
+      uploadJson: uploadJson,
     );
   }
 );
