@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
+import 'dart:convert';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:agent37_flutter/api/oss.dart';
 import 'package:agent37_flutter/model/license.dart';
@@ -99,12 +100,14 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                           Expanded(
                             child: FutureBuilder(
                               future: getJobList(),
-                              builder: (context, shopshot) {
-                                if (shopshot.hasData) {
-                                  print(shopshot.data);
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  print(snapshot.data);
+                                  List jobStringList = snapshot.data.map((item) => item['name'].toString()).toList();
+                                  print(jobStringList);
                                   return InkWell(
                                     onTap: () {
-                                      _showPickerJobs(context, shopshot.data);
+                                      _showPickerJobs(context, jobStringList);
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -115,7 +118,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                             controller: myController,
                                             // initialValue: '1234',
                                             onTap: () {
-                                              _showPickerJobs(context, shopshot.data);
+                                              _showPickerJobs(context, jobStringList);
                                             },
                                             readOnly: true,
                                             decoration: InputDecoration(
@@ -378,7 +381,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
 
   _showPickerJobs(BuildContext context, options) {
     Picker picker = new Picker(
-      adapter: PickerDataAdapter<String>(pickerdata: options),
+      adapter: PickerDataAdapter<String>(pickerdata: options, isArray: false),
       changeToFirst: true,
       textAlign: TextAlign.left,
       columnPadding: const EdgeInsets.all(8.0),
