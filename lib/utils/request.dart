@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 Dio service() {
   BaseOptions _baseOptions =
       BaseOptions(
-        baseUrl: "http://api-uat-37agent.woouo.com/",
-        headers: {'platform': 'agent_h5'}
+        baseUrl: "http://192.168.10.181:31050/",
+        headers: {'platform': 'agent_app'}
       );
 
   Dio dio = Dio(_baseOptions);
@@ -51,7 +51,7 @@ Dio service() {
   //   // config the http client
   //   client.findProxy = (uri) {
   //     //proxy all request to localhost:8888
-  //     return "PROXY localhost:8888";
+  //     return "PROXY localhost:1111";
   //   };
   //   // you can also create a HttpClient to dio
   //   // return HttpClient();

@@ -44,20 +44,26 @@ Icon iconkey({double size = 18.0}) => Icon(
   color: hex('#999'),
 );
 
-Icon icondqr({double size = 18.0, Color color}) => Icon(
-  IconData(0xe61a, fontFamily: 'iconfont'),
+Icon iconarrow({double size = 18.0, Color color}) => Icon(
+  IconData(0xe642, fontFamily: 'iconfont'),
+  size: size,
+  color: color ?? hex('#999'),
+);
+
+Icon iconfemale({double size = 18.0, Color color}) => Icon(
+  IconData(0xe695, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );
 
-Icon icondfh({double size = 18.0, Color color}) => Icon(
-  IconData(0xe617, fontFamily: 'iconfont'),
+Icon iconmale({double size = 18.0, Color color}) => Icon(
+  IconData(0xe694, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );
 
-Icon icondsh({double size = 18.0, Color color}) => Icon(
-  IconData(0xe618, fontFamily: 'iconfont'),
+Icon iconmap({double size = 18.0, Color color}) => Icon(
+  IconData(0xe606, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );

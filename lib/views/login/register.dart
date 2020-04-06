@@ -1,8 +1,11 @@
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-circle-input.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
+import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../api/login.dart';
 import '../../components/Icon.dart';
 import '../../utils/global.dart';
@@ -31,6 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget build(BuildContext context) {
+    G.setContext(context);
     // print('1234214');
     // print(MediaQuery.of(context).padding.top);
     // print(G.statusHeight);
@@ -137,17 +141,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             // maxLength: 11,
                             validator: (value) {
                               if (errorMsg == null || errorMsg.isEmpty) {
-                                if (value == null || value.isEmpty) {
+                                String eStr = Validate.checkMobile(value);
+                                if (eStr != null) {
                                   setState(() {
-                                    errorMsg = '请输入手机号';
-                                  });
-                                } else {
-                                  const regExp = r"^1[3456789]\d{9}$";
-                                  if (!RegExp(regExp).hasMatch(value)) {
-                                    setState(() {
-                                      errorMsg = '手机号格式错误';
+                                      errorMsg = eStr;
                                     });
-                                  }
                                 }
                               }
                               return null;
@@ -157,11 +155,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               setState(() {
                                 formValidate['mobile'] =
                                     RegExp(regExp).hasMatch(e);
+                                mobile = e;
                               });
                             },
                           ),
                           G.spacing(30),
-                          _loginSmsInput(formValidate['mobile']),
+                          _loginSmsInput(!formValidate['mobile']),
                           G.spacing(30),
                           _loginInviteInput()
                         ]),
@@ -169,7 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     VButton(
                         text: '登录',
-                        fn: () {
+                        fn: () async {
                           FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {
                             errorMsg = null;
@@ -177,10 +176,23 @@ class _RegisterPageState extends State<RegisterPage> {
                           _formKey.currentState.validate();
                           print(errorMsg);
                           if (errorMsg == null) {
-                            LoginApi().login(mobile, sms: sms);
+                            Map data = {
+                              'memberType': 1,
+                              'mobile': mobile,
+                              'smsCode': sms,
+                              'parentShareCode': invite
+                            };
+                            var result = await LoginApi().register(data);
+                            print(result);
+                            if (result.data['code'] == 200) {
+                              G.toast('注册成功');
+                              String token = result.data['data']['jwtToken'];
+                              G.setPref('token',  'bearer ' + token);
+                              Provider.of<UserProvide>(context).updateUserAuth();
+                            }
                           }
                         },
-                        disabled: !formValidate['mobile'] && !formValidate['sms']),
+                        disabled: formValidate.containsValue(false)),
                     _agreement()
                   ],
                 ),
@@ -194,6 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _loginSmsInput(bool disabled) {
     return VCircleInput(
+        
         controller: _smsController,
         onChange: (String e) {
           setState(() {
@@ -204,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
         hintText: '请输入验证码',
         prefixIcon: iconsafety(),
         type: TextInputType.number,
-        suffix: VTimerBtn(disabled),
+        suffix: VTimerBtn(disabled, () async {return await LoginApi().getRegisterSmsCode(mobile);}),
         maxLength: 4,
         validator: (value) {
           if (errorMsg == null || errorMsg.isEmpty) {
@@ -228,7 +241,14 @@ class _RegisterPageState extends State<RegisterPage> {
     return VCircleInput(
         controller: _inviteController,
         hintText: '请输入邀请码（非必填）',
-        prefixIcon: iconkey());
+        prefixIcon: iconkey(),
+        onChange: (e) {
+          setState(() {
+            invite = e;
+          });
+        },
+        );
+        
   }
 
   Widget _agreement() {

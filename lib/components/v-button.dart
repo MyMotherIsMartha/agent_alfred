@@ -21,7 +21,7 @@ class VButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: G.setWidth(590),
+      width: G.setWidth(width),
       height: G.setHeight(100),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(G.setHeight(height / 2)),
