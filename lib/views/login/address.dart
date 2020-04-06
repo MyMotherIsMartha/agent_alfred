@@ -65,8 +65,6 @@ class _AddressPageState extends State<AddressPage> {
   }
 
   @override
-  // eventBus
-
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: hex('#F3F4F6'),

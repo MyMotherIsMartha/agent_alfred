@@ -1,6 +1,7 @@
 import 'package:agent37_flutter/views/index.dart';
 import 'package:agent37_flutter/views/login/address.dart';
 import 'package:agent37_flutter/views/login/create-account.dart';
+import 'package:agent37_flutter/views/login/create-order.dart';
 import 'package:agent37_flutter/views/login/forget.dart';
 import 'package:agent37_flutter/views/login/login.dart';
 import 'package:agent37_flutter/views/login/register.dart';
@@ -61,6 +62,14 @@ Handler addressHandler = Handler(
     return AddressPage();
   }
 );
+
+Handler createOrderHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String price = params['price']?.first;
+    return CreateOrderPage(price: price);
+  }
+);
+
 Handler uploadEnterPrisePicHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return UploadEnterprisePic();
