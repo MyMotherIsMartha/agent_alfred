@@ -42,9 +42,10 @@ Dio service() {
     // 当请求失败时做一些预处理
     // return e; //continue
   }));
-  // dio.interceptors.add(
-  //   LogInterceptor(responseBody: true, requestBody: true),
-  // );
+
+  dio.interceptors.add(
+    LogInterceptor(responseBody: true),
+  );
   // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
   //     (client) {
   //   // config the http client
