@@ -10,7 +10,9 @@ import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'dart:convert';
+import 'package:agent37_flutter/components/v-address.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/api/oss.dart';
 import 'package:agent37_flutter/model/license.dart';
 import 'package:provider/provider.dart';
@@ -46,16 +48,21 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
 
   Map uploadData;
 
-  final jobCodeCtrl = new TextEditingController();
-  final _enterpriseName = new TextEditingController();
-  final _registerCode = new TextEditingController();
-  final _areaStr = new TextEditingController();
-  final _legalPerson = new TextEditingController();
+  final jobCodeCtrl = TextEditingController();
+  final _enterpriseName = TextEditingController();
+  final _registerCode = TextEditingController();
+  final _areaStr = TextEditingController();
+  final _legalPerson = TextEditingController();
 
-  final areaCtrl = new TextEditingController();
+  final areaCtrl = TextEditingController();
+  String areaCode;
   String provinceName;
   String cityName;
   String areaName;
+
+  Map formValidate = {
+    'areaCode': false,
+  };
 
   @override
   void initState() {
@@ -225,6 +232,19 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                           )
                         ],
                       ),
+                    ),
+                    VAddress(
+                      areaId: areaCode,
+                      controller: areaCtrl,
+                      cb: (value, areaStr) {
+                        print('areaId');
+                        print(areaStr.split(',').toString());
+                        setState(() {
+                          areaCode = value;
+                          areaName = areaStr;
+                          formValidate['areaCode'] = !Validate.isNon(value);
+                        });
+                      },
                     ),
                     Container(
                       height: G.setHeight(100),
