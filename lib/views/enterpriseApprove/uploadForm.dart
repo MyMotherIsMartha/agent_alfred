@@ -25,8 +25,6 @@ class UploadLicenseForm extends StatefulWidget {
 
 class _UploadLicenseFormState extends State<UploadLicenseForm> {
   final _formKey = GlobalKey<FormState>();
-  String title;
-  String address;
   String city;
   String cityIndex = "10,1,5";
   String code;
@@ -35,10 +33,8 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
   String name;
   String memberId;
   String id;
-  Future<List<dynamic>> _jobList;
-  
-  final myController = TextEditingController();
 
+  Future<List<dynamic>> _jobList;
 
   // 获取职业数据
   Future<List> getJobList() async {
@@ -48,16 +44,36 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
   }
 
 
+  Map uploadData;
+
+  final jobCodeCtrl = new TextEditingController();
+  final _enterpriseName = new TextEditingController();
+  final _registerCode = new TextEditingController();
+  final _areaStr = new TextEditingController();
+  final _legalPerson = new TextEditingController();
+
+  final areaCtrl = new TextEditingController();
+  String provinceName;
+  String cityName;
+  String areaName;
+
+  @override
+  void initState() {
+    super.initState();
+    uploadData =  FluroConvertUtils.string2map(widget.uploadJson);
+    _enterpriseName.text = uploadData['enterpriseName'];
+    _registerCode.text = uploadData['registerCode'];
+    _areaStr.text = uploadData['address'];
+    _legalPerson.text = uploadData['legalPerson'];
+  }
+
+
+  
+
+  
   
   @override
   Widget build(BuildContext context) {
-    // Person person =
-    //     Person.fromJson(FluroConvertUtils.string2map(widget.personJson));
-    print(FluroConvertUtils.string2map(widget.uploadJson));
-    Map uploadData = FluroConvertUtils.string2map(widget.uploadJson);
-
-    print(uploadData);
-
 
     return Scaffold(
       appBar: AppBar(
@@ -102,12 +118,9 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                               future: getJobList(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  print(snapshot.data);
-                                  List jobStringList = snapshot.data.map((item) => item['name'].toString()).toList();
-                                  print(jobStringList);
                                   return InkWell(
                                     onTap: () {
-                                      _showPickerJobs(context, jobStringList);
+                                      _showPickerJobs(context, snapshot.data);
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -115,10 +128,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                       children: <Widget>[
                                         Expanded(
                                           child: TextFormField(
-                                            controller: myController,
+                                            controller: jobCodeCtrl,
                                             // initialValue: '1234',
                                             onTap: () {
-                                              _showPickerJobs(context, jobStringList);
+                                              _showPickerJobs(context, snapshot.data);
                                             },
                                             readOnly: true,
                                             decoration: InputDecoration(
@@ -137,7 +150,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                     ),
                                   );
                                 } else {
-                                  return Text('我没有啊');
+                                  return Text('');
                                 }
                               },
                             ),
@@ -161,21 +174,18 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                           ),
                           Expanded(
                             child: TextFormField(
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.text,
                               decoration:
                                   InputDecoration(border: InputBorder.none, hintText: '请输入企业名称'),
+                              controller: _enterpriseName,
                               onChanged: (e) {
                                 setState(() {
-                                  mobile = e;
+                                  _enterpriseName.text = e;
                                 });
                               },
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return '请输入手机号';
-                                }
-                                RegExp reg = RegExp(r'^1[3456789]\d{9}$');
-                                if (!reg.hasMatch(value)) {
-                                  return '请输入11位手机号';
+                                  return '请输入企业名称';
                                 }
                                 return null;
                               },
@@ -199,6 +209,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                             child: TextFormField(
                               decoration:
                                   InputDecoration(border: InputBorder.none, hintText: '请输入统一社会信用代码'),
+                              controller: _registerCode,
                               onChanged: (e) {
                                 setState(() {
                                   name = e;
@@ -238,7 +249,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                 children: <Widget>[
                                   Expanded(
                                     child: TextFormField(
-                                      controller: myController,
+                                      controller: areaCtrl,
                                       // initialValue: '1234',
                                       onTap: () {
                                         _addressSelect(context);
@@ -265,6 +276,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                     ),
                     Container(
                       height: G.setHeight(100),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: hex('#E5E6E5'), width: 1))),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -275,12 +290,13 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                           Expanded(
                             child: TextFormField(
                               maxLines: 3,
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.text,
                               decoration:
                                   InputDecoration(border: InputBorder.none, hintText: '请输入详细注册地址'),
+                              controller: _areaStr,
                               onChanged: (e) {
                                 setState(() {
-                                  address = e;
+                                  _areaStr.text = e;
                                 });
                               },
                               validator: (value) {
@@ -305,13 +321,13 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                           ),
                           Expanded(
                             child: TextFormField(
-                              maxLines: 3,
                               keyboardType: TextInputType.phone,
                               decoration:
                                   InputDecoration(border: InputBorder.none, hintText: '请输入企业法人名称'),
+                              controller: _legalPerson,
                               onChanged: (e) {
                                 setState(() {
-                                  address = e;
+                                  _legalPerson.text = e;
                                 });
                               },
                               validator: (value) {
@@ -342,15 +358,15 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                 textColor: Colors.white,
                 onPressed: () async {
                   // Validate returns true if the form is valid, otherwise false.
+                  print(code);
                   if (_formKey.currentState.validate()) {
                     Map data = {
-                      'name': name,
-                      'mobile': mobile,
-                      'address': address,
-                      'city': city,
-                      'code': int.parse(code),
-                      'isDefault': isDefault,
-                      'cityIndex': cityIndex,
+                      'registerAddress': _areaStr.text,
+                      'areaCode': int.parse(code),
+                      'businessLicensePicture': uploadData['businessLicenseUrl'],
+                      'enterpriseName': _enterpriseName.text,
+                      'legalPerson': _legalPerson.text,
+                      'registerCode': _registerCode.text
                       // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
                     };
                     print(1234);
@@ -379,15 +395,19 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
 
   
 
-  _showPickerJobs(BuildContext context, options) {
+  _showPickerJobs(BuildContext context, listData) {
+    List<PickerItem<dynamic>> testArray = listData.map<PickerItem>((item) => PickerItem(text: Text(item['name']), value: item['code'])).toList();
     Picker picker = new Picker(
-      adapter: PickerDataAdapter<String>(pickerdata: options, isArray: false),
-      changeToFirst: true,
-      textAlign: TextAlign.left,
+      adapter: PickerDataAdapter(data: testArray),
+      // changeToFirst: true,
+      // textAlign: TextAlign.left,
       columnPadding: const EdgeInsets.all(8.0),
       onConfirm: (Picker picker, List value) {
         print(value.toString());
-        print(picker.getSelectedValues());
+        print(picker.getSelectedValues().first);
+        jobCodeCtrl.value = TextEditingValue(text: picker.getSelectedValues().first);
+        jobCodeCtrl.text = listData[value.first]['name'];
+        print(jobCodeCtrl.text);
       }
     );
     picker.showModal(context);
@@ -408,6 +428,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
       setState(() {
         if (result2.areaId != null && result2.areaId.isNotEmpty) {
           code = result2.areaId;
+          provinceName = result2.provinceName;
           city = result2.provinceName +
               ',' +
               result2.cityName +
@@ -418,7 +439,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
           city = result2.provinceName + ',' + result2.cityName;
         }
       });
-      myController.value = TextEditingValue(text: city);
+      areaCtrl.value = TextEditingValue(text: city);
     }
   }
 }
