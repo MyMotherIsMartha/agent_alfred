@@ -122,8 +122,6 @@ class _AddressPageState extends State<AddressPage> {
                           areaId: areaCode,
                           controller: areaController,
                           cb: (value, areaStr) {
-                            print(formValidate);
-                            print(areaStr);
                             setState(() {
                               areaCode = value;
                               areaName = areaStr;

@@ -18,9 +18,9 @@ class CreateAccountPage extends StatefulWidget {
 
 class _CreateAccountPageState extends State<CreateAccountPage> {
   AddressProvide addressProvide;
-  List<GiftPackagesModel> giftList;
+  List<Widget> giftItemList = <Widget>[];
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     addressProvide = Provider.of<AddressProvide>(context);
     return Scaffold(
       body: SingleChildScrollView(
@@ -29,11 +29,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           height: G.setHeight(1334),
           color: hex('#E7D1A8'),
           child: Column(
-            children: <Widget>[
-              _bannerTop(), 
-              _addressWrap(),
-              _giftWrapWidget()
-            ],
+            children: <Widget>[_bannerTop(), _addressWrap(), _giftWrapWidget()],
           ),
         ),
       ),
@@ -206,27 +202,27 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Row(
-                mainAxisSize:MainAxisSize.min,
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   iconmap(color: hex('#666'), size: G.setWidth(30)),
                   Container(width: G.setWidth(13)),
                   Text(address.consigneeName,
-                      style:
-                          TextStyle(color: hex('#333'), fontSize: 15)),
+                      style: TextStyle(color: hex('#333'), fontSize: 15)),
                   Container(width: G.setWidth(20)),
                   Text(address.mobile,
-                      style:
-                          TextStyle(color: hex('#333'), fontSize: 14))
+                      style: TextStyle(color: hex('#333'), fontSize: 14))
                 ],
               ),
-              Text(address.province + address.city + address.district + address.address, 
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: hex('#999999'),
-                fontSize: G.setSp(24)
-              ))
+              Text(
+                  address.province +
+                      address.city +
+                      address.district +
+                      address.address,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      TextStyle(color: hex('#999999'), fontSize: G.setSp(24)))
             ],
           ),
           iconarrow(size: G.setSp(30))
@@ -247,8 +243,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         builder: (context, shapshot) {
           if (shapshot.hasData) {
             return Container(
-              child: Text(giftList[0].name),
-            );
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: G.setWidth(20)),
+                child: Column(
+                  children: giftItemList,
+                ));
           } else {
             return VLoading();
           }
@@ -256,23 +255,123 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       ),
     );
   }
+
   Future _getGiftsList() async {
     var result = await MemberApi().giftpackage();
     if (result.data['code'] == 200 && result.data['data'] != null) {
-      List<GiftPackagesModel> tempList = [];
+      List<Widget> list = <Widget>[];
       result.data['data'].forEach((item) {
         GiftPackagesModel gift = GiftPackagesModel.fromJson(item);
-        tempList.add(gift);
+        list.add(_giftItem(gift));
       });
       setState(() {
-        giftList = tempList;
+        giftItemList = list;
       });
       return 'end';
-      // print(giftList[0].name);
-      // List<GiftPackagesModel> list = result.data['data'];
-      // giftList.addAll(list);
-      // GiftPackagesModel.fromJson(result.data['data']);
     }
+  }
+
+  Widget _giftItem(GiftPackagesModel item) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(top: G.setHeight(20)),
+          height: G.setHeight(368),
+          padding: EdgeInsets.fromLTRB(
+              G.setWidth(30), G.setWidth(30), G.setWidth(30), 0),
+          decoration: BoxDecoration(
+              color: hex('#FFF'),
+              borderRadius: BorderRadius.circular(G.setWidth(20)),
+              border: Border.all(color: hex('#A37531'))),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(item.name,
+                      style:
+                          TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      RichText(
+                        text: TextSpan(
+                            text: '￥',
+                            style: TextStyle(
+                                fontSize: G.setSp(24), color: hex('#333')),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '${item.promotionAmount}',
+                                style: TextStyle(
+                                    fontSize: G.setSp(32), color: hex('#333')),
+                              )
+                            ]),
+                      ),
+                      Text(
+                        '￥${item.amount}',
+                        style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: G.setSp(24),
+                            color: hex('#999')),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              G.spacing(17),
+              Container(
+                height: G.setHeight(200),
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: item.appGoodses.length,
+                    // padding: EdgeInsets.symmetric(horizontal: 20),
+                    // padding: EdgeInsets.only(right: G.setWidth(20)),
+                    // itemExtent: G.setWidth(150),
+                    itemBuilder: (context, index) {
+                      AppGoodses good = item.appGoodses[index];
+                      return Container(
+                          width: G.setWidth(150),
+                          margin: index == item.appGoodses.length - 1
+                              ? EdgeInsets.zero
+                              : EdgeInsets.only(right: G.setWidth(20)),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                height: G.setHeight(150),
+                                width: G.setWidth(150),
+                                decoration: BoxDecoration(
+                                    color: hex('#F5F5F5'),
+                                    borderRadius:
+                                        BorderRadius.circular(G.setWidth(10))),
+                                alignment: Alignment.center,
+                                child: Image.network(
+                                  good.goodsMainImg,
+                                  width: G.setWidth(110),
+                                  height: G.setHeight(110),
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              G.spacing(15),
+                              Text(
+                                good.displayGoodsName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            ],
+                          ));
+                    }),
+              )
+            ],
+          ),
+        ),
+        Positioned(
+          top: G.setHeight(25),
+          right: G.setWidth(15),
+          child: Image.asset('lib/assets/images/checked_icon.png',
+              width: G.setWidth(44), height: G.setHeight(44)),
+        )
+      ],
+    );
   }
 }
 
