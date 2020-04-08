@@ -4,8 +4,10 @@ import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/models/address.dart';
 import 'package:agent37_flutter/models/gift-packages.dart';
 import 'package:agent37_flutter/provide/address.dart';
+import 'package:agent37_flutter/utils/event_bus.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
+import 'package:agent37_flutter/views/login/components/gift-item.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -19,8 +21,11 @@ class CreateAccountPage extends StatefulWidget {
 class _CreateAccountPageState extends State<CreateAccountPage> {
   AddressProvide addressProvide;
   List<Widget> giftItemList = <Widget>[];
+  List<GiftPackagesModel> packageList = <GiftPackagesModel>[];
   String selectedPackageNo;
   String selectedPackagePrice;
+  String selectedGiftPackagePromotionNo;
+
   @override
   Widget build(BuildContext context) {
     addressProvide = Provider.of<AddressProvide>(context);
@@ -40,29 +45,32 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         height: G.setHeight(120),
         alignment: Alignment.center,
         child: FlatButton(
-          onPressed: () {
-
-            if (!Validate.isNon(selectedPackageNo)) {
-              G.router.navigateTo(context, '/create-order?price=' + selectedPackagePrice);
-            }
-          },
-          child: Container(
-            width: G.setWidth(690),
-            height: G.setHeight(80),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(G.setWidth(40)),
-              gradient: LinearGradient(colors: [hex('#4C5873'), hex('#333949')])
-            ),
-            child: Text('确认开通', 
-
-            style: TextStyle(
-              fontSize: G.setSp(36),
-              color: hex('#E7D1A8'),
-              
+            onPressed: () {
+              if (!Validate.isNon(selectedPackageNo)) {
+                G.router.navigateTo(
+                    context,
+                    '/create-order?price=' +
+                        selectedPackagePrice +
+                        '&no=' +
+                        selectedPackageNo +
+                        '&promotionNo=' +
+                        selectedGiftPackagePromotionNo);
+              }
+            },
+            child: Container(
+              width: G.setWidth(690),
+              height: G.setHeight(80),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(G.setWidth(40)),
+                  gradient:
+                      LinearGradient(colors: [hex('#4C5873'), hex('#333949')])),
+              child: Text('确认开通',
+                  style: TextStyle(
+                    fontSize: G.setSp(36),
+                    color: hex('#E7D1A8'),
+                  )),
             )),
-          )
-        ),
       ),
     );
   }
@@ -265,6 +273,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   Widget _giftWrapWidget() {
     return Container(
+      padding: EdgeInsets.only(bottom: G.setHeight(20)),
       child: FutureBuilder(
         future: _getGiftsList(),
         builder: (context, shapshot) {
@@ -284,133 +293,192 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   }
 
   Future _getGiftsList() async {
-    var result = await MemberApi().giftpackage();
-    if (result.data['code'] == 200 && result.data['data'] != null) {
+    if (packageList.length != 0) {
       List<Widget> list = <Widget>[];
-      result.data['data'].forEach((item) {
-        GiftPackagesModel gift = GiftPackagesModel.fromJson(item);
-        list.add(_giftItem(gift));
+      packageList.forEach((gift) {
+        list.add(GiftItem(
+          item: gift,
+          selectedPackageNo: selectedPackageNo,
+          fn: () {
+            setState(() {
+              selectedPackageNo = gift.giftPackageNo;
+              selectedGiftPackagePromotionNo =
+                  Validate.isNon(selectedGiftPackagePromotionNo)
+                      ? ''
+                      : gift.giftPackagePromotionNo;
+              selectedPackagePrice = gift.promotionAmount != null
+                  ? gift.promotionAmount.toString()
+                  : gift.amount.toString();
+            });
+          },
+        ));
       });
       setState(() {
         giftItemList = list;
       });
       return 'end';
     }
-  }
+    var result = await MemberApi().giftpackage();
+    if (result.data['code'] == 200 && result.data['data'] != null) {
+      List<Widget> list = <Widget>[];
+      List<GiftPackagesModel> giftList = <GiftPackagesModel>[];
+      result.data['data'].forEach((item) {
+        GiftPackagesModel gift = GiftPackagesModel.fromJson(item);
 
-  Widget _giftItem(GiftPackagesModel item) {
-    return Stack(
-      children: <Widget>[
-        InkWell(
-          onTap: () {
+        // list.add(_giftItem(gift));
+        list.add(GiftItem(
+          item: gift,
+          selectedPackageNo: selectedPackageNo,
+          fn: () {
             setState(() {
               selectedPackageNo = item.giftPackageNo;
-              selectedPackagePrice = item.promotionAmount.toString();
+              selectedGiftPackagePromotionNo =
+                  Validate.isNon(selectedGiftPackagePromotionNo)
+                      ? ''
+                      : item.giftPackagePromotionNo;
+              selectedPackagePrice = item.promotionAmount != null
+                  ? item.promotionAmount.toString()
+                  : item.amount.toString();
             });
           },
-          child: Container(
-          margin: EdgeInsets.only(top: G.setHeight(20)),
-          height: G.setHeight(368),
-          padding: EdgeInsets.fromLTRB(
-              G.setWidth(30), G.setWidth(30), G.setWidth(30), 0),
-          decoration: BoxDecoration(
-              color: hex('#FFF'),
-              borderRadius: BorderRadius.circular(G.setWidth(20)),
-              border: selectedPackageNo == item.giftPackageNo
-                  ? Border.all(color: hex('#A37531'))
-                  : Border.all(color: Colors.transparent)),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(item.name,
-                      style:
-                          TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      RichText(
-                        text: TextSpan(
-                            text: '￥',
-                            style: TextStyle(
-                                fontSize: G.setSp(24), color: hex('#333')),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: '${item.promotionAmount}',
-                                style: TextStyle(
-                                    fontSize: G.setSp(32), color: hex('#333')),
-                              )
-                            ]),
-                      ),
-                      Text(
-                        '￥${item.amount}',
-                        style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            fontSize: G.setSp(24),
-                            color: hex('#999')),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              G.spacing(17),
-              Container(
-                height: G.setHeight(200),
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: item.appGoodses.length,
-                    // padding: EdgeInsets.symmetric(horizontal: 20),
-                    // padding: EdgeInsets.only(right: G.setWidth(20)),
-                    // itemExtent: G.setWidth(150),
-                    itemBuilder: (context, index) {
-                      AppGoodses good = item.appGoodses[index];
-                      return Container(
-                          width: G.setWidth(164),
-                          margin: index == item.appGoodses.length - 1
-                              ? EdgeInsets.zero
-                              : EdgeInsets.only(right: G.setWidth(20)),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                height: G.setHeight(150),
-                                width: G.setWidth(150),
-                                decoration: BoxDecoration(
-                                    color: hex('#F5F5F5'),
-                                    borderRadius:
-                                        BorderRadius.circular(G.setWidth(10))),
-                                alignment: Alignment.center,
-                                child: Image.network(
-                                  good.goodsMainImg,
-                                  width: G.setWidth(110),
-                                  height: G.setHeight(110),
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                              G.spacing(15),
-                              Text(
-                                good.displayGoodsName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              )
-                            ],
-                          ));
-                    }),
-              )
-            ],
-          ),
-        )),
-        selectedPackageNo == item.giftPackageNo
-            ? Positioned(
-                top: G.setHeight(25),
-                right: G.setWidth(15),
-                child: Image.asset('lib/assets/images/checked_icon.png',
-                    width: G.setWidth(44), height: G.setHeight(44)),
-              )
-            : Container()
-      ],
-    );
+        ));
+        giftList.add(gift);
+      });
+      setState(() {
+        giftItemList = list;
+        packageList = giftList;
+      });
+      return 'end';
+    }
   }
+
+  // Widget _giftItem(GiftPackagesModel item) {
+  //   return Stack(
+  //     children: <Widget>[
+  //       InkWell(
+  //           onTap: () {
+  //             setState(() {
+  //               selectedPackageNo = item.giftPackageNo;
+  //               selectedGiftPackagePromotionNo =
+  //                   Validate.isNon(selectedGiftPackagePromotionNo)
+  //                       ? ''
+  //                       : item.giftPackagePromotionNo;
+  //               selectedPackagePrice = item.promotionAmount != null
+  //                   ? item.promotionAmount.toString()
+  //                   : item.amount.toString();
+  //             });
+  //           },
+  //           child: Container(
+  //             margin: EdgeInsets.only(top: G.setHeight(20)),
+  //             height: G.setHeight(368),
+  //             padding: EdgeInsets.fromLTRB(
+  //                 G.setWidth(30), G.setWidth(30), G.setWidth(30), 0),
+  //             decoration: BoxDecoration(
+  //                 color: hex('#FFF'),
+  //                 borderRadius: BorderRadius.circular(G.setWidth(20)),
+  //                 border: selectedPackageNo == item.giftPackageNo
+  //                     ? Border.all(color: hex('#A37531'))
+  //                     : Border.all(color: Colors.transparent)),
+  //             child: Column(
+  //               children: <Widget>[
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: <Widget>[
+  //                     Text(item.name,
+  //                         style: TextStyle(
+  //                             fontSize: G.setSp(30), color: hex('#333'))),
+  //                     Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.end,
+  //                       children: <Widget>[
+  //                         RichText(
+  //                           text: TextSpan(
+  //                               text: '￥',
+  //                               style: TextStyle(
+  //                                   fontSize: G.setSp(24), color: hex('#333')),
+  //                               children: <TextSpan>[
+  //                                 TextSpan(
+  //                                   text: item.promotionAmount == null
+  //                                       ? '${item.amount}'
+  //                                       : '${item.promotionAmount}',
+  //                                   style: TextStyle(
+  //                                       fontSize: G.setSp(32),
+  //                                       color: hex('#333')),
+  //                                 )
+  //                               ]),
+  //                         ),
+  //                         item.promotionAmount != null
+  //                             ? Text(
+  //                                 '￥${item.amount}',
+  //                                 style: TextStyle(
+  //                                     decoration: TextDecoration.lineThrough,
+  //                                     fontSize: G.setSp(24),
+  //                                     color: hex('#999')),
+  //                               )
+  //                             : Container()
+  //                       ],
+  //                     )
+  //                   ],
+  //                 ),
+  //                 G.spacing(17),
+  //                 Container(
+  //                   height: G.setHeight(200),
+  //                   child: ListView.builder(
+  //                       scrollDirection: Axis.horizontal,
+  //                       itemCount: item.appGoodses.length,
+  //                       // padding: EdgeInsets.symmetric(horizontal: 20),
+  //                       // padding: EdgeInsets.only(right: G.setWidth(20)),
+  //                       // itemExtent: G.setWidth(150),
+  //                       itemBuilder: (context, index) {
+  //                         AppGoodses good = item.appGoodses[index];
+  //                         return Container(
+  //                             width: G.setWidth(164),
+  //                             margin: index == item.appGoodses.length - 1
+  //                                 ? EdgeInsets.zero
+  //                                 : EdgeInsets.only(right: G.setWidth(20)),
+  //                             child: Column(
+  //                               children: <Widget>[
+  //                                 Container(
+  //                                   height: G.setHeight(150),
+  //                                   width: G.setWidth(150),
+  //                                   decoration: BoxDecoration(
+  //                                       color: hex('#F5F5F5'),
+  //                                       borderRadius: BorderRadius.circular(
+  //                                           G.setWidth(10))),
+  //                                   alignment: Alignment.center,
+  //                                   child: Image.network(
+  //                                     good.goodsMainImg,
+  //                                     width: G.setWidth(110),
+  //                                     height: G.setHeight(110),
+  //                                     fit: BoxFit.fitWidth,
+  //                                   ),
+  //                                 ),
+  //                                 G.spacing(10),
+  //                                 Container(
+  //                                   width: G.setWidth(150),
+  //                                   child: Text(
+  //                                     good.displayGoodsName,
+  //                                     maxLines: 1,
+  //                                     overflow: TextOverflow.ellipsis,
+  //                                   ),
+  //                                 )
+  //                               ],
+  //                             ));
+  //                       }),
+  //                 )
+  //               ],
+  //             ),
+  //           )),
+  //       selectedPackageNo == item.giftPackageNo
+  //           ? Positioned(
+  //               top: G.setHeight(25),
+  //               right: G.setWidth(15),
+  //               child: Image.asset('lib/assets/images/checked_icon.png',
+  //                   width: G.setWidth(44), height: G.setHeight(44)),
+  //             )
+  //           : Container()
+  //     ],
+  //   );
+  // }
 }
 
 class AdItem {

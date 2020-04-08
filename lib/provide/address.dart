@@ -11,7 +11,6 @@ class AddressProvide with ChangeNotifier {
     if (needRefresh) {
       needRefresh = false;
       var result = await MemberApi().addressInfo();
-      print(result);
       if (result.data['code'] == 200 && result.data['data'] != null) {
         address = AddressModel.fromJson(result.data['data']);
         notifyListeners();

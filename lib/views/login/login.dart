@@ -154,6 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                           if (result.data['code'] == 200) {
                             String token = result.data['data']['jwtToken'];
                             G.setPref('token', 'bearer ' + token);
+                            G.setContext(context);
                             Provider.of<UserProvide>(context).updateUserAuth();
                           }
                         }

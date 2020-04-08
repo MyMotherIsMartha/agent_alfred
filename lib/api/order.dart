@@ -11,4 +11,14 @@ class OrderApi{
     return await service().get('$orderPrefix/v1/giftPackageOrders/current');
   }
 
+  // 阿里支付
+  aliPay(data) async {
+    return await service().post('$orderPrefix/v1/giftPackagePayments/aliPay', data: data);
+  }
+
+  // 微信支付
+  wechatPay(data) async {
+    return await service().post('$orderPrefix/v1/giftPackagePayments/weixinPay', data: data);
+  }
+
 }
