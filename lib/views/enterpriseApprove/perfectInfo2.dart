@@ -27,11 +27,32 @@ class PerfectEnterprise2 extends StatefulWidget {
 }
 
 class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
+  final _formKey = GlobalKey<FormState>();
+
   final legalNameController = TextEditingController();
-  var frontIdCard1;
-  var backIdCard1;
-  var frontIdCard2;
-  var backIdCard2;
+  final mobileController = TextEditingController();
+  final emailController = TextEditingController();
+  final areaController = TextEditingController();
+  final addressStrController = TextEditingController();
+
+  var mobile;
+  var email;
+  var areaCode;
+  var areaName;
+  var addressStr;
+
+  var frontIdCardImg1;
+  var backIdCardImg1;
+  var frontIdCardImg2;
+  var backIdCardImg2;
+
+  Map formValidate = {
+    'mobile': true,
+    'email': true,
+    'areaCode': true,
+    'addressStr': true,
+    'legalName': true,
+  };
 
   Widget titleWidget(padding, size, String text) {
     return Padding(padding: EdgeInsets.only(left: padding), child: Text(text, textAlign: TextAlign.left, style: TextStyle(fontSize: size, height: 2.4, color: hex('#666'))));
@@ -40,7 +61,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
   idCardImg(String type, int index) {
     if (type == 'front') {
       return AssetImage('lib/assets/images/enterprise/idCardFront.png');
-    } else if (type == 'back') {
+    } else {
       return AssetImage('lib/assets/images/enterprise/idCardBack.png');
     }
   }
@@ -227,6 +248,151 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                     )
                   ],
                 )
+              ),
+              titleWidget(G.setWidth(30), G.setSp(24), '负责人信息'),
+              Container(
+                color: hex('#FFF'),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      VInput(
+                        controller: legalNameController,
+                        hintText: '请输入手机号',
+                        label: '姓名',
+                        readOnly: true
+                      ),
+                      VInput(
+                        controller: mobileController,
+                        hintText: '请输入手机号',
+                        label: '手机号',
+                        maxLength: 11,
+                        type: TextInputType.phone,
+                        onChange: (e) {
+                          setState(() {
+                            formValidate['mobile'] =
+                                Validate.checkMobile(e) == null;
+                          });
+                          mobile = e;
+                        },
+                      ),
+                      VInput(
+                        controller: emailController,
+                        hintText: '请输入邮箱',
+                        label: '邮箱',
+                        type: TextInputType.text,
+                        onChange: (e) {
+                          setState(() {
+                            formValidate['email'] = !Validate.isNon(e);
+                          });
+                          email = e;
+                        },
+                      ),
+                      VAddress(
+                        label: '注册地区',
+                        areaId: areaCode,
+                        controller: areaController,
+                        cb: (value, areaStr) {
+                          areaCode = value;
+                          print(areaStr);
+                          areaName = areaStr;
+                          setState(() {
+                            formValidate['areaCode'] = !Validate.isNon(value);
+                          });
+                        },
+                      ),
+                      VInput(
+                        controller: addressStrController,
+                        hintText: '请填写详细地址',
+                        label: '详细地址',
+                        type: TextInputType.text,
+                        onChange: (e) {
+                          setState(() {
+                            formValidate['addressStr'] = !Validate.isNon(e);
+                          });
+                          addressStr = e;
+                        },
+                      ),
+                      titleWidget(G.setWidth(30), G.setSp(30), '身份证上传'),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: G.setWidth(30), vertical: G.setHeight(15)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: G.setWidth(330),
+                              child: Column(
+                                children: <Widget>[
+                                  uploadIdCard('front', 2),
+                                  Text('上传正面照', style: TextStyle(height: 2),)
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: G.setWidth(330),
+                              child: Column(
+                                children: <Widget>[
+                                  uploadIdCard('back', 1),
+                                  Text('上传背面照', style: TextStyle(height: 2),)
+                                ],
+                              ),
+                            )
+                          ]
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                width: G.setWidth(710),
+                height: G.setHeight(100),
+                margin: EdgeInsets.only(top: 20, bottom: 30),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
+                  borderRadius: BorderRadius.circular(G.setHeight(50))
+                ),
+                child: FlatButton(
+                  disabledColor: hex('#666'),
+                  color: Colors.transparent,
+                  shape: StadiumBorder(),
+                  textColor: Colors.white,
+                  onPressed: formValidate.containsValue(false) ? null : () async {
+                    
+                    // Validate returns true if the form is valid, otherwise false.
+                    if (_formKey.currentState.validate()) {
+                      var areaAry = areaName.split(',');
+                      print('test');
+                      print(areaAry);
+                      Map params = {
+                        // 'industryCode': jobCode,
+                        // 'industryName': jobCodeCtrl.text,
+                        // 'registerAddress': addressStr,
+                        // 'areaCode': int.parse(areaCode),
+                        // 'businessLicensePicture': licenseUrl,
+                        // 'enterpriseName': enterpriseName,
+                        // 'legalPerson': legalName,
+                        // 'registerCode':registerCode,
+                        // 'province': areaAry[0],
+                        // 'city': areaAry[1],
+                        // 'district': areaAry[2],
+                        // 'legalMobile': mobile,
+                        // 'idCard': idNo
+                        // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
+                      };
+                      var legalName2 = FluroConvertUtils.fluroCnParamsEncode('test');
+                      print(params);
+                      G.router.navigateTo(
+                      context, Routes.perfectEnterprise2 + "?legalName=$legalName2");
+                      
+                    }
+                  },
+                  child: Text('下一步', style: TextStyle(
+                    fontSize: G.setSp(36),
+                    color: Colors.white
+                  )),
+                ),
               ),
             ],
           ),
