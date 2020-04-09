@@ -345,55 +345,57 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                   ),
                 ),
               ),
-              Container(
-                width: G.setWidth(710),
-                height: G.setHeight(100),
-                margin: EdgeInsets.only(top: 20, bottom: 30),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
-                  borderRadius: BorderRadius.circular(G.setHeight(50))
-                ),
-                child: FlatButton(
-                  disabledColor: hex('#666'),
-                  color: Colors.transparent,
-                  shape: StadiumBorder(),
-                  textColor: Colors.white,
-                  onPressed: formValidate.containsValue(false) ? null : () async {
-                    
-                    // Validate returns true if the form is valid, otherwise false.
-                    if (_formKey.currentState.validate()) {
-                      var areaAry = areaName.split(',');
-                      print('test');
-                      print(areaAry);
-                      Map params = {
-                        // 'industryCode': jobCode,
-                        // 'industryName': jobCodeCtrl.text,
-                        // 'registerAddress': addressStr,
-                        // 'areaCode': int.parse(areaCode),
-                        // 'businessLicensePicture': licenseUrl,
-                        // 'enterpriseName': enterpriseName,
-                        // 'legalPerson': legalName,
-                        // 'registerCode':registerCode,
-                        // 'province': areaAry[0],
-                        // 'city': areaAry[1],
-                        // 'district': areaAry[2],
-                        // 'legalMobile': mobile,
-                        // 'idCard': idNo
-                        // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
-                      };
-                      var legalName2 = FluroConvertUtils.fluroCnParamsEncode('test');
-                      print(params);
-                      G.router.navigateTo(
-                      context, Routes.perfectEnterprise2 + "?legalName=$legalName2");
+              Center(
+                child: Container(
+                  width: G.setWidth(710),
+                  height: G.setHeight(100),
+                  margin: EdgeInsets.only(top: 20, bottom: 30),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
+                    borderRadius: BorderRadius.circular(G.setHeight(50))
+                  ),
+                  child: FlatButton(
+                    disabledColor: hex('#666'),
+                    color: Colors.transparent,
+                    shape: StadiumBorder(),
+                    textColor: Colors.white,
+                    onPressed: formValidate.containsValue(false) ? null : () async {
                       
-                    }
-                  },
-                  child: Text('下一步', style: TextStyle(
-                    fontSize: G.setSp(36),
-                    color: Colors.white
-                  )),
+                      // Validate returns true if the form is valid, otherwise false.
+                      if (_formKey.currentState.validate()) {
+                        var areaAry = areaName.split(',');
+                        print('test');
+                        print(areaAry);
+                        Map params = {
+                          // 'industryCode': jobCode,
+                          // 'industryName': jobCodeCtrl.text,
+                          // 'registerAddress': addressStr,
+                          // 'areaCode': int.parse(areaCode),
+                          // 'businessLicensePicture': licenseUrl,
+                          // 'enterpriseName': enterpriseName,
+                          // 'legalPerson': legalName,
+                          // 'registerCode':registerCode,
+                          // 'province': areaAry[0],
+                          // 'city': areaAry[1],
+                          // 'district': areaAry[2],
+                          // 'legalMobile': mobile,
+                          // 'idCard': idNo
+                          // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
+                        };
+                        var legalName2 = FluroConvertUtils.fluroCnParamsEncode('test');
+                        print(params);
+                        G.router.navigateTo(
+                        context, Routes.perfectEnterprise2 + "?legalName=$legalName2");
+                        
+                      }
+                    },
+                    child: Text('提交审核', style: TextStyle(
+                      fontSize: G.setSp(36),
+                      color: Colors.white
+                    )),
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         )
