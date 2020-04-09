@@ -19,24 +19,50 @@ class CreateAccountPage extends StatefulWidget {
 class _CreateAccountPageState extends State<CreateAccountPage> {
   AddressProvide addressProvide;
   List<Widget> giftItemList = <Widget>[];
+  String selectedPackageNo;
+  String selectedPackagePrice;
   @override
   Widget build(BuildContext context) {
     addressProvide = Provider.of<AddressProvide>(context);
     return Scaffold(
+      backgroundColor: hex('#E7D1A8'),
       body: SingleChildScrollView(
         child: Container(
           width: G.setWidth(750),
-          height: G.setHeight(1334),
-          color: hex('#E7D1A8'),
           child: Column(
             children: <Widget>[_bannerTop(), _addressWrap(), _giftWrapWidget()],
           ),
         ),
       ),
       bottomNavigationBar: Container(
-        color: hex('#ff4'),
+        color: hex('#fff'),
         width: double.infinity,
-        height: G.setHeight(100),
+        height: G.setHeight(120),
+        alignment: Alignment.center,
+        child: FlatButton(
+          onPressed: () {
+
+            if (!Validate.isNon(selectedPackageNo)) {
+              G.router.navigateTo(context, '/create-order?price=' + selectedPackagePrice);
+            }
+          },
+          child: Container(
+            width: G.setWidth(690),
+            height: G.setHeight(80),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(G.setWidth(40)),
+              gradient: LinearGradient(colors: [hex('#4C5873'), hex('#333949')])
+            ),
+            child: Text('确认开通', 
+
+            style: TextStyle(
+              fontSize: G.setSp(36),
+              color: hex('#E7D1A8'),
+              
+            )),
+          )
+        ),
       ),
     );
   }
@@ -144,6 +170,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   Widget _addressWrap() {
     return InkWell(
         onTap: () {
+          G.setContext(context);
           G.router.navigateTo(context, '/address');
         },
         child: Container(
@@ -274,7 +301,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   Widget _giftItem(GiftPackagesModel item) {
     return Stack(
       children: <Widget>[
-        Container(
+        InkWell(
+          onTap: () {
+            setState(() {
+              selectedPackageNo = item.giftPackageNo;
+              selectedPackagePrice = item.promotionAmount.toString();
+            });
+          },
+          child: Container(
           margin: EdgeInsets.only(top: G.setHeight(20)),
           height: G.setHeight(368),
           padding: EdgeInsets.fromLTRB(
@@ -282,7 +316,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           decoration: BoxDecoration(
               color: hex('#FFF'),
               borderRadius: BorderRadius.circular(G.setWidth(20)),
-              border: Border.all(color: hex('#A37531'))),
+              border: selectedPackageNo == item.giftPackageNo
+                  ? Border.all(color: hex('#A37531'))
+                  : Border.all(color: Colors.transparent)),
           child: Column(
             children: <Widget>[
               Row(
@@ -330,7 +366,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     itemBuilder: (context, index) {
                       AppGoodses good = item.appGoodses[index];
                       return Container(
-                          width: G.setWidth(150),
+                          width: G.setWidth(164),
                           margin: index == item.appGoodses.length - 1
                               ? EdgeInsets.zero
                               : EdgeInsets.only(right: G.setWidth(20)),
@@ -363,13 +399,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               )
             ],
           ),
-        ),
-        Positioned(
-          top: G.setHeight(25),
-          right: G.setWidth(15),
-          child: Image.asset('lib/assets/images/checked_icon.png',
-              width: G.setWidth(44), height: G.setHeight(44)),
-        )
+        )),
+        selectedPackageNo == item.giftPackageNo
+            ? Positioned(
+                top: G.setHeight(25),
+                right: G.setWidth(15),
+                child: Image.asset('lib/assets/images/checked_icon.png',
+                    width: G.setWidth(44), height: G.setHeight(44)),
+              )
+            : Container()
       ],
     );
   }

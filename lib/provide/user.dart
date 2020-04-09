@@ -40,7 +40,7 @@ class UserProvide with ChangeNotifier{
        || userAuthInfo.giftPackageOrderStatus == -1
        || userAuthInfo.giftPackageOrderStatus == -2
       ) {
-        G.router.navigateTo(G.currentContext, '/create-account');
+        G.router.navigateTo(G.currentContext, '/create-account', replace: true);
         notifyListeners();
         return;
       }
