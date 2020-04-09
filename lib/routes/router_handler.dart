@@ -8,6 +8,10 @@ import 'package:agent37_flutter/views/login/update-user.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadPic.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadForm.dart';
+import 'package:agent37_flutter/views/enterpriseApprove/uploadAudit.dart';
+import 'package:agent37_flutter/views/vipManage/index.dart';
+import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo1.dart';
+import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
 import 'package:fluro/fluro.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/material.dart';
@@ -74,5 +78,33 @@ Handler uploadLicenseFormHandler = Handler(
     return UploadLicenseForm(
       uploadJson: uploadJson,
     );
+  }
+);
+
+Handler perfectEnterprise1Handler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return PerfectEnterprise1();
+  }
+);
+
+Handler perfectEnterprise2Handler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+    String legalName = params['legalName']?.first;
+    
+    return PerfectEnterprise2(
+      legalName: legalName,
+    );
+  }
+);
+
+Handler uploadLicenseAuditHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return UploadLicenseAudit();
+  }
+);
+
+Handler vipManageHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return VipManageMain();
   }
 );

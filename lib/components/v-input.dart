@@ -37,6 +37,7 @@ class VInput extends StatefulWidget {
 class _VInputState extends State<VInput> {
   bool _hasdeleteIcon = false;
   FocusNode _focus = FocusNode();
+  FocusNode _focusReadonly = FocusNode();
   @override
   void initState() {
     super.initState();
@@ -84,7 +85,7 @@ class _VInputState extends State<VInput> {
                   textAlignVertical: TextAlignVertical.bottom,
                   keyboardType: widget.type,
                   controller: widget.controller,
-                  focusNode: _focus,
+                  focusNode: widget.readOnly ? _focusReadonly : _focus,
                   onTap: () {
                     if (widget.onTap != null) {
                       widget.onTap();
