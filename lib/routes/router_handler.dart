@@ -1,9 +1,11 @@
 import 'package:agent37_flutter/views/index.dart';
 import 'package:agent37_flutter/views/login/address.dart';
+import 'package:agent37_flutter/views/login/certificate.dart';
 import 'package:agent37_flutter/views/login/create-account.dart';
 import 'package:agent37_flutter/views/login/create-order.dart';
 import 'package:agent37_flutter/views/login/forget.dart';
 import 'package:agent37_flutter/views/login/login.dart';
+import 'package:agent37_flutter/views/login/order-result.dart';
 import 'package:agent37_flutter/views/login/register.dart';
 import 'package:agent37_flutter/views/login/update-user.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
@@ -70,7 +72,23 @@ Handler addressHandler = Handler(
 Handler createOrderHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     String price = params['price']?.first;
-    return CreateOrderPage(price: price);
+    String no = params['no']?.first;
+    String promotionNo = params['promotionNo']?.first;
+    return CreateOrderPage(price: price, no: no, promotionNo: promotionNo);
+  }
+);
+
+Handler certificateHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String no = params['no']?.first;
+    String time = params['time']?.first;
+    return CertificatePage(no: no, time: time);
+  }
+);
+
+Handler orderResultHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return OrderResultPage();
   }
 );
 

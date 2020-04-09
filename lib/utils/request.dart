@@ -44,7 +44,7 @@ Dio service() {
   }));
 
   // dio.interceptors.add(
-  //   LogInterceptor(responseBody: true),
+  //   LogInterceptor(requestBody: true),
   // );
   // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
   //     (client) {

@@ -4,7 +4,8 @@ import 'package:event_bus/event_bus.dart';
 EventBus eventBus = EventBus();
 
 /// Event 修改需要刷新的订单列表索引
-class RefreshOrderEvent {
-  List<int> refreshOrder;
-  RefreshOrderEvent(this.refreshOrder);
+class OrderInfoBus {
+  String giftPackageNo;
+  String price;
+  OrderInfoBus(this.giftPackageNo, this.price);
 }

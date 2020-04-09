@@ -16,7 +16,7 @@ class UserProvide with ChangeNotifier{
   setUserInfo(data) async {
     var result = await LoginApi().setUserInfo(data);
     if (result.data['code'] == 200) {
-      if (!userAuthInfo.isPrefected) {
+      if (!userAuthInfo.isContactsPrefected) {
         // 获取新的认证信息 
         notifyListeners();
       }
@@ -29,6 +29,7 @@ class UserProvide with ChangeNotifier{
   updateUserAuth() async {
     var result = await LoginApi().getUserAuth();
     if (result.data['code'] == 200) {
+      print(result.data['data']);
       userAuthInfo = UserAuthModel.fromJson(result.data['data']);
       if (!userAuthInfo.isContactsPrefected) {
         G.router.navigateTo(G.currentContext, '/update-user', replace: true);
@@ -43,7 +44,19 @@ class UserProvide with ChangeNotifier{
         G.router.navigateTo(G.currentContext, '/create-account', replace: true);
         notifyListeners();
         return;
+      } else {
+        int status = userAuthInfo.voucherStatus;
+        switch (status) {
+          case 1:
+          case 2:
+          case 3:
+            G.router.navigateTo(G.currentContext, '/order-result');
+            break;
+          default:
+            G.router.navigateTo(G.currentContext, '/create-account', replace: true);
+        }
       }
+      // qualificationsStatus
     } else {
       G.toast('获取用户认证信息失败');
     }

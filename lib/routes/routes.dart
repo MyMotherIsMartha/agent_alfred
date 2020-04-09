@@ -13,6 +13,8 @@ class Routes {
   static String createAccountPage = '/create-account';
   static String addressPage = '/address';
   static String createOrderPage = '/create-order';
+  static String certificatePage = '/certificate';
+  static String orderResultPage = '/order-result';
   static String uploadEnterPrisePic = '/uploadEnterPrisePic';
   static String uploadLicenseForm = '/uploadLicenseForm';
   static String uploadLicenseAudit = '/uploadLicenseAudit';
@@ -34,6 +36,8 @@ class Routes {
     router.define(createAccountPage, handler: createAccountHandler);
     router.define(addressPage, handler: addressHandler);
     router.define(createOrderPage, handler: createOrderHandler);
+    router.define(certificatePage, handler: certificateHandler);
+    router.define(orderResultPage, handler: orderResultHandler);
     router.define(uploadEnterPrisePic, handler: uploadEnterPrisePicHandler);
     router.define(uploadLicenseForm, handler: uploadLicenseFormHandler);
     router.define(uploadLicenseAudit, handler: uploadLicenseAuditHandler);
