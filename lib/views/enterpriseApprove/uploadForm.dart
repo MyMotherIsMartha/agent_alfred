@@ -4,16 +4,14 @@ import 'package:color_dart/hex_color.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:agent37_flutter/api/user.dart';
-// import 'package:agent37_flutter/provide/userinfo.dart';
 import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
-import 'dart:convert';
+import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-address.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:agent37_flutter/utils/validate.dart';
-import 'package:agent37_flutter/api/oss.dart';
+import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/model/license.dart';
 import 'package:provider/provider.dart';
 
@@ -55,9 +53,8 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
   final _legalPerson = TextEditingController();
 
   final areaCtrl = TextEditingController();
+  String jobCode;
   String areaCode;
-  String provinceName;
-  String cityName;
   String areaName;
 
   Map formValidate = {
@@ -102,23 +99,29 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
             ),
             Container(
               color: hex('#FFF'),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
                     Container(
                       height: G.setHeight(100),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: G.setWidth(30)),
                       decoration: BoxDecoration(
                           border: Border(
                               bottom:
-                                  BorderSide(color: hex('#E5E6E5'), width: 1))),
+                                  BorderSide(color: hex('#eee'), width:  G.setWidth(1)))),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            width: G.setWidth(186),
-                            child: Text('所属行业'),
+                            padding: EdgeInsets.only(right: G.setWidth(20)),
+                            child: Text('所属行业', style: TextStyle(
+                              fontSize: G.setSp(30),
+                              color: hex('#666')
+                            ))
                           ),
                           Expanded(
                             child: FutureBuilder(
@@ -152,7 +155,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                           ),
                                         ),
                                         // Text(city ?? '请选择'),
-                                        Icon(Icons.keyboard_arrow_right)
+                                        iconarrow(size: G.setWidth(35))
                                       ],
                                     ),
                                   );
@@ -168,16 +171,22 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                     ),
                     Container(
                       height: G.setHeight(100),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: G.setWidth(30)),
                       decoration: BoxDecoration(
                           border: Border(
                               bottom:
-                                  BorderSide(color: hex('#E5E6E5'), width: 1))),
+                                  BorderSide(color: hex('#eee'), width:  G.setWidth(1)))),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            width: G.setWidth(186),
-                            child: Text('企业名称'),
+                            padding: EdgeInsets.only(right: G.setWidth(20)),
+                            child: Text('企业名称', style: TextStyle(
+                              fontSize: G.setSp(30),
+                              color: hex('#666')
+                            ))
                           ),
                           Expanded(
                             child: TextFormField(
@@ -203,14 +212,22 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                     ),
                     Container(
                       height: G.setHeight(100),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: G.setWidth(30)),
                       decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(color: hex('#E5E6E5'), width: 1))),
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: hex('#eee'), width:  G.setWidth(1)))),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            width: G.setWidth(186),
-                            child: Text('营业执照号'),
+                            padding: EdgeInsets.only(right: G.setWidth(20)),
+                            child: Text('营业执照号', style: TextStyle(
+                              fontSize: G.setSp(30),
+                              color: hex('#666')
+                            ))
                           ),
                           Expanded(
                             child: TextFormField(
@@ -234,6 +251,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                       ),
                     ),
                     VAddress(
+                      label: '注册地区',
                       areaId: areaCode,
                       controller: areaCtrl,
                       cb: (value, areaStr) {
@@ -248,64 +266,22 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                     ),
                     Container(
                       height: G.setHeight(100),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: G.setWidth(30)),
                       decoration: BoxDecoration(
                           border: Border(
                               bottom:
-                                  BorderSide(color: hex('#E5E6E5'), width: 1))),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: G.setWidth(186),
-                            child: Text('注册地区'),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                _addressSelect(context);
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: TextFormField(
-                                      controller: areaCtrl,
-                                      // initialValue: '1234',
-                                      onTap: () {
-                                        _addressSelect(context);
-                                      },
-                                      readOnly: true,
-                                      decoration: InputDecoration(
-                                          border: InputBorder.none, hintText: '请选择省市区'),
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return '请选择省市区';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                  // Text(city ?? '请选择'),
-                                  Icon(Icons.keyboard_arrow_right)
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: G.setHeight(100),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom:
-                                  BorderSide(color: hex('#E5E6E5'), width: 1))),
+                                  BorderSide(color: hex('#eee'), width:  G.setWidth(1)))),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            width: G.setWidth(186),
-                            child: Text('注册地址'),
+                            padding: EdgeInsets.only(right: G.setWidth(20)),
+                            child: Text('注册地址', style: TextStyle(
+                              fontSize: G.setSp(30),
+                              color: hex('#666')
+                            ))
                           ),
                           Expanded(
                             child: TextFormField(
@@ -332,12 +308,22 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                     ),
                     Container(
                       height: G.setHeight(100),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: G.setWidth(30)),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: hex('#eee'), width:  G.setWidth(1)))),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            width: G.setWidth(186),
-                            child: Text('法人姓名'),
+                            padding: EdgeInsets.only(right: G.setWidth(20)),
+                            child: Text('法人姓名', style: TextStyle(
+                              fontSize: G.setSp(30),
+                              color: hex('#666')
+                            ))
                           ),
                           Expanded(
                             child: TextFormField(
@@ -378,27 +364,32 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                 textColor: Colors.white,
                 onPressed: () async {
                   // Validate returns true if the form is valid, otherwise false.
-                  print(code);
                   if (_formKey.currentState.validate()) {
-                    Map data = {
+                    var areaAry = areaName.split(',');
+                    Map params = {
+                      'industryCode': jobCode,
+                      'industryName': jobCodeCtrl.text,
                       'registerAddress': _areaStr.text,
-                      'areaCode': int.parse(code),
+                      'areaCode': int.parse(areaCode),
                       'businessLicensePicture': uploadData['businessLicenseUrl'],
                       'enterpriseName': _enterpriseName.text,
                       'legalPerson': _legalPerson.text,
-                      'registerCode': _registerCode.text
+                      'registerCode': _registerCode.text,
+                      'province': areaAry[0],
+                      'city': areaAry[1],
+                      'district': areaAry[2]
                       // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
                     };
-                    print(1234);
-                    print(data);
-                    // FormData formData = FormData.fromMap(data);
-                    // var result = await UserApi().createAddress(data);
-                    // print(result);
-                    // If the form is valid, display a snackbar. In the real world,
-                    // you'd often call a server or save the information in a database.
-
-                    // Scaffold.of(context).showSnackBar(
-                    //     SnackBar(content: Text('Processing Data')));
+                    print(params);
+                    // G.router.navigateTo(context, '/uploadLicenseAudit');
+                    var result = await MemberApi().updateEnterpriseInfo(params);
+                    print(result.data.toString());
+                    if (result.data['success'] == true) {
+                      G.router.navigateTo(context, '/uploadLicenseAudit');
+                    } else {
+                      print('出错');
+                    }
+                    
                   }
                 },
                 child: Text('提交审核', style: TextStyle(
@@ -419,6 +410,8 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
     List<PickerItem<dynamic>> testArray = listData.map<PickerItem>((item) => PickerItem(text: Text(item['name']), value: item['code'])).toList();
     Picker picker = new Picker(
       adapter: PickerDataAdapter(data: testArray),
+      cancelText: '取消',
+      confirmText: '确认',
       // changeToFirst: true,
       // textAlign: TextAlign.left,
       columnPadding: const EdgeInsets.all(8.0),
@@ -426,40 +419,11 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
         print(value.toString());
         print(picker.getSelectedValues().first);
         jobCodeCtrl.value = TextEditingValue(text: picker.getSelectedValues().first);
+        jobCode = picker.getSelectedValues().first;
         jobCodeCtrl.text = listData[value.first]['name'];
         print(jobCodeCtrl.text);
       }
     );
     picker.showModal(context);
-  }
-
-  _addressSelect(context) async {
-    Result result2 = await CityPickers.showCityPicker(
-        context: context,
-        locationCode: code,
-        height: G.setHeight(500),
-        cancelWidget: Text('取消',
-            style: TextStyle(fontSize: G.setSp(32), color: hex('#999'))),
-        confirmWidget: Text('确认',
-            style: TextStyle(fontSize: G.setSp(32), color: hex('#108EE9'))),
-        citiesData: citiesData,
-        provincesData: provincesData);
-    if (result2 != null) {
-      setState(() {
-        if (result2.areaId != null && result2.areaId.isNotEmpty) {
-          code = result2.areaId;
-          provinceName = result2.provinceName;
-          city = result2.provinceName +
-              ',' +
-              result2.cityName +
-              ',' +
-              result2.areaName;
-        } else {
-          code = result2.cityId;
-          city = result2.provinceName + ',' + result2.cityName;
-        }
-      });
-      areaCtrl.value = TextEditingValue(text: city);
-    }
   }
 }
