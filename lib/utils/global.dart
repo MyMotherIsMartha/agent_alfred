@@ -16,10 +16,10 @@ class G {
   }
 
   // 获取当前的state
-  static NavigatorState getCurrentState() => key.currentState;
+  // static NavigatorState getCurrentState() => key.currentState;
 
   // 获取当前的context
-  static BuildContext getCurrentContext() => key.currentContext;
+  // static BuildContext getCurrentContext() => key.currentContext;
 
   static Future toast(String msg,
           {Color bgColor = Colors.grey, Color color = Colors.white}) =>

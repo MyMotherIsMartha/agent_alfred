@@ -129,6 +129,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
       int result = (_orderOverTime / 1000).round() - nowTime;
       if (result < 0) {
         _timer?.cancel();
+        G.router.navigateTo(context, '/create-account', replace: true);
       }
       setState(() {
         _countdownTime = result;

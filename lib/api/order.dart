@@ -21,4 +21,9 @@ class OrderApi{
     return await service().post('$orderPrefix/v1/giftPackagePayments/weixinPay', data: data);
   }
 
+  // 线下支付
+  offlinePay(data) async {
+    return await service().post('$orderPrefix/v1/giftPackagePayments/offlinePay', data: data);
+  }
+
 }

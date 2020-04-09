@@ -11,4 +11,8 @@ class OssApi{
     print(r);
     return r;
   }
+  
+  uploadFile(data) async {
+    return await service().post('$serviceAccountApi/oss/upload', data: data);
+  }
 }
