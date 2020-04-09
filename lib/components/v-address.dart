@@ -7,10 +7,11 @@ import 'package:flutter/material.dart';
 
 class VAddress extends StatelessWidget {
   final TextEditingController controller;
+  final String label;
   final String areaId;
   final Function cb;
   final Function validator;
-  VAddress({this.controller, this.areaId, this.cb, this.validator});
+  VAddress({this.controller, this.areaId, this.cb, this.validator, this.label});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +25,7 @@ class VAddress extends StatelessWidget {
         children: <Widget>[
           Container(
               padding: EdgeInsets.only(right: G.setWidth(20)),
-              child: Text('地区',
+              child: Text(label,
                   style: TextStyle(fontSize: G.setSp(30), color: hex('#666')))),
           Expanded(
             child: InkWell(

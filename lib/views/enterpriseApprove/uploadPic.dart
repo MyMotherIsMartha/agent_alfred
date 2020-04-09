@@ -2,6 +2,8 @@ import 'package:agent37_flutter/api/oss.dart';
 import 'package:flutter/material.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:agent37_flutter/provide/user.dart';
+import 'package:provider/provider.dart';
 import 'package:agent37_flutter/model/license.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
@@ -115,6 +117,10 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
 
   @override
   Widget build(BuildContext context) {
+    G.setContext(context);
+    G.setPref('token', 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpemF0aW9uIjoiIiwibmJmIjoxNTg2MzI2MjE0LCJpc3MiOiIzN2R1bGlnb3UiLCJtb2JpbGUiOiIxODg5MjY2MzAyNSIsImV4cCI6MTU4NjkzMTAxNCwiaWF0IjoxNTg2MzI2MjE0LCJ1c2VySWQiOjEyMDQ1ODkwNDYxNjM5MDI0NjYsInVzZXJuYW1lIjoiMTg4OTI2NjMwMjUifQ.FwMvr15n_TU7kmJwKCSGO97gx5qcwtQCFIn0-tEv65c');
+    // Provider.of<UserProvide>(context).updateUserAuth();
+
     return Scaffold(
       appBar: AppBar( //导航栏
         title: Text("企业认证"),

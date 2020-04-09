@@ -28,4 +28,22 @@ class MemberApi{
   giftpackage() async {
     return await service().get('$giftpackageApi/v1/giftPackages');
   }
+
+  // ----会员企业接口-----
+  //  当前企业信息
+  getEnterpriseInfo() async {
+    return await service().get('$agentMemberApi/v1/agentEnterpriseInfos');
+  }
+  //  更新企业信息
+  updateEnterpriseInfo(params) async {
+    var r = await service().put('$agentMemberApi/v1/agentEnterpriseInfos',
+    data: params);
+    return r;
+  }
+  //  完善企业信息
+  perfectEnterpriseInfo(params) async {
+    var r = await service().put('$agentMemberApi/v1/agentEnterpriseInfos/prefect',
+    data: params);
+    return r;
+  }
 }
