@@ -5,6 +5,7 @@ import 'package:agent37_flutter/views/login/create-account.dart';
 import 'package:agent37_flutter/views/login/create-order.dart';
 import 'package:agent37_flutter/views/login/forget.dart';
 import 'package:agent37_flutter/views/login/login.dart';
+import 'package:agent37_flutter/views/login/order-result.dart';
 import 'package:agent37_flutter/views/login/register.dart';
 import 'package:agent37_flutter/views/login/update-user.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
@@ -78,6 +79,12 @@ Handler certificateHandler = Handler(
     String no = params['no']?.first;
     String time = params['time']?.first;
     return CertificatePage(no: no, time: time);
+  }
+);
+
+Handler orderResultHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return OrderResultPage();
   }
 );
 
