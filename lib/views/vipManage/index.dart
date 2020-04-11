@@ -158,12 +158,12 @@ class _OrderListState extends State<OrderList> {
   @override
   void initState() {
     super.initState();
-    _colorSubscription = eventBus.on<RefreshOrderEvent>().listen((event) {
-      // 如果需要刷新，就触发refresh
-      if (event.refreshOrder.contains(widget.sort)) {
-        _controller.callRefresh();
-      }
-    });
+    // _colorSubscription = eventBus.on<RefreshOrderEvent>().listen((event) {
+    //   // 如果需要刷新，就触发refresh
+    //   if (event.refreshOrder.contains(widget.sort)) {
+    //     _controller.callRefresh();
+    //   }
+    // });
     _getOrder(true);
   }
 

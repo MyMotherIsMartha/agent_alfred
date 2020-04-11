@@ -86,10 +86,6 @@ class _CertificatePageState extends State<CertificatePage> {
   }
 
   Future _getGiftList() async {
-    // if (curGift != null) {
-    //   return 'end';
-    // }
-    print('get list');
     var result = await MemberApi().giftpackage();
     if (result.data['code'] == 200 && result.data['data'] != null) {
       result.data['data'].forEach((item) {
@@ -126,7 +122,7 @@ class _CertificatePageState extends State<CertificatePage> {
       int hour = (restTime / 3600).floor();
       int min = restTime % 3600 ~/ 60;
       int sec = restTime % 60;
-      return '剩余支付时间：${hour}时${min}分${sec}秒';
+      return '剩余支付时间：$hour时$min分$sec秒';
     }
     return '';
   }

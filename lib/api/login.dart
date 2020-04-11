@@ -38,12 +38,12 @@ class LoginApi{
     return await service().post('$serviceAuthApi/register/mobile', data: data);
   }
 
-  // 获取用户信息
+  // 获取代理状态信息
   getUserInfo() async {
     return await service().get('$agentMemberApi/v1/agentContacts/current');
   }
 
-  // 设置用户信息
+  // 设置代理状态信息
   setUserInfo(data) async {
     return await service().post('$agentMemberApi/v1/agentContacts', data: data);
   }
