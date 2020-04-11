@@ -1,16 +1,29 @@
 import 'package:agent37_flutter/api/login.dart';
+import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
+import 'package:agent37_flutter/models/userinfo.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:flutter/material.dart';
 
 class UserProvide with ChangeNotifier{
   UserAuthModel userAuthInfo;
+  UserinfoModel userinfo;
+  bool getInfoFlag = true;
 
   getUserInfo() async {
-    var result = await LoginApi().getUserInfo();
-    if (result.data['data'] != null) {
-
+    if (!getInfoFlag) return;
+    var result = await MemberApi().getUserinfo();
+    if (result.data['code'] == 200) {
+      getInfoFlag = false;
+      print(result.data['data']);
+      userinfo = userinfoModelFromJson(result.data['data']);
+      notifyListeners();
     }
+  }
+
+  refreshUserinfo() {
+    getInfoFlag = true;
+    notifyListeners();
   }
 
   setUserInfo(data) async {
@@ -48,9 +61,11 @@ class UserProvide with ChangeNotifier{
         int status = userAuthInfo.voucherStatus;
         switch (status) {
           case 1:
-          case 2:
           case 3:
-            G.router.navigateTo(G.currentContext, '/order-result');
+            G.router.navigateTo(G.currentContext, '/order-result', replace: true);
+            break;
+          case 2:
+            qualificationsStatus();
             break;
           default:
             G.router.navigateTo(G.currentContext, '/create-account', replace: true);
@@ -70,5 +85,27 @@ class UserProvide with ChangeNotifier{
     //   G.router.navigateTo(context, '/update-user', replace: true);
     // }
     // notifyListeners();
+  }
+
+  qualificationsStatus() {
+    int status = userAuthInfo.qualificationsStatus;
+    switch (status) {
+      case 0:
+      case -2:
+      case -3:
+        G.router.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
+        break;
+      case 1:
+      case 2:
+      case 3:
+      case -1:
+        G.router.navigateTo(G.currentContext, '/uploadLicenseAudit', replace: true);
+        break;
+      case 4:
+        G.router.navigateTo(G.currentContext, '/index', replace: true);
+        break;
+      default:
+        G.router.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
+    }
   }
 }

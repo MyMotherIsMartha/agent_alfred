@@ -2,7 +2,6 @@ import 'package:agent37_flutter/api/oss.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Oss {

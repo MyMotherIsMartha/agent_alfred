@@ -46,4 +46,9 @@ class MemberApi{
     data: params);
     return r;
   }
+
+  // 获取用户信息
+  getUserinfo() async {
+    return await service().get('$agentMemberApi/v1/agentMemberInfos/personalInfo');
+  }
 }

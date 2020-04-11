@@ -142,7 +142,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
       int hour = (timeUnix / 3600).floor();
       int min = timeUnix % 3600 ~/ 60;
       int sec = timeUnix % 60;
-      return '剩余支付时间：${hour}时${min}分${sec}秒';
+      return '剩余支付时间：$hour时$min分$sec秒';
     }
     return '';
   }
