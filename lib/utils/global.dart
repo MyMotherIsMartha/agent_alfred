@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
@@ -100,5 +101,12 @@ class G {
         text: val,
         selection: TextSelection.fromPosition(TextPosition(
             affinity: TextAffinity.downstream, offset: val.length)));
+  }
+
+  static String imgBaseUrl = 'lib/assets/images/';
+
+  static setClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    toast('复制成功');
   }
 }

@@ -68,14 +68,14 @@ Icon iconmap({double size = 18.0, Color color}) => Icon(
   color: color,
 );
 
-Icon iconyqx({double size = 18.0, Color color}) => Icon(
-  IconData(0xe619, fontFamily: 'iconfont'),
+Icon iconsetting({double size = 18.0, Color color}) => Icon(
+  IconData(0xe604, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );
 
-Icon icondiscollect({double size = 18.0, Color color}) => Icon(
-  IconData(0xe614, fontFamily: 'iconfont'),
+Icon iconmsg({double size = 18.0, Color color}) => Icon(
+  IconData(0xe72c, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );
