@@ -62,7 +62,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     // } else {
     //   G.router.navigateTo(context, '/login');
     // }
-    G.router.navigateTo(context, '/perfectEnterprise1', replace: true);
+    G.router.navigateTo(context, '/readPerfectInfo', replace: true);
   }
 
   @override

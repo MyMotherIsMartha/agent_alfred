@@ -21,6 +21,8 @@ class Routes {
   static String vipManage = '/vipManage';
   static String perfectEnterprise1 = '/perfectEnterprise1';
   static String perfectEnterprise2 = '/perfectEnterprise2';
+  static String perfectEnterpriseAudit = '/perfectEnterpriseAudit';
+  static String readPerfectInfo = '/readPerfectInfo';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -44,5 +46,7 @@ class Routes {
     router.define(vipManage, handler: vipManageHandler);
     router.define(perfectEnterprise1, handler: perfectEnterprise1Handler);
     router.define(perfectEnterprise2, handler: perfectEnterprise2Handler);
+    router.define(perfectEnterpriseAudit, handler: perfectEnterpriseAuditHandler);
+    router.define(readPerfectInfo, handler: readPerfectInfoHandler);
   }
 }

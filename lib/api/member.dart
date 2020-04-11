@@ -34,6 +34,10 @@ class MemberApi{
   getEnterpriseInfo() async {
     return await service().get('$agentMemberApi/v1/agentEnterpriseInfos');
   }
+  
+  getPerfectInfo() async {
+    return await service().get('$agentMemberApi/v1/agentEnterpriseInfos/prefect');
+  }
   //  更新企业信息
   updateEnterpriseInfo(params) async {
     var r = await service().put('$agentMemberApi/v1/agentEnterpriseInfos',

@@ -98,7 +98,7 @@ class _VInputState extends State<VInput> {
                   
                   style: TextStyle(
                       fontSize: G.setSp(32),
-                      height: 1.2,
+                      height: 1.3,
                       textBaseline: TextBaseline.alphabetic),
                   decoration: InputDecoration(
                       border: InputBorder.none,

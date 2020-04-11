@@ -73,7 +73,9 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     var result = await MemberApi().getEnterpriseInfo();
     var resultData = result.data['data'];
     print(result.data.toString());
-    licenseUrl = resultData['businessLicensePicture'];
+    setState(() {
+      licenseUrl = resultData['businessLicensePicture'];
+    });
     jobCode = resultData['industryCode'];
     jobCodeCtrl.text = resultData['industryName'];
     enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
@@ -82,6 +84,10 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     registerCode = _registerCodeCtrl.text = resultData['registerCode'];
     addressStr = _areaStrCtrl.text = resultData['registerAddress'];
     legalName = _legalPersonCtrl.text = resultData['legalPerson'];
+    mobile = mobileController.text = resultData['mobile'];
+    idNo = idNoController.text = resultData['legalIdCard'];
+    formValidate['mobile'] = mobile != null;
+    formValidate['idNo'] = idNo != null;
   }
 
   _getJobList() async {
@@ -290,7 +296,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(right: G.setWidth(20)),
+                                width: G.setWidth(160),
                                 child: Text('所属行业', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -358,7 +364,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(right: G.setWidth(20)),
+                                width: G.setWidth(160),
                                 child: Text('企业名称', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -405,7 +411,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(right: G.setWidth(20)),
+                                width: G.setWidth(160),
                                 child: Text('营业执照号', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -460,7 +466,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(right: G.setWidth(20)),
+                                width: G.setWidth(160),
                                 child: Text('注册地址', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -503,7 +509,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(right: G.setWidth(20)),
+                                width: G.setWidth(160),
                                 child: Text('法人姓名', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
