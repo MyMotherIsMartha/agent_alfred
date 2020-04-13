@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
-import 'package:agent37_flutter/models/userinfo.dart';
+import 'package:agent37_flutter/models/home-info.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
@@ -10,8 +12,8 @@ import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_tooltip/simple_tooltip.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,10 +23,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-  EasyRefreshController  _refreshController = EasyRefreshController();
-  // 获取用户信息
-  Future _getUserinfo(context) async {
-    await Provider.of<UserProvide>(context).getUserInfo();
+  EasyRefreshController _refreshController = EasyRefreshController();
+  HomeInfoModel homeinfo;
+
+  Future _getHomeinfo(context) async {
+    var result = await MemberApi().getHomeInfo();
+    if (result.data['data'] != null) {
+      setState(() {
+        homeinfo = homeInfoModelFromJson(result.data['data']);
+      });
+    }
     return 'feture end';
   }
 
@@ -56,7 +64,7 @@ class _HomePageState extends State<HomePage>
   }
 
   // 用户信息
-  Widget _userInfo(UserinfoModel userinfo) {
+  Widget _userInfo() {
     return Container(
       height: G.setHeight(120),
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(50)),
@@ -68,14 +76,14 @@ class _HomePageState extends State<HomePage>
           ),
           Container(width: G.setWidth(20)),
           Column(
-            mainAxisAlignment: Validate.isNon(userinfo.parentShareCode)
+            mainAxisAlignment: Validate.isNon(homeinfo.shareCode)
                 ? MainAxisAlignment.center
                 : MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Text(userinfo.nickname ?? '未知',
+                  Text(homeinfo.nickname ?? '未知',
                       style:
                           TextStyle(fontSize: G.setSp(30), color: hex('#FFF'))),
                   Container(width: G.setWidth(10)),
@@ -86,11 +94,11 @@ class _HomePageState extends State<HomePage>
                   ),
                 ],
               ),
-              Validate.isNon(userinfo.parentShareCode)
+              Validate.isNon(homeinfo.shareCode)
                   ? Container()
                   : Row(
                       children: <Widget>[
-                        Text('邀请码：$userinfo.parentShareCode',
+                        Text('邀请码：${homeinfo.shareCode}',
                             style: TextStyle(
                                 fontSize: G.setSp(30), color: hex('#FFF'))),
                         Container(
@@ -199,6 +207,9 @@ class _HomePageState extends State<HomePage>
                 height: G.setHeight(80),
                 alignment: Alignment.centerRight,
                 child: InkWell(
+                  onTap: () {
+                    G.router.navigateTo(context, '/fine-point');
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -215,9 +226,6 @@ class _HomePageState extends State<HomePage>
           ),
           G.spacing(25),
           Container(
-            // width: G.setWidth(690),
-            // height: G.setWidth(230),
-            // alignment: Alignment.center,
             child: Stack(
               children: <Widget>[
                 Container(
@@ -269,15 +277,148 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  // 数据统计tabbar选项栏
+  List<Widget> _statisticsTabItem() {
+    List<String> types = ['今日', '本月', '上月'];
+    return types.map((type) {
+      return Tab(
+          icon: Text(type,
+              style: TextStyle(
+                  fontSize: G.setSp(30),
+                  color: hex('#262626'),
+                  fontWeight: FontWeight.w500)));
+    }).toList();
+  }
+
+  // 数据统计子项内容
+  Widget _statisticsContentItem(String type) {
+    List data;
+    List title = [
+      '预估商品销售分佣',
+      '预估会员居间服务费',
+      '预估礼包销售分佣',
+      '订单数',
+      '会员注册数',
+      '代理商注册数',
+    ];
+    switch (type) {
+      case 'today':
+        data = [
+          homeinfo.todayPendingPurchaseServiceFee,
+          homeinfo.todayPendingMemberServiceFee,
+          homeinfo.todayPendingGiftPackageServiceFee,
+          homeinfo.todayIncreasedOrderNum,
+          homeinfo.todayIncreasedAppMemberNum,
+          homeinfo.todayIncreasedAgentNum,
+        ];
+        break;
+      case 'thisMonth':
+        data = [
+          homeinfo.thisMonthPendingPurchaseServiceFee,
+          homeinfo.thisMonthPendingMemberServiceFee,
+          homeinfo.thisMonthPendingGiftPackageServiceFee,
+          homeinfo.thisMonthIncreasedOrderNum,
+          homeinfo.thisMonthIncreasedAppMemberNum,
+          homeinfo.thisMonthIncreasedAgentNum,
+        ];
+        break;
+      case 'lastMonth':
+        data = [
+          homeinfo.lastMonthPendingPurchaseServiceFee,
+          homeinfo.lastMonthPendingMemberServiceFee,
+          homeinfo.lastMonthPendingGiftPackageServiceFee,
+          homeinfo.lastMonthIncreasedOrderNum,
+          homeinfo.lastMonthIncreasedAppMemberNum,
+          homeinfo.lastMonthIncreasedAgentNum,
+        ];
+        break;
+      default:
+    }
+    return MediaQuery.removePadding(
+        removeTop: true,
+        context: context,
+        child: Container(
+            child: GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, //横轴三个子widget
+                  // childAspectRatio: 237 / 200 //宽高比为1时，子widget
+                ),
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return Container(
+                      height: G.setHeight(200),
+                      width: G.setWidth(237),
+                      decoration: BoxDecoration(
+                          border: Border(
+                        bottom: index < 3
+                            ? BorderSide(color: hex('#E6E6E6'))
+                            : BorderSide.none,
+                        right: (index + 1) % 3 != 0
+                            ? BorderSide(color: hex('#E6E6E6'))
+                            : BorderSide.none,
+                      )),
+                      child: Stack(
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.center,
+                                child: Text.rich(TextSpan(children: [
+                                  TextSpan(
+                                      text: "￥",
+                                      style: TextStyle(
+                                          color: hex('#333'),
+                                          fontSize: G.setSp(24))),
+                                  TextSpan(
+                                      text: data[index].toString(),
+                                      style: TextStyle(
+                                          color: hex('#333'),
+                                          fontSize: G.setSp(36))),
+                                ])),
+                              ),
+                              G.spacing(15),
+                              Text(title[index],
+                                  style: TextStyle(
+                                      fontSize: G.setSp(24),
+                                      color: hex('#999')))
+                            ],
+                          ),
+                          index < 3
+                              ? Positioned(
+                                  top: G.setWidth(20),
+                                  right: G.setWidth(20),
+                                  child: ToolTip(
+                                      direction: (index + 1) % 3 == 0
+                                          ? 'left'
+                                          : 'down'),
+                                )
+                              : Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Container(
+                                    width: G.setWidth(65),
+                                    height: G.setWidth(65),
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                          image: AssetImage(
+                                              '${G.imgBaseUrl}pic-icon/new-tri_icon.png')),
+                                    ),
+                                  ))
+                        ],
+                      ));
+                })));
+  }
+
   // 数据统计
   Widget _statistics() {
     return Container(
+        height: G.setHeight(500),
         decoration: BoxDecoration(
-            color: hex('#FFF'),
-            // color: hex('#FFF'),
-            borderRadius: BorderRadius.circular(10)),
-        // child: Column(
-        //   children: <Widget>[]
+            color: hex('#FFF'), borderRadius: BorderRadius.circular(10)),
         child: Column(
           children: <Widget>[
             Container(
@@ -286,104 +427,201 @@ class _HomePageState extends State<HomePage>
                 decoration: BoxDecoration(
                     border: Border(bottom: BorderSide(color: hex('#E6E6E6')))),
                 child: TabBar(
-                  indicator: VUnderlineTabIndicator(
-                      borderSide: BorderSide(
-                          width: G.setHeight(6), color: hex('#6982FF'))),
-                  controller: _tabController,
-                  tabs: <Widget>[
-                    Tab(
-                        icon: Text('今日',
-                            style: TextStyle(
-                                fontSize: G.setSp(30),
-                                color: hex('#262626'),
-                                fontWeight: FontWeight.w500))),
-                    Tab(
-                        icon: Text('本月',
-                            style: TextStyle(
-                                fontSize: G.setSp(30),
-                                color: hex('#262626'),
-                                fontWeight: FontWeight.w500))),
-                    Tab(
-                        icon: Text('上月',
-                            style: TextStyle(
-                                fontSize: G.setSp(30),
-                                color: hex('#262626'),
-                                fontWeight: FontWeight.w500))),
-                  ],
-                )),
-                Container(
-                  height: G.setHeight(400),
-                  width: G.setWidth(710),
-                  child: TabBarView(
+                    indicator: VUnderlineTabIndicator(
+                        borderSide: BorderSide(
+                            width: G.setHeight(6), color: hex('#6982FF'))),
                     controller: _tabController,
-                    children: <Widget>[
-                      Text('1'),
-                      Text('2'),
-                      Text('3'),
-                    ],
-                  ),
-                )
+                    tabs: _statisticsTabItem())),
+            Container(
+                height: G.setHeight(400),
+                width: G.setWidth(710),
+                child: TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
+                    _statisticsContentItem('today'),
+                    _statisticsContentItem('thisMonth'),
+                    _statisticsContentItem('lastMonth'),
+                  ],
+                ))
           ],
+        ));
+  }
+
+  Widget _menu() {
+    List<Map> menuList = [
+      {'title': '财务管理', 'icon': '${G.imgBaseUrl}home/finance.png', 'url': '/'},
+      {'title': '邀请分享', 'icon': '${G.imgBaseUrl}home/share.png', 'url': '/'},
+      {'title': '我的钱包', 'icon': '${G.imgBaseUrl}home/wallet.png', 'url': '/'},
+      {'title': '会员管理', 'icon': '${G.imgBaseUrl}home/agent.png', 'url': '/'},
+      {'title': '代理商管理', 'icon': '${G.imgBaseUrl}home/vip.png', 'url': '/'},
+      {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/'},
+    ];
+    return Container(
+        margin: EdgeInsets.symmetric(vertical: G.setHeight(20)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(G.setWidth(10)),
+            color: hex('#FFF')),
+        width: G.setWidth(710),
+        padding: EdgeInsets.symmetric(
+            horizontal: G.setWidth(60), vertical: G.setHeight(20)),
+        height: G.setHeight(390),
+        child: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisSpacing: G.setWidth(20),
+                // crossAxisSpacing: G.setWidth(20),
+                crossAxisCount: 3, //横轴三个子widget
+                childAspectRatio: 1 //宽高比为1时，子widget
+                ),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              Map item = menuList[index];
+              return InkWell(
+                onTap: () {
+                  G.router.navigateTo(context, item['url']);
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset(item['icon'],
+                        width: G.setWidth(80), height: G.setWidth(80)),
+                    G.spacing(15),
+                    Text(item['title'], style: TextStyle(
+                      fontSize: G.setSp(28),
+                      color: hex('#666')
+                    ))
+                  ],
+                ),
+              );
+            },
+          ),
         ));
   }
 
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
-    _tabController.addListener(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: EasyRefresh(
-        controller: _refreshController,
-        enableControlFinishRefresh: true,
-        header: ClassicalHeader( // TODO:: 组件化
-          refreshText: '下拉刷新',
-          refreshReadyText: '释放以刷新',
-          refreshingText: '刷新中……',
-          refreshedText: '刷新完成',
-          infoText: '更新于 %T'
-        ),
-        onRefresh: () async {
-          await Provider.of<UserProvide>(context).refreshUserinfo();
-          _refreshController.finishRefresh(success: true);
-          print('1234');
-      // ....
-      },
-      child:SingleChildScrollView(
-        child: FutureBuilder(
-          future: _getUserinfo(context),
-          builder: (context, shapshot) {
-            UserinfoModel userinfo = Provider.of<UserProvide>(context).userinfo;
-            if (shapshot.hasData && userinfo != null) {
-              return Container(
-                height: G.setHeight(1334),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        alignment: Alignment.topCenter,
-                        image:
-                            AssetImage('${G.imgBaseUrl}home/home-banner_1.png'),
-                        fit: BoxFit.fitWidth)),
-                child: Column(
-                  children: <Widget>[
-                    _head(),
-                    _userInfo(userinfo),
-                    _mission(),
-                    _statistics()
-                  ],
-                ),
-              );
-            } else {
-              return Container(
-                  height: G.setHeight(1334),
-                  width: double.infinity,
-                  child: VLoading());
-            }
+          controller: _refreshController,
+          enableControlFinishRefresh: true,
+          header: ClassicalHeader(
+              // TODO:: 组件化
+              refreshText: '下拉刷新',
+              refreshReadyText: '释放以刷新',
+              refreshingText: '刷新中……',
+              refreshedText: '刷新完成',
+              infoText: '更新于 %T'),
+          onRefresh: () async {
+            await Provider.of<UserProvide>(context).refreshUserinfo();
+            _refreshController.finishRefresh(success: true);
           },
-        ),
-      )),
+          child: SingleChildScrollView(
+            child: FutureBuilder(
+              future: _getHomeinfo(context),
+              builder: (context, shapshot) {
+                // UserinfoModel userinfo =
+                //     Provider.of<UserProvide>(context).userinfo;
+                if (shapshot.hasData && homeinfo != null) {
+                  return Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            alignment: Alignment.topCenter,
+                            image: AssetImage(
+                                '${G.imgBaseUrl}home/home-banner_1.png'),
+                            fit: BoxFit.fitWidth)),
+                    child: Column(
+                      children: <Widget>[
+                        _head(),
+                        _userInfo(),
+                        _mission(),
+                        _statistics(),
+                        _menu()
+                      ],
+                    ),
+                  );
+                } else {
+                  return Container(
+                      height: G.setHeight(1334),
+                      width: double.infinity,
+                      child: VLoading());
+                }
+              },
+            ),
+          )),
     );
+  }
+}
+
+// tooltip 如有需要可封装成组件
+class ToolTip extends StatefulWidget {
+  final String direction;
+  ToolTip({@required this.direction});
+  @override
+  _ToolTipState createState() => _ToolTipState();
+}
+
+class _ToolTipState extends State<ToolTip> {
+  bool show = false;
+  Timer _timer;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          if (show == false) {
+            setState(() {
+              show = !show;
+            });
+            if (show) {
+              _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
+                setState(() {
+                  show = false;
+                });
+                _timer?.cancel();
+              });
+            }
+          } else {
+            _timer?.cancel();
+            setState(() {
+              show = false;
+            });
+          }
+        },
+        child: SimpleTooltip(
+          arrowTipDistance: G.setHeight(10),
+          backgroundColor: rgba(0, 0, 0, 0.6),
+          ballonPadding: EdgeInsets.all(0),
+          borderRadius: G.setWidth(10),
+          customShadows: [],
+          borderWidth: 0,
+          borderColor: Colors.transparent,
+          arrowBaseWidth: G.setWidth(20),
+          arrowLength: G.setWidth(20),
+          animationDuration: Duration(seconds: 0),
+          show: show,
+          tooltipDirection: widget.direction == 'down'
+              ? TooltipDirection.down
+              : TooltipDirection.left,
+          child: Image.asset(
+            '${G.imgBaseUrl}pic-icon/info_icon.png',
+            width: G.setWidth(36),
+            height: G.setWidth(36),
+          ),
+          content: Text("代理商通过销售产品礼包，获得产品礼包总额的30%作为销售分佣。产品礼包总额的30%作为销售分佣。",
+              style: TextStyle(
+                decoration: TextDecoration.none,
+                fontSize: G.setSp(24),
+                color: hex('#FFF'),
+              )),
+        ));
   }
 }
