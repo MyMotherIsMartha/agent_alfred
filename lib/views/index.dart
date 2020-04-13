@@ -23,7 +23,7 @@ class _IndexPageState extends State<IndexPage> {
       icon: Image.asset('lib/assets/images/pic-icon/dashboard.png', width: G.setWidth(44)), 
       title: Container(
         margin: EdgeInsets.only(top: G.setHeight(8)),
-        child: Text('我的管家'),
+        child: Text('分销管理'),
       ),
       activeIcon: Image.asset('lib/assets/images/pic-icon/dashboard_active.png', width: G.setWidth(44))
     ),

@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/views/home/fine-print.dart';
 import 'package:agent37_flutter/views/index.dart';
 import 'package:agent37_flutter/views/login/address.dart';
 import 'package:agent37_flutter/views/login/certificate.dart';
@@ -89,6 +90,12 @@ Handler certificateHandler = Handler(
 Handler orderResultHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return OrderResultPage();
+  }
+);
+
+Handler finePointHandel = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return FinePointPage();
   }
 );
 
