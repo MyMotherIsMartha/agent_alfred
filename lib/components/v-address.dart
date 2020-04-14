@@ -24,7 +24,8 @@ class VAddress extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Container(
-              padding: EdgeInsets.only(right: G.setWidth(20)),
+              // padding: EdgeInsets.only(right: G.setWidth(20)),
+              width: G.setWidth(160),
               child: Text(label,
                   style: TextStyle(fontSize: G.setSp(30), color: hex('#666')))),
           Expanded(

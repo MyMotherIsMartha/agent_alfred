@@ -96,6 +96,21 @@ class G {
     );
   }
 
+  static Widget spacingWidth(double width, {Color color}) {
+    return Container(
+      width: G.setWidth(width),
+      color: color,
+    );
+  }
+
+  static Widget horizontalLine(double width, {Color color}) {
+    return Container(
+      width: G.setWidth(width),
+      color: color,
+      height: G.setHeight(1),
+    );
+  }
+
   static setTextEdit(String val) {
     return TextEditingValue(
         text: val,

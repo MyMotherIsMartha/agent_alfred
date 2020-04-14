@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:wasm';
 
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
+import './components/shareWindow.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -35,6 +37,8 @@ class _HomePageState extends State<HomePage>
     }
     return 'feture end';
   }
+
+
 
   // 头部按钮
   Widget _head() {
@@ -125,6 +129,50 @@ class _HomePageState extends State<HomePage>
           ),
         ],
       ),
+    );
+  }
+
+  void openShare() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context){
+          return new Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new ListTile(
+                // leading: new Icon(Icons.photo_library),
+                title: Center(
+                  child: Text('会员推荐分享'),
+                ),
+                onTap: () {
+                  // _openGallery();
+                  Navigator.pop(context);
+                  openShareWindow(context, 'member');
+                },
+              ),
+              new ListTile(
+                // leading: new Icon(Icons.photo_library),
+                title: Center(
+                  child: Text('代理推荐分享'),
+                ),
+                onTap: () {
+                  // _openGallery();
+                  Navigator.pop(context);
+                  openShareWindow(context, 'agent');
+                },
+              ),
+              new ListTile(
+                // leading: new Icon(Icons.photo_library),
+                title: Center(
+                  child: Text('取消'),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        }
     );
   }
 
@@ -220,7 +268,7 @@ class _HomePageState extends State<HomePage>
                       iconarrow(color: hex('#0091F0'), size: G.setSp(24))
                     ],
                   ),
-                ),
+                )
               )
             ],
           ),
@@ -509,6 +557,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: EasyRefresh(
           controller: _refreshController,
