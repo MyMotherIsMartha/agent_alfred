@@ -15,6 +15,7 @@ class Routes {
   static String createOrderPage = '/create-order';
   static String certificatePage = '/certificate';
   static String orderResultPage = '/order-result';
+  static String finePointPage = '/fine-point';
   static String uploadEnterPrisePic = '/uploadEnterPrisePic';
   static String uploadLicenseForm = '/uploadLicenseForm';
   static String uploadLicenseAudit = '/uploadLicenseAudit';
@@ -40,6 +41,7 @@ class Routes {
     router.define(createOrderPage, handler: createOrderHandler);
     router.define(certificatePage, handler: certificateHandler);
     router.define(orderResultPage, handler: orderResultHandler);
+    router.define(finePointPage, handler: finePointHandel);
     router.define(uploadEnterPrisePic, handler: uploadEnterPrisePicHandler);
     router.define(uploadLicenseForm, handler: uploadLicenseFormHandler);
     router.define(uploadLicenseAudit, handler: uploadLicenseAuditHandler);

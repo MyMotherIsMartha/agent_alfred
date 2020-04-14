@@ -55,4 +55,9 @@ class MemberApi{
   getUserinfo() async {
     return await service().get('$agentMemberApi/v1/agentMemberInfos/personalInfo');
   }
+
+  // 首页数据
+  getHomeInfo() async {
+    return await service().get('$agentMemberApi/v1/index');
+  }
 }
