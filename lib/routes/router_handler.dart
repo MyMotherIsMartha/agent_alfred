@@ -16,6 +16,8 @@ import 'package:agent37_flutter/views/enterpriseApprove/uploadAudit.dart';
 import 'package:agent37_flutter/views/vipManage/index.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo1.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
+import 'package:agent37_flutter/views/enterpriseApprove/perfectAudit.dart';
+import 'package:agent37_flutter/views/enterpriseApprove/readPerfectInfo.dart';
 import 'package:fluro/fluro.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +130,22 @@ Handler perfectEnterprise2Handler = Handler(
     return PerfectEnterprise2(
       legalName: legalName,
     );
+  }
+);
+
+Handler perfectEnterpriseAuditHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+    String currentStatus = params['currentStatus']?.first;
+    
+    return PerfectEnterpriseAudit(
+      currentStatus: currentStatus,
+    );
+  }
+);
+
+Handler readPerfectInfoHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return ReadPerfectInfo();
   }
 );
 

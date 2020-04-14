@@ -36,7 +36,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
         margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("lib/assets/images/enterprise/camera.png"),
+            image: AssetImage("lib/assets/images/enterprise/cameraBlue.png"),
             fit: BoxFit.contain,
           ),
         ),
@@ -117,8 +117,8 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
 
   @override
   Widget build(BuildContext context) {
-    G.setContext(context);
-    G.setPref('token', 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpemF0aW9uIjoiIiwibmJmIjoxNTg2MzI2MjE0LCJpc3MiOiIzN2R1bGlnb3UiLCJtb2JpbGUiOiIxODg5MjY2MzAyNSIsImV4cCI6MTU4NjkzMTAxNCwiaWF0IjoxNTg2MzI2MjE0LCJ1c2VySWQiOjEyMDQ1ODkwNDYxNjM5MDI0NjYsInVzZXJuYW1lIjoiMTg4OTI2NjMwMjUifQ.FwMvr15n_TU7kmJwKCSGO97gx5qcwtQCFIn0-tEv65c');
+    // G.setContext(context);
+    // G.setPref('token', 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpemF0aW9uIjoiIiwibmJmIjoxNTg2MzI2MjE0LCJpc3MiOiIzN2R1bGlnb3UiLCJtb2JpbGUiOiIxODg5MjY2MzAyNSIsImV4cCI6MTU4NjkzMTAxNCwiaWF0IjoxNTg2MzI2MjE0LCJ1c2VySWQiOjEyMDQ1ODkwNDYxNjM5MDI0NjYsInVzZXJuYW1lIjoiMTg4OTI2NjMwMjUifQ.FwMvr15n_TU7kmJwKCSGO97gx5qcwtQCFIn0-tEv65c');
     // Provider.of<UserProvide>(context).updateUserAuth();
 
     return Scaffold(

@@ -14,6 +14,7 @@ import 'package:agent37_flutter/components/v-address.dart';
 import 'package:agent37_flutter/components/v-input.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:agent37_flutter/utils/validate.dart';
+import 'package:agent37_flutter/utils/oss.dart';
 import 'dart:io';
 
 class PerfectEnterprise2 extends StatefulWidget {
@@ -28,6 +29,7 @@ class PerfectEnterprise2 extends StatefulWidget {
 
 class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
   final _formKey = GlobalKey<FormState>();
+  String legalName2;
 
   final legalNameController = TextEditingController();
   final mobileController = TextEditingController();
@@ -59,42 +61,68 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
   }
 
   idCardImg(String type, int index) {
-    if (type == 'front') {
-      return AssetImage('lib/assets/images/enterprise/idCardFront.png');
-    } else {
-      return AssetImage('lib/assets/images/enterprise/idCardBack.png');
+    if (index == 1) {
+      if (type == 'front') {
+        return frontIdCardImg1 != null ? NetworkImage(frontIdCardImg1) : AssetImage('lib/assets/images/enterprise/idCardFront.png');
+      } else  {
+        return backIdCardImg1 != null ? NetworkImage(backIdCardImg1) : AssetImage('lib/assets/images/enterprise/idCardBack.png');
+      }
+    } else if (index == 2) {
+      if (type == 'front') {
+        return frontIdCardImg2 != null ? NetworkImage(frontIdCardImg2) : AssetImage('lib/assets/images/enterprise/idCardFront.png');
+      } else  {
+        return backIdCardImg2 != null ? NetworkImage(backIdCardImg2) : AssetImage('lib/assets/images/enterprise/idCardBack.png');
+      }
     }
+    
   }
 
   Widget uploadIdCard(String type, int index) {
     return InkWell(
         onTap: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context){
-                return new Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    new ListTile(
-                      leading: new Icon(Icons.photo_camera),
-                      title: new Text("拍照"),
-                      onTap: () {
-                        _takePhoto();
-                        Navigator.pop(context);
-                      },
-                    ),
-                    new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text("相册"),
-                      onTap: () {
-                        _openGallery();
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                );
+          Oss.selectSource((path) {
+            setState(() {
+              if (index == 1) {
+                if (type == 'front') {
+                  frontIdCardImg1 = path;
+                } else {
+                  backIdCardImg1 = path;
+                }
+              } else if (index == 2) {
+                if (type == 'front') {
+                  frontIdCardImg2 = path;
+                } else {
+                  backIdCardImg2 = path;
+                }
               }
-          );
+            });
+          });
+          // showModalBottomSheet(
+          //     context: context,
+          //     builder: (BuildContext context){
+          //       return new Column(
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: <Widget>[
+          //           new ListTile(
+          //             leading: new Icon(Icons.photo_camera),
+          //             title: new Text("拍照"),
+          //             onTap: () {
+          //               _takePhoto();
+          //               Navigator.pop(context);
+          //             },
+          //           ),
+          //           new ListTile(
+          //             leading: new Icon(Icons.photo_library),
+          //             title: new Text("相册"),
+          //             onTap: () {
+          //               _openGallery();
+          //               Navigator.pop(context);
+          //             },
+          //           ),
+          //         ],
+          //       );
+          //     }
+          // );
         },
         child: Stack(
             children: <Widget>[
@@ -104,7 +132,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                           // color: Colors.black26,
                   image: DecorationImage(
                     image: idCardImg(type, index),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                 ),
                 width: G.setWidth(330),
@@ -192,9 +220,44 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
     }
   }
 
+  bool _isDisableBtn() {
+    return formValidate.containsValue(false) || frontIdCardImg1 == null || frontIdCardImg2 == null || backIdCardImg1 == null || backIdCardImg2 == null;
+  }
+
+  void submitFunc () async {
+    // Validate returns true if the form is valid, otherwise false.
+    if (_formKey.currentState.validate()) {
+      var areaAry = areaName.split(',');
+      print('test');
+      print(areaAry);
+      Map params = {
+        "address": addressStr,
+        "areaCode": areaCode,
+        'province': areaAry[0],
+        'city': areaAry[1],
+        'district': areaAry[2],
+        "email": email,
+        "idCardBack": backIdCardImg2,
+        "idCardFront": frontIdCardImg2,
+        "legalIdCardBack": backIdCardImg1,
+        "legalIdCardFront": frontIdCardImg1,
+        "mobile": mobile,
+        "name": legalName2
+      };
+
+      var result = await MemberApi().perfectEnterpriseInfo(params);
+      print(result.data.toString());
+      if (result.data['code'] == 200) {
+        var statusCode = 1;
+        G.router.navigateTo(
+          context, Routes.perfectEnterpriseAudit + "?currentStatus=$statusCode");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    String legalName2 = FluroConvertUtils.fluroCnParamsDecode(widget.legalName);
+    legalName2 = FluroConvertUtils.fluroCnParamsDecode(widget.legalName);
     legalNameController.text = legalName2;
 
     return Scaffold(
@@ -333,7 +396,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                               width: G.setWidth(330),
                               child: Column(
                                 children: <Widget>[
-                                  uploadIdCard('back', 1),
+                                  uploadIdCard('back', 2),
                                   Text('上传背面照', style: TextStyle(height: 2),)
                                 ],
                               ),
@@ -345,55 +408,28 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                   ),
                 ),
               ),
-              Container(
-                width: G.setWidth(710),
-                height: G.setHeight(100),
-                margin: EdgeInsets.only(top: 20, bottom: 30),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
-                  borderRadius: BorderRadius.circular(G.setHeight(50))
+              Center(
+                child: Container(
+                  width: G.setWidth(710),
+                  height: G.setHeight(100),
+                  margin: EdgeInsets.only(top: 20, bottom: 30),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
+                    borderRadius: BorderRadius.circular(G.setHeight(50))
+                  ),
+                  child: FlatButton(
+                    disabledColor: hex('#666'),
+                    color: Colors.transparent,
+                    shape: StadiumBorder(),
+                    textColor: Colors.white,
+                    onPressed: _isDisableBtn() ? null : submitFunc,
+                    child: Text('提交审核', style: TextStyle(
+                      fontSize: G.setSp(36),
+                      color: Colors.white
+                    )),
+                  ),
                 ),
-                child: FlatButton(
-                  disabledColor: hex('#666'),
-                  color: Colors.transparent,
-                  shape: StadiumBorder(),
-                  textColor: Colors.white,
-                  onPressed: formValidate.containsValue(false) ? null : () async {
-                    
-                    // Validate returns true if the form is valid, otherwise false.
-                    if (_formKey.currentState.validate()) {
-                      var areaAry = areaName.split(',');
-                      print('test');
-                      print(areaAry);
-                      Map params = {
-                        // 'industryCode': jobCode,
-                        // 'industryName': jobCodeCtrl.text,
-                        // 'registerAddress': addressStr,
-                        // 'areaCode': int.parse(areaCode),
-                        // 'businessLicensePicture': licenseUrl,
-                        // 'enterpriseName': enterpriseName,
-                        // 'legalPerson': legalName,
-                        // 'registerCode':registerCode,
-                        // 'province': areaAry[0],
-                        // 'city': areaAry[1],
-                        // 'district': areaAry[2],
-                        // 'legalMobile': mobile,
-                        // 'idCard': idNo
-                        // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
-                      };
-                      var legalName2 = FluroConvertUtils.fluroCnParamsEncode('test');
-                      print(params);
-                      G.router.navigateTo(
-                      context, Routes.perfectEnterprise2 + "?legalName=$legalName2");
-                      
-                    }
-                  },
-                  child: Text('下一步', style: TextStyle(
-                    fontSize: G.setSp(36),
-                    color: Colors.white
-                  )),
-                ),
-              ),
+              )
             ],
           ),
         )
