@@ -1,3 +1,5 @@
+import 'dart:wasm';
+
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import './components/shareWindow.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,6 +30,8 @@ class _HomePageState extends State<HomePage>
     await Provider.of<UserProvide>(context).getUserInfo();
     return 'feture end';
   }
+
+
 
   // 头部按钮
   Widget _head() {
@@ -120,6 +125,50 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  void openShare() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context){
+          return new Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new ListTile(
+                // leading: new Icon(Icons.photo_library),
+                title: Center(
+                  child: Text('会员推荐分享'),
+                ),
+                onTap: () {
+                  // _openGallery();
+                  Navigator.pop(context);
+                  openShareWindow(context, 'member');
+                },
+              ),
+              new ListTile(
+                // leading: new Icon(Icons.photo_library),
+                title: Center(
+                  child: Text('代理推荐分享'),
+                ),
+                onTap: () {
+                  // _openGallery();
+                  Navigator.pop(context);
+                  openShareWindow(context, 'agent');
+                },
+              ),
+              new ListTile(
+                // leading: new Icon(Icons.photo_library),
+                title: Center(
+                  child: Text('取消'),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        }
+    );
+  }
+
   // 任务子项
   Widget _missionItem(String title, int val) {
     return InkWell(
@@ -195,21 +244,24 @@ class _HomePageState extends State<HomePage>
                   ],
                 ),
               ),
-              Container(
-                height: G.setHeight(80),
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('查看细则',
-                          style: TextStyle(
-                              fontSize: G.setSp(24), color: hex('#0091F0'))),
-                      SizedBox(width: G.setWidth(10)),
-                      iconarrow(color: hex('#0091F0'), size: G.setSp(24))
-                    ],
+              InkWell(
+                onTap: openShare,
+                child: Container(
+                  height: G.setHeight(80),
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('查看细则',
+                            style: TextStyle(
+                                fontSize: G.setSp(24), color: hex('#0091F0'))),
+                        SizedBox(width: G.setWidth(10)),
+                        iconarrow(color: hex('#0091F0'), size: G.setSp(24))
+                      ],
+                    ),
                   ),
-                ),
+                )
               )
             ],
           ),
@@ -334,6 +386,7 @@ class _HomePageState extends State<HomePage>
   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: EasyRefresh(
         controller: _refreshController,

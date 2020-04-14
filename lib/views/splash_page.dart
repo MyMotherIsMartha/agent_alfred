@@ -43,6 +43,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   void goPage() async {
     await G.initSp();
+    // G.clearPref();
     String token = G.getPref('token');
     if (Validate.isNon(token)) {
       G.router.navigateTo(context, '/login', replace: true);
@@ -62,7 +63,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     // } else {
     //   G.router.navigateTo(context, '/login');
     // }
-    G.router.navigateTo(context, '/readPerfectInfo', replace: true);
+    // G.router.navigateTo(context, '/uploadEnterPrisePic', replace: true);
   }
 
   @override
