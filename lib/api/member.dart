@@ -60,4 +60,22 @@ class MemberApi{
   getHomeInfo() async {
     return await service().get('$agentMemberApi/v1/index');
   }
+
+
+  // 首页消息总数
+  getMessageCount() async {
+    return await service().get('/agentMessageApi/v1/appMemberMessage/getUnreadMessageCount');
+  }
+
+  // 当前代理资格任务
+  checkOrderRecords() async {
+    return await service().get('$agentMemberApi/v1/checkOrderRecords');
+  }
+
+  // 申请考核延迟审核
+  applyCheckDelayAudit() async {
+    return await service().put('$agentMemberApi/v1/checkOrderRecords/applyCheckDelayAudit');
+  }
+
+
 }

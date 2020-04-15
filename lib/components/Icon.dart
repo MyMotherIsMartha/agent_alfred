@@ -80,8 +80,8 @@ Icon iconmsg({double size = 18.0, Color color}) => Icon(
   color: color,
 );
 
-Icon iconcollect({double size = 18.0, Color color}) => Icon(
-  IconData(0xe613, fontFamily: 'iconfont'),
+Icon iconcheck({double size = 18.0, Color color}) => Icon(
+  IconData(0xe603, fontFamily: 'iconfont'),
   size: size,
   color: color,
 );

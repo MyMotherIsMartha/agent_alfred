@@ -74,6 +74,7 @@ class UserProvide with ChangeNotifier{
       // qualificationsStatus
     } else {
       G.toast('获取用户认证信息失败');
+      G.router.navigateTo(G.currentContext, '/login', replace: true);
     }
     // print(info);
     // var result = await LoginApi().getUserAuth();

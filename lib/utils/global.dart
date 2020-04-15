@@ -89,9 +89,10 @@ class G {
   //   getIt.registerSingleton(NavigateService());
   // }
 
-  static Widget spacing(double height, {Color color}) {
+  static Widget spacing(double height, {Color color, String dir = 'y'}) {
     return Container(
-      height: G.setHeight(height),
+      height: dir == 'y' ? G.setHeight(height) : 0,
+      width: dir == 'x' ? G.setWidth(height) : 0,
       color: color,
     );
   }
