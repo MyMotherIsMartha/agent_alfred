@@ -211,9 +211,9 @@ class _VipDetailState extends State<VipDetail>
               tabs: tabs.map((e) => Tab(text: e)).toList()
             )
           ),
-          Container(
-            child: IndexedStack(index: tabIndex, children: bodys),
-          )
+          // Container(
+          //   child: IndexedStack(index: tabIndex, children: bodys),
+          // )
         ],
       ),
     );
