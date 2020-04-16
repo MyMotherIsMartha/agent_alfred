@@ -11,9 +11,12 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended;
 // import 'package:agent37_flutter/models/order.dart';
 import 'package:agent37_flutter/utils/event_bus.dart';
+import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:flutter_picker/flutter_picker.dart';
+import 'package:date_format/date_format.dart';
 import 'package:agent37_flutter/utils/map.dart';
 
 /// NestedScrollView示例页面
@@ -83,8 +86,6 @@ class VipManageMainState extends State<VipManageMain>
 
   @override
   Widget build(BuildContext context) {
-    List<bool> tempArr = List.filled(statusMap.length, false);
-    print(tempArr);
 
     return Scaffold(
       body: extended.NestedScrollView(
@@ -159,28 +160,104 @@ class MemberList extends StatefulWidget {
 
 class _MemberListState extends State<MemberList> {
 
+  showPickerDate(BuildContext context) {
+    Picker(
+      adapter: DateTimePickerAdapter(
+        customColumnType: [0, 1, 2],
+        months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        yearSuffix: '年',
+        daySuffix: '日'
+      ),
+      selectedTextStyle: TextStyle(color: hex('#333333')),
+      cancelText: '取消',
+      confirmText: '完成',
+      cancelTextStyle: TextStyle(color: hex('#999999')),
+      confirmTextStyle: TextStyle(color: hex('#108EE9')),
+      itemExtent: 50,
+      height: G.setHeight(510),
+      onConfirm: (Picker picker, List value) {
+        print((picker.adapter as DateTimePickerAdapter).value);
+        var selectedTime = (picker.adapter as DateTimePickerAdapter).value;
+        print(formatDate(selectedTime, [yyyy, '-', mm, '-', dd]));
+      }
+    ).showModal(context);
+  }
+
   Widget memberItem(item) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       decoration: BoxDecoration(
         color: hex('#FFF'),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(children: <Widget>[
         Container(
+          padding: EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color: hex('#eee'), width:  G.setWidth(1))),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('云上一家旗舰店云上一家旗舰店…'),
-              Image(image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
-              Text('未提交审核')
+              Row(children: [
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: G.setWidth(390),
+                  ),
+                  child: Text('云上一家旗舰店云上一家旗舰云上一家旗舰店云上一家旗舰', 
+                      softWrap: true,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis, 
+                      style: TextStyle(fontWeight: FontWeight.w600)),
+                ),
+                Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
+              ]),
+              Row(children: [
+                Text('审核拒绝'),
+                Container(
+                  margin: EdgeInsets.only(left: G.setWidth(5)),
+                  decoration: BoxDecoration(
+                    color: hex('#E6E6E6'),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
+                )
+              ])
             ]
           ),
+        ),
+        InkWell(
+          onTap: () {
+            // print(item["value"].toString());
+            String vipId = item["value"].toString();
+            G.router.navigateTo(context, Routes.vipDetail + '?vipId=$vipId');
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Row(children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
+                child: Image(width: G.setWidth(100),image: AssetImage('lib/assets/images/home/vip.png'))
+              ),
+              Column(
+                children: [
+                  Row(children: <Widget>[
+                    Text('手机号:'),
+                    G.spacingWidth(25),
+                    Text('18892663052')
+                  ],),
+                  Row(children: <Widget>[
+                    Text('注册时间:'),
+                    G.spacingWidth(20),
+                    Text('2019-08-12')
+                  ],)
+                ]
+              )
+            ],)
+          )
         )
-      ],)
+      ])
     );
   }
 
@@ -220,18 +297,23 @@ class _MemberListState extends State<MemberList> {
               children: <Widget>[
               Text('注册时间'),
               G.spacingWidth(60),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(G.setHeight(8))
-                ),
-                padding: EdgeInsets.only(left: G.setWidth(20), top: G.setHeight(10), bottom: G.setHeight(10)),
-                child: Row(
-                  children: [
-                    Text('2018-09-01', style: TextStyle(color: hex('#424242'))),
-                    Icon(Icons.arrow_drop_down, color: hex('#CCCCCC'))
-                  ]
-                ),
+              InkWell(
+                onTap: () {
+                  showPickerDate(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(G.setHeight(8))
+                  ),
+                  padding: EdgeInsets.only(left: G.setWidth(20), top: G.setHeight(10), bottom: G.setHeight(10)),
+                  child: Row(
+                    children: [
+                      Text('2018-09-01', style: TextStyle(color: hex('#424242'))),
+                      Icon(Icons.arrow_drop_down, color: hex('#CCCCCC'))
+                    ]
+                  ),
+                )
               ),
               Text('至'),
               Container(

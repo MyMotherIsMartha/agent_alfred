@@ -75,6 +75,7 @@ flutter:
   - lib/assets/images/common/
   - lib/assets/images/order-result/
   - lib/assets/images/pic-icon/
+  - lib/assets/images/vip/
   - lib/assets/images/home/
   fonts:
     - family: iconfont

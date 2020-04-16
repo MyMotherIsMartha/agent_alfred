@@ -14,6 +14,7 @@ import 'package:agent37_flutter/views/enterpriseApprove/uploadPic.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadForm.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadAudit.dart';
 import 'package:agent37_flutter/views/vipManage/index.dart';
+import 'package:agent37_flutter/views/vipManage/vipDetail.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo1.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectAudit.dart';
@@ -158,5 +159,15 @@ Handler uploadLicenseAuditHandler = Handler(
 Handler vipManageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return VipManageMain();
+  }
+);
+
+Handler vipDetailHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+    String vipId = params['vipId']?.first;
+    
+    return VipDetail(
+      vipId: vipId,
+    );
   }
 );
