@@ -220,7 +220,9 @@ class _HomePageState extends State<HomePage>
               vertical: G.setHeight(38), horizontal: G.setWidth(30)),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('${G.imgBaseUrl}home/subordinate_bg.png'),
+                  image: title == '开通钻石会员' 
+                  ? AssetImage('${G.imgBaseUrl}home/subordinate_bg.png')
+                  : AssetImage('${G.imgBaseUrl}home/order-num_bg.png'),
                   fit: BoxFit.fill)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -548,10 +550,10 @@ class _HomePageState extends State<HomePage>
 
   Widget _menu() {
     List<Map> menuList = [
-      {'title': '财务管理', 'icon': '${G.imgBaseUrl}home/finance.png', 'url': '/'},
+      {'title': '财务管理', 'icon': '${G.imgBaseUrl}home/finance.png', 'url': '/finance'},
       {'title': '邀请分享', 'icon': '${G.imgBaseUrl}home/share.png', 'url': '/'},
       {'title': '我的钱包', 'icon': '${G.imgBaseUrl}home/wallet.png', 'url': '/'},
-      {'title': '会员管理', 'icon': '${G.imgBaseUrl}home/agent.png', 'url': '/'},
+      {'title': '会员管理', 'icon': '${G.imgBaseUrl}home/agent.png', 'url': '/vipManage'},
       {'title': '代理商管理', 'icon': '${G.imgBaseUrl}home/vip.png', 'url': '/'},
       {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/'},
     ];

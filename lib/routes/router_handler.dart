@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/views/finance/index.dart';
 import 'package:agent37_flutter/views/home/fine-print.dart';
 import 'package:agent37_flutter/views/index.dart';
 import 'package:agent37_flutter/views/login/address.dart';
@@ -158,5 +159,12 @@ Handler uploadLicenseAuditHandler = Handler(
 Handler vipManageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return VipManageMain();
+  }
+);
+
+// 财务管理
+Handler financeHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return FinancePage();
   }
 );

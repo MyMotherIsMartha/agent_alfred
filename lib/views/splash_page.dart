@@ -43,27 +43,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   void goPage() async {
     await G.initSp();
-    // G.clearPref();
     String token = G.getPref('token');
-    // if (Validate.isNon(token)) {
-    //   G.router.navigateTo(context, '/login', replace: true);
-    // } else {
-    //   Provider.of<UserProvide>(context).updateUserAuth();
-    // }
-    
-    // UserModel userModel = Provider.of<UserModel>(context);
-    // userModel.initUser();
-    // if (userModel.user != null) {
-    //   await NetUtils.refreshLogin(context).then((value){
-    //     if(value.data != -1){
-    //       G.router.navigateTo(context, '/index');
-    //     }
-    //   });
-    //   Provider.of<PlayListModel>(context).user = userModel.user;
-    // } else {
-    //   G.router.navigateTo(context, '/login');
-    // }
-    G.router.navigateTo(context, '/vipManage', replace: true);
+    if (Validate.isNon(token)) {
+      G.router.navigateTo(context, '/login', replace: true);
+    } else {
+      Provider.of<UserProvide>(context).updateUserAuth();
+    }
   }
 
   @override

@@ -24,6 +24,7 @@ class Routes {
   static String perfectEnterprise2 = '/perfectEnterprise2';
   static String perfectEnterpriseAudit = '/perfectEnterpriseAudit';
   static String readPerfectInfo = '/readPerfectInfo';
+  static String financePage = '/finance';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -50,5 +51,6 @@ class Routes {
     router.define(perfectEnterprise2, handler: perfectEnterprise2Handler);
     router.define(perfectEnterpriseAudit, handler: perfectEnterpriseAuditHandler);
     router.define(readPerfectInfo, handler: readPerfectInfoHandler);
+    router.define(financePage, handler: financeHandler);
   }
 }
