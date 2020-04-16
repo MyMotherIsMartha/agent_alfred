@@ -15,6 +15,7 @@ import 'package:agent37_flutter/views/enterpriseApprove/uploadPic.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadForm.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadAudit.dart';
 import 'package:agent37_flutter/views/vipManage/index.dart';
+import 'package:agent37_flutter/views/vipManage/vipDetail.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo1.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectAudit.dart';
@@ -26,145 +27,132 @@ import 'package:flutter/material.dart';
 // splash 页面
 var splashHandler = new Handler(
     handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
-      return SplashPage();
-    });
+  return SplashPage();
+});
 
 Handler indexHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return IndexPage();
-  }
-);
-
-
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return IndexPage();
+});
 
 Handler loginHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return LoginPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LoginPage();
+});
 
 Handler registerHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return RegisterPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return RegisterPage();
+});
 
 Handler forgetHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return ForgetPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return ForgetPage();
+});
 
 Handler updateUserHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return UpdateUserPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return UpdateUserPage();
+});
 
 Handler createAccountHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return CreateAccountPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return CreateAccountPage();
+});
 
 Handler addressHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return AddressPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return AddressPage();
+});
 
 Handler createOrderHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    String price = params['price']?.first;
-    String no = params['no']?.first;
-    String promotionNo = params['promotionNo']?.first;
-    return CreateOrderPage(price: price, no: no, promotionNo: promotionNo);
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String price = params['price']?.first;
+  String no = params['no']?.first;
+  String promotionNo = params['promotionNo']?.first;
+  return CreateOrderPage(price: price, no: no, promotionNo: promotionNo);
+});
 
 Handler certificateHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    String no = params['no']?.first;
-    String time = params['time']?.first;
-    return CertificatePage(no: no, time: time);
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String no = params['no']?.first;
+  String time = params['time']?.first;
+  return CertificatePage(no: no, time: time);
+});
 
 Handler orderResultHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return OrderResultPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return OrderResultPage();
+});
 
 Handler finePointHandel = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return FinePointPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return FinePointPage();
+});
 
 Handler uploadEnterPrisePicHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return UploadEnterprisePic();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return UploadEnterprisePic();
+});
 
 Handler uploadLicenseFormHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
-    String uploadJson = params['uploadJson']?.first;
-    
-    return UploadLicenseForm(
-      uploadJson: uploadJson,
-    );
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+  String uploadJson = params['uploadJson']?.first;
+
+  return UploadLicenseForm(
+    uploadJson: uploadJson,
+  );
+});
 
 Handler perfectEnterprise1Handler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return PerfectEnterprise1();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return PerfectEnterprise1();
+});
 
 Handler perfectEnterprise2Handler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
-    String legalName = params['legalName']?.first;
-    
-    return PerfectEnterprise2(
-      legalName: legalName,
-    );
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+  String legalName = params['legalName']?.first;
+
+  return PerfectEnterprise2(
+    legalName: legalName,
+  );
+});
 
 Handler perfectEnterpriseAuditHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
-    String currentStatus = params['currentStatus']?.first;
-    
-    return PerfectEnterpriseAudit(
-      currentStatus: currentStatus,
-    );
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+  String currentStatus = params['currentStatus']?.first;
+
+  return PerfectEnterpriseAudit(
+    currentStatus: currentStatus,
+  );
+});
 
 Handler readPerfectInfoHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return ReadPerfectInfo();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return ReadPerfectInfo();
+});
 
 Handler uploadLicenseAuditHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return UploadLicenseAudit();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return UploadLicenseAudit();
+});
 
 Handler vipManageHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return VipManageMain();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return VipManageMain();
+});
 
 // 财务管理
 Handler financeHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return FinancePage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return FinancePage();
+});
+
+Handler vipDetailHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+  String vipId = params['vipId']?.first;
+
+  return VipDetail(
+    vipId: vipId,
+  );
+});
