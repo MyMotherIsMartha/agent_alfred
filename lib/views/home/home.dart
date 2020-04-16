@@ -4,14 +4,18 @@ import 'dart:wasm';
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
+import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/models/home-info.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
+import 'package:badges/badges.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
@@ -27,8 +31,10 @@ class _HomePageState extends State<HomePage>
   TabController _tabController;
   EasyRefreshController _refreshController = EasyRefreshController();
   HomeInfoModel homeinfo;
+  var msgFuture;
+  var homeFuture;
 
-  Future _getHomeinfo(context) async {
+  Future _getHomeinfo() async {
     var result = await MemberApi().getHomeInfo();
     if (result.data['data'] != null) {
       setState(() {
@@ -38,7 +44,10 @@ class _HomePageState extends State<HomePage>
     return 'feture end';
   }
 
-
+  Future _getMsgCount() async {
+    var result = await MemberApi().getMessageCount();
+    return result.data['data'];
+  }
 
   // 头部按钮
   Widget _head() {
@@ -59,9 +68,25 @@ class _HomePageState extends State<HomePage>
             ),
             InkWell(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: G.setWidth(15)),
-                  child: iconmsg(size: G.setSp(48)),
-                ),
+                    padding: EdgeInsets.symmetric(horizontal: G.setWidth(15)),
+                    child: FutureBuilder(
+                      future: msgFuture,
+                      builder: (context, shapshot) {
+                        if (shapshot.hasData) {
+                          return shapshot.data > 0 ? Badge(
+                            badgeContent: Text(shapshot.data.toString(), style: TextStyle(
+                              fontSize: G.setWidth(18),
+                              color: hex('#fff')
+                            )),
+                            child: iconmsg(size: G.setSp(48)),
+                            position: BadgePosition.topRight(top: G.setHeight(16),right: G.setWidth(-14)),
+                          ) : iconmsg(size: G.setSp(48));
+                          // ;
+                        } else {
+                          return Container();
+                        }
+                      },
+                    )),
                 onTap: () {}),
           ],
         ));
@@ -72,6 +97,7 @@ class _HomePageState extends State<HomePage>
     return Container(
       height: G.setHeight(120),
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(50)),
+      margin: EdgeInsets.only(bottom: G.setHeight(20)),
       child: Row(
         children: <Widget>[
           CircleAvatar(
@@ -92,7 +118,9 @@ class _HomePageState extends State<HomePage>
                           TextStyle(fontSize: G.setSp(30), color: hex('#FFF'))),
                   Container(width: G.setWidth(10)),
                   Image.asset(
-                    '${G.imgBaseUrl}home/check-status_icon.png',
+                    homeinfo.checkStatus == 2
+                        ? '${G.imgBaseUrl}home/agent_status_icon.png'
+                        : '${G.imgBaseUrl}home/check-status_icon.png',
                     width: G.setWidth(140),
                     height: G.setHeight(50),
                   ),
@@ -135,7 +163,7 @@ class _HomePageState extends State<HomePage>
   void openShare() {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return new Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -172,14 +200,19 @@ class _HomePageState extends State<HomePage>
               ),
             ],
           );
-        }
-    );
+        });
   }
 
   // 任务子项
-  Widget _missionItem(String title, int val) {
+  Widget _missionItem(String title, int val, int denominator) {
     return InkWell(
-        onTap: () {},
+        onTap: () {
+          if (homeinfo.checkStatus == 1) {
+            return;
+          } else {
+            G.router.navigateTo(context, '/fine-point');
+          }
+        },
         child: Container(
           width: G.setWidth(325),
           height: G.setHeight(210),
@@ -206,10 +239,10 @@ class _HomePageState extends State<HomePage>
                 child: LinearProgressIndicator(
                   backgroundColor: Colors.transparent,
                   valueColor: AlwaysStoppedAnimation(hex('#6982FF')),
-                  value: val / 10,
+                  value: val / denominator,
                 ),
               ),
-              Text('$val/10',
+              Text('$val/$denominator',
                   style:
                       TextStyle(fontSize: G.setSp(30), color: hex('#424242')))
             ],
@@ -219,110 +252,128 @@ class _HomePageState extends State<HomePage>
 
   // 资格任务
   Widget _mission() {
-    return Container(
-      margin: EdgeInsets.only(top: G.setHeight(60), bottom: G.setHeight(20)),
-      width: G.setWidth(710),
-      height: G.setHeight(380),
-      padding: EdgeInsets.symmetric(
-          horizontal: G.setWidth(10), vertical: G.setHeight(15)),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: hex('#FFF')),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                height: G.setHeight(80),
-                // color: hex('ff0'),
-                alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return homeinfo.checkStatus == 1 // 2
+        ? Container()
+        : Container(
+            margin: EdgeInsets.only(bottom: G.setHeight(20)),
+            width: G.setWidth(710),
+            height: G.setHeight(380),
+            padding: EdgeInsets.symmetric(
+                horizontal: G.setWidth(20), vertical: G.setHeight(15)),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10), color: hex('#FFF')),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text('资格任务',
-                        style: TextStyle(
-                            fontSize: G.setSp(30), color: hex('#424242'))),
-                    Text('距结束：23天5小时23分',
-                        style: TextStyle(
-                            fontSize: G.setSp(24), color: hex('#686868'))),
+                    Container(
+                      height: G.setHeight(80),
+                      // color: hex('ff0'),
+                      alignment: Alignment.center,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text('资格任务',
+                              style: TextStyle(
+                                  fontSize: G.setSp(30),
+                                  color: hex('#424242'))),
+                          Text(
+                              homeinfo.checkStatus == 1
+                                  ? '考核时间已过期，未完成考核无法获得服务费'
+                                  : '距结束：${restTime(homeinfo.checkEndTime)}',
+                              style: TextStyle(
+                                  fontSize: G.setSp(24),
+                                  color: hex('#686868'))),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        height: G.setHeight(80),
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: () {
+                            G.router.navigateTo(context, '/fine-point');
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text('查看细则',
+                                  style: TextStyle(
+                                      fontSize: G.setSp(24),
+                                      color: hex('#0091F0'))),
+                              SizedBox(width: G.setWidth(10)),
+                              iconarrow(
+                                  color: hex('#0091F0'), size: G.setSp(24))
+                            ],
+                          ),
+                        ))
                   ],
                 ),
-              ),
-              Container(
-                height: G.setHeight(80),
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  onTap: () {
-                    G.router.navigateTo(context, '/fine-point');
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                G.spacing(25),
+                Container(
+                  child: Stack(
                     children: <Widget>[
-                      Text('查看细则',
-                          style: TextStyle(
-                              fontSize: G.setSp(24), color: hex('#0091F0'))),
-                      SizedBox(width: G.setWidth(10)),
-                      iconarrow(color: hex('#0091F0'), size: G.setSp(24))
+                      Container(
+                        height: G.setHeight(230),
+                        width: G.setWidth(690),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            _missionItem(
+                                '开通钻石会员',
+                                homeinfo.openedDiamondMemberNum,
+                                homeinfo.checkDiamondMemberNum),
+                            _missionItem('钻石会员有效订单', homeinfo.effectiveOrderNum,
+                                homeinfo.checkEffectiveOrderNum)
+                          ],
+                        ),
+                      ),
+                      homeinfo.checkStatus == 1
+                          ? Positioned(
+                              top: 0,
+                              left: 0,
+                              width: G.setWidth(690),
+                              height: G.setHeight(230),
+                              child: Opacity(
+                                opacity: 0.6,
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: hex('#333'),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        yyAlertDialog(context);
+                                      },
+                                      child: Container(
+                                        width: G.setWidth(200),
+                                        height: G.setHeight(60),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: hex('#fff')),
+                                          borderRadius: BorderRadius.circular(
+                                              G.setWidth(50)),
+                                        ),
+                                        child: Text('申请延时',
+                                            style: TextStyle(
+                                                color: hex('#FFF'),
+                                                fontSize: G.setSp(28))),
+                                      ),
+                                    )),
+                              ))
+                          : SizedBox()
                     ],
                   ),
                 )
-              )
-            ],
-          ),
-          G.spacing(25),
-          Container(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: G.setHeight(230),
-                  width: G.setWidth(690),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      _missionItem('开通钻石会员', 3),
-                      _missionItem('钻石会员有效订单', 7)
-                    ],
-                  ),
-                ),
-                Positioned(
-                    top: 0,
-                    left: 0,
-                    width: G.setWidth(690),
-                    height: G.setHeight(230),
-                    child: Opacity(
-                      opacity: 0.6,
-                      child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: hex('#333'),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              width: G.setWidth(200),
-                              height: G.setHeight(60),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: hex('#fff')),
-                                borderRadius:
-                                    BorderRadius.circular(G.setWidth(50)),
-                              ),
-                              child: Text('申请延时',
-                                  style: TextStyle(
-                                      color: hex('#FFF'),
-                                      fontSize: G.setSp(28))),
-                            ),
-                          )),
-                    ))
               ],
             ),
-          )
-        ],
-      ),
-    );
+          );
   }
 
   // 数据统计tabbar选项栏
@@ -510,8 +561,6 @@ class _HomePageState extends State<HomePage>
             borderRadius: BorderRadius.circular(G.setWidth(10)),
             color: hex('#FFF')),
         width: G.setWidth(710),
-        padding: EdgeInsets.symmetric(
-            horizontal: G.setWidth(60), vertical: G.setHeight(20)),
         height: G.setHeight(390),
         child: MediaQuery.removePadding(
           context: context,
@@ -519,7 +568,7 @@ class _HomePageState extends State<HomePage>
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisSpacing: G.setWidth(20),
+                // mainAxisSpacing: G.setWidth(20),
                 // crossAxisSpacing: G.setWidth(20),
                 crossAxisCount: 3, //横轴三个子widget
                 childAspectRatio: 1 //宽高比为1时，子widget
@@ -538,10 +587,9 @@ class _HomePageState extends State<HomePage>
                     Image.asset(item['icon'],
                         width: G.setWidth(80), height: G.setWidth(80)),
                     G.spacing(15),
-                    Text(item['title'], style: TextStyle(
-                      fontSize: G.setSp(28),
-                      color: hex('#666')
-                    ))
+                    Text(item['title'],
+                        style: TextStyle(
+                            fontSize: G.setSp(28), color: hex('#666')))
                   ],
                 ),
               );
@@ -553,29 +601,26 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
+    msgFuture = _getMsgCount();
+    homeFuture = _getHomeinfo();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: EasyRefresh(
           controller: _refreshController,
-          enableControlFinishRefresh: true,
-          header: ClassicalHeader(
-              // TODO:: 组件化
-              refreshText: '下拉刷新',
-              refreshReadyText: '释放以刷新',
-              refreshingText: '刷新中……',
-              refreshedText: '刷新完成',
-              infoText: '更新于 %T'),
+          // enableControlFinishRefresh: true,
+          header: vRefreshHeader,
           onRefresh: () async {
-            await Provider.of<UserProvide>(context).refreshUserinfo();
-            _refreshController.finishRefresh(success: true);
+            setState(() {
+              msgFuture = _getMsgCount();
+              homeFuture = _getHomeinfo();
+            });
           },
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: _getHomeinfo(context),
+              future: homeFuture,
               builder: (context, shapshot) {
                 // UserinfoModel userinfo =
                 //     Provider.of<UserProvide>(context).userinfo;
@@ -585,8 +630,11 @@ class _HomePageState extends State<HomePage>
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             alignment: Alignment.topCenter,
-                            image: AssetImage(
-                                '${G.imgBaseUrl}home/home-banner_1.png'),
+                            image: homeinfo.checkStatus == 2
+                                ? AssetImage(
+                                    '${G.imgBaseUrl}home/home-banner_2.png')
+                                : AssetImage(
+                                    '${G.imgBaseUrl}home/home-banner_1.png'),
                             fit: BoxFit.fitWidth)),
                     child: Column(
                       children: <Widget>[
@@ -673,4 +721,42 @@ class _ToolTipState extends State<ToolTip> {
               )),
         ));
   }
+}
+
+YYDialog yyAlertDialog(BuildContext context) {
+  return YYDialog().build(context)
+    ..width = G.setWidth(600)
+    ..height = G.setHeight(240)
+    ..borderRadius = G.setWidth(20)
+    ..text(
+      padding: EdgeInsets.all(G.setHeight(60)),
+      alignment: Alignment.center,
+      text: "是否申请延长考核时间？",
+      color: hex('#333'),
+      fontSize: G.setSp(36),
+      fontWeight: FontWeight.w500,
+    )
+    ..divider()
+    ..doubleButton(
+      padding: EdgeInsets.only(top: 10.0),
+      gravity: Gravity.center,
+      withDivider: true,
+      text1: "取消",
+      color1: hex('#85868A'),
+      fontSize1: G.setSp(36),
+      onTap1: () {
+        print("取消");
+      },
+      text2: "确定",
+      color2: hex('##0091F0'),
+      fontSize2: G.setSp(36),
+      onTap2: () async {
+        var result = await MemberApi().applyCheckDelayAudit();
+        print("确定");
+        if (result.data['code'] == 200) {
+          G.toast('操作成功');
+        }
+      },
+    )
+    ..show();
 }

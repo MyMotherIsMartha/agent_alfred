@@ -37,7 +37,6 @@ dependencies:
   city_pickers: ^0.1.30
   event_bus: ^1.1.1
   flutter_datetime_picker: ^1.3.5
-  flutter_custom_dialog: ^1.0.4
   qr_flutter: ^3.2.0
   date_format: ^1.0.8
   flutter_swiper: ^1.1.6
@@ -51,6 +50,8 @@ dependencies:
   flutter_spinkit: ^4.1.2
   simple_tooltip: ^0.1.3
   shape_of_view: ^1.0.2
+  flutter_custom_dialog: ^1.0.19
+  badges: ^1.1.1
 
 dev_dependencies:
   flutter_test:
