@@ -7,7 +7,6 @@ import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/models/home-info.dart';
-import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
@@ -17,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
 import './components/shareWindow.dart';
 
@@ -64,7 +62,9 @@ class _HomePageState extends State<HomePage>
                 padding: EdgeInsets.symmetric(horizontal: G.setWidth(15)),
                 child: iconsetting(size: G.setSp(48)),
               ),
-              onTap: () {},
+              onTap: () {
+                G.router.navigateTo(context, '/setting');
+              },
             ),
             InkWell(
                 child: Container(
@@ -220,7 +220,9 @@ class _HomePageState extends State<HomePage>
               vertical: G.setHeight(38), horizontal: G.setWidth(30)),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('${G.imgBaseUrl}home/subordinate_bg.png'),
+                  image: title == '开通钻石会员' 
+                  ? AssetImage('${G.imgBaseUrl}home/subordinate_bg.png')
+                  : AssetImage('${G.imgBaseUrl}home/order-num_bg.png'),
                   fit: BoxFit.fill)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -548,10 +550,10 @@ class _HomePageState extends State<HomePage>
 
   Widget _menu() {
     List<Map> menuList = [
-      {'title': '财务管理', 'icon': '${G.imgBaseUrl}home/finance.png', 'url': '/'},
+      {'title': '财务管理', 'icon': '${G.imgBaseUrl}home/finance.png', 'url': '/finance'},
       {'title': '邀请分享', 'icon': '${G.imgBaseUrl}home/share.png', 'url': '/'},
       {'title': '我的钱包', 'icon': '${G.imgBaseUrl}home/wallet.png', 'url': '/'},
-      {'title': '会员管理', 'icon': '${G.imgBaseUrl}home/agent.png', 'url': '/'},
+      {'title': '会员管理', 'icon': '${G.imgBaseUrl}home/agent.png', 'url': '/vipManage'},
       {'title': '代理商管理', 'icon': '${G.imgBaseUrl}home/vip.png', 'url': '/'},
       {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/'},
     ];
