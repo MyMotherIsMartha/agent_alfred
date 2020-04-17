@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/views/finance/index.dart';
+import 'package:agent37_flutter/views/finance/search.dart';
 import 'package:agent37_flutter/views/home/fine-print.dart';
 import 'package:agent37_flutter/views/index.dart';
 import 'package:agent37_flutter/views/login/address.dart';
@@ -10,6 +11,7 @@ import 'package:agent37_flutter/views/login/login.dart';
 import 'package:agent37_flutter/views/login/order-result.dart';
 import 'package:agent37_flutter/views/login/register.dart';
 import 'package:agent37_flutter/views/login/update-user.dart';
+import 'package:agent37_flutter/views/setting/index.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadPic.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadForm.dart';
@@ -146,6 +148,18 @@ Handler vipManageHandler = Handler(
 Handler financeHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return FinancePage();
+});
+
+// 财务搜索
+Handler financeSearchHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return FinanceSearchPage();
+});
+
+// 设置
+Handler settingHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SettingPage();
 });
 
 Handler vipDetailHandler = Handler(

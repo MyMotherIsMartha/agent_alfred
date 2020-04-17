@@ -12,6 +12,7 @@ class UserProvide with ChangeNotifier{
 
   getUserInfo() async {
     if (!getInfoFlag) return;
+    print('get userinfo from provide');
     var result = await MemberApi().getUserinfo();
     if (result.data['code'] == 200) {
       getInfoFlag = false;

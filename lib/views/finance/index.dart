@@ -1,11 +1,11 @@
 import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/v-data-picker.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/finance/components/finance-item.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/ball_pulse_footer.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 class FinancePage extends StatefulWidget {
@@ -53,7 +53,9 @@ class _FinancePageState extends State<FinancePage>
       centerTitle: true,
       actions: <Widget>[
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            G.router.navigateTo(context, '/finance/search');
+          },
           icon: iconsearch(color: hex('#666666')),
         )
       ],
@@ -92,6 +94,8 @@ class _OrderViewState extends State<OrderView> {
   String currentStatus = '待结算';
   EasyRefreshController _refreshController = EasyRefreshController();
   int listCount = 10;
+  DateTime startTime = DateTime(DateTime.now().year, DateTime.now().month);
+  DateTime endTime = DateTime.now();
 
   // 待结算提示
   Widget _hint() {
@@ -164,10 +168,50 @@ class _OrderViewState extends State<OrderView> {
     return Container(
       width: double.infinity,
       height: G.setHeight(94),
-      color: hex('#666'),
+      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              VDatePicker(startTime, (time) {
+                setState(() {
+                  startTime = time;
+                  endTime = DateTime(time.year, time.month +1, 0);
+                });
+              }),
+              Container(
+                alignment: Alignment.center,
+                width: G.setWidth(46),
+                child: Text('至', style: TextStyle(
+                  fontSize: G.setSp(24),
+                  color: hex('#424242')
+                )),
+              ),
+              VDatePicker(endTime, (time) {
+                setState(() {
+                  endTime = time;
+                });
+              }, minValue: startTime)
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('预估服务费：', style: TextStyle(
+                fontSize: G.setSp(22),
+                color: hex('#666')
+              )),
+              Text('￥1999.00', style: TextStyle(
+                fontSize: G.setSp(24),
+                color: hex('#333')
+              ))
+            ],
+          )
+        ],
+      ),
     );
   }
-
 
   // 财务列表
   Widget _financeList() {

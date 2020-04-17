@@ -97,3 +97,9 @@ Icon iconhint({double size = 18.0, Color color}) => Icon(
   size: size,
   color: color,
 );
+
+Icon icondelete({double size = 18.0, Color color}) => Icon(
+  Icons.delete_outline,
+  size: size,
+  color: color,
+);

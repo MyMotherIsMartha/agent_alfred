@@ -7,7 +7,6 @@ import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/models/home-info.dart';
-import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
@@ -17,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
 import './components/shareWindow.dart';
 
@@ -64,7 +62,9 @@ class _HomePageState extends State<HomePage>
                 padding: EdgeInsets.symmetric(horizontal: G.setWidth(15)),
                 child: iconsetting(size: G.setSp(48)),
               ),
-              onTap: () {},
+              onTap: () {
+                G.router.navigateTo(context, '/setting');
+              },
             ),
             InkWell(
                 child: Container(
