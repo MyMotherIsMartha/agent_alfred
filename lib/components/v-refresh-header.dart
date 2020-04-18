@@ -6,3 +6,10 @@ Header vRefreshHeader = ClassicalHeader(
     refreshingText: '刷新中……',
     refreshedText: '刷新完成',
     infoText: '更新于 %T');
+
+Footer vRefreshFooter = ClassicalFooter(
+    loadingText: '加载中',
+    loadReadyText: '上拉加载',
+    loadedText: '加载成功',
+    noMoreText: '已加载全部',
+    infoText: '更新于 %T');

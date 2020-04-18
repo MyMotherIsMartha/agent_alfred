@@ -43,8 +43,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: '37度管家',
+      locale: const Locale('en'),
       onGenerateRoute: G.router.generator,
       theme: ThemeData(
+        // splashColor: Colors.transparent,
         // primaryColor: hex('#6982FF'),
         primaryColor: hex('#fff'),
         fontFamily: 'Georgia',
