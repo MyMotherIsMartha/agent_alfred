@@ -1,10 +1,16 @@
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:agent37_flutter/api/login.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:agent37_flutter/provide/user.dart';
+import 'package:provider/provider.dart';
 
 class UploadLicenseAudit extends StatefulWidget {
-  UploadLicenseAudit({Key key}) : super(key: key);
+  final String status;
+
+  UploadLicenseAudit({this.status});
 
   @override
   _UploadLicenseAuditState createState() => _UploadLicenseAuditState();
@@ -13,12 +19,33 @@ class UploadLicenseAudit extends StatefulWidget {
 class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
   var statusCode = 1;
 
-  void refreshFunc() {
-    print('refresh!!!');
+
+  @override
+  void initState() {
+    super.initState();
+   
+    statusCode = int.parse(widget.status);
+    print(statusCode);
+  }
+
+  void refreshFunc() async {
+    // Provider.of<UserProvide>(context).updateUserAuth();
+    var result = await LoginApi().getUserAuth();
+    print(result.data['data'].toString());
+    int qualificationsStatus = result.data['data']['qualificationsStatus'];
     setState(() {
-      statusCode = 2;
+      statusCode = qualificationsStatus;
     });
   }
+
+  void checkQualification() {
+    Map uploadData = {
+      'isRequest': true
+    };
+    var uploadJson = FluroConvertUtils.object2string(uploadData);
+    G.router.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
+  }
+  
 
   Widget middleStatusWidget1() {
     return Column(
@@ -56,7 +83,7 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
               )
             ),
             RaisedButton(
-              onPressed: refreshFunc,
+              onPressed: checkQualification,
               elevation: 4.0,
               color: hex('#D6DBFF'),
               textColor: hex('#6982FF'),
@@ -143,11 +170,7 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
             RaisedButton(
-              onPressed: () {
-                setState(() {
-                  statusCode = 4;
-                });
-              },
+              onPressed: checkQualification,
               elevation: 4.0,
               color: hex('#69A5FF'),
               textColor: Colors.white,
@@ -190,7 +213,7 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
             RaisedButton(
               onPressed: () {
                 setState(() {
-                  statusCode = 5;
+                  statusCode = 3;
                 });
               },
               elevation: 4.0,
@@ -233,11 +256,7 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
             RaisedButton(
-              onPressed: () {
-                setState(() {
-                  statusCode = 6;
-                });
-              },
+              onPressed: refreshFunc,
               elevation: 4.0,
               color: hex('#69A5FF'),
               textColor: Colors.white,
@@ -278,11 +297,7 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
             RaisedButton(
-              onPressed: () {
-                setState(() {
-                  statusCode = 1;
-                });
-              },
+              onPressed: refreshFunc,
               elevation: 4.0,
               color: hex('#69A5FF'),
               textColor: Colors.white,
@@ -298,20 +313,21 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
   }
 
   Widget getCurrentWidget() {
+    // 资审状态 -3：资质审核关闭；-2: 资质审核超时; -1: 资质审核拒绝; 0: 待资质审核提交；1: 资质审核已提交 2：待资质审核；3：资质审核延迟申请；4：资质审核成功
     if (statusCode == 1) {
       return middleStatusWidget1();
-    } else if (statusCode == 2) {
-      return middleStatusWidget2();
-    } else if (statusCode == 3) {
-      return middleStatusWidget3();
     } else if (statusCode == 4) {
+      return middleStatusWidget2();
+    } else if (statusCode == -1) {
+      return middleStatusWidget3();
+    } else if (statusCode == -2) {
       return middleStatusWidget4();
-    } else if (statusCode == 5) {
+    } else if (statusCode == -3) {
       return middleStatusWidget5();
-    } else if (statusCode == 6) {
+    } else if (statusCode == 3) {
       return middleStatusWidget6();
     } else {
-      return middleStatusWidget1();
+      return middleStatusWidget4();
     }
   }
 

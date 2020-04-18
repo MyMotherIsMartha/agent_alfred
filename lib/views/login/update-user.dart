@@ -82,7 +82,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                           hintText: '请输入真实姓名',
                           label: '姓名',
                           onChange: (e) {
-                            String hint = Validate.isNon(e) ? '请输入真实姓名' : null;
+                            String hint = Validate.isNon(e) ? '请输入真实姓名' : '';
                             setState(() {
                               name = e;
                               formValidate['name'] = Validate.isNon(hint);
@@ -185,7 +185,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
           ),
         )));
   }
-
+  
   Widget _selectSex() {
     return Container(
       height: G.setWidth(100),
@@ -193,7 +193,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
       child: Row(
         children: <Widget>[
           Container(
-              padding: EdgeInsets.only(right: G.setWidth(20)),
+              width: G.setWidth(160),
               child: Text('性别',
                   style: TextStyle(fontSize: G.setSp(30), color: hex('#666')))),
           Expanded(

@@ -52,7 +52,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
   final jobCodeCtrl = TextEditingController();
   final _enterpriseNameCtrl = TextEditingController();
   final _registerCodeCtrl = TextEditingController();
-  final _areaStrCtrl = TextEditingController();
+  final _addressCtrl = TextEditingController();
   final _legalPersonCtrl = TextEditingController();
   final mobileController = TextEditingController();
   final idNoController = TextEditingController();
@@ -82,7 +82,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     areaName = areaCtrl.text = resultData['province'] + ',' + resultData['city'] + ',' + resultData['district'];
     areaCode = resultData['areaCode'];
     registerCode = _registerCodeCtrl.text = resultData['registerCode'];
-    addressStr = _areaStrCtrl.text = resultData['registerAddress'];
+    addressStr = _addressCtrl.text = resultData['registerAddress'];
     legalName = _legalPersonCtrl.text = resultData['legalPerson'];
     mobile = mobileController.text = resultData['mobile'];
     idNo = idNoController.text = resultData['legalIdCard'];
@@ -153,8 +153,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
         licenseUrl = resultData['businessLicenseUrl'];
         enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
         registerCode = _registerCodeCtrl.text = resultData['registerCode'];
-        _areaStrCtrl.text = resultData['registerAddress'];
-        addressStr = _areaStrCtrl.text = resultData['registerAddress'];
+        _addressCtrl.text = resultData['registerAddress'];
+        addressStr = _addressCtrl.text = resultData['registerAddress'];
         legalName = _legalPersonCtrl.text = resultData['legalPerson'];
       });
       // var uploadJson = FluroConvertUtils.object2string(uploadData);
@@ -478,7 +478,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                                   keyboardType: TextInputType.text,
                                   decoration:
                                       InputDecoration(border: InputBorder.none, hintText: '请输入详细注册地址'),
-                                  controller: _areaStrCtrl,
+                                  controller: _addressCtrl,
                                   onChanged: (e) {
                                     addressStr = e;
                                     setState(() {

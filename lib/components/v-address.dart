@@ -26,7 +26,7 @@ class VAddress extends StatelessWidget {
           Container(
               // padding: EdgeInsets.only(right: G.setWidth(20)),
               width: G.setWidth(160),
-              child: Text(label,
+              child: Text(label??'地区',
                   style: TextStyle(fontSize: G.setSp(30), color: hex('#666')))),
           Expanded(
             child: InkWell(

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:agent37_flutter/components/v-loading.dart';
 
 class G {
   static Router router;
@@ -124,5 +125,21 @@ class G {
   static setClipboard(String text) {
     Clipboard.setData(ClipboardData(text: text));
     toast('复制成功');
+  }
+
+  static showLoading(context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: VLoading()
+        );
+      }
+    );
+  }
+
+  static closeLoading(context) {
+    Navigator.pop(context);
   }
 }

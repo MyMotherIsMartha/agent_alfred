@@ -18,6 +18,7 @@ import 'package:agent37_flutter/views/enterpriseApprove/uploadForm.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadAudit.dart';
 import 'package:agent37_flutter/views/vipManage/index.dart';
 import 'package:agent37_flutter/views/vipManage/vipDetail.dart';
+import 'package:agent37_flutter/views/agentManage/index.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo1.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectAudit.dart';
@@ -135,9 +136,14 @@ Handler readPerfectInfoHandler = Handler(
 });
 
 Handler uploadLicenseAuditHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return UploadLicenseAudit();
-});
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String status = params['status']?.first;
+
+    return UploadLicenseAudit(
+      status: status
+    );
+  }
+);
 
 Handler vipManageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -163,10 +169,16 @@ Handler settingHandler = Handler(
 });
 
 Handler vipDetailHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
-  String vipId = params['vipId']?.first;
+  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+    String vipId = params['vipId']?.first;
+    
+    return VipDetail(
+      vipId: vipId,
+    );
+  }
+);
 
-  return VipDetail(
-    vipId: vipId,
-  );
-});
+Handler agentManageHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return AgentManageMain();
+  }
