@@ -97,7 +97,9 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     FormData data = FormData.fromMap({
         "file": await MultipartFile.fromFile(path,filename: name + '.' + suffix)
     });
+    G.showLoading(context);
     var resultInfo = await OssApi().uploadEnterpriseLicense(data);
+    G.closeLoading(context);
     if (resultInfo.data['success'] == true) {
       print('success');
       Map uploadData = resultInfo.data['data'];
@@ -107,6 +109,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     } else {
       print(resultInfo.data['message']);
     }
+    
   }
 
   void goToUploadForm() {

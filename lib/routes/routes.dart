@@ -21,6 +21,7 @@ class Routes {
   static String uploadLicenseAudit = '/uploadLicenseAudit';
   static String vipManage = '/vipManage';
   static String vipDetail = '/vipDetail';
+  static String agentManage = '/agentManage';
   static String perfectEnterprise1 = '/perfectEnterprise1';
   static String perfectEnterprise2 = '/perfectEnterprise2';
   static String perfectEnterpriseAudit = '/perfectEnterpriseAudit';
@@ -48,6 +49,7 @@ class Routes {
     router.define(uploadLicenseAudit, handler: uploadLicenseAuditHandler);
     router.define(vipManage, handler: vipManageHandler);
     router.define(vipDetail, handler: vipDetailHandler);
+    router.define(agentManage, handler: agentManageHandler);
     router.define(perfectEnterprise1, handler: perfectEnterprise1Handler);
     router.define(perfectEnterprise2, handler: perfectEnterprise2Handler);
     router.define(perfectEnterpriseAudit, handler: perfectEnterpriseAuditHandler);

@@ -60,6 +60,81 @@ class _VipDetailState extends State<VipDetail>
     scrollController.dispose();
   }
 
+  Widget serviceList({type}) {
+    print(type);
+    List currentList;
+    if (type == '待结算服务费') {
+      currentList = waitServiceAry;
+    } else {
+      currentList = alreadyServiceAry;
+    }
+    int total = currentList.length;
+    return Container(
+      color: hex('#FFF'),
+      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20)),
+      child: ListView.separated(
+        itemCount: waitServiceAry.length,
+        itemBuilder: (context, index) {
+          if (index == total) {
+            return Container(
+              alignment: Alignment.center,
+              child: Text('没有更多了'),
+            );
+          } else {
+            return serviceItem(currentList[index]);
+          }
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider(color: hex('#E5E6E5'));
+        },
+      ),
+    );
+  }
+
+  Widget serviceItem(item) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: hex('#FFF')
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Text(item.toString()),
+          Text('2018-05-06 14:20', style: TextStyle(color: hex('#999'), fontSize: G.setSp(24)),)
+        ]),
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: '￥',
+                style: TextStyle(
+                  fontSize: G.setSp(24)
+                )
+              ),
+              TextSpan(
+                text: '9999',
+                style: TextStyle(
+                  fontSize: G.setSp(30),
+                  color: hex('#333'),
+                  fontWeight: FontWeight.w600
+                )
+              ),
+              TextSpan(
+                text: '.00',
+                style: TextStyle(
+                  fontSize: G.setSp(24)
+                )
+              )
+            ]
+        )),
+      ],),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     print(widget.vipId);
@@ -211,51 +286,18 @@ class _VipDetailState extends State<VipDetail>
               tabs: tabs.map((e) => Tab(text: e)).toList()
             )
           ),
+          Expanded(
+            child: TabBarView(
+            controller: _tabController,
+            children: tabs.map((item) {
+              return serviceList(type: item);
+            }).toList()),
+          )
           // Container(
           //   child: IndexedStack(index: tabIndex, children: bodys),
           // )
         ],
       ),
-    );
-  }
-}
-
-class ServiceList extends StatelessWidget {
-  final String type;
-  ServiceList({this.type});
-
-  final List waitServiceAry = [1, 2, 3, 4];
-  final List alreadyServiceAry = [5, 6, 7, 8];
-
-  @override
-  Widget build(BuildContext context) {
-    int total = waitServiceAry.length;
-
-    return Container(
-      child: ListView.builder(
-        itemCount: waitServiceAry.length,
-        itemBuilder: (context, index) {
-          if (index == total) {
-            return Container(
-              alignment: Alignment.center,
-              child: Text('没有更多了'),
-            );
-          } else {
-            return serviceItem(waitServiceAry[index]);
-          }
-        }),
-    );
-  }
-
-  Widget serviceItem(item) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-      decoration: BoxDecoration(
-        color: hex('#FFF'),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text('ylh-test'),
     );
   }
 }
