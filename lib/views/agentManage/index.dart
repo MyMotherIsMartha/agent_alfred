@@ -335,6 +335,7 @@ class MemberList extends StatefulWidget {
 }
 
 class _MemberListState extends State<MemberList> {
+  String currentStatus = '待短信验证';
 
   showPickerDate(BuildContext context) {
     Picker(
@@ -357,6 +358,52 @@ class _MemberListState extends State<MemberList> {
         print(formatDate(selectedTime, [yyyy, '-', mm, '-', dd]));
       }
     ).showModal(context);
+  }
+
+  Widget _statucItem(String status) {
+    bool selected = status == currentStatus;
+    return InkWell(
+        onTap: () {
+          setState(() {
+            currentStatus = status;
+          });
+        },
+        child: Container(
+            width: G.setWidth(300),
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(horizontal: G.setWidth(51)),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: selected ? hex('#6982FF') : Colors.transparent),
+                borderRadius: BorderRadius.circular(G.setSp(54))),
+            child: Text(status,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: selected ? hex('#6982FF') : hex('#999999'),
+                    fontSize: G.setSp(26)))));
+  }
+
+  // 状态切换
+  Widget _statucSwitch() {
+    return Container(
+        width: double.infinity,
+        height: G.setHeight(54),
+        margin: EdgeInsets.only(bottom: G.setWidth(20)),
+        alignment: Alignment.center,
+        child: Container(
+          width: G.setWidth(600),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(G.setSp(54)),
+              color: hex('#FFF')),
+          child: Flex(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            direction: Axis.horizontal,
+            children: <Widget>[
+              _statucItem('待短信验证'),
+              _statucItem('已短信验证')
+            ],
+          ),
+        ));
   }
 
   Widget memberItem(item) {
@@ -461,45 +508,50 @@ class _MemberListState extends State<MemberList> {
 
     return Container(
       color: hex('#F3F4F6'),
-      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setHeight(30)),
-      child: Stack(
+      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setHeight(20)),
+      child: Column(
         children: <Widget>[
           Container(
-            // margin: EdgeInsets.only(top: G.setHeight(10)),
-            child: extended.NestedScrollViewInnerScrollPositionKeyWidget(
-            Key('Tab-' + widget.status.toString()),
-            EasyRefresh(
-              controller: _controller,
-              header: MaterialHeader(),
-              footer: MaterialFooter(),
-              child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: _listData.length,
-                  itemBuilder: (context, index) {
-                    if (index == total) {
-                      return Container(
-                        alignment: Alignment.center,
-                        child: Text('没有更多了'),
-                      );
-                    } else {
-                      return memberItem(_listData[index]);
-                    }
-                  }),
-              emptyWidget: _listData.length == 0
-                  ? Container(
-                      margin: EdgeInsets.only(top: G.setHeight(240)),
-                      child: VEmpty(hintText: '暂无任何会员哦～'),
-                    )
-                  : null,
-              onLoad: () async {
-                // _getOrder(false);
-              },
-              onRefresh: () async {
-                // _getOrder(true);
-              },
-            ))
+            child: widget.status == 2 ? _statucSwitch() : null,
           ),
-        ]
+          Expanded(
+            child: Container(
+              // margin: EdgeInsets.only(top: G.setHeight(10)),
+              child: extended.NestedScrollViewInnerScrollPositionKeyWidget(
+              Key('Tab-' + widget.status.toString()),
+              EasyRefresh(
+                controller: _controller,
+                header: MaterialHeader(),
+                footer: MaterialFooter(),
+                child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: _listData.length,
+                    itemBuilder: (context, index) {
+                      if (index == total) {
+                        return Container(
+                          alignment: Alignment.center,
+                          child: Text('没有更多了'),
+                        );
+                      } else {
+                        return memberItem(_listData[index]);
+                      }
+                    }),
+                emptyWidget: _listData.length == 0
+                    ? Container(
+                        margin: EdgeInsets.only(top: G.setHeight(240)),
+                        child: VEmpty(hintText: '暂无任何会员哦～'),
+                      )
+                    : null,
+                onLoad: () async {
+                  // _getOrder(false);
+                },
+                onRefresh: () async {
+                  // _getOrder(true);
+                },
+              ))
+            ),
+          )
+          ]
       ),
     );
   }
