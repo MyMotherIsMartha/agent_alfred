@@ -28,6 +28,7 @@ class _WalletMainState extends State<WalletMain> {
                   style: TextStyle(color: hex('#fff'), fontSize: G.setSp(32))))
         ],
       ),
+      body: Text('test'),
     );
   }
 }
