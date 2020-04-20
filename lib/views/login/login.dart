@@ -196,6 +196,8 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           loginType = type;
           errorMsg = null;
+          sms = null;
+          pwd = null;
         });
       },
       child: Text(
