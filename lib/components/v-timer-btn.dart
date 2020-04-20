@@ -66,7 +66,7 @@ class _VTimerBtnState extends State<VTimerBtn> {
           child: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: widget.division ? '丨   ' : '',
+                text: widget.division ? '丨  ' : '',
                 style: TextStyle(color: hex('#ccc'))
               ),
               TextSpan(

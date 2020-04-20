@@ -28,6 +28,7 @@ class _AgentVerifyState extends State<AgentVerify> {
       controller: _smsController,
       hintText: '请输入验证码',
       label: '验证码',
+      suffixWidth: 300,
       // suffix: VTimerBtn(disabled, () async {return await LoginApi().getRegisterSmsCode(mobile);}),
       suffix: VTimerBtn(
         disabled, 
@@ -76,11 +77,11 @@ class _AgentVerifyState extends State<AgentVerify> {
               fieldVal: mobile,
             ),
             _verifySmsInput(false),
-            RaisedButton(onPressed: () {
-              goNextPage();
-            },
-            child: Text('go next'),
-            )
+            // RaisedButton(onPressed: () {
+            //   goNextPage();
+            // },
+            // child: Text('go next'),
+            // )
           ],)
         )
       ),
