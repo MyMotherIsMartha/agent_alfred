@@ -624,8 +624,6 @@ class _HomePageState extends State<HomePage>
             child: FutureBuilder(
               future: homeFuture,
               builder: (context, shapshot) {
-                // UserinfoModel userinfo =
-                //     Provider.of<UserProvide>(context).userinfo;
                 if (shapshot.hasData && homeinfo != null) {
                   return Container(
                     width: double.infinity,
