@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:agent37_flutter/api/login.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
@@ -99,7 +97,7 @@ class _VTimerBtnState extends State<VTimerBtn> {
           if (result.data['code'] == 200) {
             countDown();
           } else {
-            print(result.data['code']);
+            print(result.data['message']);
           }
         },
       ),

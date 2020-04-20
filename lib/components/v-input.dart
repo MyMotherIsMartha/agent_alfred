@@ -17,6 +17,8 @@ class VInput extends StatefulWidget {
   final String value;
   final bool readOnly;
   final Function onTap;
+  final double labelWidth;
+  final double suffixWidth;
   VInput(
       {@required this.controller,
       @required this.hintText,
@@ -29,6 +31,8 @@ class VInput extends StatefulWidget {
       this.maxLength,
       this.readOnly,
       this.onTap,
+      this.labelWidth,
+      this.suffixWidth,
       this.value});
   @override
   _VInputState createState() => _VInputState();
@@ -61,73 +65,71 @@ class _VInputState extends State<VInput> {
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.center,
-        height: G.setHeight(100),
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: hex('#eee'), width: G.setWidth(1)))
-        ),
-        padding: EdgeInsets.symmetric(
-            horizontal: G.setWidth(30)),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: G.setWidth(160),
-              child: Text(widget.label, style: TextStyle(
-                fontSize: G.setSp(30),
-                color: hex('#666')
-              ))
+            border: Border(
+                bottom: BorderSide(color: hex('#eee'), width: G.setWidth(1)))),
+        padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
+        child: TextFormField(
+            style: TextStyle(
+              color: widget.readOnly??false ? hex('#999') : hex('#333')
             ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                child: TextFormField(
-                  textAlignVertical: TextAlignVertical.bottom,
-                  keyboardType: widget.type,
-                  controller: widget.controller,
-                  focusNode: widget.readOnly != null ? _focusReadonly : _focus,
-                  onTap: () {
-                    if (widget.onTap != null) {
-                      widget.onTap();
-                    }
-                  },
-                  readOnly: widget.readOnly??false,
-                  obscureText: widget.type == TextInputType.visiblePassword,
-                  maxLength: widget.maxLength,
-                  buildCounter: (context, {currentLength, isFocused, maxLength}) => null,
-                  
-                  style: TextStyle(
-                      fontSize: G.setSp(32),
-                      height: 1.3,
-                      textBaseline: TextBaseline.alphabetic),
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: widget.hintText,
-                              ),
-                  onChanged: (str) {
-                    widget.onChange(str);
-                    setState(() {
-                      _hasdeleteIcon = (str.isNotEmpty);
-                    });
-                  },
-                  validator: widget.validator),
-            )),
-            Container(
-              child: widget.suffixIcon != null
-                          ? widget.suffixIcon
-                          : _hasdeleteIcon
-                              ? IconButton(
-                                  icon: iconclose(),
-                                  onPressed: () {
-                                    clearText(widget.controller);
-                                    widget.onChange(null);
-                                  },
-                                )
-                              : null,
-            ),
-            widget.suffix != null ? widget.suffix : Container()
-          ],
-        ));
+            keyboardType: widget.type,
+            controller: widget.controller,
+            focusNode: widget.readOnly != null ? _focusReadonly : _focus,
+            onTap: () {
+              if (widget.onTap != null) {
+                widget.onTap();
+              }
+            },
+            readOnly: widget.readOnly ?? false,
+            obscureText: widget.type == TextInputType.visiblePassword,
+            decoration: InputDecoration(
+                suffixIcon: Container(
+                    width: widget.suffix != null
+                        ? G.setWidth(widget.suffixWidth ?? 140)
+                        : G.setWidth(70),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        widget.suffixIcon != null
+                            ? widget.suffixIcon
+                            : _hasdeleteIcon
+                                ? IconButton(
+                                    icon: iconclose(color: hex('#999')),
+                                    onPressed: () {
+                                      clearText(widget.controller);
+                                      widget.onChange(null);
+                                    },
+                                  )
+                                : SizedBox(width: 0),
+                        widget.suffix != null
+                            ? widget.suffix
+                            : SizedBox(width: 0)
+                      ],
+                    )),
+                border: InputBorder.none,
+                hintText: widget.hintText,
+                prefixIcon: Container(
+                  alignment: Alignment.centerLeft,
+                  width: widget.labelWidth ?? G.setWidth(160),
+                  child: Text(
+                    widget.label,
+                    style: TextStyle(fontSize: G.setSp(30), color: hex('#666')),
+                  ),
+                )),
+            onChanged: (str) {
+              String newStr = str;
+              if (widget.maxLength != null && str.length > widget.maxLength) {
+                String newStr = str.substring(0, widget.maxLength);
+                widget.controller.value = G.setTextEdit(newStr);
+              } else {
+                widget.onChange(newStr);
+              }
+              setState(() {
+                _hasdeleteIcon = (str.isNotEmpty);
+              });
+            },
+            validator: widget.validator));
   }
 
   void clearText(_controller) {

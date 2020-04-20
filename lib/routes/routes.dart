@@ -30,6 +30,12 @@ class Routes {
   static String financePage = '/finance';
   static String financeSearchPage = '/finance/search';
   static String setting = '/setting';
+  static String settingUserinfo = '/setting/userinfo';
+  static String settingNickname = '/setting/nickname';
+  static String settingSafe = '/setting/safe';
+  static String settingpwd = '/setting/pwd';
+  static String resetPwd = '/setting/resetpwd';
+  static String resetMobile = '/setting/mobile';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -62,5 +68,11 @@ class Routes {
     router.define(financePage, handler: financeHandler);
     router.define(financeSearchPage, handler: financeSearchHandler);
     router.define(setting, handler: settingHandler);
+    router.define(settingUserinfo, handler: settingUserInfoHandler);
+    router.define(settingNickname, handler: settingNicknameHandler);
+    router.define(settingSafe, handler: settingSafeHandler);
+    router.define(settingpwd, handler: settingPwdHandler);
+    router.define(resetPwd, handler: resetPwdHandler);
+    router.define(resetMobile, handler: resetMobileHandler);
   }
 }

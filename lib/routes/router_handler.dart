@@ -13,6 +13,12 @@ import 'package:agent37_flutter/views/login/order-result.dart';
 import 'package:agent37_flutter/views/login/register.dart';
 import 'package:agent37_flutter/views/login/update-user.dart';
 import 'package:agent37_flutter/views/setting/index.dart';
+import 'package:agent37_flutter/views/setting/mobile.dart';
+import 'package:agent37_flutter/views/setting/nickname.dart';
+import 'package:agent37_flutter/views/setting/password.dart';
+import 'package:agent37_flutter/views/setting/reset-pwd.dart';
+import 'package:agent37_flutter/views/setting/safe.dart';
+import 'package:agent37_flutter/views/setting/userinfo.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadPic.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadForm.dart';
@@ -170,6 +176,42 @@ Handler financeSearchHandler = Handler(
 Handler settingHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return SettingPage();
+});
+
+// 设置用户信息
+Handler settingUserInfoHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SettingUserInfoPage();
+});
+
+// 设置昵称
+Handler settingNicknameHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SettingNicknamePage();
+});
+
+// 账户安全
+Handler settingSafeHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SettingSafePage();
+});
+
+// 登录密码
+Handler settingPwdHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SettingPwdPage();
+});
+
+// 重置登录密码
+Handler resetPwdHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SettingResetPwdPage();
+});
+
+// 重置手机号
+Handler resetMobileHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SettingMobilePage();
 });
 
 Handler vipDetailHandler = Handler(

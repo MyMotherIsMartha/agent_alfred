@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SettringResetPwdPage extends StatelessWidget {
+class SettingResetPwdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

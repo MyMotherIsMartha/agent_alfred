@@ -6,6 +6,10 @@ class UserAuthModel {
   int prefectStatus;
   int giftPackageOrderStatus;
   String auditRefuseReason;
+  String headSculptureUrl;
+  String mobile;
+  String nickname;
+  bool isSettingPassword;
 
   UserAuthModel(
       {this.isContactsPrefected,
@@ -14,7 +18,12 @@ class UserAuthModel {
       this.checkStatus,
       this.prefectStatus,
       this.giftPackageOrderStatus,
-      this.auditRefuseReason});
+      this.auditRefuseReason,
+      this.headSculptureUrl,
+      this.mobile,
+      this.nickname,
+      this.isSettingPassword,
+      });
 
   UserAuthModel.fromJson(Map<String, dynamic> json) {
     isContactsPrefected = json['isContactsPrefected'];
@@ -24,6 +33,10 @@ class UserAuthModel {
     prefectStatus = json['prefectStatus'];
     giftPackageOrderStatus = json['giftPackageOrderStatus'];
     auditRefuseReason = json['auditRefuseReason'];
+    headSculptureUrl = json['headSculptureUrl'];
+    mobile = json['mobile'];
+    nickname = json['nickname'];
+    isSettingPassword = json['isSettingPassword'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +48,10 @@ class UserAuthModel {
     data['prefectStatus'] = this.prefectStatus;
     data['giftPackageOrderStatus'] = this.giftPackageOrderStatus;
     data['auditRefuseReason'] = this.auditRefuseReason;
+    data['headSculptureUrl'] = this.headSculptureUrl;
+    data['mobile'] = this.mobile;
+    data['nickname'] = this.nickname;
+    data['isSettingPassword'] = this.isSettingPassword;
     return data;
   }
 }
