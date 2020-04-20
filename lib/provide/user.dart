@@ -35,6 +35,7 @@ class UserProvide with ChangeNotifier{
         notifyListeners();
       }
       G.toast('更新成功');
+      updateUserAuth();
     } else {
       G.toast('更新失败');
     }
@@ -44,6 +45,7 @@ class UserProvide with ChangeNotifier{
     // if (!getInfoFlag) return;
     // getInfoFlag = false;
     var result = await LoginApi().getUserAuth();
+    print(result.data.toString());
     if (result.data['code'] == 200) {
       print(result.data['data']);
       userAuthInfo = UserAuthModel.fromJson(result.data['data']);
@@ -57,7 +59,7 @@ class UserProvide with ChangeNotifier{
         return;
       }
       if (userAuthInfo.giftPackageOrderStatus == null
-       || userAuthInfo.giftPackageOrderStatus == 0
+      //  || userAuthInfo.giftPackageOrderStatus == 0
        || userAuthInfo.giftPackageOrderStatus == -1
        || userAuthInfo.giftPackageOrderStatus == -2
       ) {
@@ -102,15 +104,15 @@ class UserProvide with ChangeNotifier{
     int status = userAuthInfo.qualificationsStatus;
     switch (status) {
       case 0:
-      case -2:
-      case -3:
         G.router.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
         break;
+      case -2:
+      case -3: 
       case 1:
       case 2:
       case 3:
       case -1:
-        G.router.navigateTo(G.currentContext, '/uploadLicenseAudit', replace: true);
+        G.router.navigateTo(G.currentContext, '/uploadLicenseAudit?status=$status', replace: true);
         break;
       case 4:
         G.router.navigateTo(G.currentContext, '/index', replace: true);

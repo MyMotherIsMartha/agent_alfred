@@ -6,12 +6,14 @@ import 'package:agent37_flutter/api/oss.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/models/gift-packages.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/oss.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/views/login/components/gift-item.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CertificatePage extends StatefulWidget {
   final String no;
@@ -241,6 +243,7 @@ class _CertificatePageState extends State<CertificatePage> {
                 print(result);
                 if (result.data['code'] == 200) {
                   G.toast('提交凭证成功');
+                  Provider.of<UserProvide>(context).updateUserAuth();
                 }
               }
             },
