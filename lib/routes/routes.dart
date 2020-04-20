@@ -18,10 +18,11 @@ class Routes {
   static String finePointPage = '/fine-point';
   static String uploadEnterPrisePic = '/uploadEnterPrisePic';
   static String uploadLicenseForm = '/uploadLicenseForm';
-  static String uploadLicenseAudit = '/uploadLicenseAudit';
+  static String resultPage = '/resultPage';
   static String vipManage = '/vipManage';
   static String vipDetail = '/vipDetail';
   static String agentManage = '/agentManage';
+  static String agentVerify = '/agentVerify';
   static String perfectEnterprise1 = '/perfectEnterprise1';
   static String perfectEnterprise2 = '/perfectEnterprise2';
   static String perfectEnterpriseAudit = '/perfectEnterpriseAudit';
@@ -55,10 +56,11 @@ class Routes {
     router.define(finePointPage, handler: finePointHandel);
     router.define(uploadEnterPrisePic, handler: uploadEnterPrisePicHandler);
     router.define(uploadLicenseForm, handler: uploadLicenseFormHandler);
-    router.define(uploadLicenseAudit, handler: uploadLicenseAuditHandler);
+    router.define(resultPage, handler: resultPageHandler);
     router.define(vipManage, handler: vipManageHandler);
     router.define(vipDetail, handler: vipDetailHandler);
     router.define(agentManage, handler: agentManageHandler);
+    router.define(agentVerify, handler: agentVerifyHandler);
     router.define(perfectEnterprise1, handler: perfectEnterprise1Handler);
     router.define(perfectEnterprise2, handler: perfectEnterprise2Handler);
     router.define(perfectEnterpriseAudit, handler: perfectEnterpriseAuditHandler);

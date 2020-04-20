@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/views/common/resultPage.dart';
 import 'package:agent37_flutter/views/finance/index.dart';
 import 'package:agent37_flutter/views/finance/search.dart';
 import 'package:agent37_flutter/views/home/fine-print.dart';
@@ -21,10 +22,10 @@ import 'package:agent37_flutter/views/setting/userinfo.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadPic.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/uploadForm.dart';
-import 'package:agent37_flutter/views/enterpriseApprove/uploadAudit.dart';
 import 'package:agent37_flutter/views/vipManage/index.dart';
 import 'package:agent37_flutter/views/vipManage/vipDetail.dart';
 import 'package:agent37_flutter/views/agentManage/index.dart';
+import 'package:agent37_flutter/views/agentManage/agentVerify.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo1.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectAudit.dart';
@@ -141,12 +142,15 @@ Handler readPerfectInfoHandler = Handler(
   return ReadPerfectInfo();
 });
 
-Handler uploadLicenseAuditHandler = Handler(
+Handler resultPageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     String status = params['status']?.first;
-
-    return UploadLicenseAudit(
-      status: status
+    String title = params['title']?.first;
+    String haveExit = params['haveExit']?.first;
+    return ResultPage(
+      status: status,
+      title: title,
+      haveExit: haveExit
     );
   }
 );
@@ -223,5 +227,17 @@ Handler vipDetailHandler = Handler(
 Handler agentManageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return AgentManageMain();
+  }
+);
+
+Handler agentVerifyHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+    String company = params['company']?.first;
+    String mobile = params['mobile']?.first;
+    
+    return AgentVerify(
+      company: company,
+      mobile: mobile
+    );
   }
 );

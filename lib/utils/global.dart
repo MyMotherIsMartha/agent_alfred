@@ -113,6 +113,14 @@ class G {
     );
   }
 
+  static Widget verticalLine(double height, {Color color}) {
+    return Container(
+      height: G.setWidth(height),
+      color: color,
+      width: G.setHeight(1),
+    );
+  }
+
   static setTextEdit(String val) {
     return TextEditingValue(
         text: val,
