@@ -9,3 +9,7 @@ class OrderInfoBus {
   String price;
   OrderInfoBus(this.giftPackageNo, this.price);
 }
+
+class TimerClearBus {
+  TimerClearBus();
+}

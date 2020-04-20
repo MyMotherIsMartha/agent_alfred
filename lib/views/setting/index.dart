@@ -6,9 +6,21 @@ import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:provider/provider.dart';
 
 class SettingPage extends StatelessWidget {
+  void logout(context) {
+    print(G.getPref('token'));
+    if (G.getPref('token') == null) {
+      Future.delayed(Duration(seconds: 1000), () {
+        print('123412343214');
+        Provider.of<UserProvide>(context).updateUserAuth();
+      });
+      // Provider.of<UserProvide>(context).updateUserAuth();
+    }
+  }
+
   Widget _userMsg(context) {
     return ListTile(
       title: Text('用户信息',
@@ -64,7 +76,9 @@ class SettingPage extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        G.router.navigateTo(context, '/perfectEnterprise1');
+      },
     );
   }
 
@@ -199,6 +213,9 @@ class SettingPage extends StatelessWidget {
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: InkWell(
+                  onTap: () {
+                     G.router.navigateTo(context, '/login', replace: true);
+                  },
                   child: Text('退出登录',
                       style:
                           TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
@@ -207,5 +224,48 @@ class SettingPage extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  YYDialog yyAlertDialog(BuildContext context) {
+    return YYDialog().build(context)
+      ..width = G.setWidth(600)
+      ..height = G.setHeight(240)
+      ..borderRadius = G.setWidth(20)
+      ..text(
+        padding: EdgeInsets.all(G.setHeight(60)),
+        alignment: Alignment.center,
+        text: "是否退出登录",
+        color: hex('#333'),
+        fontSize: G.setSp(36),
+        fontWeight: FontWeight.w500,
+      )
+      ..divider()
+      ..doubleButton(
+          padding: EdgeInsets.only(top: 10.0),
+          gravity: Gravity.center,
+          withDivider: true,
+          text1: "取消",
+          color1: hex('#85868A'),
+          fontSize1: G.setSp(36),
+          onTap1: () {
+            print("取消");
+          },
+          text2: "确定",
+          color2: hex('##0091F0'),
+          fontSize2: G.setSp(36),
+          onTap2: () {
+            G.removePref('token');
+          })
+      ..show()
+      ..dismissCallBack = () {
+        G.router.navigateTo(context, '/login', replace: true);
+        // if (G.getPref('token') == null) {
+        //   Future.delayed(Duration(seconds: 1000), () {
+        //     print('123412343214');
+        //     Provider.of<UserProvide>(context).updateUserAuth();
+        //   });
+        //   // Provider.of<UserProvide>(context).updateUserAuth();
+        // }
+      };
   }
 }

@@ -42,12 +42,14 @@ class UserProvide with ChangeNotifier{
   }
 
   updateUserAuth({bool isInit = true}) async {
+    if (G.getPref('token') == null) {
+       G.router.navigateTo(G.currentContext, '/login', replace: true);
+       return;
+    }
     // if (!getInfoFlag) return;
     // getInfoFlag = false;
     var result = await LoginApi().getUserAuth();
-    print(result.data.toString());
     if (result.data['code'] == 200) {
-      print(result.data['data']);
       userAuthInfo = UserAuthModel.fromJson(result.data['data']);
       if (!isInit) {
         notifyListeners();

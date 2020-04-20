@@ -88,7 +88,7 @@ class _VCircleInputState extends State<VCircleInput> {
                   
                   style: TextStyle(
                       fontSize: G.setSp(32),
-                      // height: 1,
+                      height: 1.5,
                       textBaseline: TextBaseline.alphabetic),
                   decoration: InputDecoration(
                     
