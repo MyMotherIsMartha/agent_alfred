@@ -37,7 +37,7 @@ class _VFieldState extends State<VField> {
               ))
             ),
             Expanded(
-              child: Text(widget.fieldVal, style: TextStyle(color: hex('#999')),)
+              child: Text(widget.fieldVal, style: TextStyle(color: hex('#999'), fontSize: G.setSp(30)),)
             )
           ],
         ));

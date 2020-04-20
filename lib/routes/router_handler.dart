@@ -30,6 +30,7 @@ import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo1.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectAudit.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/readPerfectInfo.dart';
+import 'package:agent37_flutter/views/wallet/index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/material.dart';
@@ -154,6 +155,13 @@ Handler resultPageHandler = Handler(
     );
   }
 );
+
+
+//  钱包
+Handler walletMainHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return WalletMain();
+});
 
 Handler vipManageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {

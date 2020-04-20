@@ -1,4 +1,6 @@
 import 'dart:async';
+
+import 'package:agent37_flutter/api/login.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +10,7 @@ class VTimerBtn extends StatefulWidget {
   final bool disabled;
   final String color;
   final Function cb;
-  final bool division;
-  VTimerBtn(this.disabled, this.cb, {this.color, this.division: false});
+  VTimerBtn(this.disabled, this.cb, {this.color});
   
   @override
   _VTimerBtnState createState() => _VTimerBtnState();
@@ -63,32 +64,13 @@ class _VTimerBtnState extends State<VTimerBtn> {
       child: InkWell(
         child: Opacity(
           opacity: widget.disabled ? .5 : 1,
-          child: Text.rich(TextSpan(
-            children: [
-              TextSpan(
-                text: widget.division ? '丨   ' : '',
-                style: TextStyle(color: hex('#ccc'))
-              ),
-              TextSpan(
-                text: countDownTime <= 0
-                ? "获取验证码"
-                : countDownTime < 10 ? '0$countDownTime' + 'S' : '$countDownTime' + 'S',
-                style: TextStyle(
-                  fontSize: G.setSp(30),
-                  color: widget.color != null ? hex(widget.color):  hex('#333'),
-                  height: 1.5
-                )
-              ),
-              
-            ]
-          ))
-          // (countDownTime <= 0
-          //   ? "获取验证码"
-          //   : countDownTime < 10 ? '0$countDownTime' + 'S' : '$countDownTime' + 'S', style: TextStyle(
-          //     fontSize: G.setSp(30),
-          //     color: widget.color != null ? hex(widget.color):  hex('#333'),
-          //     height: 1.5
-          //   )),
+          child: Text(countDownTime <= 0
+            ? "获取验证码"
+            : countDownTime < 10 ? '0$countDownTime' + 'S' : '$countDownTime' + 'S', style: TextStyle(
+              fontSize: G.setSp(30),
+              color: widget.color != null ? hex(widget.color):  hex('#333'),
+              height: 1.5
+            )),
         ),
         onTap: () async {
           if (countDownTime > 0) return;
@@ -97,7 +79,7 @@ class _VTimerBtnState extends State<VTimerBtn> {
           if (result.data['code'] == 200) {
             countDown();
           } else {
-            print(result.data['message']);
+            print(result.data['code']);
           }
         },
       ),

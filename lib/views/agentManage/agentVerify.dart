@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-field.dart';
 import 'package:agent37_flutter/components/v-input.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
@@ -26,14 +27,15 @@ class _AgentVerifyState extends State<AgentVerify> {
     return VInput(
       type: TextInputType.number,
       controller: _smsController,
+      suffixDivider: true,
       hintText: '请输入验证码',
       label: '验证码',
+      suffixWidth: 180,
       // suffix: VTimerBtn(disabled, () async {return await LoginApi().getRegisterSmsCode(mobile);}),
       suffix: VTimerBtn(
         disabled, 
         () {},
         color: '#0091F0',
-        division: true,
       ),
       onChange: (e) {
         // String hint = Validate.isNon(e) ? '请输入真实姓名' : null;
@@ -62,26 +64,34 @@ class _AgentVerifyState extends State<AgentVerify> {
       body: Container(
         color: hex('#F3F4F6'),
         margin: EdgeInsets.only(top: G.setWidth(20)),
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-            VField(
-              label: '公司名称',
-              fieldVal: company,
-            ),
-            VField(
-              label: '手机号',
-              fieldVal: mobile,
-            ),
-            _verifySmsInput(false),
-            RaisedButton(onPressed: () {
-              goNextPage();
-            },
-            child: Text('go next'),
-            )
-          ],)
+        child: Column(
+         children: <Widget>[
+           Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+              VField(
+                label: '公司名称',
+                fieldVal: company,
+              ),
+              VField(
+                label: '手机号',
+                fieldVal: mobile,
+              ),
+              _verifySmsInput(false),
+              // RaisedButton(onPressed: () {
+              //   goNextPage();
+              // },
+              // child: Text('go next'),
+              // )
+            ],)
+          ),
+          Container(
+            margin: EdgeInsets.only(top: G.setWidth(80)),
+            child: VButton(text: '验证', fn: null)
+          )
+         ], 
         )
       ),
     );
