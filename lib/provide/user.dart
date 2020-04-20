@@ -7,22 +7,22 @@ import 'package:flutter/material.dart';
 
 class UserProvide with ChangeNotifier{
   UserAuthModel userAuthInfo;
-  UserinfoModel userinfo;
+  // UserinfoModel userinfo;
   bool getInfoFlag = true;
 
-  getUserInfo() async {
-    if (!getInfoFlag) return;
-    print('get userinfo from provide');
-    var result = await MemberApi().getUserinfo();
-    if (result.data['code'] == 200) {
-      getInfoFlag = false;
-      print(result.data['data']);
-      userinfo = userinfoModelFromJson(result.data['data']);
-      notifyListeners();
-    }
-  }
+  // getUserInfo() async {
+  //   if (!getInfoFlag) return;
+  //   print('get userinfo from provide');
+  //   var result = await MemberApi().getUserinfo();
+  //   if (result.data['code'] == 200) {
+  //     getInfoFlag = false;
+  //     print(result.data['data']);
+  //     userinfo = userinfoModelFromJson(result.data['data']);
+  //     notifyListeners();
+  //   }
+  // }
 
-  refreshUserinfo() {
+  refreshUserAuthinfo() {
     getInfoFlag = true;
     notifyListeners();
   }
@@ -40,11 +40,17 @@ class UserProvide with ChangeNotifier{
     }
   }
 
-  updateUserAuth() async {
+  updateUserAuth({bool isInit = true}) async {
+    // if (!getInfoFlag) return;
+    // getInfoFlag = false;
     var result = await LoginApi().getUserAuth();
     if (result.data['code'] == 200) {
       print(result.data['data']);
       userAuthInfo = UserAuthModel.fromJson(result.data['data']);
+      if (!isInit) {
+        notifyListeners();
+        return;
+      }
       if (!userAuthInfo.isContactsPrefected) {
         G.router.navigateTo(G.currentContext, '/update-user', replace: true);
         notifyListeners();
@@ -68,8 +74,11 @@ class UserProvide with ChangeNotifier{
           case 2:
             qualificationsStatus();
             break;
-          default:
+          case 0:
             G.router.navigateTo(G.currentContext, '/create-account', replace: true);
+            break;
+          default:
+            print('获取一下最新信息');
         }
       }
       // qualificationsStatus
