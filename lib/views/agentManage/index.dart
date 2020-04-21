@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -453,8 +454,10 @@ class _MemberListState extends State<MemberList> {
         InkWell(
           onTap: () {
             // print(item["value"].toString());
-            String vipId = item["value"].toString();
-            G.router.navigateTo(context, Routes.vipDetail + '?vipId=$vipId');
+            var mobile = '18892663025';
+            var company = '奥克斯空调有限公司还能不能再长了';
+            String companyStr = FluroConvertUtils.fluroCnParamsEncode(company);
+            G.router.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr');
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10),

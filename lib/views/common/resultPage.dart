@@ -7,18 +7,20 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:provider/provider.dart';
 
-class UploadLicenseAudit extends StatefulWidget {
+class ResultPage extends StatefulWidget {
   final String status;
+  final String title;
+  final String haveExit;
 
-  UploadLicenseAudit({this.status});
+  ResultPage({this.status, this.title: 'no', this.haveExit: 'yes'});
 
   @override
-  _UploadLicenseAuditState createState() => _UploadLicenseAuditState();
+  _ResultPageState createState() => _ResultPageState();
 }
 
-class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
+class _ResultPageState extends State<ResultPage> {
   var statusCode = 1;
-
+  var appTitle = '企业信息审核';
 
   @override
   void initState() {
@@ -26,6 +28,12 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
    
     statusCode = int.parse(widget.status);
     print(statusCode);
+    print(widget.title);
+    print(widget.haveExit);
+    if (widget.title != 'no') {
+      appTitle = FluroConvertUtils.fluroCnParamsDecode(widget.title);
+    }
+    
   }
 
   void refreshFunc() async {
@@ -312,6 +320,50 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
     ); 
   }
 
+  //  代理商短信验证
+  Widget middleStatusWidgetAgent() {
+    return Column(
+      children: <Widget>[
+        Container(
+          width: G.setWidth(350),
+          height: G.setWidth(350),
+          margin: EdgeInsets.only(top: G.setHeight(100)),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("lib/assets/images/enterprise/finish.png"),
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        G.spacing(G.setHeight(50)),
+        Text('短信验证成功',
+              style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
+        //   G.spacing(G.setHeight(10)),      
+        // Text('已开通代理商，快去完成考核任务吧', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+        Container(
+          height: G.setHeight(265),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              elevation: 4.0,
+              color: hex('#69A5FF'),
+              textColor: Colors.white,
+              shape: StadiumBorder(),
+              child: Padding(padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Text('返回', style: TextStyle(fontSize: G.setSp(36))),
+              )
+            )
+          ],)
+        )
+      ],
+    ); 
+  }
+
   Widget getCurrentWidget() {
     // 资审状态 -3：资质审核关闭；-2: 资质审核超时; -1: 资质审核拒绝; 0: 待资质审核提交；1: 资质审核已提交 2：待资质审核；3：资质审核延迟申请；4：资质审核成功
     if (statusCode == 1) {
@@ -326,6 +378,9 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
       return middleStatusWidget5();
     } else if (statusCode == 3) {
       return middleStatusWidget6();
+    } else if (statusCode == 11) {
+      //  代理商短信验证
+      return middleStatusWidgetAgent();
     } else {
       return middleStatusWidget4();
     }
@@ -351,16 +406,17 @@ class _UploadLicenseAuditState extends State<UploadLicenseAudit> {
               elevation: 0,
               backgroundColor: Colors.transparent,
               centerTitle: true,
-              iconTheme: IconThemeData(color: hex('#E7D1A8')),
+              iconTheme: IconThemeData(color: hex('#fff')),
               title: Text(
-                '企业信息审核',
+                appTitle,
                 style: TextStyle(color: hex('#fff'), fontSize: G.setSp(36)),
               ),
               actions: <Widget>[
+                widget.haveExit == 'yes' ? 
                 FlatButton(
                     onPressed: () {},
                     child: Text('退出',
-                        style: TextStyle(color: hex('#fff'), fontSize: G.setSp(32))))
+                        style: TextStyle(color: hex('#fff'), fontSize: G.setSp(32)))) : Text('')
               ],
             ),
             Container(
