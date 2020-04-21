@@ -53,4 +53,14 @@ class SettingApi{
   checkChangeSmsCode(data) async {
     return await service().put('$agentMemberApi/v1/agentMemberAccounts/changeMobileVerify', data: data);
   }
+
+  // 更新手机号码
+  /* 
+    "newPassword1": "string",
+    "newPassword2": "string",
+    "password": "string"
+   */
+  updatePassword(data) async {
+    return await service().put('$agentMemberApi/v1/agentMemberAccounts/updatePassword', data: data);
+  }
 }

@@ -52,4 +52,11 @@ class LoginApi{
   getUserAuth() async {
     return await service().get('$agentMemberApi/v1/agentMemberAccounts/current');
   }
+
+  // 发送忘记密码验证码
+  forgetSms(mobile) async {
+    return await service().post('$serviceAuthApi/v1/agentSmsSenders/forgetPassword', data: {
+      'mobile': mobile
+    });
+  }
 }
