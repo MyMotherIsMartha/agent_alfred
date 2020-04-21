@@ -114,7 +114,7 @@ class UserProvide with ChangeNotifier{
       case 2:
       case 3:
       case -1:
-        G.router.navigateTo(G.currentContext, '/uploadLicenseAudit?status=$status', replace: true);
+        G.router.navigateTo(G.currentContext, '/resultPage?status=$status', replace: true);
         break;
       case 4:
         G.router.navigateTo(G.currentContext, '/index', replace: true);

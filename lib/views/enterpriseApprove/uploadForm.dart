@@ -404,12 +404,12 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
                       };
                       print(params);
-                      // G.router.navigateTo(context, '/uploadLicenseAudit');
+                      // G.router.navigateTo(context, '/resultPage');
                       var result = await MemberApi().updateEnterpriseInfo(params);
                       print(result.data.toString());
                       if (result.data['code'] == 200) {
                         print('test');
-                        G.router.navigateTo(context, '/uploadLicenseAudit?status=1');
+                        G.router.navigateTo(context, '/resultPage?status=1');
                       } else {
                         print('出错');
                       }

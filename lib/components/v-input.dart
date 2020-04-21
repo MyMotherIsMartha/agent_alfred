@@ -16,6 +16,7 @@ class VInput extends StatefulWidget {
   final Widget suffixIcon;
   final String value;
   final bool readOnly;
+  final bool suffixDivider;
   final Function onTap;
   final double labelWidth;
   final double suffixWidth;
@@ -33,6 +34,7 @@ class VInput extends StatefulWidget {
       this.onTap,
       this.labelWidth,
       this.suffixWidth,
+      this.suffixDivider,
       this.value});
   @override
   _VInputState createState() => _VInputState();
@@ -71,8 +73,7 @@ class _VInputState extends State<VInput> {
         padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
         child: TextFormField(
             style: TextStyle(
-              color: widget.readOnly??false ? hex('#999') : hex('#333')
-            ),
+                color: widget.readOnly ?? false ? hex('#999') : hex('#333')),
             keyboardType: widget.type,
             controller: widget.controller,
             focusNode: widget.readOnly != null ? _focusReadonly : _focus,
@@ -91,6 +92,16 @@ class _VInputState extends State<VInput> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+                        Container(
+                          height: G.setWidth(36),
+                          decoration: BoxDecoration(
+                              border: widget.suffixDivider ?? false
+                                  ? Border(
+                                      left: BorderSide(
+                                          color: hex('#CCC'),
+                                          width: G.setWidth(1)))
+                                  : Border()),
+                        ),
                         widget.suffixIcon != null
                             ? widget.suffixIcon
                             : _hasdeleteIcon

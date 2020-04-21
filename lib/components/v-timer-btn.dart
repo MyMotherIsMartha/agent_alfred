@@ -89,7 +89,7 @@ class _VTimerBtnState extends State<VTimerBtn> {
           if (result.data['code'] == 200) {
             countDown();
           } else {
-            print(result.data['message']);
+            print(result.data['code']);
           }
           G.router.pop(context);
         },
