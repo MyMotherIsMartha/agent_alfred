@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:agent37_flutter/api/login.dart';
+import 'package:agent37_flutter/utils/event_bus.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +16,7 @@ class VTimerBtn extends StatefulWidget {
 }
 
 class _VTimerBtnState extends State<VTimerBtn> {
+  StreamSubscription timerSubscription;
   /// 开始倒计时 时间
   int startTime;
 
@@ -47,6 +47,13 @@ class _VTimerBtnState extends State<VTimerBtn> {
   @override
   void initState() {
     super.initState();
+    timerSubscription = eventBus.on<TimerClearBus>().listen((event) {
+      setState(() {
+        countDownTime = 0;
+      });
+      G.removePref('startTime');
+      _timer?.cancel();
+    });
     if (G.getPref('startTime') != null) {
       startTime = int.parse(G.getPref('startTime'));
     }
@@ -56,6 +63,8 @@ class _VTimerBtnState extends State<VTimerBtn> {
   void dispose() {
     super.dispose();
     _timer?.cancel();
+    //取消订阅
+    timerSubscription.cancel();
   }
 
   @override
@@ -75,12 +84,14 @@ class _VTimerBtnState extends State<VTimerBtn> {
         onTap: () async {
           if (countDownTime > 0) return;
           if (widget.disabled) return;
+          G.showLoading(context);
           var result = await widget.cb();
           if (result.data['code'] == 200) {
             countDown();
           } else {
             print(result.data['code']);
           }
+          G.router.pop(context);
         },
       ),
       // padding: EdgeInsets.only(left: 10),

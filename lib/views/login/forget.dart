@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/api/login.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-hint.dart';
@@ -93,9 +94,10 @@ class _ForgetPageState extends State<ForgetPage> {
                             _smsValidate(value);
                             sms = value;
                           },
+                          suffixWidth: 270,
                           suffix: VTimerBtn(
                             smsDisabled,
-                            () {},
+                            () => LoginApi().forgetSms(mobile),
                             color: '#0091F0',
                           ),
                         ),
@@ -107,6 +109,7 @@ class _ForgetPageState extends State<ForgetPage> {
                           type: pwdVisible
                               ? TextInputType.text
                               : TextInputType.visiblePassword,
+                          
                           suffixIcon: IconButton(
                             onPressed: () {
                               setState(() {

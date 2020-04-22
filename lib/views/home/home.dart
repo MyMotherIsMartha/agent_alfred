@@ -600,11 +600,22 @@ class _HomePageState extends State<HomePage>
         ));
   }
 
+  @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
     msgFuture = _getMsgCount();
     homeFuture = _getHomeinfo();
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    var bool = ModalRoute.of(context).isCurrent;
+    if (bool) {
+      _refreshController.callRefresh();
+    }
+
   }
 
   @override

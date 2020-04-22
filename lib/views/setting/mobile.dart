@@ -6,6 +6,7 @@ import 'package:agent37_flutter/components/v-input.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
 import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/utils/event_bus.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
@@ -75,11 +76,11 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
                 controller: _smsController,
                 hintText: '请输入验证码',
                 label: '验证码',
+                type: TextInputType.number,
                 maxLength: 4,
                 onChange: (value) {
                   _smsValidate(value, formValidate1);
                   sms = value;
-                  print(formValidate1);
                 },
                 suffix: VTimerBtn(
                   false,
@@ -95,6 +96,8 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
             fn: () async {
               var result = await SettingApi().checkSmsCode(sms);
               if (result.data['code'] == 200) {
+                eventBus.fire(TimerClearBus());
+                FocusScope.of(context).requestFocus(FocusNode());
                 setState(() {
                   currentStep = 2;
                 });
@@ -116,6 +119,7 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
               height: G.setWidth(100),
               color: hex('#fff'),
               child: VInput(
+                type: TextInputType.phone,
                 // value: userAuthInfo.mobile,
                 controller: _mobileChangeController,
                 hintText: '请输入新手机号',
@@ -134,13 +138,13 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
                 controller: _smsChangeController,
                 hintText: '请输入验证码',
                 label: '验证码',
+                type: TextInputType.number,
                 maxLength: 4,
                 onChange: (value) {
                   _smsValidate(value, formValidate2);
                   setState(() {
                     smsDisabled = formValidate2['mobile'] != null;
                   });
-                  print(formValidate2);
                   smsChange = value;
                 },
                 suffix: VTimerBtn(
@@ -161,11 +165,11 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
                 'smsCode': smsChange
               };
               var result = await SettingApi().checkChangeSmsCode(data);
-              print(result);
               if (result.data['code'] == 200) {
                 UserProvide userProvide = Provider.of<UserProvide>(context);
                 userProvide.updateUserAuth(isInit: false);
                 G.toast('操作成功');
+                G.removePref('startTime');
                 FocusScope.of(context).requestFocus(FocusNode());
                 G.router.pop(context);
               }

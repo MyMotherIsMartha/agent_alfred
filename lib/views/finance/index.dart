@@ -204,7 +204,7 @@ class _OrderViewState extends State<OrderView> {
               )),
               Text('￥1999.00', style: TextStyle(
                 fontSize: G.setSp(24),
-                color: hex('#333')
+                color: hex('#E84747')
               ))
             ],
           )
