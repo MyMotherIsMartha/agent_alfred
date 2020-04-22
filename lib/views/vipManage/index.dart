@@ -248,7 +248,7 @@ class _MemberListState extends State<MemberList> {
                     Text('18892663052')
                   ],),
                   Row(children: <Widget>[
-                    Text('注册时间:'),
+                    Text('注册时间2:'),
                     G.spacingWidth(20),
                     Text('2019-08-12')
                   ],)
