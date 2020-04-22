@@ -1,13 +1,17 @@
+import 'package:agent37_flutter/models/finance.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
 class FinanceItem extends StatelessWidget {
+  final FinanceItemModel item;
+  FinanceItem(this.item);
+
   @override
   Widget build(BuildContext context) {
     // 财务列表子项产品内容
     List<Widget> _financeItemProduct() {
-      Widget product(int index) {
+      Widget product(RefundOrders product) {
         return Stack(overflow: Overflow.visible, children: <Widget>[
           Container(
               padding: EdgeInsets.symmetric(vertical: G.setWidth(30)),
@@ -29,12 +33,16 @@ class FinanceItem extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.circular(G.setWidth(10)),
-                              image: DecorationImage(
+                              image: product.orderImageUrl != null
+                              ? DecorationImage(
                                   image: NetworkImage(
                                     // 产品图
-                                    'http://img.cixi518.com/ljh_logo.jpeg',
+                                    product.orderImageUrl,
                                   ),
-                                  fit: BoxFit.fill)),
+                                  fit: BoxFit.fill)
+                                  : null
+                                  )
+                              ,
                         ),
                         Expanded(
                           // 内容区域
@@ -56,9 +64,9 @@ class FinanceItem extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                          width: G.setWidth(354),
+                                          width: G.setWidth(324),
                                           child: Text(
-                                            '【10片装】SNP面膜 有包装',
+                                            product.goodsName,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -73,7 +81,7 @@ class FinanceItem extends StatelessWidget {
                                             text: '￥',
                                             children: [
                                               TextSpan(
-                                                  text: '71.00',
+                                                  text: product.refundAmount.toString(),
                                                   style: TextStyle(
                                                       fontSize: G.setSp(26),
                                                       color: hex('#333'))),
@@ -87,21 +95,23 @@ class FinanceItem extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Text('紫色',
+                                      Text(product.spec??'',
                                           style: TextStyle(
                                               color: hex('#85868A'),
                                               fontSize: G.setSp(26))),
-                                      Text('X1',
+                                      Text('X${product.quantity}',
                                           style: TextStyle(
                                               color: hex('#85868A'),
                                               fontSize: G.setSp(26)))
                                     ],
                                   ),
                                   G.spacing(20),
-                                  Text('退款时间：2019-09-08',
+                                  product.refundOrderTime != null 
+                                  ? Text('退款时间：${G.formatTime(product.refundOrderTime)}',
                                       style: TextStyle(
                                           color: hex('#85868A'),
                                           fontSize: G.setSp(24)))
+                                  : Container()
                                 ],
                               )),
                         )
@@ -111,22 +121,20 @@ class FinanceItem extends StatelessWidget {
                 ],
               )),
           // Divider(color: hex('D7D7D7'),),
-          index == 2
-              ? Positioned(
-                  top: 0,
-                  right: G.setWidth(-20),
-                  child: Image.asset(
-                    '${G.imgBaseUrl}pic-icon/refund_icon.png',
-                    width: G.setWidth(78),
-                    height: G.setWidth(78),
-                  ),
-                )
-              : Container(),
+          Positioned(
+            top: 0,
+            right: G.setWidth(-20),
+            child: Image.asset(
+              '${G.imgBaseUrl}pic-icon/refund_icon.png',
+              width: G.setWidth(78),
+              height: G.setWidth(78),
+            ),
+          )
           // Divider(color: hex('#d7d7d7'))
         ]);
       }
 
-      List productList = [1, 2, 3];
+      List<RefundOrders> productList = item.refundOrders;
       return productList.map((type) {
         return product(type);
       }).toList();
@@ -142,13 +150,19 @@ class FinanceItem extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('购买企业：奥克斯中央空调集团',
+                Container(
+                  width: G.setWidth(300),
+                  child: Text('购买企业：${item.enterpriseName ?? "未知"}',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                     style: TextStyle(
                         color: hex('#666'),
                         fontSize: G.setSp(24),
                         height: 36 / 24)),
+                ),
                 // G.spacing(6),
-                Text('支付时间：2019-09-09',
+
+                Text('支付时间：${G.formatTime(item.payTime)}',
                     style: TextStyle(
                         color: hex('#666'),
                         fontSize: G.setSp(24),
@@ -170,15 +184,17 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(24))),
                       TextSpan(
-                          text: '213',
+                          text: item.totalOrderAmount.toString(),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
-                Text('比例：2%',
+                item.commissionFeeRate != null 
+                ? Text('比例：${item.commissionFeeRate}%',
                     style: TextStyle(
                         height: 36 / 24,
                         color: hex('#252525'),
-                        fontSize: G.setSp(26))),
+                        fontSize: G.setSp(26)))
+                : Container(),
                 Text.rich(TextSpan(
                     text: '预估服务费：',
                     style: TextStyle(
@@ -191,7 +207,7 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(24))),
                       TextSpan(
-                          text: '2.84',
+                          text: item.commission.toString(),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
@@ -218,18 +234,20 @@ class FinanceItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('单号：20190902445'),
-                  Container(
-                    margin: EdgeInsets.only(left: G.setWidth(10)),
-                    child: Image.asset(
-                      '${G.imgBaseUrl}pic-icon/new-ellipse.png',
-                      width: G.setWidth(60),
-                      height: G.setWidth(34),
-                    ),
-                  )
+                  Text('单号：${item.orderNo}'),
+                  item.isShowTodayFlag
+                      ? Container(
+                          margin: EdgeInsets.only(left: G.setWidth(10)),
+                          child: Image.asset(
+                            '${G.imgBaseUrl}pic-icon/new-ellipse.png',
+                            width: G.setWidth(60),
+                            height: G.setWidth(34),
+                          ),
+                        )
+                      : Container()
                 ],
               ),
-              Text('交易成功')
+              Text(['未知', '待结算', '已结算', '已关闭'][item.status])
             ],
           ),
           Container(
@@ -240,11 +258,117 @@ class FinanceItem extends StatelessWidget {
                     bottom: BorderSide(
                         color: hex('#D7D7D7'), width: G.setWidth(1)))),
           ),
-          Column(children: _financeItemProduct()),
+          FinanceProduct(item),
+          item.refundOrders != null && item.refundOrders.length > 0
+              ? Column(children: _financeItemProduct())
+              : Container(),
           G.spacing(16),
           _financeItemFooter()
         ],
       ),
     );
+  }
+}
+
+class FinanceProduct extends StatelessWidget {
+  final FinanceItemModel data;
+  FinanceProduct(this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: G.setWidth(30)),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(color: hex('#ddd'), width: G.setWidth(1)))),
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: G.setWidth(710),
+              // padding: EdgeInsets.only(bottom: G.setWidth(15)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: G.setWidth(170),
+                    height: G.setWidth(170),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(G.setWidth(10)),
+                        image: data.orderImageUrl != null
+                        ? DecorationImage(
+                            image: NetworkImage(
+                              // 产品图
+                              data.orderImageUrl,
+                            ),
+                            fit: BoxFit.fill)
+                        : null 
+                    ),
+                  ),
+                  Expanded(
+                    // 内容区域
+                    // flex: 1,
+                    child: Container(
+                        height: G.setWidth(170),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: G.setWidth(20)),
+                        child: Column(
+                          // 规格说明
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            // 标题与价格
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                    width: G.setWidth(324),
+                                    child: Text(
+                                      data.goodsName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: G.setSp(26),
+                                          color: hex('333')),
+                                    )),
+                                Text.rich(
+                                  TextSpan(
+                                      style: TextStyle(
+                                          fontSize: G.setSp(24),
+                                          color: hex('#333')),
+                                      text: '￥',
+                                      children: [
+                                        TextSpan(
+                                            text: data.goodsAmount.toString(),
+                                            style: TextStyle(
+                                                fontSize: G.setSp(26),
+                                                color: hex('#333'))),
+                                      ]),
+                                )
+                              ],
+                            ),
+                            G.spacing(10),
+                            // 规格 数量
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(data.spec??'',
+                                    style: TextStyle(
+                                        color: hex('#85868A'),
+                                        fontSize: G.setSp(26))),
+                                Text('X${data.quantity}',
+                                    style: TextStyle(
+                                        color: hex('#85868A'),
+                                        fontSize: G.setSp(26)))
+                              ],
+                            ),
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
