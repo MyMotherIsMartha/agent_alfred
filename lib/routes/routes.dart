@@ -28,6 +28,7 @@ class Routes {
   static String perfectEnterpriseAudit = '/perfectEnterpriseAudit';
   static String readPerfectInfo = '/readPerfectInfo';
   static String walletMain = '/walletMain';
+  static String walletWithdraw = '/walletMain/withdraw';
   static String financePage = '/finance';
   static String financeSearchPage = '/finance/search';
   static String setting = '/setting';
@@ -69,6 +70,7 @@ class Routes {
     router.define(financePage, handler: financeHandler);
     router.define(financeSearchPage, handler: financeSearchHandler);
     router.define(walletMain, handler: walletMainHandler);
+    router.define(walletWithdraw, handler: walletWithdrawHandler);
     router.define(setting, handler: settingHandler);
     router.define(settingUserinfo, handler: settingUserInfoHandler);
     router.define(settingNickname, handler: settingNicknameHandler);
