@@ -77,5 +77,10 @@ class MemberApi{
     return await service().put('$agentMemberApi/v1/checkOrderRecords/applyCheckDelayAudit');
   }
 
+  // 查询当前代理服务费
+  serviceCharges() async {
+    return await service().get('$agentMemberApi/v1/agentMemberServiceCharges/current');
+  }
+
 
 }
