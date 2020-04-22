@@ -4,12 +4,12 @@ import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class WalletMain extends StatefulWidget {
+class WalletWithdraw extends StatefulWidget {
   @override
-  _WalletMainState createState() => _WalletMainState();
+  _WalletWithdrawState createState() => _WalletWithdrawState();
 }
 
-class _WalletMainState extends State<WalletMain> {
+class _WalletWithdrawState extends State<WalletWithdraw> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,49 +20,11 @@ class _WalletMainState extends State<WalletMain> {
         centerTitle: true,
         iconTheme: IconThemeData(color: hex('#000')),
         title: Text(
-          '我的钱包',
+          '提现',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),
-        ),
-        actions: <Widget>[
-          FlatButton(
-              onPressed: () {},
-              child: Text('账单',
-                  style: TextStyle(color: hex('#000'), fontSize: G.setSp(32))))
-        ],
+        )
       ),
       body: Column(children: [
-        Container(
-          width: G.setWidth(750),
-          height: G.setWidth(350),
-          padding: EdgeInsets.symmetric(vertical: G.setWidth(50), horizontal: G.setWidth(30)),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("lib/assets/images/wallet/wallet-bg.png"),
-              fit: BoxFit.cover,
-            )
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-            Text('可提现金额', style: TextStyle(color: Colors.white60),),
-            G.spacing(10),
-            Text('1999999999999', style: TextStyle(color: Colors.white, fontSize: G.setSp(70)),),
-            G.spacing(10),
-            FlatButton(
-              onPressed: () {
-                G.router.navigateTo(context, '/walletMain/withdraw');
-              },
-              color: Colors.white,
-              shape: StadiumBorder(),
-              // textColor: hex('#6982FF'),
-              child: Text('提现', style: TextStyle(
-                  fontSize: G.setSp(30),
-                  color: hex('#6982FF')
-                ),
-              )
-            )
-          ],)
-        ),
         Container(
           padding: EdgeInsets.all(G.setWidth(10)),
           width: G.setWidth(750),
