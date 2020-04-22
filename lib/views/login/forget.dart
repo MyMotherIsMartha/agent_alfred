@@ -61,14 +61,14 @@ class _ForgetPageState extends State<ForgetPage> {
                           label: '手机号',
                           maxLength: 11,
                           type: TextInputType.phone,
-                          validator: (value) {
-                            if (Validate.isNon(errorMsg)) {
-                              setState(() {
-                                errorMsg = Validate.checkMobile(value);
-                              });
-                            }
-                            print(errorMsg);
-                          },
+                          // validator: (value) {
+                          //   if (Validate.isNon(errorMsg)) {
+                          //     setState(() {
+                          //       errorMsg = Validate.checkMobile(value);
+                          //     });
+                          //   }
+                          //   print(errorMsg);
+                          // },
                           onChange: (e) {
                             setState(() {
                               smsDisabled = Validate.checkMobile(e) != null;
@@ -83,13 +83,13 @@ class _ForgetPageState extends State<ForgetPage> {
                           hintText: '请输入验证码',
                           label: '验证码',
                           maxLength: 4,
-                          validator: (value) {
-                            if (Validate.isNon(errorMsg)) {
-                              setState(() {
-                                errorMsg = _smsValidate(value);
-                              });
-                            }
-                          },
+                          // validator: (value) {
+                          //   if (Validate.isNon(errorMsg)) {
+                          //     setState(() {
+                          //       errorMsg = _smsValidate(value);
+                          //     });
+                          //   }
+                          // },
                           onChange: (value) {
                             _smsValidate(value);
                             sms = value;
@@ -118,13 +118,13 @@ class _ForgetPageState extends State<ForgetPage> {
                             },
                             icon: pwdVisible ? iconeye() : iconcloseeye(),
                           ),
-                          validator: (value) {
-                            if (Validate.isNon(errorMsg)) {
-                              setState(() {
-                                errorMsg = _pwdValidate(value);
-                              });
-                            }
-                          },
+                          // validator: (value) {
+                          //   if (Validate.isNon(errorMsg)) {
+                          //     setState(() {
+                          //       errorMsg = _pwdValidate(value);
+                          //     });
+                          //   }
+                          // },
                           onChange: (value) {
                             _pwdValidate(value);
                             pwd = value;
@@ -144,18 +144,29 @@ class _ForgetPageState extends State<ForgetPage> {
                   text: '确认',
                   disabled: formValidate.containsValue(false),
                   fn: () async {
-                    setState(() {
-                      errorMsg = null;
-                    });
+                    Map data = {
+                      'mobile': mobile,
+                      'newPassword': pwd,
+                      'smsCode': sms
+                    };
+                    var result = await LoginApi().forgetPwd(data);
+                    print(result);
+                    if (result.data['code'] == 200) {
+                      G.toast('修改密码成功');
+                      G.router.navigateTo(context, '/login', replace: true);
+                    }
+                    // setState(() {
+                    //   errorMsg = null;
+                    // });
                     // Validate returns true if the form is valid, otherwise false.
-                    if (_formKey.currentState.validate()) {
-                      Map data = {
-                        'mobile': mobile,
-                        // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
-                      };
+                    // if (_formKey.currentState.validate()) {
+                    //   Map data = {
+                    //     'mobile': mobile,
+                    //     // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
+                    //   };
 
-                      print(1234);
-                      print(data);
+                    //   print(1234);
+                    //   print(data);
                       // FormData formData = FormData.fromMap(data);
                       // var result = await UserApi().createAddress(data);
                       // if (result.data['code'] == 200) {
@@ -171,7 +182,7 @@ class _ForgetPageState extends State<ForgetPage> {
 
                       // Scaffold.of(context).showSnackBar(
                       //     SnackBar(content: Text('Processing Data')));
-                    }
+                    // }
                   },
                 )
               ],
@@ -197,9 +208,9 @@ class _ForgetPageState extends State<ForgetPage> {
     if (value == null || value.isEmpty) {
       _setValidate('pwd', false);
       return '请输入密码';
-    } else if (value.length < 6 || value.length > 15) {
+    } else if (value.length < 6 || value.length > 16) {
       _setValidate('pwd', false);
-      return '密码长度在6-15位之间';
+      return '密码长度在6-16位之间';
     } else {
       _setValidate('pwd', true);
       return null;

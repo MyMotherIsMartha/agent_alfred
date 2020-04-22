@@ -1,5 +1,8 @@
+import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
+import 'package:agent37_flutter/models/finance.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/views/finance/components/finance-item.dart';
@@ -14,11 +17,15 @@ class FinanceSearchPage extends StatefulWidget {
 }
 
 class _FinanceSearchState extends State<FinanceSearchPage> {
-  List<String> historyList; // 历史记录列表
+  List<String> historyList; // 历史搜索记录列表
   String searchContext;
+  int pageNo = 1; // 当前页码
+  List<FinanceItemModel> itemList = <FinanceItemModel>[]; // 订单列表
+  int total; // 总条数
   final TextEditingController _searchController = TextEditingController();
   EasyRefreshController _refreshController = EasyRefreshController();
   int listCount = 0;
+  var getFuture;
 
   void _getHistoryFromPref() {
     List list = SearchUtil.getHistoryList();
@@ -32,13 +39,7 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
   }
 
   Future goSearch() async {
-    await Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        listCount += 10;
-      });
-    });
-    // await
-    // searchContext
+    await _getList(refresh: true);
   }
 
   // 搜索栏
@@ -47,6 +48,7 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
       width: double.infinity,
       height: G.setWidth(80),
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(20)),
+      margin: EdgeInsets.only(bottom: G.setWidth(30)),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           border: Border(
@@ -69,6 +71,11 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
                     SearchUtil.setHistoryData(e);
                     _getHistoryFromPref();
                   }
+                },
+                onChanged: (e) {
+                  setState(() {
+                    itemList = [];
+                  });
                 },
                 style: TextStyle(fontSize: G.setSp(28)),
                 decoration: InputDecoration(
@@ -108,10 +115,10 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
       child: InkWell(
         onTap: () {
           _searchController.value = G.setTextEdit(content);
-          print(_searchController.value.text);
           setState(() {
             searchContext = _searchController.value.text;
           });
+          _getList(refresh: true);
         },
         child: Text(content,
             style: TextStyle(fontSize: G.setSp(24), color: hex('#666'))),
@@ -162,39 +169,57 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
   // 财务列表
   Widget _financeList() {
     return Expanded(
-      flex: 1,
-      child: EasyRefresh(
-        controller: _refreshController,
-        header: vRefreshHeader,
-        footer: vRefreshFooter,
-        child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) => Divider(
-                  height: G.setHeight(20),
-                  color: Colors.transparent,
-                ),
-            itemCount: listCount,
-            itemBuilder: (context, index) {
-              return FinanceItem();
-            }),
-        onRefresh: () async {
-          await Future.delayed(Duration(seconds: 1), () {
-            print('延时1s执行');
-          });
-        },
-        onLoad: () async {
-          if (listCount >= 30) {
-            _refreshController.finishLoad(success: true, noMore: true);
-            return;
-          }
-          await Future.delayed(Duration(seconds: 1), () {
-            setState(() {
-              listCount += 10;
-            });
-            print('延时1s执行');
-          });
-        },
-      ),
-    );
+        flex: 1,
+        child: itemList.length > 0
+            ? EasyRefresh(
+                controller: _refreshController,
+                header: vRefreshHeader,
+                footer: vRefreshFooter,
+                child: ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(
+                          height: G.setHeight(20),
+                          color: Colors.transparent,
+                        ),
+                    itemCount: itemList.length,
+                    itemBuilder: (context, index) {
+                      return FinanceItem(itemList[index]);
+                    }),
+                onRefresh: () async {
+                  await _getList(refresh: true);
+                },
+                onLoad: () async {
+                  await _getList();
+                },
+              )
+            : Container(
+                margin: EdgeInsets.only(top: G.setWidth(200)),
+                child: VEmpty(hintText: '暂无相关记录~'),
+              ));
+  }
+
+  Future _getList({bool refresh = false}) async {
+    if (refresh) {
+      _refreshController?.finishLoad(success: true, noMore: false);
+      pageNo = 1;
+      itemList = <FinanceItemModel>[];
+    } else {
+      ++pageNo;
+    }
+
+    FinanceModel sourceData;
+    var result = await OrderApi().searchOrder(searchContext, pageNo);
+    var data = result.data['data'];
+    sourceData = FinanceModel.fromJson(data);
+
+    setState(() {
+      total = sourceData.total;
+    });
+    itemList.addAll(sourceData.records);
+
+    if (itemList.length >= total) {
+      _refreshController?.finishLoad(success: true, noMore: true);
+    }
   }
 
   @override
@@ -210,30 +235,9 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
       children: <Widget>[
         Container(height: G.statusHeight),
         _searchHeader(),
-        Validate.isNon(searchContext)? _searchHistory() : Container(),
+        Validate.isNon(searchContext) || itemList.length == 0 ? _searchHistory() : Container(),
         _financeList()
       ],
     ));
   }
 }
-
-// class searchInput extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextField(
-//         style: TextStyle(fontSize: G.setSp(28)),
-//         decoration: InputDecoration(
-//           fillColor: hex('#F3f4f6'),
-//           filled: true,
-//           // contentPadding: EdgeInsets.symmetric(vertical: 0),
-//           contentPadding: const EdgeInsets.symmetric(vertical: 0),
-//           border: OutlineInputBorder(
-//               borderRadius: BorderRadius.circular(G.setWidth(32)),
-//               borderSide: BorderSide.none),
-//           prefixIcon: iconsearch(color: hex('#BFBFBF'), size: G.setSp(36)),
-//           hintText: "请输入用户名",
-//           hintMaxLines: 1,
-//           hintStyle: TextStyle(color: hex('#BFBFBF'), fontSize: G.setSp(28)),
-//         ));
-//   }
-// }

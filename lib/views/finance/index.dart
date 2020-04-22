@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:agent37_flutter/api/finance.dart';
+import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-data-picker.dart';
+import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
+import 'package:agent37_flutter/models/finance.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/finance/components/finance-item.dart';
 import 'package:color_dart/color_dart.dart';
@@ -76,9 +82,9 @@ class _FinancePageState extends State<FinancePage>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          OrderView(),
-          Text('34'),
-          Text('56'),
+          OrderView(FinanceApi().fetchProduct, 'pendingPurchaseOrderServiceCharge', 'entryPurchaseOrderServiceCharge'),
+          OrderView(FinanceApi().fetchMemberOrder, 'pendingMemberOrderServiceCharge', 'entryMemberOrderServiceCharge	'),
+          OrderView(FinanceApi().fetchPackageOrder, 'pendingGiftPackageOrderServiceCharge', 'entryGiftPackageOrderServiceCharge')
         ],
       ),
     );
@@ -86,20 +92,31 @@ class _FinancePageState extends State<FinancePage>
 }
 
 class OrderView extends StatefulWidget {
+  final Function getListFn;
+  final String pending;
+  final String entry;
+  OrderView(this.getListFn, this.pending, this.entry);
   @override
   _OrderViewState createState() => _OrderViewState();
 }
 
 class _OrderViewState extends State<OrderView> {
-  String currentStatus = '待结算';
+  int pageNo = 1; // 当前页码
+  List<FinanceItemModel> itemList = <FinanceItemModel>[]; // 列表项
+  int total; // 总条数
+  List<String> settleStatusList = ['', '待结算', '已结算', '已关闭'];
+  int settleStatus = 1; // 当前栏目
+  List<double> serviceCharge = [];
   EasyRefreshController _refreshController = EasyRefreshController();
   int listCount = 10;
   DateTime startTime = DateTime(DateTime.now().year, DateTime.now().month);
   DateTime endTime = DateTime.now();
+  var chargeFuture;
 
   // 待结算提示
   Widget _hint() {
-    return Container(
+    return settleStatus == 1
+    ? Container(
       color: hex('#CABEA6'),
       width: G.setWidth(750),
       height: G.setHeight(60),
@@ -113,16 +130,20 @@ class _OrderViewState extends State<OrderView> {
               style: TextStyle(fontSize: G.setSp(24), color: hex('#fff')))
         ],
       ),
-    );
+    )
+    : Container();
   }
 
-  Widget _statucItem(String status) {
-    bool selected = status == currentStatus;
+  Widget _statucItem(int status) {
+    bool selected = status == settleStatus;
     return InkWell(
-        onTap: () {
+        onTap: () async {
           setState(() {
-            currentStatus = status;
+            settleStatus = status;
           });
+          G.showLoading(context);
+          await _getList(refresh: true);
+          G.closeLoading(context);
         },
         child: Container(
             alignment: Alignment.center,
@@ -131,7 +152,7 @@ class _OrderViewState extends State<OrderView> {
                 border: Border.all(
                     color: selected ? hex('#6982FF') : Colors.transparent),
                 borderRadius: BorderRadius.circular(G.setSp(54))),
-            child: Text(status,
+            child: Text(settleStatusList[status],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: selected ? hex('#6982FF') : hex('#999999'),
@@ -155,9 +176,9 @@ class _OrderViewState extends State<OrderView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             direction: Axis.horizontal,
             children: <Widget>[
-              _statucItem('待结算'),
-              _statucItem('已结算'),
-              _statucItem('已关闭'),
+              _statucItem(1),
+              _statucItem(2),
+              _statucItem(3),
             ],
           ),
         ));
@@ -174,88 +195,140 @@ class _OrderViewState extends State<OrderView> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              VDatePicker(startTime, (time) {
+              VDatePicker(startTime, (time) async {
                 setState(() {
                   startTime = time;
-                  endTime = DateTime(time.year, time.month +1, 0);
                 });
-              }),
+                await _getList(refresh: true);
+              }, maxValue: endTime,),
               Container(
                 alignment: Alignment.center,
                 width: G.setWidth(46),
-                child: Text('至', style: TextStyle(
-                  fontSize: G.setSp(24),
-                  color: hex('#424242')
-                )),
+                child: Text('至',
+                    style: TextStyle(
+                        fontSize: G.setSp(24), color: hex('#424242'))),
               ),
-              VDatePicker(endTime, (time) {
+              VDatePicker(endTime, (time) async {
                 setState(() {
                   endTime = time;
                 });
+                await _getList(refresh: true);
               }, minValue: startTime)
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('预估服务费：', style: TextStyle(
-                fontSize: G.setSp(22),
-                color: hex('#666')
-              )),
-              Text('￥1999.00', style: TextStyle(
-                fontSize: G.setSp(24),
-                color: hex('#E84747')
-              ))
-            ],
-          )
+          FutureBuilder(
+            future: chargeFuture,
+            builder: (context, shapshot) {
+              if (shapshot.hasData) {
+                if (settleStatus == 3) {
+                  return Container();
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('预估服务费：',
+                          style: TextStyle(
+                              fontSize: G.setSp(22), color: hex('#666'))),
+                      Text('￥${serviceCharge[settleStatus]}',
+                          style: TextStyle(
+                              fontSize: G.setSp(24), color: hex('#E84747')))
+                    ],
+                  );
+                }
+              } else {
+                return Container();
+              }
+            },
+          ),
         ],
       ),
     );
+  }
+
+  Future _getList({bool refresh = false}) async {
+    if (refresh) {
+      _refreshController?.finishLoad(success: true, noMore: false);
+      pageNo = 1;
+      itemList = <FinanceItemModel>[];
+    } else {
+      ++pageNo;
+    }
+
+    FinanceModel sourceData;
+    var result = await widget.getListFn(pageNo, settleStatus,
+        beginPayDate: startTime, endPayDate: endTime);
+    var data = result.data['data'];
+    sourceData = FinanceModel.fromJson(data);
+
+    setState(() {
+      total = sourceData.total;
+    });
+    itemList.addAll(sourceData.records);
+
+    if (itemList.length >= total) {
+      _refreshController?.finishLoad(success: true, noMore: true);
+    }
+  }
+
+  Future _getCharge() async {
+    var result = await MemberApi().serviceCharges();
+    Map data = result.data['data'];
+    print(widget.entry);
+    print(data);
+    setState(() {
+      serviceCharge = [
+        0,
+        data[widget.pending]??0,
+        data[widget.entry]??0
+      ];
+    });
+    return 'end';
   }
 
   // 财务列表
   Widget _financeList() {
     return Expanded(
       flex: 1,
-      child: EasyRefresh(
-        controller: _refreshController,
-        header: vRefreshHeader,
-        footer: vRefreshFooter,
-        child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) => Divider(
-                  height: G.setHeight(20),
-                  color: Colors.transparent,
-                ),
-            itemCount: listCount,
-            itemBuilder: (context, index) {
-              return FinanceItem();
-            }),
-        onRefresh: () async {
-          await Future.delayed(Duration(seconds: 1), () {
-            print('延时1s执行');
-          });
-        },
-        onLoad: () async {
-          if (listCount >= 30) {
-            _refreshController.finishLoad(success: true, noMore: true);
-            return;
-          }
-          await Future.delayed(Duration(seconds: 1), () {
-            setState(() {
-              listCount += 10;
-            });
-            print('延时1s执行');
-          });
-        },
-      ),
+      child: itemList.length > 0
+          ? EasyRefresh(
+              controller: _refreshController,
+              header: vRefreshHeader,
+              footer: vRefreshFooter,
+              child: ListView.separated(
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Divider(
+                        height: G.setHeight(20),
+                        color: Colors.transparent,
+                      ),
+                  itemCount: itemList.length,
+                  itemBuilder: (context, index) {
+                    return FinanceItem(itemList[index]);
+                  }),
+              onRefresh: () async {
+                _getList(refresh: true);
+              },
+              onLoad: () async {
+                _getList();
+              },
+            )
+          : Container(
+              margin: EdgeInsets.only(top: G.setWidth(200)),
+              child: VEmpty(hintText: '暂无任何订单哦~'),
+            ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getList(refresh: true);
+    chargeFuture = _getCharge();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      // color: hex('#54f'),
       child: Column(
         children: <Widget>[
           _hint(),

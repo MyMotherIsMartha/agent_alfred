@@ -214,7 +214,8 @@ class SettingPage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
-                     G.router.navigateTo(context, '/login', replace: true);
+                    G.removePref('token');
+                    G.router.navigateTo(context, '/login', replace: true);
                   },
                   child: Text('退出登录',
                       style:

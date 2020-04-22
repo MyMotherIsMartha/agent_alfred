@@ -59,4 +59,14 @@ class LoginApi{
       'mobile': mobile
     });
   }
+
+  // 忘记密码重置
+  /* 
+    "mobile": "string",
+    "newPassword": "string",
+    "smsCode": "string"
+   */
+  forgetPwd(data) async {
+    return await service().put('$agentMemberApi/v1/agentMemberAccounts/forgetPassword', data: data);
+  }
 }

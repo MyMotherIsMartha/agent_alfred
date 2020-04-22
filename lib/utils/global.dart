@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
@@ -149,5 +150,15 @@ class G {
 
   static closeLoading(context) {
     Navigator.pop(context);
+  }
+
+  static formatTime(int unix, {String type = 'time'}) {
+    return formatDate(
+      DateTime.fromMicrosecondsSinceEpoch(unix * 1000),
+      type == 'time'
+       ? [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]
+       : [yyyy, '-', mm, '-', dd]
+    );
+    // return formatDate(new Date(item.payTime), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])
   }
 }

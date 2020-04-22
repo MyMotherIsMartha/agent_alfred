@@ -113,9 +113,14 @@ class _HomePageState extends State<HomePage>
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Text(homeinfo.nickname ?? '未知',
+                  Container(
+                    width: G.setWidth(360),
+                    child: Text(homeinfo.nickname ?? '未知',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                       style:
                           TextStyle(fontSize: G.setSp(30), color: hex('#FFF'))),
+                  ),
                   Container(width: G.setWidth(10)),
                   Image.asset(
                     homeinfo.checkStatus == 2

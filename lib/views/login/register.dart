@@ -167,7 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     VButton(
-                        text: '登录',
+                        text: '立即注册',
                         fn: () async {
                           FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {
