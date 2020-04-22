@@ -26,4 +26,13 @@ class OrderApi{
     return await service().post('$orderPrefix/v1/giftPackagePayments/offlinePay', data: data);
   }
 
+  // 搜索佣金订单
+  searchOrder(String searchKey, int pageNo) async {
+    return await service().get('$orderPrefix/v1/giftPackageOrders/searchOrderCommissions', queryParameters: {
+      'pageSize': 10,
+      'pageNo': pageNo,
+      'searchKey': searchKey
+    });
+  }
+
 }
