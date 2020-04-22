@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:agent37_flutter/api/order.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -159,6 +160,31 @@ class MemberList extends StatefulWidget {
 }
 
 class _MemberListState extends State<MemberList> {
+  EasyRefreshController _controller = EasyRefreshController();
+  var scrollController = new ScrollController();
+  StreamSubscription _colorSubscription;
+  int pageNo = 1;
+  List<Map> _listData = [
+    {'value': 1, 'label': '普通'},
+    {'value': 2, 'label': '标准2'},
+    {'value': 3, 'label': '钻石3'},
+    {'value': 4, 'label': '普通4'},
+    {'value': 5, 'label': '标准5'},
+    {'value': 6, 'label': '钻石6'},
+    {'value': 7, 'label': '普通7'},
+    {'value': 8, 'label': '标准8'},
+    {'value': 9, 'label': '钻石9'},
+    {'value': 10, 'label': '普通10'},
+    {'value': 11, 'label': '标准11'},
+    {'value': 12, 'label': '钻石12'}
+  ];
+  int total;
+
+  @override
+  void initState() {
+    super.initState();
+    _getList(true);
+  }
 
   showPickerDate(BuildContext context) {
     Picker(
@@ -181,6 +207,129 @@ class _MemberListState extends State<MemberList> {
         print(formatDate(selectedTime, [yyyy, '-', mm, '-', dd]));
       }
     ).showModal(context);
+  }
+
+  Future _getList(refresh) async {
+    if (_listData.length == total && !refresh) {
+      G.toast('已加载全部');
+      _controller.finishLoad(success: true, noMore: true);
+      return null;
+    }
+    var params = {
+      'pageNo': pageNo,
+      'pageSize': 10
+    };
+    var result = await OrderApi().getAppMemberInfos(params);
+    print(result);
+      // var origindata = result.data['data'];
+      // if (origindata == null) return;
+      // // OrderResultModel data = OrderResultModel.fromJson(origindata);
+      // var data = origindata;
+      // print(data);
+      // setState(() {
+      //   total = data.total;
+      // });
+      // if (refresh) {
+      //   setState(() {
+      //     list = data.records;
+      //   });
+      // } else {
+      //   list.addAll(data.records);
+      // }
+
+    setState(() {
+      pageNo = refresh ? 1 : pageNo + 1;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: hex('#F3F4F6'),
+      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setHeight(30)),
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+              Text('注册时间'),
+              G.spacingWidth(60),
+              InkWell(
+                onTap: () {
+                  showPickerDate(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(G.setHeight(8))
+                  ),
+                  padding: EdgeInsets.only(left: G.setWidth(20), top: G.setHeight(10), bottom: G.setHeight(10)),
+                  child: Row(
+                    children: [
+                      Text('2018-09-01', style: TextStyle(color: hex('#424242'))),
+                      Icon(Icons.arrow_drop_down, color: hex('#CCCCCC'))
+                    ]
+                  ),
+                )
+              ),
+              Text('至'),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(G.setHeight(8))
+                ),
+                padding: EdgeInsets.only(left: G.setWidth(20), top: G.setHeight(10), bottom: G.setHeight(10)),
+                child: Row(
+                  children: [
+                    Text('2018-09-01', style: TextStyle(color: hex('#424242'))),
+                    Icon(Icons.arrow_drop_down, color: hex('#CCCCCC'))
+                  ]
+                ),
+              )
+            ]),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: G.setHeight(80)),
+            child: extended.NestedScrollViewInnerScrollPositionKeyWidget(
+            Key('Tab-' + widget.status.toString()),
+            EasyRefresh(
+              controller: _controller,
+              header: MaterialHeader(),
+              footer: MaterialFooter(),
+              child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: _listData.length,
+                  itemBuilder: (context, index) {
+                    if (index == total) {
+                      return Container(
+                        alignment: Alignment.center,
+                        child: Text('没有更多了'),
+                      );
+                    } else {
+                      return memberItem(_listData[index]);
+                    }
+                  }),
+              emptyWidget: _listData.length == 0
+                  ? Container(
+                      margin: EdgeInsets.only(top: G.setHeight(240)),
+                      child: VEmpty(hintText: '暂无任何会员哦～'),
+                    )
+                  : null,
+              onLoad: () async {
+                _getList(false);
+              },
+              onRefresh: () async {
+                _getList(true);
+              },
+            ))
+          ),
+        ]
+      ),
+    );
   }
 
   Widget memberItem(item) {
@@ -258,116 +407,6 @@ class _MemberListState extends State<MemberList> {
           )
         )
       ])
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    EasyRefreshController _controller = EasyRefreshController();
-    var scrollController = new ScrollController();
-    StreamSubscription _colorSubscription;
-    int pageNo = 1;
-    List<Map> _listData = [
-      {'value': 1, 'label': '普通'},
-      {'value': 2, 'label': '标准2'},
-      {'value': 3, 'label': '钻石3'},
-      {'value': 4, 'label': '普通4'},
-      {'value': 5, 'label': '标准5'},
-      {'value': 6, 'label': '钻石6'},
-      {'value': 7, 'label': '普通7'},
-      {'value': 8, 'label': '标准8'},
-      {'value': 9, 'label': '钻石9'},
-      {'value': 10, 'label': '普通10'},
-      {'value': 11, 'label': '标准11'},
-      {'value': 12, 'label': '钻石12'}
-    ];
-    int total;
-
-    return Container(
-      color: hex('#F3F4F6'),
-      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setHeight(30)),
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-              Text('注册时间'),
-              G.spacingWidth(60),
-              InkWell(
-                onTap: () {
-                  showPickerDate(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(G.setHeight(8))
-                  ),
-                  padding: EdgeInsets.only(left: G.setWidth(20), top: G.setHeight(10), bottom: G.setHeight(10)),
-                  child: Row(
-                    children: [
-                      Text('2018-09-01', style: TextStyle(color: hex('#424242'))),
-                      Icon(Icons.arrow_drop_down, color: hex('#CCCCCC'))
-                    ]
-                  ),
-                )
-              ),
-              Text('至'),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(G.setHeight(8))
-                ),
-                padding: EdgeInsets.only(left: G.setWidth(20), top: G.setHeight(10), bottom: G.setHeight(10)),
-                child: Row(
-                  children: [
-                    Text('2018-09-01', style: TextStyle(color: hex('#424242'))),
-                    Icon(Icons.arrow_drop_down, color: hex('#CCCCCC'))
-                  ]
-                ),
-              )
-            ]),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: G.setHeight(80)),
-            child: extended.NestedScrollViewInnerScrollPositionKeyWidget(
-            Key('Tab-' + widget.status.toString()),
-            EasyRefresh(
-              controller: _controller,
-              header: MaterialHeader(),
-              footer: MaterialFooter(),
-              child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: _listData.length,
-                  itemBuilder: (context, index) {
-                    if (index == total) {
-                      return Container(
-                        alignment: Alignment.center,
-                        child: Text('没有更多了'),
-                      );
-                    } else {
-                      return memberItem(_listData[index]);
-                    }
-                  }),
-              emptyWidget: _listData.length == 0
-                  ? Container(
-                      margin: EdgeInsets.only(top: G.setHeight(240)),
-                      child: VEmpty(hintText: '暂无任何会员哦～'),
-                    )
-                  : null,
-              onLoad: () async {
-                // _getOrder(false);
-              },
-              onRefresh: () async {
-                // _getOrder(true);
-              },
-            ))
-          ),
-        ]
-      ),
     );
   }
 }
