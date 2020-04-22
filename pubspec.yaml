@@ -78,6 +78,7 @@ flutter:
   - lib/assets/images/pic-icon/
   - lib/assets/images/vip/
   - lib/assets/images/home/
+  - lib/assets/images/wallet/
   fonts:
     - family: iconfont
       fonts:
