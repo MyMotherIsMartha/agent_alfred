@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:agent37_flutter/api/order.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -159,6 +160,31 @@ class MemberList extends StatefulWidget {
 }
 
 class _MemberListState extends State<MemberList> {
+  EasyRefreshController _controller = EasyRefreshController();
+  var scrollController = new ScrollController();
+  StreamSubscription _colorSubscription;
+  int pageNo = 1;
+  List<Map> _listData = [
+    {'value': 1, 'label': '普通'},
+    {'value': 2, 'label': '标准2'},
+    {'value': 3, 'label': '钻石3'},
+    {'value': 4, 'label': '普通4'},
+    {'value': 5, 'label': '标准5'},
+    {'value': 6, 'label': '钻石6'},
+    {'value': 7, 'label': '普通7'},
+    {'value': 8, 'label': '标准8'},
+    {'value': 9, 'label': '钻石9'},
+    {'value': 10, 'label': '普通10'},
+    {'value': 11, 'label': '标准11'},
+    {'value': 12, 'label': '钻石12'}
+  ];
+  int total;
+
+  @override
+  void initState() {
+    super.initState();
+    _getList(true);
+  }
 
   showPickerDate(BuildContext context) {
     Picker(
@@ -183,106 +209,41 @@ class _MemberListState extends State<MemberList> {
     ).showModal(context);
   }
 
-  Widget memberItem(item) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-      decoration: BoxDecoration(
-        color: hex('#FFF'),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: hex('#eee'), width:  G.setWidth(1))),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: [
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: G.setWidth(390),
-                  ),
-                  child: Text('云上一家旗舰店云上一家旗舰云上一家旗舰店云上一家旗舰', 
-                      softWrap: true,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis, 
-                      style: TextStyle(fontWeight: FontWeight.w600)),
-                ),
-                Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
-              ]),
-              Row(children: [
-                Text('审核拒绝'),
-                Container(
-                  margin: EdgeInsets.only(left: G.setWidth(5)),
-                  decoration: BoxDecoration(
-                    color: hex('#E6E6E6'),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
-                )
-              ])
-            ]
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            // print(item["value"].toString());
-            String vipId = item["value"].toString();
-            G.router.navigateTo(context, Routes.vipDetail + '?vipId=$vipId');
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Row(children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
-                child: Image(width: G.setWidth(100),image: AssetImage('lib/assets/images/home/vip.png'))
-              ),
-              Column(
-                children: [
-                  Row(children: <Widget>[
-                    Text('手机号:'),
-                    G.spacingWidth(25),
-                    Text('18892663052')
-                  ],),
-                  Row(children: <Widget>[
-                    Text('注册时间2:'),
-                    G.spacingWidth(20),
-                    Text('2019-08-12')
-                  ],)
-                ]
-              )
-            ],)
-          )
-        )
-      ])
-    );
+  Future _getList(refresh) async {
+    if (_listData.length == total && !refresh) {
+      G.toast('已加载全部');
+      _controller.finishLoad(success: true, noMore: true);
+      return null;
+    }
+    var params = {
+      'pageNo': pageNo,
+      'pageSize': 10
+    };
+    var result = await OrderApi().getAppMemberInfos(params);
+    print(result);
+      // var origindata = result.data['data'];
+      // if (origindata == null) return;
+      // // OrderResultModel data = OrderResultModel.fromJson(origindata);
+      // var data = origindata;
+      // print(data);
+      // setState(() {
+      //   total = data.total;
+      // });
+      // if (refresh) {
+      //   setState(() {
+      //     list = data.records;
+      //   });
+      // } else {
+      //   list.addAll(data.records);
+      // }
+
+    setState(() {
+      pageNo = refresh ? 1 : pageNo + 1;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    EasyRefreshController _controller = EasyRefreshController();
-    var scrollController = new ScrollController();
-    StreamSubscription _colorSubscription;
-    int pageNo = 1;
-    List<Map> _listData = [
-      {'value': 1, 'label': '普通'},
-      {'value': 2, 'label': '标准2'},
-      {'value': 3, 'label': '钻石3'},
-      {'value': 4, 'label': '普通4'},
-      {'value': 5, 'label': '标准5'},
-      {'value': 6, 'label': '钻石6'},
-      {'value': 7, 'label': '普通7'},
-      {'value': 8, 'label': '标准8'},
-      {'value': 9, 'label': '钻石9'},
-      {'value': 10, 'label': '普通10'},
-      {'value': 11, 'label': '标准11'},
-      {'value': 12, 'label': '钻石12'}
-    ];
-    int total;
-
     return Container(
       color: hex('#F3F4F6'),
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setHeight(30)),
@@ -359,15 +320,93 @@ class _MemberListState extends State<MemberList> {
                     )
                   : null,
               onLoad: () async {
-                // _getOrder(false);
+                _getList(false);
               },
               onRefresh: () async {
-                // _getOrder(true);
+                _getList(true);
               },
             ))
           ),
         ]
       ),
+    );
+  }
+
+  Widget memberItem(item) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+      decoration: BoxDecoration(
+        color: hex('#FFF'),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: hex('#eee'), width:  G.setWidth(1))),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(children: [
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: G.setWidth(390),
+                  ),
+                  child: Text('云上一家旗舰店云上一家旗舰云上一家旗舰店云上一家旗舰', 
+                      softWrap: true,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis, 
+                      style: TextStyle(fontWeight: FontWeight.w600)),
+                ),
+                Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
+              ]),
+              Row(children: [
+                Text('审核拒绝'),
+                Container(
+                  margin: EdgeInsets.only(left: G.setWidth(5)),
+                  decoration: BoxDecoration(
+                    color: hex('#E6E6E6'),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
+                )
+              ])
+            ]
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            // print(item["value"].toString());
+            String vipId = item["value"].toString();
+            G.router.navigateTo(context, Routes.vipDetail + '?vipId=$vipId');
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Row(children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
+                child: Image(width: G.setWidth(100),image: AssetImage('lib/assets/images/home/vip.png'))
+              ),
+              Column(
+                children: [
+                  Row(children: <Widget>[
+                    Text('手机号:'),
+                    G.spacingWidth(25),
+                    Text('18892663052')
+                  ],),
+                  Row(children: <Widget>[
+                    Text('注册时间:'),
+                    G.spacingWidth(20),
+                    Text('2019-08-12')
+                  ],)
+                ]
+              )
+            ],)
+          )
+        )
+      ])
     );
   }
 }
