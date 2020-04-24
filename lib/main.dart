@@ -37,6 +37,17 @@ void main() async {
   ));
 }
 
+String _fontFamily() {
+  if (Platform.isIOS) {
+    return 'PingFangSC-Regular, sans-serif';
+  } else if (Platform.isAndroid) {
+    return 'Georgia';
+  } else {
+    return 'Raleway';
+  }
+  
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -49,7 +60,7 @@ class MyApp extends StatelessWidget {
         // splashColor: Colors.transparent,
         // primaryColor: hex('#6982FF'),
         primaryColor: hex('#fff'),
-        fontFamily: 'Georgia',
+        fontFamily: _fontFamily(),
         textTheme: TextTheme(
           subhead: TextStyle(textBaseline: TextBaseline.alphabetic)
           // headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),

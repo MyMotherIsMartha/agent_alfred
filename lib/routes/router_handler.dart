@@ -166,7 +166,7 @@ Handler walletMainHandler = Handler(
 //  钱包提现页
 Handler walletWithdrawHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return WalletMain();
+  return WalletWithdraw();
 });
 Handler vipManageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {

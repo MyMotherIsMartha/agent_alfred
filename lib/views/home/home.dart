@@ -556,8 +556,8 @@ class _HomePageState extends State<HomePage>
   Widget _menu() {
     List<Map> menuList = [
       {'title': '财务管理', 'icon': '${G.imgBaseUrl}home/finance.png', 'url': '/finance'},
-      {'title': '邀请分享', 'icon': '${G.imgBaseUrl}home/share.png', 'url': '/'},
-      {'title': '我的钱包', 'icon': '${G.imgBaseUrl}home/wallet.png', 'url': '/'},
+      {'title': '邀请分享', 'icon': '${G.imgBaseUrl}home/share.png', 'url': '/', 'isShare': true},
+      {'title': '我的钱包', 'icon': '${G.imgBaseUrl}home/wallet.png', 'url': '/walletMain'},
       {'title': '会员管理', 'icon': '${G.imgBaseUrl}home/agent.png', 'url': '/vipManage'},
       {'title': '代理商管理', 'icon': '${G.imgBaseUrl}home/vip.png', 'url': '/'},
       {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/'},
@@ -585,7 +585,11 @@ class _HomePageState extends State<HomePage>
               Map item = menuList[index];
               return InkWell(
                 onTap: () {
-                  G.router.navigateTo(context, item['url']);
+                  if (item['isShare'] == true) {
+                    openShare();
+                  } else {
+                    G.router.navigateTo(context, item['url']);
+                  }
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
