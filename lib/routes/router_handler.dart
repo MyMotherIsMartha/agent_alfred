@@ -12,6 +12,11 @@ import 'package:agent37_flutter/views/login/login.dart';
 import 'package:agent37_flutter/views/login/order-result.dart';
 import 'package:agent37_flutter/views/login/register.dart';
 import 'package:agent37_flutter/views/login/update-user.dart';
+import 'package:agent37_flutter/views/marketing/apply-meeting.dart';
+import 'package:agent37_flutter/views/marketing/apply-result.dart';
+import 'package:agent37_flutter/views/marketing/course.dart';
+import 'package:agent37_flutter/views/marketing/meeting.dart';
+import 'package:agent37_flutter/views/marketing/search.dart';
 import 'package:agent37_flutter/views/setting/index.dart';
 import 'package:agent37_flutter/views/setting/mobile.dart';
 import 'package:agent37_flutter/views/setting/nickname.dart';
@@ -254,3 +259,35 @@ Handler agentVerifyHandler = Handler(
     );
   }
 );
+
+// 营销管理搜索
+Handler marketSearchHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return MarketSearchPage();
+});
+
+// 参会报名
+Handler marketApplyMettingHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return MarketApplyMettingPage();
+});
+
+// 参会报名结果
+Handler marketApplyResultHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return MarketApplyResultPage();
+});
+
+// 营销课程
+Handler marketCourseHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      String id = params['id']?.first;
+      return MarketCoursePage(id);
+});
+
+// 营销会议
+Handler marketMeetingHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      String id = params['id']?.first;
+      return MarketMeetingPage(id);
+});

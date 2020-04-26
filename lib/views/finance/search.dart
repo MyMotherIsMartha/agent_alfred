@@ -28,7 +28,7 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
   var getFuture;
 
   void _getHistoryFromPref() {
-    List list = SearchUtil.getHistoryList();
+    List list = SearchUtil.getHistoryList()??[];
     List<String> tempList = [];
     list.forEach((item) {
       tempList.add(item.toString());
@@ -118,6 +118,7 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
           setState(() {
             searchContext = _searchController.value.text;
           });
+          FocusScope.of(context).requestFocus(FocusNode());
           _getList(refresh: true);
         },
         child: Text(content,
@@ -185,9 +186,9 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
                     itemBuilder: (context, index) {
                       return FinanceItem(itemList[index]);
                     }),
-                onRefresh: () async {
-                  await _getList(refresh: true);
-                },
+                // onRefresh: () async {
+                //   await _getList(refresh: true);
+                // },
                 onLoad: () async {
                   await _getList();
                 },

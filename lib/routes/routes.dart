@@ -38,6 +38,11 @@ class Routes {
   static String settingpwd = '/setting/pwd';
   static String resetPwd = '/setting/resetpwd';
   static String resetMobile = '/setting/mobile';
+  static String marketSearch = '/market/search';
+  static String marketApplyMetting = '/market/apply';
+  static String marketApplyResult = '/market/apply-result';
+  static String marketCourse = '/market/course';
+  static String marketMeeting = '/market/meeting';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -78,5 +83,10 @@ class Routes {
     router.define(settingpwd, handler: settingPwdHandler);
     router.define(resetPwd, handler: resetPwdHandler);
     router.define(resetMobile, handler: resetMobileHandler);
+    router.define(marketSearch, handler: marketSearchHandler);
+    router.define(marketApplyMetting, handler: marketApplyMettingHandler);
+    router.define(marketApplyResult, handler: marketApplyResultHandler);
+    router.define(marketCourse, handler: marketCourseHandler);
+    router.define(marketMeeting, handler: marketMeetingHandler);
   }
 }
