@@ -23,10 +23,12 @@ Dio service() {
   }, onResponse: (Response response) async {
     if (response.data['code'] == 401) {
       G.clearPref();
-      G.toast(response.data['message'] ?? '请重新登录');
+      G.toast('请重新登录');
       BuildContext context = G.currentContext;
-      return Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (ctx) => LoginPage()));
+      // Navigator.of(context)
+      //     .pushReplacement(MaterialPageRoute(builder: (ctx) => LoginPage()));
+      G.router.navigateTo(context, '/login', replace: true);
+      return;
     }
     if (response.data['code'] != 200) {
       G.toast(response.data['message'] ?? '接口错误');
@@ -42,10 +44,9 @@ Dio service() {
     // 当请求失败时做一些预处理
     // return e; //continue
   }));
-
-  dio.interceptors.add(
-    LogInterceptor(requestBody: true, responseBody: true),
-  );
+  // dio.interceptors.add(
+  //   LogInterceptor(requestBody: true, responseBody: true),
+  // );
   // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
   //     (client) {
   //   // config the http client

@@ -622,7 +622,9 @@ class _HomePageState extends State<HomePage>
     super.deactivate();
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
-      _refreshController.callRefresh();
+      msgFuture = _getMsgCount();
+      homeFuture = _getHomeinfo();
+      // _refreshController.callRefresh();
     }
 
   }
