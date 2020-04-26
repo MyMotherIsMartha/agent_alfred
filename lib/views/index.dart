@@ -1,6 +1,5 @@
-import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/utils/global.dart';
-import 'package:agent37_flutter/views/dashboard/dashboard.dart';
+import 'package:agent37_flutter/views/marketing/index.dart';
 import 'package:agent37_flutter/views/home/home.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +27,7 @@ class _IndexPageState extends State<IndexPage> {
       activeIcon: Image.asset('lib/assets/images/pic-icon/dashboard_active.png', width: G.setWidth(44))
     ),
   ];
-  final List<Widget> tabBodies = [HomePage(), DashboardPage()];
+  final List<Widget> tabBodies = [HomePage(), MarketingPage()];
   int curIndex = 0;
   // tabBodies
   @override
