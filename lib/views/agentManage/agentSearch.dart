@@ -4,28 +4,27 @@ import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/models/agentManage.dart';
-import 'package:agent37_flutter/models/vipManage.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
+import 'package:agent37_flutter/views/agentManage/components/agentListItem.dart';
 import 'package:agent37_flutter/views/finance/components/finance-item.dart';
 import 'package:agent37_flutter/views/finance/search-util.dart';
-import 'package:agent37_flutter/views/vipManage/components/vipListItem.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 
-class VipManageSearch extends StatefulWidget {
+class AgentManageSearch extends StatefulWidget {
   @override
-  _VipManageSearchState createState() => _VipManageSearchState();
+  _AgentManageSearchState createState() => _AgentManageSearchState();
 }
 
-class _VipManageSearchState extends State<VipManageSearch> {
+class _AgentManageSearchState extends State<AgentManageSearch> {
   List<String> historyList; // 历史搜索记录列表
   String searchContext;
   int pageNo = 1; // 当前页码
-  List<VipItemModel> itemList = <VipItemModel>[]; // 订单列表
+  List<AgentItemModel> itemList = <AgentItemModel>[]; // 订单列表
   int total; // 总条数
   final TextEditingController _searchController = TextEditingController();
   EasyRefreshController _refreshController = EasyRefreshController();
@@ -92,7 +91,7 @@ class _VipManageSearchState extends State<VipManageSearch> {
                       borderSide: BorderSide.none),
                   prefixIcon:
                       iconsearch(color: hex('#BFBFBF'), size: G.setSp(36)),
-                  hintText: "搜索会员昵称/手机号",
+                  hintText: "搜索代理商昵称/手机号",
                   hintMaxLines: 1,
                   hintStyle:
                       TextStyle(color: hex('#BFBFBF'), fontSize: G.setSp(28)),
@@ -172,7 +171,7 @@ class _VipManageSearchState extends State<VipManageSearch> {
   }
 
   // 财务列表
-  Widget _vipMemberList() {
+  Widget _agentMemberList() {
     return Expanded(
         flex: 1,
         child: itemList.length > 0
@@ -188,7 +187,7 @@ class _VipManageSearchState extends State<VipManageSearch> {
                         ),
                     itemCount: itemList.length,
                     itemBuilder: (context, index) {
-                      return VipListItem(itemList[index]);
+                      return AgentListItem(itemList[index]);
                     }),
                 onRefresh: () async {
                   await _getList(refresh: true);
@@ -207,22 +206,22 @@ class _VipManageSearchState extends State<VipManageSearch> {
     if (refresh) {
       _refreshController?.finishLoad(success: true, noMore: false);
       pageNo = 1;
-      itemList = <VipItemModel>[];
+      itemList = <AgentItemModel>[];
     } else {
       ++pageNo;
     }
 
-    VipResultModel sourceData;
+    AgentResultModel sourceData;
     var params = {
       'pageNo': pageNo,
       'pageSize': 10,
       'searchKey': searchContext
     };
-    var result = await OrderApi().getAppMemberInfos(params);
+    var result = await MemberApi().getAgentChildren(params);
     var data = result.data['data'];
     if (data == null) return;
     print(data);
-    sourceData = VipResultModel.fromJson(data);
+    sourceData = AgentResultModel.fromJson(data);
 
     setState(() {
       total = sourceData.total;
@@ -248,8 +247,140 @@ class _VipManageSearchState extends State<VipManageSearch> {
         Container(height: G.statusHeight),
         _searchHeader(),
         Validate.isNon(searchContext) || itemList.length == 0 ? _searchHistory() : Container(),
-        _vipMemberList()
+        _agentMemberList()
       ],
     ));
+  }
+
+  Widget leftTopText(statusCode) {
+    String statusStr;
+    switch (statusCode) {
+      case -3:
+        statusStr = '资质审核关闭';
+        break;
+      case -2:
+        statusStr = '资质审核超时';
+        break;
+      case -1:
+        statusStr = '资质审核拒绝';
+        break;
+      case 0:
+        statusStr = '待资质审核提交';
+        break;
+      case 1:
+        statusStr = '资质审核已提交';
+        break;
+      case 2:
+        statusStr = '待资质审核';
+        break;
+      case 3:
+        statusStr = '资质审核延迟申请';
+        break;
+      case 4:
+        statusStr = '资质审核成功';
+        break;
+      default:
+        statusStr = '未知状态';
+    }
+    if (statusCode == -1) {
+      return Row(children: [
+        Text(statusStr),
+        Container(
+          margin: EdgeInsets.only(left: G.setWidth(5)),
+          decoration: BoxDecoration(
+            color: hex('#E84747'),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
+        )
+      ]);
+    } else {
+      return Text(statusStr, style: TextStyle(color: hex('#333')));
+    }
+  }
+
+  Widget memberItem(item, {currentTab = 0}) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+      decoration: BoxDecoration(
+        color: hex('#FFF'),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(children: [
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: G.setWidth(390),
+                  ),
+                  child: Text(item.enterpriseName ?? '', 
+                      softWrap: true,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis, 
+                      style: TextStyle(fontWeight: FontWeight.w600)),
+                ),
+                Image(height: G.setHeight(34),image: item.headSculptureUrl != null ? NetworkImage(item.headSculptureUrl) : AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
+              ]),
+              leftTopText(item.qualificationsStatus),
+            ]
+          ),
+        ),
+        Offstage( // 控制拒绝原因的显隐
+          offstage: item.qualificationsStatus != -1,
+          child: Container(
+            margin: EdgeInsets.only(bottom: G.setWidth(15)),
+            padding: EdgeInsets.symmetric(vertical: G.setWidth(15), horizontal: G.setWidth(20)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(G.setWidth(10)),
+              color: hex('#F3F4F6')
+            ),
+            constraints: BoxConstraints(
+              minWidth: double.infinity, //宽度尽可能大
+            ),
+            child: Text(item.qualificationRefuseReason ?? '', style: TextStyle(color: hex('#666666')),),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            // print(item["value"].toString());
+            var mobile = item.mobile;
+            var company = item.enterpriseName ?? '测试企业名称';
+            String companyStr = FluroConvertUtils.fluroCnParamsEncode(company);
+            G.router.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr');
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: hex('#eee'), width:  G.setWidth(1))),
+            ),
+            child: Row(children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
+                child: Image(width: G.setWidth(100),image: AssetImage('lib/assets/images/home/vip.png'))
+              ),
+              Column(
+                children: [
+                  Row(children: <Widget>[
+                    Text('手机号:'),
+                    G.spacingWidth(25),
+                    Text(G.hideMobile(item.mobile))
+                  ],),
+                  Row(children: <Widget>[
+                    Text(item.checkStatus == -1 ? '注册时间:' : '购买时间:'),
+                    G.spacingWidth(20),
+                    Text(G.formatTime(item.registerTime, type: 'date'))
+                  ],)
+                ]
+              )
+            ],)
+          )
+        )
+      ])
+    );
   }
 }

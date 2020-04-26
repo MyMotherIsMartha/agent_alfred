@@ -82,5 +82,15 @@ class MemberApi{
     return await service().get('$agentMemberApi/v1/agentMemberServiceCharges/current');
   }
 
-
+  // ----代理商管理接口----
+  //  当前代理商下级代理统计信息
+  getAgentStatistics() async {
+    return await service().get('$agentMemberApi/v1/checkOrderRecords/statistics');
+  }
+  // 下级代理商
+  getAgentChildren(params) async {
+    var r = await service().get('$agentMemberApi//v1/agentMemberAccounts/childs',
+    queryParameters: params);
+    return r;
+  }
 }

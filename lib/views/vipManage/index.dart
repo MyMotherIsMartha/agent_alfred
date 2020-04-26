@@ -1,5 +1,11 @@
 import 'dart:async';
 
+import 'package:agent37_flutter/api/order.dart';
+import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/v-data-picker.dart';
+import 'package:agent37_flutter/components/v-refresh-header.dart';
+import 'package:agent37_flutter/models/vipManage.dart';
+import 'package:agent37_flutter/views/vipManage/components/vipListItem.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -35,9 +41,9 @@ class VipManageMainState extends State<VipManageMain>
   TabController _tabController;
 
   static List<Map> statusMap = [
-    {'value': 1, 'label': '普通'},
-    {'value': 2, 'label': '标准'},
-    {'value': 3, 'label': '钻石'}
+    {'value': 0, 'label': '普通'},
+    {'value': 1, 'label': '标准'},
+    {'value': 2, 'label': '钻石'}
   ];
 
 
@@ -50,8 +56,8 @@ class VipManageMainState extends State<VipManageMain>
   @override
   void initState() {
     super.initState();
-    loadCateGoryData();
     _scrollController = ScrollController();
+    loadCateGoryData();
   }
 
   @override
@@ -64,23 +70,31 @@ class VipManageMainState extends State<VipManageMain>
   /*
    * 加载大类列表和标签
    */
-  void loadCateGoryData() {
+  Future loadCateGoryData() async{
     List<Map> list = List.from(statusMap);
     list.retainWhere((item) => item['value'] != 50);
     List<Tab> myTabsTmp = <Tab>[];
-    List<Widget> bodysTmp = [];
-    for (int i = 0; i < list.length; i++) {
+    for (int i = 0; i < statusMap.length; i++) {
       Map model = list[i];
       myTabsTmp.add(Tab(text: model['label']));
-      // bodysTmp.add(OrderList(i, model['value']));
+      bodys.add(MemberList(model['value'], model['label']));
     }
     setState(() {
       tabs.addAll(myTabsTmp);
-      bodys.addAll(bodysTmp);
       _tabController = TabController(
         length: tabs.length,
         vsync: this,
       );
+    });
+
+    var result = await OrderApi().getAppMemberAmount();
+    print('app member amount');
+    print(result.data['data'].toString());
+    var resultData = result.data['data'];
+    setState(() {
+      tabs[0] = Tab(text: '普通(${resultData['normalMemberNum']})');
+      tabs[1] = Tab(text: '标准(${resultData['standMemberNum']})');
+      tabs[2] = Tab(text: '钻石(${resultData['diamondMemberNum']})');
     });
   }
 
@@ -108,6 +122,14 @@ class VipManageMainState extends State<VipManageMain>
               // ),
               floating: false,
               pinned: true,
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {
+                    G.router.navigateTo(context, '/vipManage/search');
+                  },
+                  icon: iconsearch(color: hex('#666666')),
+                )
+              ],
               bottom: new PreferredSize(
                 child: new Card(
                   color: Theme.of(context).primaryColor,
@@ -141,148 +163,105 @@ class VipManageMainState extends State<VipManageMain>
         },
         body: TabBarView(
           controller: _tabController,
-          children: statusMap.map((item) {
-            return MemberList(item['value'], item['label']);
-          }).toList()),
+          children: bodys),
       ),
     );
   }
 }
 
 class MemberList extends StatefulWidget {
-  final int status;
+  final int role;
   final String label;
-  MemberList(this.status, this.label);
+  MemberList(this.role, this.label);
 
   @override
   _MemberListState createState() => _MemberListState();
 }
 
 class _MemberListState extends State<MemberList> {
+  EasyRefreshController _controller = EasyRefreshController();
+  var scrollController = new ScrollController();
+  StreamSubscription _colorSubscription;
+  int pageNo = 1;
+  int total;
+  int role;
+  DateTime beginRegisterDate = DateTime(DateTime.now().year, DateTime.now().month);
+  DateTime endRegisterDate = DateTime.now();
+  List<VipItemModel> _listData = [];
+  
 
-  showPickerDate(BuildContext context) {
-    Picker(
-      adapter: DateTimePickerAdapter(
-        customColumnType: [0, 1, 2],
-        months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-        yearSuffix: '年',
-        daySuffix: '日'
-      ),
-      selectedTextStyle: TextStyle(color: hex('#333333')),
-      cancelText: '取消',
-      confirmText: '完成',
-      cancelTextStyle: TextStyle(color: hex('#999999')),
-      confirmTextStyle: TextStyle(color: hex('#108EE9')),
-      itemExtent: 50,
-      height: G.setHeight(510),
-      onConfirm: (Picker picker, List value) {
-        print((picker.adapter as DateTimePickerAdapter).value);
-        var selectedTime = (picker.adapter as DateTimePickerAdapter).value;
-        print(formatDate(selectedTime, [yyyy, '-', mm, '-', dd]));
-      }
-    ).showModal(context);
+  @override
+  void initState() {
+    super.initState();
+    role = widget.role;
+    print(widget.label);
+    _getList(true);
   }
 
-  Widget memberItem(item) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-      decoration: BoxDecoration(
-        color: hex('#FFF'),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: hex('#eee'), width:  G.setWidth(1))),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: [
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: G.setWidth(390),
-                  ),
-                  child: Text('云上一家旗舰店云上一家旗舰云上一家旗舰店云上一家旗舰', 
-                      softWrap: true,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis, 
-                      style: TextStyle(fontWeight: FontWeight.w600)),
-                ),
-                Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
-              ]),
-              Row(children: [
-                Text('审核拒绝'),
-                Container(
-                  margin: EdgeInsets.only(left: G.setWidth(5)),
-                  decoration: BoxDecoration(
-                    color: hex('#E6E6E6'),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
-                )
-              ])
-            ]
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            // print(item["value"].toString());
-            String vipId = item["value"].toString();
-            G.router.navigateTo(context, Routes.vipDetail + '?vipId=$vipId');
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Row(children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
-                child: Image(width: G.setWidth(100),image: AssetImage('lib/assets/images/home/vip.png'))
-              ),
-              Column(
-                children: [
-                  Row(children: <Widget>[
-                    Text('手机号:'),
-                    G.spacingWidth(25),
-                    Text('18892663052')
-                  ],),
-                  Row(children: <Widget>[
-                    Text('注册时间:'),
-                    G.spacingWidth(20),
-                    Text('2019-08-12')
-                  ],)
-                ]
-              )
-            ],)
-          )
-        )
-      ])
-    );
+  // showPickerDate(BuildContext context) {
+  //   Picker(
+  //     adapter: DateTimePickerAdapter(
+  //       customColumnType: [0, 1, 2],
+  //       months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+  //       yearSuffix: '年',
+  //       daySuffix: '日'
+  //     ),
+  //     selectedTextStyle: TextStyle(color: hex('#333333')),
+  //     cancelText: '取消',
+  //     confirmText: '完成',
+  //     cancelTextStyle: TextStyle(color: hex('#999999')),
+  //     confirmTextStyle: TextStyle(color: hex('#108EE9')),
+  //     itemExtent: 50,
+  //     height: G.setHeight(510),
+  //     onConfirm: (Picker picker, List value) {
+  //       print((picker.adapter as DateTimePickerAdapter).value);
+  //       var selectedTime = (picker.adapter as DateTimePickerAdapter).value;
+  //       print(formatDate(selectedTime, [yyyy, '-', mm, '-', dd]));
+  //     }
+  //   ).showModal(context);
+  // }
+
+  Future _getList(refresh) async {
+    if (_listData.length == total && !refresh) {
+      G.toast('已加载全部');
+      _controller.finishLoad(success: true, noMore: true);
+      return null;
+    }
+    var params = {
+      'pageNo': pageNo,
+      'pageSize': 10,
+      'role': role,
+      'beginPayDate': G.formatTime(beginRegisterDate.millisecondsSinceEpoch, type: 'date' ),
+      'endPayDate': G.formatTime(endRegisterDate.millisecondsSinceEpoch, type: 'date'),
+    };
+    void _api() async {
+      var result = await OrderApi().getAppMemberInfos(params);
+      print(result);
+      Map originalData = result.data['data'];
+      VipResultModel resultData = VipResultModel.fromJson(originalData);
+      if (resultData == null) return;
+      print(resultData);
+      setState(() {
+        total = resultData.total;
+      });
+      if (refresh) {
+        setState(() {
+          _listData = resultData.records;
+        });
+      } else {
+        _listData.addAll(resultData.records);
+      }
+    }
+
+    setState(() {
+      pageNo = refresh ? 1 : pageNo + 1;
+    });
+
+    _api();
   }
 
   @override
   Widget build(BuildContext context) {
-    EasyRefreshController _controller = EasyRefreshController();
-    var scrollController = new ScrollController();
-    StreamSubscription _colorSubscription;
-    int pageNo = 1;
-    List<Map> _listData = [
-      {'value': 1, 'label': '普通'},
-      {'value': 2, 'label': '标准2'},
-      {'value': 3, 'label': '钻石3'},
-      {'value': 4, 'label': '普通4'},
-      {'value': 5, 'label': '标准5'},
-      {'value': 6, 'label': '钻石6'},
-      {'value': 7, 'label': '普通7'},
-      {'value': 8, 'label': '标准8'},
-      {'value': 9, 'label': '钻石9'},
-      {'value': 10, 'label': '普通10'},
-      {'value': 11, 'label': '标准11'},
-      {'value': 12, 'label': '钻石12'}
-    ];
-    int total;
-
     return Container(
       color: hex('#F3F4F6'),
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setHeight(30)),
@@ -297,48 +276,35 @@ class _MemberListState extends State<MemberList> {
               children: <Widget>[
               Text('注册时间'),
               G.spacingWidth(60),
-              InkWell(
-                onTap: () {
-                  showPickerDate(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(G.setHeight(8))
-                  ),
-                  padding: EdgeInsets.only(left: G.setWidth(20), top: G.setHeight(10), bottom: G.setHeight(10)),
-                  child: Row(
-                    children: [
-                      Text('2018-09-01', style: TextStyle(color: hex('#424242'))),
-                      Icon(Icons.arrow_drop_down, color: hex('#CCCCCC'))
-                    ]
-                  ),
-                )
-              ),
-              Text('至'),
+              VDatePicker(beginRegisterDate, (time) async {
+                setState(() {
+                  beginRegisterDate = time;
+                });
+                await _getList(true);
+              }, maxValue: endRegisterDate,),
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(G.setHeight(8))
-                ),
-                padding: EdgeInsets.only(left: G.setWidth(20), top: G.setHeight(10), bottom: G.setHeight(10)),
-                child: Row(
-                  children: [
-                    Text('2018-09-01', style: TextStyle(color: hex('#424242'))),
-                    Icon(Icons.arrow_drop_down, color: hex('#CCCCCC'))
-                  ]
-                ),
-              )
+                alignment: Alignment.center,
+                width: G.setWidth(46),
+                child: Text('至',
+                    style: TextStyle(
+                        fontSize: G.setSp(24), color: hex('#424242'))),
+              ),
+              VDatePicker(endRegisterDate, (time) async {
+                setState(() {
+                  endRegisterDate = time;
+                });
+                await _getList(true);
+              }, minValue: beginRegisterDate)
             ]),
           ),
           Container(
             margin: EdgeInsets.only(top: G.setHeight(80)),
             child: extended.NestedScrollViewInnerScrollPositionKeyWidget(
-            Key('Tab-' + widget.status.toString()),
+            Key('Tab-' + widget.role.toString()),
             EasyRefresh(
               controller: _controller,
-              header: MaterialHeader(),
-              footer: MaterialFooter(),
+              header: vRefreshHeader,
+              footer: vRefreshFooter,
               child: ListView.builder(
                   controller: scrollController,
                   itemCount: _listData.length,
@@ -349,7 +315,7 @@ class _MemberListState extends State<MemberList> {
                         child: Text('没有更多了'),
                       );
                     } else {
-                      return memberItem(_listData[index]);
+                      return VipListItem(_listData[index]);
                     }
                   }),
               emptyWidget: _listData.length == 0
@@ -359,10 +325,10 @@ class _MemberListState extends State<MemberList> {
                     )
                   : null,
               onLoad: () async {
-                // _getOrder(false);
+                _getList(false);
               },
               onRefresh: () async {
-                // _getOrder(true);
+                _getList(true);
               },
             ))
           ),
@@ -370,4 +336,6 @@ class _MemberListState extends State<MemberList> {
       ),
     );
   }
+
+
 }

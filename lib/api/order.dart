@@ -34,5 +34,20 @@ class OrderApi{
       'searchKey': searchKey
     });
   }
-
+  //  分页查询app会员信息
+  getAppMemberInfos(data) async {
+    return await service().get('$orderPrefix/v1/appMemberInfos/page', queryParameters: data);
+  }
+  //  统计会员总数
+  getAppMemberAmount() async {
+    return await service().get('$orderPrefix/v1/appMemberInfos/statisticsMemberNum');
+  }
+  //  会员服务费详细
+  getAppMemberDetail(id) async {
+    return await service().get('$orderPrefix/v1/appMemberInfos/$id');
+  }
+  //  分页查询app会员信息
+  getAppMemberCommissions(data) async {
+    return await service().get('$orderPrefix/v1/appOrderItems/purchaseCommissions', queryParameters: data);
+  }
 }
