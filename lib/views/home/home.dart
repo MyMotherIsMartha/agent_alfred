@@ -559,16 +559,16 @@ class _HomePageState extends State<HomePage>
       {'title': '邀请分享', 'icon': '${G.imgBaseUrl}home/share.png', 'url': '/', 'isShare': true},
       {'title': '我的钱包', 'icon': '${G.imgBaseUrl}home/wallet.png', 'url': '/walletMain'},
       {'title': '会员管理', 'icon': '${G.imgBaseUrl}home/agent.png', 'url': '/vipManage'},
-      {'title': '代理商管理', 'icon': '${G.imgBaseUrl}home/vip.png', 'url': '/'},
+      {'title': '代理商管理', 'icon': '${G.imgBaseUrl}home/vip.png', 'url': '/agentManage'},
       {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/'},
     ];
     return Container(
-        margin: EdgeInsets.symmetric(vertical: G.setHeight(20)),
+        margin: EdgeInsets.symmetric(vertical: G.setWidth(20)),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(G.setWidth(10)),
             color: hex('#FFF')),
         width: G.setWidth(710),
-        height: G.setHeight(390),
+        height: G.setWidth(390),
         child: MediaQuery.removePadding(
           context: context,
           removeTop: true,
@@ -578,7 +578,7 @@ class _HomePageState extends State<HomePage>
                 // mainAxisSpacing: G.setWidth(20),
                 // crossAxisSpacing: G.setWidth(20),
                 crossAxisCount: 3, //横轴三个子widget
-                childAspectRatio: 1 //宽高比为1时，子widget
+                childAspectRatio: 1.2 //宽高比为1时，子widget
                 ),
             itemCount: 6,
             itemBuilder: (context, index) {

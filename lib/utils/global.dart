@@ -152,6 +152,10 @@ class G {
     Navigator.pop(context);
   }
 
+  static String hideMobile(mobile) {
+    return mobile.replaceFirst(new RegExp(r'\d{4}'), '****', 3);
+  }
+
   static formatTime(int unix, {String type = 'time'}) {
     return formatDate(
       DateTime.fromMicrosecondsSinceEpoch(unix * 1000),

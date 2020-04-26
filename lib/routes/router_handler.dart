@@ -1,3 +1,6 @@
+import 'package:agent37_flutter/views/agentManage/agentSearch.dart';
+import 'package:agent37_flutter/views/bank/bankForm.dart';
+import 'package:agent37_flutter/views/bank/index.dart';
 import 'package:agent37_flutter/views/common/resultPage.dart';
 import 'package:agent37_flutter/views/finance/index.dart';
 import 'package:agent37_flutter/views/finance/search.dart';
@@ -30,6 +33,7 @@ import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo1.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectAudit.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/readPerfectInfo.dart';
+import 'package:agent37_flutter/views/vipManage/vipSearch.dart';
 import 'package:agent37_flutter/views/wallet/index.dart';
 import 'package:agent37_flutter/views/wallet/withdraw.dart';
 import 'package:fluro/fluro.dart';
@@ -168,11 +172,35 @@ Handler walletWithdrawHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return WalletWithdraw();
 });
+//  银行卡主页
+Handler bankMainHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return BankMainPage();
+});
+//  银行卡表单页
+Handler bankFormHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return BankFormPage();
+});
+
 Handler vipManageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return VipManageMain();
 });
+Handler vipSearchHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return VipManageSearch();
+});
 
+Handler vipDetailHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+    String vipId = params['vipId']?.first;
+    
+    return VipDetail(
+      vipId: vipId,
+    );
+  }
+);
 // 财务管理
 Handler financeHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -227,19 +255,15 @@ Handler resetMobileHandler = Handler(
   return SettingMobilePage();
 });
 
-Handler vipDetailHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
-    String vipId = params['vipId']?.first;
-    
-    return VipDetail(
-      vipId: vipId,
-    );
-  }
-);
-
 Handler agentManageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return AgentManageMain();
+  }
+);
+
+Handler agentManageSearchHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return AgentManageSearch();
   }
 );
 
