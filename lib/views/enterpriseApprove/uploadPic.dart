@@ -4,7 +4,6 @@ import 'package:color_dart/color_dart.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:provider/provider.dart';
-import 'package:agent37_flutter/model/license.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'dart:io';

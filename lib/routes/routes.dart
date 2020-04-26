@@ -20,8 +20,10 @@ class Routes {
   static String uploadLicenseForm = '/uploadLicenseForm';
   static String resultPage = '/resultPage';
   static String vipManage = '/vipManage';
+  static String vipSearch = '/vipManage/search';
   static String vipDetail = '/vipDetail';
   static String agentManage = '/agentManage';
+  static String agentManageSearch = '/agentManage/search';
   static String agentVerify = '/agentVerify';
   static String perfectEnterprise1 = '/perfectEnterprise1';
   static String perfectEnterprise2 = '/perfectEnterprise2';
@@ -29,6 +31,8 @@ class Routes {
   static String readPerfectInfo = '/readPerfectInfo';
   static String walletMain = '/walletMain';
   static String walletWithdraw = '/walletMain/withdraw';
+  static String bankMain = '/bankMain';
+  static String bankForm = '/bankForm';
   static String financePage = '/finance';
   static String financeSearchPage = '/finance/search';
   static String setting = '/setting';
@@ -60,8 +64,10 @@ class Routes {
     router.define(uploadLicenseForm, handler: uploadLicenseFormHandler);
     router.define(resultPage, handler: resultPageHandler);
     router.define(vipManage, handler: vipManageHandler);
+    router.define(vipSearch, handler: vipSearchHandler);
     router.define(vipDetail, handler: vipDetailHandler);
     router.define(agentManage, handler: agentManageHandler);
+    router.define(agentManageSearch, handler: agentManageSearchHandler);
     router.define(agentVerify, handler: agentVerifyHandler);
     router.define(perfectEnterprise1, handler: perfectEnterprise1Handler);
     router.define(perfectEnterprise2, handler: perfectEnterprise2Handler);
@@ -71,6 +77,8 @@ class Routes {
     router.define(financeSearchPage, handler: financeSearchHandler);
     router.define(walletMain, handler: walletMainHandler);
     router.define(walletWithdraw, handler: walletWithdrawHandler);
+    router.define(bankMain, handler: bankMainHandler);
+    router.define(bankForm, handler: bankFormHandler);
     router.define(setting, handler: settingHandler);
     router.define(settingUserinfo, handler: settingUserInfoHandler);
     router.define(settingNickname, handler: settingNicknameHandler);

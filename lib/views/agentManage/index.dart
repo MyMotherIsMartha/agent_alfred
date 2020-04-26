@@ -1,6 +1,11 @@
 import 'dart:async';
 
+import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/v-refresh-header.dart';
+import 'package:agent37_flutter/models/agentManage.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
+import 'package:agent37_flutter/views/agentManage/components/agentListItem.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -34,11 +39,15 @@ class AgentManageMainState extends State<AgentManageMain>
   ScrollController _scrollController;
   // Tab控制器
   TabController _tabController;
+  //  各代理商数量
+  Map _agentNumObj = {
+    'giveAgentNum': 0,
+    'checkAgentNum': 0
+  };
 
   static List<Map> statusMap = [
     {'value': 1, 'label': '普通'},
-    {'value': 2, 'label': '代理商'},
-    // {'value': 3, 'label': '钻石'}
+    {'value': 0, 'label': '代理商'},
   ];
 
 
@@ -65,23 +74,29 @@ class AgentManageMainState extends State<AgentManageMain>
   /*
    * 加载大类列表和标签
    */
-  void loadCateGoryData() {
+  void loadCateGoryData() async {
     List<Map> list = List.from(statusMap);
-    list.retainWhere((item) => item['value'] != 50);
-    List<Tab> myTabsTmp = <Tab>[];
-    List<Widget> bodysTmp = [];
+
     for (int i = 0; i < list.length; i++) {
       Map model = list[i];
-      myTabsTmp.add(Tab(text: model['label']));
-      // bodysTmp.add(OrderList(i, model['value']));
+      tabs.add(Tab(text: model['label']));
+      bodys.add(MemberList(model['value'], model['label']));
     }
     setState(() {
-      tabs.addAll(myTabsTmp);
-      bodys.addAll(bodysTmp);
       _tabController = TabController(
         length: tabs.length,
         vsync: this,
       );
+    });
+
+    var result = await MemberApi().getAgentStatistics();
+    setState(() {
+      _agentNumObj = result.data['data'];
+      print(_agentNumObj);
+      var normalAgentNum = _agentNumObj["normalAgentNum"];
+      var agentNum = _agentNumObj["agentNum"];
+      tabs[0] = Tab(text: '普通($normalAgentNum)');
+      tabs[1] = Tab(text: '代理商($agentNum)');
     });
   }
 
@@ -119,7 +134,7 @@ class AgentManageMainState extends State<AgentManageMain>
                       style: TextStyle(fontSize: G.setSp(24), color: hex('#666'))
                     ),
                     TextSpan(
-                      text: '5',
+                      text: _agentNumObj['checkPassGiveAgentNum'].toString(),
                       style: TextStyle(fontSize: G.setSp(30), fontWeight: FontWeight.w600)
                     ),
                   ]))
@@ -136,7 +151,7 @@ class AgentManageMainState extends State<AgentManageMain>
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('每推荐两个钻石会员即可获赠名额', style: TextStyle(fontSize: G.setSp(30), color: hex('#000'))),
+                          Text('每推荐${_agentNumObj['eachAddDiamondMemberNum']}个钻石会员即可获赠名额', style: TextStyle(fontSize: G.setSp(30), color: hex('#000'))),
                           Text('无次数限制，满足自动新增', style: TextStyle(fontSize: G.setSp(24), color: hex('#999999')))
                         ]
                       )
@@ -148,7 +163,7 @@ class AgentManageMainState extends State<AgentManageMain>
                       style: TextStyle(fontSize: G.setSp(24), color: hex('#666'))
                     ),
                     TextSpan(
-                      text: '1',
+                      text: _agentNumObj['eachAddDiamondMembeGiveAgentNum'].toString(),
                       style: TextStyle(fontSize: G.setSp(30), fontWeight: FontWeight.w600)
                     ),
                   ]))
@@ -209,12 +224,12 @@ class AgentManageMainState extends State<AgentManageMain>
                     Text.rich(TextSpan(
                       children: [
                         TextSpan(text: '   ×', style: TextStyle(color: Colors.white, fontSize: G.setSp(28))),
-                        TextSpan(text: '2', style: TextStyle(color: Colors.white, fontSize: G.setSp(42)))
+                        TextSpan(text: (_agentNumObj['giveAgentNum'] - _agentNumObj['checkAgentNum']).toString(), style: TextStyle(color: Colors.white, fontSize: G.setSp(42)))
                       ]
                     ))
                   ]),
                   G.spacing(10),
-                  Text('待入账代理商名额3名', style: TextStyle(fontSize: G.setSp(24), color: Color.fromRGBO(255, 255, 255, 0.6)))
+                  Text('待入账代理商名额${_agentNumObj["pendingAgentNum"]}名', style: TextStyle(fontSize: G.setSp(24), color: Color.fromRGBO(255, 255, 255, 0.6)))
                 ]
               )
             )
@@ -288,6 +303,14 @@ class AgentManageMainState extends State<AgentManageMain>
               // ),
               floating: false,
               pinned: true,
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {
+                    G.router.navigateTo(context, '/agentManage/search');
+                  },
+                  icon: iconsearch(color: hex('#666666')),
+                )
+              ],
             ),
           ];
         },
@@ -316,9 +339,7 @@ class AgentManageMainState extends State<AgentManageMain>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: statusMap.map((item) {
-                return MemberList(item['value'], item['label']);
-              }).toList()),
+              children: bodys),
           )
         ])
       ),
@@ -336,7 +357,13 @@ class MemberList extends StatefulWidget {
 }
 
 class _MemberListState extends State<MemberList> {
-  String currentStatus = '待短信验证';
+  EasyRefreshController _controller = EasyRefreshController();
+  var scrollController = new ScrollController();
+  int pageNo = 1;
+  int isNormal;
+  int smsValid = 0;
+  List<AgentItemModel> _listData = [];
+  int total;
 
   showPickerDate(BuildContext context) {
     Picker(
@@ -361,13 +388,14 @@ class _MemberListState extends State<MemberList> {
     ).showModal(context);
   }
 
-  Widget _statucItem(String status) {
-    bool selected = status == currentStatus;
+  Widget _statucItem(String label, int value) {
+    bool selected = value == smsValid;
     return InkWell(
         onTap: () {
           setState(() {
-            currentStatus = status;
+            smsValid = value;
           });
+          _getList(true);
         },
         child: Container(
             width: G.setWidth(300),
@@ -377,7 +405,7 @@ class _MemberListState extends State<MemberList> {
                 border: Border.all(
                     color: selected ? hex('#6982FF') : Colors.transparent),
                 borderRadius: BorderRadius.circular(G.setSp(54))),
-            child: Text(status,
+            child: Text(label,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: selected ? hex('#6982FF') : hex('#999999'),
@@ -400,114 +428,64 @@ class _MemberListState extends State<MemberList> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             direction: Axis.horizontal,
             children: <Widget>[
-              _statucItem('待短信验证'),
-              _statucItem('已短信验证')
+              _statucItem('待短信验证', 0),
+              _statucItem('已短信验证', 1)
             ],
           ),
         ));
   }
 
-  Widget memberItem(item) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-      decoration: BoxDecoration(
-        color: hex('#FFF'),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: hex('#eee'), width:  G.setWidth(1))),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: [
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: G.setWidth(390),
-                  ),
-                  child: Text('云上一家旗舰店云上一家旗舰云上一家旗舰店云上一家旗舰', 
-                      softWrap: true,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis, 
-                      style: TextStyle(fontWeight: FontWeight.w600)),
-                ),
-                Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
-              ]),
-              Row(children: [
-                Text('审核拒绝'),
-                Container(
-                  margin: EdgeInsets.only(left: G.setWidth(5)),
-                  decoration: BoxDecoration(
-                    color: hex('#E6E6E6'),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
-                )
-              ])
-            ]
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            // print(item["value"].toString());
-            var mobile = '18892663025';
-            var company = '奥克斯空调有限公司还能不能再长了';
-            String companyStr = FluroConvertUtils.fluroCnParamsEncode(company);
-            G.router.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr');
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Row(children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
-                child: Image(width: G.setWidth(100),image: AssetImage('lib/assets/images/home/vip.png'))
-              ),
-              Column(
-                children: [
-                  Row(children: <Widget>[
-                    Text('手机号:'),
-                    G.spacingWidth(25),
-                    Text('18892663052')
-                  ],),
-                  Row(children: <Widget>[
-                    Text('注册时间:'),
-                    G.spacingWidth(20),
-                    Text('2019-08-12')
-                  ],)
-                ]
-              )
-            ],)
-          )
-        )
-      ])
-    );
+
+  @override
+  void initState() { 
+    super.initState();
+    isNormal = widget.status;
+    _getList(true);
+  }
+
+  Future _getList(refresh) async {
+    if (_listData.length == total && !refresh) {
+      G.toast('已加载全部');
+      _controller.finishLoad(success: true, noMore: true);
+      return null;
+    }
+    var params = {
+      'pageNo': pageNo,
+      'pageSize': 10,
+      'isNormal': isNormal,
+      'smsValid': isNormal == 0 ? smsValid : ''
+    };
+    print('params');
+    print(params);
+    void _api() async {
+      var result = await MemberApi().getAgentChildren(params);
+      print(result);
+      Map originalData = result.data['data'];
+      print(originalData.toString());
+      AgentResultModel resultData = AgentResultModel.fromJson(originalData);
+      if (resultData == null) return;
+      print(resultData);
+      setState(() {
+        total = resultData.total;
+      });
+      if (refresh) {
+        setState(() {
+          _listData = resultData.records;
+        });
+      } else {
+        _listData.addAll(resultData.records);
+      }
+    }
+
+    setState(() {
+      pageNo = refresh ? 1 : pageNo + 1;
+    });
+
+    _api();
   }
 
   @override
   Widget build(BuildContext context) {
-    EasyRefreshController _controller = EasyRefreshController();
-    var scrollController = new ScrollController();
-    StreamSubscription _colorSubscription;
-    int pageNo = 1;
-    List<Map> _listData = [
-      {'value': 1, 'label': '普通'},
-      {'value': 2, 'label': '标准2'},
-      {'value': 3, 'label': '钻石3'},
-      {'value': 4, 'label': '普通4'},
-      {'value': 5, 'label': '标准5'},
-      {'value': 6, 'label': '钻石6'},
-      {'value': 7, 'label': '普通7'},
-      {'value': 8, 'label': '标准8'},
-      {'value': 9, 'label': '钻石9'},
-      {'value': 10, 'label': '普通10'},
-      {'value': 11, 'label': '标准11'},
-      {'value': 12, 'label': '钻石12'}
-    ];
-    int total;
 
     return Container(
       color: hex('#F3F4F6'),
@@ -515,7 +493,7 @@ class _MemberListState extends State<MemberList> {
       child: Column(
         children: <Widget>[
           Container(
-            child: widget.status == 2 ? _statucSwitch() : null,
+            child: widget.status == 0 ? _statucSwitch() : null,
           ),
           Expanded(
             child: Container(
@@ -524,8 +502,8 @@ class _MemberListState extends State<MemberList> {
               Key('Tab-' + widget.status.toString()),
               EasyRefresh(
                 controller: _controller,
-                header: MaterialHeader(),
-                footer: MaterialFooter(),
+                header: vRefreshHeader,
+                footer: _listData.length > 0 ? vRefreshFooter : MaterialFooter(),
                 child: ListView.builder(
                     controller: scrollController,
                     itemCount: _listData.length,
@@ -536,20 +514,20 @@ class _MemberListState extends State<MemberList> {
                           child: Text('没有更多了'),
                         );
                       } else {
-                        return memberItem(_listData[index]);
+                        return AgentListItem(_listData[index]);
                       }
                     }),
                 emptyWidget: _listData.length == 0
                     ? Container(
                         margin: EdgeInsets.only(top: G.setHeight(240)),
-                        child: VEmpty(hintText: '暂无任何会员哦～'),
+                        child: VEmpty(hintText: '暂无任何代理商哦～'),
                       )
                     : null,
                 onLoad: () async {
-                  // _getOrder(false);
+                  _getList(false);
                 },
                 onRefresh: () async {
-                  // _getOrder(true);
+                  _getList(true);
                 },
               ))
             ),

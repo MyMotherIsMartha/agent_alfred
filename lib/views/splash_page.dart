@@ -46,11 +46,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     // G.clearPref();
     String token = G.getPref('token');
     print(token);
-    // if (Validate.isNon(token)) {
-    //   G.router.navigateTo(context, '/login', replace: true);
-    // } else {
-    //   Provider.of<UserProvide>(context).updateUserAuth();
-    // }
+    if (Validate.isNon(token)) {
+      G.router.navigateTo(context, '/login', replace: true);
+    } else {
+      Provider.of<UserProvide>(context).updateUserAuth();
+    }
     
     // UserModel userModel = Provider.of<UserModel>(context);
     // userModel.initUser();
@@ -64,7 +64,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     // } else {
     //   G.router.navigateTo(context, '/login');
     // }
-    G.router.navigateTo(context, '/vipManage', replace: true);
+    // G.router.navigateTo(context, '/vipManage', replace: true);
   }
 
   @override

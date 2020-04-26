@@ -105,33 +105,34 @@ class _WalletMainState extends State<WalletMain> {
         InkWell(
           onTap: () {
             print('test');
-            showDialog(
-              context: context,
-              builder: (ctx) {
-                return CupertinoAlertDialog(
-                  title: Text('请先完善企业信息'),
-                  // content:Text('我是content'),
-                  actions:<Widget>[
+            // showDialog(
+            //   context: context,
+            //   builder: (ctx) {
+            //     return CupertinoAlertDialog(
+            //       title: Text('请先完善企业信息'),
+            //       // content:Text('我是content'),
+            //       actions:<Widget>[
                     
-                    CupertinoDialogAction(
-                      child: Text('取消', style: TextStyle(color: hex('#85868A')),),
-                      onPressed: (){
-                        print('yes...');
-                        Navigator.of(context).pop();
-                      },
-                    ),
+            //         CupertinoDialogAction(
+            //           child: Text('取消', style: TextStyle(color: hex('#85868A')),),
+            //           onPressed: (){
+            //             print('yes...');
+            //             Navigator.of(context).pop();
+            //           },
+            //         ),
                 
-                    CupertinoDialogAction(
-                      child: Text('确定'),
-                      onPressed: (){
-                        print('no...');
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ]
-                );
-              },
-            );
+            //         CupertinoDialogAction(
+            //           child: Text('确定'),
+            //           onPressed: (){
+            //             print('no...');
+            //             Navigator.of(context).pop();
+            //           },
+            //         )
+            //       ]
+            //     );
+            //   },
+            // );
+            G.router.navigateTo(context, '/bankMain');
           },
           child: Container(
             color: Colors.white,

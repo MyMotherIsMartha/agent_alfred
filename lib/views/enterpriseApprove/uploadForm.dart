@@ -13,7 +13,6 @@ import 'package:agent37_flutter/components/v-address.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/api/member.dart';
-import 'package:agent37_flutter/model/license.dart';
 import 'package:provider/provider.dart';
 
 class UploadLicenseForm extends StatefulWidget {
