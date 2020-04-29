@@ -156,6 +156,8 @@ class _LoginPageState extends State<LoginPage> {
                             G.setPref('token', 'bearer ' + token);
                             G.setContext(context);
                             Provider.of<UserProvide>(context).updateUserAuth();
+                            Provider.of<UserProvide>(context).updateEnterpriseinfo();
+                            Provider.of<UserProvide>(context).updateBankCardInfo();
                           }
                         }
                       },

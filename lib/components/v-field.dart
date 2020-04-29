@@ -21,6 +21,7 @@ class _VFieldState extends State<VField> {
         alignment: Alignment.center,
         height: G.setHeight(100),
         decoration: BoxDecoration(
+          color: hex('#fff'),
           border: Border(bottom: BorderSide(color: hex('#eee'), width: G.setWidth(1)))
         ),
         padding: EdgeInsets.symmetric(

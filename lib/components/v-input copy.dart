@@ -54,6 +54,8 @@ class _VInputState extends State<VInput> {
       }
     });
     if (widget.value != null && widget.value.isNotEmpty) {
+      print('widget value');
+      print(widget.value);
       widget.controller.value = TextEditingValue(text: widget.value);
     }
   }
