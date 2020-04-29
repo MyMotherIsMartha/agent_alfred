@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:wasm';
-
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
@@ -52,6 +50,7 @@ class _HomePageState extends State<HomePage>
     return Container(
         padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
         child: AppBar(
+          leading: Container(),
           backgroundColor: Colors.transparent,
           elevation: 0,
           brightness: Brightness.dark,
@@ -73,14 +72,18 @@ class _HomePageState extends State<HomePage>
                       future: msgFuture,
                       builder: (context, shapshot) {
                         if (shapshot.hasData) {
-                          return shapshot.data > 0 ? Badge(
-                            badgeContent: Text(shapshot.data.toString(), style: TextStyle(
-                              fontSize: G.setWidth(18),
-                              color: hex('#fff')
-                            )),
-                            child: iconmsg(size: G.setSp(48)),
-                            position: BadgePosition.topRight(top: G.setHeight(16),right: G.setWidth(-14)),
-                          ) : iconmsg(size: G.setSp(48));
+                          return shapshot.data > 0
+                              ? Badge(
+                                  badgeContent: Text(shapshot.data.toString(),
+                                      style: TextStyle(
+                                          fontSize: G.setWidth(18),
+                                          color: hex('#fff'))),
+                                  child: iconmsg(size: G.setSp(48)),
+                                  position: BadgePosition.topRight(
+                                      top: G.setHeight(16),
+                                      right: G.setWidth(-14)),
+                                )
+                              : iconmsg(size: G.setSp(48));
                           // ;
                         } else {
                           return Container();
@@ -111,24 +114,28 @@ class _HomePageState extends State<HomePage>
                 : MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
+              Flex(
+                direction: Axis.horizontal,
                 children: <Widget>[
                   Container(
-                    width: G.setWidth(360),
+                    // width: G.setWidth(360),
+                    constraints: BoxConstraints(
+                      maxWidth: G.setWidth(360),
+                    ),
                     child: Text(homeinfo.nickname ?? '未知',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                      style:
-                          TextStyle(fontSize: G.setSp(30), color: hex('#FFF'))),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: G.setSp(30), color: hex('#FFF'))),
                   ),
                   Container(width: G.setWidth(10)),
                   Image.asset(
-                    homeinfo.checkStatus == 2
-                        ? '${G.imgBaseUrl}home/agent_status_icon.png'
-                        : '${G.imgBaseUrl}home/check-status_icon.png',
-                    width: G.setWidth(140),
-                    height: G.setHeight(50),
-                  ),
+                      homeinfo.checkStatus == 2
+                          ? '${G.imgBaseUrl}home/agent_status_icon.png'
+                          : '${G.imgBaseUrl}home/check-status_icon.png',
+                      width: G.setWidth(140),
+                      height: G.setWidth(50),
+                    ),
                 ],
               ),
               Validate.isNon(homeinfo.shareCode)
@@ -225,9 +232,9 @@ class _HomePageState extends State<HomePage>
               vertical: G.setHeight(38), horizontal: G.setWidth(30)),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: title == '开通钻石会员' 
-                  ? AssetImage('${G.imgBaseUrl}home/subordinate_bg.png')
-                  : AssetImage('${G.imgBaseUrl}home/order-num_bg.png'),
+                  image: title == '开通钻石会员'
+                      ? AssetImage('${G.imgBaseUrl}home/subordinate_bg.png')
+                      : AssetImage('${G.imgBaseUrl}home/order-num_bg.png'),
                   fit: BoxFit.fill)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -555,11 +562,32 @@ class _HomePageState extends State<HomePage>
 
   Widget _menu() {
     List<Map> menuList = [
-      {'title': '财务管理', 'icon': '${G.imgBaseUrl}home/finance.png', 'url': '/finance'},
-      {'title': '邀请分享', 'icon': '${G.imgBaseUrl}home/share.png', 'url': '/', 'isShare': true},
-      {'title': '我的钱包', 'icon': '${G.imgBaseUrl}home/wallet.png', 'url': '/walletMain'},
-      {'title': '会员管理', 'icon': '${G.imgBaseUrl}home/agent.png', 'url': '/vipManage'},
-      {'title': '代理商管理', 'icon': '${G.imgBaseUrl}home/vip.png', 'url': '/agentManage'},
+      {
+        'title': '财务管理',
+        'icon': '${G.imgBaseUrl}home/finance.png',
+        'url': '/finance'
+      },
+      {
+        'title': '邀请分享',
+        'icon': '${G.imgBaseUrl}home/share.png',
+        'url': '/',
+        'isShare': true
+      },
+      {
+        'title': '我的钱包',
+        'icon': '${G.imgBaseUrl}home/wallet.png',
+        'url': '/walletMain'
+      },
+      {
+        'title': '会员管理',
+        'icon': '${G.imgBaseUrl}home/agent.png',
+        'url': '/vipManage'
+      },
+      {
+        'title': '代理商管理',
+        'icon': '${G.imgBaseUrl}home/vip.png',
+        'url': '/agentManage'
+      },
       {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/'},
     ];
     return Container(
@@ -626,7 +654,6 @@ class _HomePageState extends State<HomePage>
       homeFuture = _getHomeinfo();
       // _refreshController.callRefresh();
     }
-
   }
 
   @override
