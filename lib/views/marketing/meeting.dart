@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,12 @@ class MarketMeetingPage extends StatefulWidget {
 class _WebViewState extends State<MarketMeetingPage> {
   WebViewController _controller;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String url;
 
   @override
   void initState() {
     super.initState();
+    url = EnvConfig.dev['web-address'] + '/#/meeting/' + widget.id;
   }
 
   @override
@@ -29,8 +32,8 @@ class _WebViewState extends State<MarketMeetingPage> {
 
   void _share(sence) {
     var model = WeChatShareWebPageModel(
-      'https://github.com/JarvanMo/fluwx',
-      title: '我的百度',
+      url,
+      title: '会议详情',
       thumbnail: WeChatImage.network("http://img.cixi518.com/ljh_logo.jpeg"),
       scene: sence,
     );
@@ -151,7 +154,7 @@ class _WebViewState extends State<MarketMeetingPage> {
         ),
         body: Container(
           child: WebView(
-            initialUrl: "http://192.168.10.44:8080/#/meeting/" + widget.id,
+            initialUrl: url,
             //JS执行模式 是否允许JS执行
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController wvc) {

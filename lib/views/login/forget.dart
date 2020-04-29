@@ -4,14 +4,11 @@ import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-hint.dart';
 import 'package:agent37_flutter/components/v-input.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
-import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
-import 'package:city_pickers/city_pickers.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ForgetPage extends StatefulWidget {
   @override

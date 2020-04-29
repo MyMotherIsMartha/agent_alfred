@@ -1,7 +1,5 @@
 import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
-import 'package:agent37_flutter/views/login/login.dart';
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 // 初始化dio

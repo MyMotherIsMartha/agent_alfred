@@ -1,7 +1,5 @@
 import 'package:agent37_flutter/components/Icon.dart';
-import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
-import 'package:agent37_flutter/models/userinfo.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';

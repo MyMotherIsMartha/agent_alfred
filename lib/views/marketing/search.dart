@@ -2,7 +2,6 @@ import 'package:agent37_flutter/api/marketing.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
-import 'package:agent37_flutter/models/market-module.dart';
 import 'package:agent37_flutter/models/marketing-search.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';

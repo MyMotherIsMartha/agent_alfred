@@ -1,21 +1,14 @@
-import 'package:agent37_flutter/api/dic.dart';
-import 'package:agent37_flutter/api/oss.dart';
 import 'package:agent37_flutter/api/member.dart';
 import 'package:color_dart/hex_color.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agent37_flutter/routes/routes.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
-import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-address.dart';
 import 'package:agent37_flutter/components/v-input.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/utils/oss.dart';
-import 'dart:io';
 
 class PerfectEnterprise2 extends StatefulWidget {
 
@@ -172,53 +165,6 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
             ],
           ),
         );
-  }
-
-  _takePhoto() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      _uploadImage(image);
-    }
-  }
-
-  /*相册*/
-  _openGallery() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    print(image);
-    if (image != null) {
-      _uploadImage(image);
-    }
-  }
-
-  _uploadImage(File image) async {
-    String path = image.path;
-    var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-    var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
-    // FormData formData = FormData.from({
-    //   "userId": "10000024",
-    //   "file": UploadFileInfo(new File(path), name,
-    //       contentType: ContentType.parse("image/$suffix"))
-    // });
-    FormData data = FormData.fromMap({
-        "file": await MultipartFile.fromFile(path,filename: name + '.' + suffix)
-    });
-    var resultInfo = await OssApi().uploadEnterpriseLicense(data);
-    if (resultInfo.data['success'] == true) {
-      Map resultData = resultInfo.data['data'];
-      setState(() {
-        // licenseUrl = resultData['businessLicenseUrl'];
-        // enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
-        // registerCode = _registerCodeCtrl.text = resultData['registerCode'];
-        // _areaStrCtrl.text = resultData['registerAddress'];
-        // addressStr = _areaStrCtrl.text = resultData['registerAddress'];
-        // legalName = _legalPersonCtrl.text = resultData['legalPerson'];
-      });
-      // var uploadJson = FluroConvertUtils.object2string(uploadData);
-      // G.router.navigateTo(
-      //   context, Routes.uploadLicenseForm + "?uploadJson=$uploadJson");
-    } else {
-      print(resultInfo.data['message']);
-    }
   }
 
   bool _isDisableBtn() {
