@@ -73,6 +73,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
   Widget uploadIdCard(String type, int index) {
     return InkWell(
         onTap: () {
+          G.setContext(context);
           Oss.selectSource((path) {
             setState(() {
               if (index == 1) {

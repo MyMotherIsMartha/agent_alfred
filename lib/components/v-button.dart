@@ -5,6 +5,7 @@ import '../utils/global.dart';
 
 class VButton extends StatelessWidget {
   final String text;
+  final String textColor;
   final Function fn;
   final double width;
   final double height;
@@ -22,12 +23,13 @@ class VButton extends StatelessWidget {
       this.fs = 36,
       this.rgbStart = const [104, 90, 255],
       this.rgbEnd = const [105, 165, 255],
+      this.textColor = '#FFF',
       this.disabled = false});
   @override
   Widget build(BuildContext context) {
     return Container(
       width: G.setWidth(width),
-      height: G.setHeight(100),
+      height: G.setHeight(height),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(G.setHeight(height / 2)),
           gradient: LinearGradient(
@@ -37,7 +39,7 @@ class VButton extends StatelessWidget {
           boxShadow: shadown),
       child: FlatButton(
         child: Text(text,
-            style: TextStyle(color: hex('#FFF'), fontSize: G.setSp(fs))),
+            style: TextStyle(color: hex(textColor), fontSize: G.setSp(fs))),
         onPressed: disabled ? null : fn,
       ),
     );

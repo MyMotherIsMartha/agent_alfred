@@ -58,10 +58,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     await G.initSp();
     // G.clearPref();
     String token = G.getPref('token');
+    print(token);
     if (Validate.isNon(token)) {
       G.router.navigateTo(context, '/login', replace: true);
     } else {
       Provider.of<UserProvide>(context).updateUserAuth();
+      Provider.of<UserProvide>(context).updateEnterpriseinfo();
+      Provider.of<UserProvide>(context).updateBankCardInfo();
     }
     
     // UserModel userModel = Provider.of<UserModel>(context);
@@ -88,19 +91,23 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        padding: EdgeInsets.only(bottom: G.setHeight(100)),
+        padding: EdgeInsets.only(bottom: 50),
         alignment: Alignment.bottomCenter,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Image.asset(
               'lib/assets/images/logo.png',
-              width: G.setWidth(120),
+              width: 60,
+              height: 60
             ),
-            G.spacing(20),
+            Container(
+              height: 10,
+            ),
             Image.asset(
               'lib/assets/images/app_name.png',
-              width: G.setWidth(177),
+              width: 88.5,
+              height: 21,
             ),
           ],
         ),

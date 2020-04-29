@@ -31,6 +31,10 @@ class Routes {
   static String readPerfectInfo = '/readPerfectInfo';
   static String walletMain = '/walletMain';
   static String walletWithdraw = '/walletMain/withdraw';
+  static String billHistory = '/walletMain/billHistory';
+  static String invoiceList = '/invoiceList';
+  static String invoiceDetail = '/invoiceDetail';
+  static String sendAdress = '/sendAdress';
   static String bankMain = '/bankMain';
   static String bankForm = '/bankForm';
   static String financePage = '/finance';
@@ -82,6 +86,10 @@ class Routes {
     router.define(financeSearchPage, handler: financeSearchHandler);
     router.define(walletMain, handler: walletMainHandler);
     router.define(walletWithdraw, handler: walletWithdrawHandler);
+    router.define(billHistory, handler: billHistoryHandler);
+    router.define(invoiceList, handler: invoiceListHandler);
+    router.define(invoiceDetail, handler: invoiceDetailHandler);
+    router.define(sendAdress, handler: sendAdressHandler);
     router.define(bankMain, handler: bankMainHandler);
     router.define(bankForm, handler: bankFormHandler);
     router.define(setting, handler: settingHandler);

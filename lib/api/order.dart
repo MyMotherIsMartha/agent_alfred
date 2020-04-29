@@ -50,4 +50,18 @@ class OrderApi{
   getAppMemberCommissions(data) async {
     return await service().get('$orderPrefix/v1/appOrderItems/purchaseCommissions', queryParameters: data);
   }
+
+  // ------------- 发票相关接口 ---------------
+  //  服务费结款详细
+  getMakeMoneyById(id) async {
+    return await service().get('$orderPrefix/v1/statisticsMakeMoneyRecords/${id}');
+  }
+  //  当前结算服务费列表
+  getMakeMoneyList(params) async {
+    return await service().get('$orderPrefix/v1/statisticsMakeMoneyRecords/settlementStatisticsOrders', queryParameters: params);
+  }
+  //  上传服务费发票
+  uploadInvoice(data) async {
+    return await service().put('$orderPrefix/v1/statisticsMakeMoneyRecords/uploadInvoice', data: data);
+  }
 }

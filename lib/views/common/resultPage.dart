@@ -362,6 +362,61 @@ class _ResultPageState extends State<ResultPage> {
     ); 
   }
 
+  //  发票提交审核成功
+  Widget middleStatusWidgetInvoice() {
+    return Column(
+      children: <Widget>[
+        Container(
+          width: G.setWidth(350),
+          height: G.setWidth(350),
+          margin: EdgeInsets.only(top: G.setHeight(100)),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("lib/assets/images/enterprise/finish.png"),
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        G.spacing(G.setHeight(50)),
+        Text('发票提交成功，请尽快寄出发票',
+              style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
+        //   G.spacing(G.setHeight(10)),      
+        // Text('已开通代理商，快去完成考核任务吧', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+        Container(
+          height: G.setHeight(265),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              elevation: 4.0,
+              color: hex('#69A5FF'),
+              textColor: Colors.white,
+              shape: StadiumBorder(),
+              child: Padding(padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Text('返回', style: TextStyle(fontSize: G.setSp(36))),
+              )
+            ),
+            RaisedButton(
+              onPressed: () {
+                G.router.navigateTo(context, '/sendAdress');
+              },
+              elevation: 4.0,
+              color: hex('#D6DBFF'),
+              textColor: hex('#6982FF'),
+              shape: StadiumBorder(),
+              child: Padding(padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                child: Text('寄票地址', style: TextStyle(fontSize: G.setSp(36))),
+              )
+            )
+          ],)
+        )
+      ],
+    ); 
+  }
   Widget getCurrentWidget() {
     // 资审状态 -3：资质审核关闭；-2: 资质审核超时; -1: 资质审核拒绝; 0: 待资质审核提交；1: 资质审核已提交 2：待资质审核；3：资质审核延迟申请；4：资质审核成功
     if (statusCode == 1) {
@@ -379,6 +434,9 @@ class _ResultPageState extends State<ResultPage> {
     } else if (statusCode == 11) {
       //  代理商短信验证
       return middleStatusWidgetAgent();
+    } else if (statusCode == 12) {
+      //  发票提交审核成功
+      return middleStatusWidgetInvoice();
     } else {
       return middleStatusWidget4();
     }

@@ -1,10 +1,15 @@
+import 'package:agent37_flutter/api/llpay.dart';
 import 'package:agent37_flutter/api/login.dart';
+import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/models/enterpriseInfo.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:flutter/material.dart';
 
 class UserProvide with ChangeNotifier{
   UserAuthModel userAuthInfo;
+  EnterpriseInfoModel enterpriseInfo;
+  var bankCardInfo;
   // UserinfoModel userinfo;
   bool getInfoFlag = true;
 
@@ -19,6 +24,24 @@ class UserProvide with ChangeNotifier{
   //     notifyListeners();
   //   }
   // }
+  updateEnterpriseinfo() async {
+    var result = await MemberApi().getEnterpriseInfo();
+    if (result.data['code'] == 200) {
+      enterpriseInfo = EnterpriseInfoModel.fromJson(result.data['data']);
+    } else {
+      G.toast('获取用户企业信息失败');
+    }
+  }
+
+  updateBankCardInfo() async {
+    var result = await LLpayApi().getUserBankInfo();
+    if (result.data['code'] == 200) {
+      bankCardInfo = result.data['data'];
+    } else {
+      G.toast('获取用户银行卡信息失败');
+    }
+  }
+  
 
   refreshUserAuthinfo() {
     getInfoFlag = true;

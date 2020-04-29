@@ -1,10 +1,13 @@
+import 'package:agent37_flutter/api/finance.dart';
 import 'package:agent37_flutter/components/v-button.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:provider/provider.dart';
 
 class WalletWithdraw extends StatefulWidget {
   @override
@@ -14,10 +17,21 @@ class WalletWithdraw extends StatefulWidget {
 class _WalletWithdrawState extends State<WalletWithdraw> {
   final FocusNode _nodeText = FocusNode();
   final _moneyCtrl = TextEditingController();
+  double withdrawalBalance = 0;
 
   @override
   void initState() {
     super.initState();
+    _getAccountInfo();
+  }
+
+  _getAccountInfo() async {
+    var result = await FinanceApi().getAccountInfo();
+    var resultData = result.data['data'];
+    setState(() {
+      withdrawalBalance = resultData['withdrawalBalance'];
+    });
+    print(resultData.toString());
   }
 
   KeyboardActionsConfig _buildConfig(BuildContext context) {
@@ -64,7 +78,9 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
                 hintStyle: TextStyle(color: hex('#BFBFBF'), fontSize: G.setSp(30)),
                 suffix: GestureDetector(
                   onTap: () {
-                    _moneyCtrl.value = G.setTextEdit('300');
+                    setState(() {
+                      _moneyCtrl.value = G.setTextEdit(withdrawalBalance.toStringAsFixed(2));
+                    });
                   },
                   child: Text('全部', style: TextStyle(fontSize: G.setSp(30), color: hex('#424242'), fontWeight: FontWeight.w500))
                 )
@@ -75,11 +91,32 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
     );
   }
 
+  
+  String getBankTitle(bankCardInfo) {
+    var codeLength = bankCardInfo['bankUserCode'].length;
+    return '${bankCardInfo['bankUserName']}(${bankCardInfo['bankUserCode'].substring(codeLength - 4, codeLength)})';
+  }
+
+  void withdrawFunc() async {
+    var params = {
+      'withDrawalAmount':  _moneyCtrl.value.text
+    };
+    print(params);
+    var result = await FinanceApi().withDrawalApply(params);
+    print(result.data['data']);
+    if (result.data['code'] == 200) {
+      G.toast('提现成功');
+      _getAccountInfo();
+      _moneyCtrl.value = G.setTextEdit('');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var bankCardInfo = Provider.of<UserProvide>(context).bankCardInfo;
+
     return Scaffold(
       appBar: AppBar(
-        brightness: Brightness.dark,
         elevation: 0,
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -94,34 +131,33 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
         child: Column(children: [
         InkWell(
           onTap: () {
-            print('test');
-            showDialog(
-              context: context,
-              builder: (ctx) {
-                return CupertinoAlertDialog(
-                  title: Text('请先完善企业信息'),
-                  // content:Text('我是content'),
-                  actions:<Widget>[
+            // showDialog(
+            //   context: context,
+            //   builder: (ctx) {
+            //     return CupertinoAlertDialog(
+            //       title: Text('请先完善企业信息'),
+            //       // content:Text('我是content'),
+            //       actions:<Widget>[
                     
-                    CupertinoDialogAction(
-                      child: Text('取消', style: TextStyle(color: hex('#85868A')),),
-                      onPressed: (){
-                        print('yes...');
-                        Navigator.of(context).pop();
-                      },
-                    ),
+            //         CupertinoDialogAction(
+            //           child: Text('取消', style: TextStyle(color: hex('#85868A')),),
+            //           onPressed: (){
+            //             print('yes...');
+            //             Navigator.of(context).pop();
+            //           },
+            //         ),
                 
-                    CupertinoDialogAction(
-                      child: Text('确定'),
-                      onPressed: (){
-                        print('no...');
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ]
-                );
-              },
-            );
+            //         CupertinoDialogAction(
+            //           child: Text('确定'),
+            //           onPressed: (){
+            //             print('no...');
+            //             Navigator.of(context).pop();
+            //           },
+            //         )
+            //       ]
+            //     );
+            //   },
+            // );
           },
           child: Container(
             color: Colors.white,
@@ -131,9 +167,9 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(children: <Widget>[
-                  Image(width: G.setWidth(40), image: AssetImage('lib/assets/images/wallet/card.png')),
+                  Image(width: G.setWidth(40), image: NetworkImage(bankCardInfo['bankLogo'])),
                   G.spacingWidth(5),
-                  Text('中国工商银行储蓄卡(2573)', style: TextStyle(fontSize: G.setSp(28), fontWeight: FontWeight.w600),),
+                  Text(getBankTitle(bankCardInfo), style: TextStyle(fontSize: G.setSp(28), fontWeight: FontWeight.w600),),
                   G.spacingWidth(5),
                   Image(width: G.setWidth(60), image: AssetImage('lib/assets/images/wallet/enterprise-tag.png')),
                 ]),
@@ -155,7 +191,7 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
               Text('提现金额', style: TextStyle(fontSize: G.setSp(30), color: hex('#333'), fontWeight: FontWeight.w600),),
               G.spacing(24),
               inputMoney(),
-              Text('可提现金额：¥300.00', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+              Text('可提现金额：¥${withdrawalBalance.toStringAsFixed(2)}', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -187,7 +223,11 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
         ),
         Container(
           margin: EdgeInsets.only(top: G.setWidth(80)),
-          child: VButton(text: '提现', fn: null, disabled: Validate.isNon(_moneyCtrl.value.text))
+          child: VButton(
+            text: '提现', 
+            disabled: Validate.isNon(_moneyCtrl.value.text), 
+            fn: withdrawFunc
+          )
         )
       ]),
     )
