@@ -41,6 +41,7 @@ class _IndexPageState extends State<IndexPage> {
         data: ThemeData(
             primaryColor: Colors.black87,
             highlightColor: Colors.transparent,
+            // canvasColor: Colors.transparent, // 透明
             splashColor: Colors.transparent),
         child: BottomNavigationBar(
           selectedFontSize: G.setSp(20),

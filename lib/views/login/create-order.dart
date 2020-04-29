@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';
+import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
 
   _register() async {
     // bool result = await SyFlutterWechat.register('wx8d911664a4bc3963');
-    registerWxApi(appId: 'wx8d911664a4bc3963',universalLink: "https://your.univerallink.com/link/");
+    registerWxApi(appId: EnvConfig.dev['wx-appid'],universalLink: "https://your.univerallink.com/link/");
     // print(result);
 
   }

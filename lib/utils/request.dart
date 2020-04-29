@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/login/login.dart';
 import 'package:dio/adapter.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 Dio service() {
   BaseOptions _baseOptions =
       BaseOptions(
-        baseUrl: "http://192.168.10.181:31050/",
+        baseUrl: EnvConfig.dev['api'],
         headers: {'platform': 'agent_app'}
       );
 
