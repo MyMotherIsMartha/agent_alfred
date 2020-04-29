@@ -448,6 +448,7 @@ class _HomePageState extends State<HomePage>
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, //横轴三个子widget
+                  childAspectRatio: 1.2
                   // childAspectRatio: 237 / 200 //宽高比为1时，子widget
                 ),
                 itemCount: 6,

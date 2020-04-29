@@ -6,6 +6,9 @@ import 'package:agent37_flutter/views/finance/index.dart';
 import 'package:agent37_flutter/views/finance/search.dart';
 import 'package:agent37_flutter/views/home/fine-print.dart';
 import 'package:agent37_flutter/views/index.dart';
+import 'package:agent37_flutter/views/invoice/invoiceDetail.dart';
+import 'package:agent37_flutter/views/invoice/invoiceList.dart';
+import 'package:agent37_flutter/views/invoice/sendAddress.dart';
 import 'package:agent37_flutter/views/login/address.dart';
 import 'package:agent37_flutter/views/login/certificate.dart';
 import 'package:agent37_flutter/views/login/create-account.dart';
@@ -39,6 +42,7 @@ import 'package:agent37_flutter/views/enterpriseApprove/perfectInfo2.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/perfectAudit.dart';
 import 'package:agent37_flutter/views/enterpriseApprove/readPerfectInfo.dart';
 import 'package:agent37_flutter/views/vipManage/vipSearch.dart';
+import 'package:agent37_flutter/views/wallet/billHistory.dart';
 import 'package:agent37_flutter/views/wallet/index.dart';
 import 'package:agent37_flutter/views/wallet/withdraw.dart';
 import 'package:fluro/fluro.dart';
@@ -177,6 +181,27 @@ Handler walletWithdrawHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return WalletWithdraw();
 });
+Handler billHistoryHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return BillHistory();
+});
+Handler invoiceListHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return InvoiceList();
+});
+Handler invoiceDetailHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String invoiceId = params['invoiceId']?.first;
+  String status = params['status']?.first;
+  return InvoiceDetail(
+    invoiceId: invoiceId,
+    status: status,
+  );
+});
+Handler sendAdressHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SendAddress();
+});
 //  银行卡主页
 Handler bankMainHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -184,8 +209,11 @@ Handler bankMainHandler = Handler(
 });
 //  银行卡表单页
 Handler bankFormHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return BankFormPage();
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String status = params['status']?.first;
+    return BankFormPage(
+      status: status
+    );
 });
 
 Handler vipManageHandler = Handler(

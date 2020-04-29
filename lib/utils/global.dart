@@ -151,7 +151,20 @@ class G {
   static closeLoading(context) {
     Navigator.pop(context);
   }
+  
+  /// 每隔 x位 加 pattern
+  static String formatDigitPattern(String text,
+      {int digit = 4, String pattern = ' '}) {
+    text = text?.replaceAllMapped(RegExp("(.{$digit})"), (Match match) {
+      return "${match.group(0)}$pattern";
+    });
+    if (text != null && text.endsWith(pattern)) {
+      text = text.substring(0, text.length - 1);
+    }
+    return text;
+  }
 
+  // 隐藏手机中间4位
   static String hideMobile(mobile) {
     return mobile.replaceFirst(new RegExp(r'\d{4}'), '****', 3);
   }
