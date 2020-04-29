@@ -99,12 +99,16 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           children: <Widget>[
             Image.asset(
               'lib/assets/images/logo.png',
-              width: G.setWidth(120),
+              width: 60,
+              height: 60
             ),
-            G.spacing(20),
+            Container(
+              height: 10,
+            ),
             Image.asset(
               'lib/assets/images/app_name.png',
-              width: G.setWidth(177),
+              width: 88.5,
+              height: 21,
             ),
           ],
         ),
