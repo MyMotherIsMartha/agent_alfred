@@ -1,9 +1,11 @@
 import 'package:agent37_flutter/api/login.dart';
+import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
@@ -19,6 +21,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _initFluwx();
     // _scaleTween = Tween(begin: 0, end: 1);
     // _logoController =
     //     AnimationController(vsync: this, duration: Duration(milliseconds: 500))
@@ -39,6 +42,17 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     Future.delayed(Duration(milliseconds: 2000), () {
       goPage();
     });
+  }
+
+  _initFluwx() async {
+    await registerWxApi(
+        appId: EnvConfig.dev['wx-appid'],
+        doOnAndroid: true,
+        doOnIOS: true,
+        // universalLink: "https://your.univerallink.com/link/"
+      );
+    var result = await isWeChatInstalled;
+    print("is installed $result");
   }
 
   void goPage() async {
