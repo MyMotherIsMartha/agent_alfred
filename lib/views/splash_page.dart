@@ -92,7 +92,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        padding: EdgeInsets.only(bottom: G.setHeight(100)),
+        padding: EdgeInsets.only(bottom: 50),
         alignment: Alignment.bottomCenter,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
