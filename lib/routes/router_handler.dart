@@ -42,7 +42,6 @@ import 'package:agent37_flutter/views/vipManage/vipSearch.dart';
 import 'package:agent37_flutter/views/wallet/index.dart';
 import 'package:agent37_flutter/views/wallet/withdraw.dart';
 import 'package:fluro/fluro.dart';
-import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/material.dart';
 
 // splash 页面

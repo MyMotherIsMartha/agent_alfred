@@ -4,7 +4,6 @@ import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/models/address.dart';
 import 'package:agent37_flutter/models/gift-packages.dart';
 import 'package:agent37_flutter/provide/address.dart';
-import 'package:agent37_flutter/utils/event_bus.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/views/login/components/gift-item.dart';

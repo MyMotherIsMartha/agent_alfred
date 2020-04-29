@@ -2,7 +2,6 @@ import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/global.dart';
-import 'Icon.dart';
 
 class VField extends StatefulWidget {
   final String label;

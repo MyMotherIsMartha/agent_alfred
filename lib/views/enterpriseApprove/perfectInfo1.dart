@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:agent37_flutter/api/dic.dart';
 import 'package:agent37_flutter/api/oss.dart';
 import 'package:agent37_flutter/api/member.dart';
@@ -27,7 +25,6 @@ class PerfectEnterprise1 extends StatefulWidget {
 class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
   final _formKey = GlobalKey<FormState>();
   var licenseUrl = 'https://static37.woouo.com/agent/20200408/22b14781819d49ab98a9e9d547f9e48f.jpg';
-  var _imgPath;
   List<dynamic> jobList;
   // 获取职业数据
   Future<List> getJobList() async {
@@ -116,9 +113,6 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image != null) {
       _uploadImage(image);
-      setState(() {
-        _imgPath = image;
-      });
     }
   }
 
@@ -128,9 +122,6 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     print(image);
     if (image != null) {
       _uploadImage(image);
-      setState(() {
-        _imgPath = image;
-      });
     }
   }
 
@@ -164,20 +155,6 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
       print(resultInfo.data['message']);
     }
   }
-
-  Widget _ImageView(imgPath) {
-    if (imgPath == null) {
-      return Center(
-        child: Text(""),
-      );
-    } else {
-      return Image.file(
-        imgPath,
-      );
-    }
-  }
-
-  
   
   @override
   Widget build(BuildContext context) {
@@ -656,9 +633,5 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
       }
     );
     picker.showModal(context);
-  }
-
-  _submitFunc() {
-    
   }
 }

@@ -1,7 +1,5 @@
 import 'package:agent37_flutter/api/login.dart';
-import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
-import 'package:agent37_flutter/models/userinfo.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:flutter/material.dart';
 

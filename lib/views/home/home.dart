@@ -219,11 +219,11 @@ class _HomePageState extends State<HomePage>
   Widget _missionItem(String title, int val, int denominator) {
     return InkWell(
         onTap: () {
-          if (homeinfo.checkStatus == 1) {
-            return;
-          } else {
-            G.router.navigateTo(context, '/fine-point');
-          }
+          // if (homeinfo.checkStatus == 1) {
+          //   return;
+          // } else {
+          //   G.router.navigateTo(context, '/fine-point');
+          // }
         },
         child: Container(
           width: G.setWidth(325),

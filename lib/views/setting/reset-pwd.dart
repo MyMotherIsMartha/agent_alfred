@@ -1,14 +1,11 @@
-import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/api/setting.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-input.dart';
-import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SettingResetPwdPage extends StatefulWidget {
   @override

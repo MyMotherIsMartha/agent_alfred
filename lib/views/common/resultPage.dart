@@ -4,8 +4,6 @@ import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:agent37_flutter/api/login.dart';
 import 'package:agent37_flutter/utils/global.dart';
-import 'package:agent37_flutter/provide/user.dart';
-import 'package:provider/provider.dart';
 
 class ResultPage extends StatefulWidget {
   final String status;

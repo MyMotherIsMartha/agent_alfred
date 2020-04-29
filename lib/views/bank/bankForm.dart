@@ -1,6 +1,5 @@
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-field.dart';
-import 'package:agent37_flutter/components/v-input%20copy.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +13,6 @@ class _BankFormPageState extends State<BankFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _enterpriseName = 'test';
   TextEditingController _bankNameCtrl;
-  TextEditingController _subBankCtrl;
-  TextEditingController _bankCodeCtrl;
 
 
   _showPickerJobs(context) {

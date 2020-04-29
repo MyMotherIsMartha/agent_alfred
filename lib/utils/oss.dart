@@ -34,8 +34,6 @@ class Oss {
   /*相册*/
   static uploadPic(ImageSource source, Function cb, Function uploadApi) async {
     Navigator.pop(G.currentContext);
-    // TODO:: LOADING弹窗
-    
     var image = await ImagePicker.pickImage(source: source);
     if (image == null) return;
     String path = image.path;

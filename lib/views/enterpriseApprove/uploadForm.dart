@@ -1,11 +1,7 @@
 import 'package:agent37_flutter/api/dic.dart';
-import 'package:agent37_flutter/routes/router_handler.dart';
-import 'package:city_pickers/city_pickers.dart';
 import 'package:color_dart/hex_color.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/components/Icon.dart';
@@ -13,7 +9,6 @@ import 'package:agent37_flutter/components/v-address.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/api/member.dart';
-import 'package:provider/provider.dart';
 
 class UploadLicenseForm extends StatefulWidget {
   final String uploadJson;

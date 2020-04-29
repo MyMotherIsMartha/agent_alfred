@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:agent37_flutter/api/finance.dart';
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';

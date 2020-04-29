@@ -6,7 +6,6 @@ import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
-import '../../api/login.dart';
 
 class AgentVerify extends StatefulWidget {
   final String company;
