@@ -48,7 +48,7 @@ class OrderApi{
   }
   //  分页查询app会员信息
   getAppMemberCommissions(data) async {
-    return await service().get('$orderPrefix/v1/appOrderItems/purchaseCommissions', queryParameters: data);
+    return await service().get('$orderPrefix/v1/appOrderItems/pageForPurchaseOrderCommission', queryParameters: data);
   }
 
   // ------------- 发票相关接口 ---------------

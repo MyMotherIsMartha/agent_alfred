@@ -134,7 +134,7 @@ class _AgentListItemState extends State<AgentListItem> {
                   Row(children: <Widget>[
                     Text('手机号:'),
                     G.spacingWidth(25),
-                    Text(G.hideMobile(item.mobile))
+                    Text(item.mobile)
                   ],),
                   Row(children: <Widget>[
                     Text(currentTab == 1 ? '注册时间:' : '购买时间:'),
