@@ -25,6 +25,9 @@ class UserProvide with ChangeNotifier{
   //   }
   // }
   updateEnterpriseinfo() async {
+    if (G.getPref('token') == null) {
+       return;
+    }
     var result = await MemberApi().getEnterpriseInfo();
     if (result.data['code'] == 200) {
       enterpriseInfo = EnterpriseInfoModel.fromJson(result.data['data']);
@@ -34,6 +37,9 @@ class UserProvide with ChangeNotifier{
   }
 
   updateBankCardInfo() async {
+    if (G.getPref('token') == null) {
+       return;
+    }
     var result = await LLpayApi().getUserBankInfo();
     if (result.data['code'] == 200) {
       bankCardInfo = result.data['data'];
