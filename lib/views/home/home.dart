@@ -10,6 +10,7 @@ import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:badges/badges.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
@@ -219,11 +220,11 @@ class _HomePageState extends State<HomePage>
   Widget _missionItem(String title, int val, int denominator) {
     return InkWell(
         onTap: () {
-          if (homeinfo.checkStatus == 1) {
-            return;
-          } else {
-            G.router.navigateTo(context, '/fine-point');
-          }
+          // if (homeinfo.checkStatus == 1) {
+          //   return;
+          // } else {
+          //   G.router.navigateTo(context, '/fine-point');
+          // }
         },
         child: Container(
           width: G.setWidth(325),

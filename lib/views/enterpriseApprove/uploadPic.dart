@@ -2,8 +2,6 @@ import 'package:agent37_flutter/api/oss.dart';
 import 'package:flutter/material.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:agent37_flutter/provide/user.dart';
-import 'package:provider/provider.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'dart:io';
@@ -19,7 +17,6 @@ class UploadEnterprisePic extends StatefulWidget {
 
 class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
   static bool haveUpload = false;
-  var _imgPath;
 
   final haveUploadArea = Container(
     child: Text('haveUpload')
@@ -46,29 +43,12 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
       ))
     ],
   );
-
-   /*图片控件*/
-  Widget _ImageView(imgPath) {
-    if (imgPath == null) {
-      return Center(
-        child: Text(""),
-      );
-    } else {
-      return Image.file(
-        imgPath,
-      );
-    }
-  }
-
   
   /*拍照*/
   _takePhoto() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image != null) {
       _uploadImage(image);
-      setState(() {
-        _imgPath = image;
-      });
     }
   }
 
@@ -78,9 +58,6 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     print(image);
     if (image != null) {
       _uploadImage(image);
-      setState(() {
-        _imgPath = image;
-      });
     }
   }
 
@@ -135,7 +112,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
         child: Column(
           children: <Widget>[
             InkWell(
-              onTap: () => {
+              onTap: () {
                 showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context){
@@ -161,7 +138,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
                         ],
                       );
                     }
-                )
+                );
               },
               child: Container(
                 decoration: BoxDecoration(

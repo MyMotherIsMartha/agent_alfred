@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/models/finance.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 
@@ -30,19 +31,29 @@ class FinanceItem extends StatelessWidget {
                         Container(
                           width: G.setWidth(170),
                           height: G.setWidth(170),
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(G.setWidth(10)),
-                              image: product.orderImageUrl != null
-                              ? DecorationImage(
-                                  image: NetworkImage(
-                                    // 产品图
-                                    product.orderImageUrl,
-                                  ),
-                                  fit: BoxFit.fill)
-                                  : null
-                                  )
-                              ,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: product.orderImageUrl,
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                                fit: BoxFit.fill,
+                              ))
+                          // decoration: BoxDecoration(
+                          //     borderRadius:
+                          //         BorderRadius.circular(G.setWidth(10)),
+                          //     image: product.orderImageUrl != null
+                          //     ? DecorationImage(
+                          //         image: NetworkImage(
+                          //           // 产品图
+                          //           product.orderImageUrl,
+                          //         ),
+                          //         fit: BoxFit.fill)
+                          //         : null
+                          //         )
+                          ,
                         ),
                         Expanded(
                           // 内容区域
@@ -81,7 +92,8 @@ class FinanceItem extends StatelessWidget {
                                             text: '￥',
                                             children: [
                                               TextSpan(
-                                                  text: product.refundAmount.toString(),
+                                                  text: product.refundAmount
+                                                      .toString(),
                                                   style: TextStyle(
                                                       fontSize: G.setSp(26),
                                                       color: hex('#333'))),
@@ -95,7 +107,7 @@ class FinanceItem extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Text(product.spec??'',
+                                      Text(product.spec ?? '',
                                           style: TextStyle(
                                               color: hex('#85868A'),
                                               fontSize: G.setSp(26))),
@@ -106,12 +118,13 @@ class FinanceItem extends StatelessWidget {
                                     ],
                                   ),
                                   G.spacing(20),
-                                  product.refundOrderTime != null 
-                                  ? Text('退款时间：${G.formatTime(product.refundOrderTime)}',
-                                      style: TextStyle(
-                                          color: hex('#85868A'),
-                                          fontSize: G.setSp(24)))
-                                  : Container()
+                                  product.refundOrderTime != null
+                                      ? Text(
+                                          '退款时间：${G.formatTime(product.refundOrderTime)}',
+                                          style: TextStyle(
+                                              color: hex('#85868A'),
+                                              fontSize: G.setSp(24)))
+                                      : Container()
                                 ],
                               )),
                         )
@@ -153,12 +166,12 @@ class FinanceItem extends StatelessWidget {
                 Container(
                   width: G.setWidth(300),
                   child: Text('购买企业：${item.enterpriseName ?? "未知"}',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                    style: TextStyle(
-                        color: hex('#666'),
-                        fontSize: G.setSp(24),
-                        height: 36 / 24)),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                          color: hex('#666'),
+                          fontSize: G.setSp(24),
+                          height: 36 / 24)),
                 ),
                 // G.spacing(6),
 
@@ -188,13 +201,13 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
-                item.commissionFeeRate != null 
-                ? Text('比例：${item.commissionFeeRate}%',
-                    style: TextStyle(
-                        height: 36 / 24,
-                        color: hex('#252525'),
-                        fontSize: G.setSp(26)))
-                : Container(),
+                item.commissionFeeRate != null
+                    ? Text('比例：${item.commissionFeeRate}%',
+                        style: TextStyle(
+                            height: 36 / 24,
+                            color: hex('#252525'),
+                            fontSize: G.setSp(26)))
+                    : Container(),
                 Text.rich(TextSpan(
                     text: '预估服务费：',
                     style: TextStyle(
@@ -247,7 +260,7 @@ class FinanceItem extends StatelessWidget {
                       : Container()
                 ],
               ),
-              Text(['未知', '待结算', '已结算', '已关闭'][item.status])
+              Text(['交易成功', '交易关闭', '交易完结'][item.status])
             ],
           ),
           Container(
@@ -295,14 +308,13 @@ class FinanceProduct extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(G.setWidth(10)),
                         image: data.orderImageUrl != null
-                        ? DecorationImage(
-                            image: NetworkImage(
-                              // 产品图
-                              data.orderImageUrl,
-                            ),
-                            fit: BoxFit.fill)
-                        : null 
-                    ),
+                            ? DecorationImage(
+                                image: NetworkImage(
+                                  // 产品图
+                                  data.orderImageUrl,
+                                ),
+                                fit: BoxFit.fill)
+                            : null),
                   ),
                   Expanded(
                     // 内容区域
@@ -352,7 +364,7 @@ class FinanceProduct extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Text(data.spec??'',
+                                Text(data.spec ?? '',
                                     style: TextStyle(
                                         color: hex('#85868A'),
                                         fontSize: G.setSp(26))),

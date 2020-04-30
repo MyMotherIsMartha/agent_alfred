@@ -1,4 +1,3 @@
-import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/api/setting.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';

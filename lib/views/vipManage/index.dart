@@ -9,21 +9,11 @@ import 'package:agent37_flutter/views/vipManage/components/vipListItem.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
-import 'package:flutter_easyrefresh/material_header.dart';
-// import 'package:agent37_flutter/api/order.dart';
-// import 'package:agent37_flutter/components/emptyData.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended;
-// import 'package:agent37_flutter/models/order.dart';
-import 'package:agent37_flutter/utils/event_bus.dart';
-import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/utils/global.dart';
-import 'package:flutter_picker/flutter_picker.dart';
-import 'package:date_format/date_format.dart';
-import 'package:agent37_flutter/utils/map.dart';
 
 /// NestedScrollView示例页面
 class VipManageMain extends StatefulWidget {
@@ -49,7 +39,6 @@ class VipManageMainState extends State<VipManageMain>
 
   List<Widget> bodys = [];
   List<Tab> tabs = <Tab>[];
-  int _tabIndex = 0;
   int needRreshIndex;
 
   // 初始化
@@ -148,11 +137,7 @@ class VipManageMainState extends State<VipManageMain>
                       indicator: VUnderlineTabIndicator(
                         borderSide: BorderSide(
                             width: G.setHeight(6), color: hex('#6982FF'))),
-                      onTap: (index) {
-                        setState(() {
-                          _tabIndex = index;
-                        });
-                      },
+                      onTap: (index) {},
                       tabs: tabs
                     ),
                 ),
@@ -181,7 +166,6 @@ class MemberList extends StatefulWidget {
 class _MemberListState extends State<MemberList> {
   EasyRefreshController _controller = EasyRefreshController();
   var scrollController = new ScrollController();
-  StreamSubscription _colorSubscription;
   int pageNo = 1;
   int total;
   int role;
