@@ -4,6 +4,7 @@ import 'package:agent37_flutter/models/banner.dart';
 import 'package:agent37_flutter/models/market-module.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -93,6 +94,8 @@ class _MarketingPageState extends State<MarketingPage> {
               pagination: SwiperPagination(
                   margin: new EdgeInsets.all(5.0),
                   builder: DotSwiperPaginationBuilder(
+                      size: G.setWidth(12),
+                      activeSize: G.setWidth(14),
                       activeColor: hex('#fff'),
                       color: rgba(255, 255, 255, 0.5))),
             );
@@ -121,60 +124,65 @@ class _MarketingPageState extends State<MarketingPage> {
   // 模块子项
   Widget _moduleItem(ModuleModel item) {
     return InkWell(
-      onTap: () {
-        int type = item.findIndexModuleItemVos[0].moduleContactType;
-        String id = item.findIndexModuleItemVos[0].contactId;
-        if (type == 2) {
-          G.router.navigateTo(context, '/market/course?id=' + id);
-        }
-        if (type == 1) {
-          
-          G.router.navigateTo(context, '/market/meeting?id=' + id);
-          //  Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-          //   return new Browser(
-          //     url: "https://flutter-io.cn/",
-          //     title: "Flutter 中文社区",
-          //   );
-          // }));
-        }
-      },
-    child: Container(
-      width: G.setWidth(690),
-      padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
-      margin: EdgeInsets.only(bottom: G.setWidth(50)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: G.setWidth(690),
-            height: G.setWidth(300),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                    image:
-                        NetworkImage(item.findIndexModuleItemVos[0].contactImg),
-                    fit: BoxFit.fill)),
+        onTap: () {
+          int type = item.findIndexModuleItemVos[0].moduleContactType;
+          String id = item.findIndexModuleItemVos[0].contactId;
+          if (type == 2) {
+            G.router.navigateTo(context, '/market/course?id=' + id);
+          }
+          if (type == 1) {
+            G.router.navigateTo(context, '/market/meeting?id=' + id);
+          }
+        },
+        child: Container(
+          width: G.setWidth(690),
+          padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
+          margin: EdgeInsets.only(bottom: G.setWidth(50)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: G.setWidth(690),
+                height: G.setWidth(300),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl: item.findIndexModuleItemVos[0].contactImg,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      fit: BoxFit.fill,
+                    )),
+                // decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(10),
+                //     image: DecorationImage(
+                //         image:
+                //             NetworkImage(item.findIndexModuleItemVos[0].contactImg),
+                //         fit: BoxFit.fill)),
+              ),
+              G.spacing(30),
+              Container(
+                width: G.setWidth(690),
+                child: Text(
+                  item.findIndexModuleItemVos[0].contactName,
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: G.setSp(32),
+                      color: hex('#333'),
+                      height: 45 / 32),
+                ),
+              ),
+              G.spacing(10),
+              !Validate.isNon(item.findIndexModuleItemVos[0].tradeName)
+                  ? Text('#' + item.findIndexModuleItemVos[0].tradeName + '#',
+                      style:
+                          TextStyle(color: hex('#999'), fontSize: G.setSp(24)))
+                  : Container()
+            ],
           ),
-          G.spacing(30),
-          Container(
-            width: G.setWidth(690),
-            child: Text(
-              item.findIndexModuleItemVos[0].contactName,
-              maxLines: 2,
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: G.setSp(32), color: hex('#333'), height: 45 / 32),
-            ),
-          ),
-          G.spacing(10),
-          !Validate.isNon(item.findIndexModuleItemVos[0].tradeName)
-              ? Text('#' + item.findIndexModuleItemVos[0].tradeName + '#',
-                  style: TextStyle(color: hex('#999'), fontSize: G.setSp(24)))
-              : Container()
-        ],
-      ),
-    ));
+        ));
   }
 
   // 模块列表

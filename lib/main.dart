@@ -19,7 +19,7 @@ void main() async {
   G.router = router;
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,  //设置为透明
+      statusBarColor: Colors.transparent, //设置为透明
     );
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
@@ -45,7 +45,6 @@ String _fontFamily() {
   } else {
     return 'Raleway';
   }
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -57,16 +56,21 @@ class MyApp extends StatelessWidget {
       locale: const Locale('en'),
       onGenerateRoute: G.router.generator,
       theme: ThemeData(
+        pageTransitionsTheme: PageTransitionsTheme(
+            builders: <TargetPlatform, PageTransitionsBuilder>{
+              TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            }),
         // splashColor: Colors.transparent,
         // primaryColor: hex('#6982FF'),
         primaryColor: hex('#fff'),
         fontFamily: _fontFamily(),
         textTheme: TextTheme(
-          subhead: TextStyle(textBaseline: TextBaseline.alphabetic)
-          // headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          // title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          // body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
+            subhead: TextStyle(textBaseline: TextBaseline.alphabetic)
+            // headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            // title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            // body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+            ),
       ),
       home: SplashPage(),
       navigatorKey: G.key,
