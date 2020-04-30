@@ -231,9 +231,10 @@ class _MemberListState extends State<MemberList> {
       'pageNo': pageNo,
       'pageSize': 10,
       'role': role,
-      'beginPayDate': G.formatTime(beginRegisterDate.millisecondsSinceEpoch, type: 'date' ),
-      'endPayDate': G.formatTime(endRegisterDate.millisecondsSinceEpoch, type: 'date'),
+      role == 0 ? "beginRegisterDate" : "beginPayDate": G.formatTime(beginRegisterDate.millisecondsSinceEpoch, type: 'date' ),
+      role == 0 ? "endRegisterDate" : "endPayDate": G.formatTime(endRegisterDate.millisecondsSinceEpoch, type: 'date'),
     };
+    print(params);
     void _api() async {
       var result = await OrderApi().getAppMemberInfos(params);
       print(result);
@@ -273,8 +274,8 @@ class _MemberListState extends State<MemberList> {
             top: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-              Text('注册时间'),
+              children: <Widget>[   
+              Text(role == 0 ? '注册时间' : '购买时间'),
               G.spacingWidth(60),
               VDatePicker(beginRegisterDate, (time) async {
                 setState(() {

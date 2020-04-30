@@ -1,4 +1,6 @@
 import 'package:agent37_flutter/api/finance.dart';
+import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/api/system.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
@@ -14,6 +16,10 @@ class WalletMain extends StatefulWidget {
 
 class _WalletMainState extends State<WalletMain> {
   double withdrawalBalance = 0.0;
+  int monthlyStart;
+  int monthlyEnd;
+  String paymentEnd;
+  double pendingMemberOrderServiceCharge = 0;
 
   _getAccountInfo() async {
     var result = await FinanceApi().getAccountInfo();
@@ -21,7 +27,24 @@ class _WalletMainState extends State<WalletMain> {
     setState(() {
       withdrawalBalance = resultData['withdrawalBalance'];
     });
-    print(resultData.toString());
+  }
+
+  Future _getSystemSetting() async {
+    var result = await SystemApi().getSystemSettings();
+    var resultData = result.data['data'];
+    setState(() {
+      monthlyStart = resultData['invoiceUploadBeginDateMonthly'];
+      monthlyEnd = resultData['invoiceUploadEndDateMonthly'];
+      paymentEnd = resultData['generateSettleBillDatesMonthly'];
+    });
+  }
+
+  Future _getCharge() async {
+    var result = await MemberApi().serviceCharges();
+    Map resultData = result.data['data'];
+    setState(() {
+      pendingMemberOrderServiceCharge = resultData['pendingMemberOrderServiceCharge'];
+    });
   }
 
   @override
@@ -30,6 +53,8 @@ class _WalletMainState extends State<WalletMain> {
     super.initState();
     print('test initState wallet');
     _getAccountInfo();
+    _getSystemSetting();
+    _getCharge();
   }
 
   @override
@@ -143,7 +168,7 @@ class _WalletMainState extends State<WalletMain> {
               G.spacingWidth(5),
               Expanded(
                 child: Text(
-                  '已过考核期代理每月15日结算上月预估服务费，15至20日为服务费的开票周期，25日把服务费入账至可提现金额', 
+                  '已过考核期代理每月$paymentEnd日结算上月预估服务费，$monthlyStart至$monthlyEnd日为服务费的开票周期，25日把服务费入账至可提现金额', 
                   softWrap: true, 
                   style: TextStyle(color: Colors.white, fontSize: G.setSp(24)),
                 ),
@@ -170,7 +195,7 @@ class _WalletMainState extends State<WalletMain> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                    Text('¥29999.00待入账', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28), height: 1.2),),
+                    Text('¥${pendingMemberOrderServiceCharge.toStringAsFixed(2)}待入账', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28), height: 1.2),),
                     Icon(Icons.keyboard_arrow_right, color: hex('#999999'))
                   ])
                 ]

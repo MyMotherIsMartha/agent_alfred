@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
         appId: EnvConfig.dev['wx-appid'],
         doOnAndroid: true,
         doOnIOS: true,
-        // universalLink: "https://your.univerallink.com/link/"
+        universalLink: "https://agent37app.woouo.com"
       );
     var result = await isWeChatInstalled;
     print("is installed $result");

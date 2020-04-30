@@ -227,8 +227,9 @@ Handler vipSearchHandler = Handler(
 
 Handler vipDetailHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
-    String vipId = params['vipId']?.first;
-    
+    String vipId = params['vipId']?.first.toString();
+    print('route vip id:');
+    print(vipId);
     return VipDetail(
       vipId: vipId,
     );

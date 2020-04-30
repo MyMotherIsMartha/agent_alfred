@@ -5,16 +5,9 @@ import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
-import 'package:flutter_easyrefresh/material_header.dart';
 // import 'package:agent37_flutter/api/order.dart';
 // import 'package:agent37_flutter/components/emptyData.dart';
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
-    as extended;
 // import 'package:agent37_flutter/models/order.dart';
-import 'package:agent37_flutter/utils/event_bus.dart';
-import 'package:agent37_flutter/routes/routes.dart';
-import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/utils/global.dart';
 
@@ -34,15 +27,29 @@ class _VipDetailState extends State<VipDetail>
     {'value': 1, 'label': '待结算服务费'},
     {'value': 2, 'label': '已结算服务费'}
   ];
-  int tabIndex = 0;
   List bodys;
   String currentMemberId;
-  String _enterpriseName;
+  String _enterpriseName = '';
   double _pengdingCharge;
   double _entryCharge;
   double _totalCharge;
 
-  Future _getInfo() async{
+  
+
+  @override
+  void initState() {
+    super.initState();
+    // 创建Controller  
+    scrollController = ScrollController();
+    _tabController = TabController(length: tabs.length, vsync: this);
+    print('tes2t');
+    currentMemberId = widget.vipId;
+    print(currentMemberId);
+
+    _getInfo();
+  }
+
+  void _getInfo() async{
     var result = await OrderApi().getAppMemberDetail(currentMemberId);
     Map resultData = result.data['data'];
     _enterpriseName = resultData['enterpriseName'] ?? '';
@@ -54,25 +61,6 @@ class _VipDetailState extends State<VipDetail>
   }
 
   @override
-  void initState() {
-    super.initState();
-    // 创建Controller  
-    scrollController = ScrollController();
-    _tabController = TabController(length: tabs.length, vsync: this)
-    ..addListener(() {
-      if(_tabController.indexIsChanging){
-        setState(() {
-          tabIndex = _tabController.index;
-        });
-      }
-    });
-
-    currentMemberId = widget.vipId;
-
-    _getInfo();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     _tabController.dispose();
@@ -81,7 +69,6 @@ class _VipDetailState extends State<VipDetail>
 
   @override
   Widget build(BuildContext context) {
-    print(widget.vipId);
 
     return Scaffold(
       appBar: AppBar(
@@ -236,10 +223,7 @@ class _VipDetailState extends State<VipDetail>
             children: tabs.map((item) {
               return ServiceList(status: item['value']);
             }).toList()),
-          )
-          // Container(
-          //   child: IndexedStack(index: tabIndex, children: bodys),
-          // )
+          ) 
         ],
       ),
     );
