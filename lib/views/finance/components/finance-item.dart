@@ -260,7 +260,7 @@ class FinanceItem extends StatelessWidget {
                       : Container()
                 ],
               ),
-              Text(['未知', '待结算', '已结算', '已关闭'][item.status])
+              Text(['交易成功', '交易关闭', '交易完结'][item.status])
             ],
           ),
           Container(
