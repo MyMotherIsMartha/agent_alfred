@@ -80,7 +80,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
       print('success');
       Map uploadData = resultInfo.data['data'];
       var uploadJson = FluroConvertUtils.object2string(uploadData);
-      G.router.navigateTo(
+      G.navigateTo(
         context, Routes.uploadLicenseForm + "?uploadJson=$uploadJson");
     } else {
       print(resultInfo.data['message']);
@@ -90,7 +90,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
 
   void goToUploadForm() {
     // License license = new License(name: 'Zeking', age: 18, sex: true);
-    // G.router.navigateTo(
+    // G.navigateTo(
     //     context, Routes.uploadLicenseForm + "?name=$mName&age=$age&personjson=$personJson");
   }
 

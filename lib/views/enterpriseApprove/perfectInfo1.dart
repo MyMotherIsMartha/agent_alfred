@@ -149,7 +149,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
         legalName = _legalPersonCtrl.text = resultData['legalPerson'];
       });
       // var uploadJson = FluroConvertUtils.object2string(uploadData);
-      // G.router.navigateTo(
+      // G.navigateTo(
       //   context, Routes.uploadLicenseForm + "?uploadJson=$uploadJson");
     } else {
       print(resultInfo.data['message']);
@@ -593,7 +593,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                         };
                         var legalName2 = FluroConvertUtils.fluroCnParamsEncode(legalName);
                         print(params);
-                        G.router.navigateTo(
+                        G.navigateTo(
                         context, Routes.perfectEnterprise2 + "?legalName=$legalName2");
                         
                       }

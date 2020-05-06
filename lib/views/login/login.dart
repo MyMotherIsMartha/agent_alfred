@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                   child: FlatButton(
                 onPressed: () {
-                  G.router.navigateTo(context, '/register');
+                  G.navigateTo(context, '/register');
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -286,10 +286,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget _forgetPwd() {
     return InkWell(
       onTap: () {
-        G.router.navigateTo(context, '/forget');
+        G.navigateTo(context, '/forget');
       },
       child: Text('忘记密码',
-          style: TextStyle(fontSize: G.setSp(30), color: hex('#434343'))),
+          style: TextStyle(fontSize: G.setSp(30), color: hex('#6982FF'))),
     );
   }
 }

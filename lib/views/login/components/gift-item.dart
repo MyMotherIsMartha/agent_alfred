@@ -17,8 +17,8 @@ class GiftItem extends StatelessWidget {
               fn();
             },
             child: Container(
-              margin: EdgeInsets.only(top: G.setHeight(20)),
-              height: G.setHeight(368),
+              margin: EdgeInsets.only(top: G.setWidth(20)),
+              height: G.setWidth(368),
               padding: EdgeInsets.fromLTRB(
                   G.setWidth(30), G.setWidth(30), G.setWidth(30), 0),
               decoration: BoxDecoration(
@@ -69,7 +69,7 @@ class GiftItem extends StatelessWidget {
                   ),
                   G.spacing(17),
                   Container(
-                    height: G.setHeight(200),
+                    height: G.setWidth(210),
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: item.appGoodses.length,
@@ -86,7 +86,7 @@ class GiftItem extends StatelessWidget {
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                    height: G.setHeight(150),
+                                    height: G.setWidth(150),
                                     width: G.setWidth(150),
                                     decoration: BoxDecoration(
                                         color: hex('#F5F5F5'),
@@ -96,7 +96,7 @@ class GiftItem extends StatelessWidget {
                                     child: Image.network(
                                       good.goodsMainImg,
                                       width: G.setWidth(110),
-                                      height: G.setHeight(110),
+                                      height: G.setWidth(110),
                                       fit: BoxFit.fitWidth,
                                     ),
                                   ),
@@ -107,6 +107,10 @@ class GiftItem extends StatelessWidget {
                                       good.displayGoodsName,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
+                                      softWrap: false,
+                                      style: TextStyle(
+                                        fontSize: G.setSp(24)
+                                      ),
                                     ),
                                   )
                                 ],
@@ -118,10 +122,10 @@ class GiftItem extends StatelessWidget {
             )),
         selectedPackageNo == item.giftPackageNo
             ? Positioned(
-                top: G.setHeight(25),
+                top: G.setWidth(25),
                 right: G.setWidth(15),
                 child: Image.asset('lib/assets/images/checked_icon.png',
-                    width: G.setWidth(44), height: G.setHeight(44)),
+                    width: G.setWidth(44), height: G.setWidth(44)),
               )
             : Container()
       ],

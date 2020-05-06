@@ -117,7 +117,7 @@ class _AgentListItemState extends State<AgentListItem> {
             var mobile = item.mobile;
             var company = item.enterpriseName ?? '测试企业名称';
             String companyStr = FluroConvertUtils.fluroCnParamsEncode(company);
-            G.router.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr');
+            G.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr');
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10),

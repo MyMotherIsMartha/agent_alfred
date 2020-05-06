@@ -70,7 +70,7 @@ class UserProvide with ChangeNotifier{
 
   updateUserAuth({bool isInit = true}) async {
     if (G.getPref('token') == null) {
-       G.router.navigateTo(G.currentContext, '/login', replace: true);
+       G.navigateTo(G.currentContext, '/login', replace: true);
        return;
     }
     // if (!getInfoFlag) return;
@@ -83,7 +83,7 @@ class UserProvide with ChangeNotifier{
         return;
       }
       if (!userAuthInfo.isContactsPrefected) {
-        G.router.navigateTo(G.currentContext, '/update-user', replace: true);
+        G.navigateTo(G.currentContext, '/update-user', replace: true);
         notifyListeners();
         return;
       }
@@ -92,7 +92,7 @@ class UserProvide with ChangeNotifier{
        || userAuthInfo.giftPackageOrderStatus == -1
        || userAuthInfo.giftPackageOrderStatus == -2
       ) {
-        G.router.navigateTo(G.currentContext, '/create-account', replace: true);
+        G.navigateTo(G.currentContext, '/create-account', replace: true);
         notifyListeners();
         return;
       } else {
@@ -100,13 +100,13 @@ class UserProvide with ChangeNotifier{
         switch (status) {
           case 1:
           case 3:
-            G.router.navigateTo(G.currentContext, '/order-result', replace: true);
+            G.navigateTo(G.currentContext, '/order-result', replace: true);
             break;
           case 2:
             qualificationsStatus();
             break;
           case 0:
-            G.router.navigateTo(G.currentContext, '/create-account', replace: true);
+            G.navigateTo(G.currentContext, '/create-account', replace: true);
             break;
           default:
             print('获取一下最新信息');
@@ -115,7 +115,7 @@ class UserProvide with ChangeNotifier{
       // qualificationsStatus
     } else {
       G.toast('获取用户认证信息失败');
-      G.router.navigateTo(G.currentContext, '/login', replace: true);
+      G.navigateTo(G.currentContext, '/login', replace: true);
     }
     // print(info);
     // var result = await LoginApi().getUserAuth();
@@ -124,7 +124,7 @@ class UserProvide with ChangeNotifier{
     // userAuthInfo = info;
     // G.setPref('token', 'bearer ' + userAuthInfo.jwtToken);
     // if (!userAuthInfo.isPrefected) {
-    //   G.router.navigateTo(context, '/update-user', replace: true);
+    //   G.navigateTo(context, '/update-user', replace: true);
     // }
     // notifyListeners();
   }
@@ -133,7 +133,7 @@ class UserProvide with ChangeNotifier{
     int status = userAuthInfo.qualificationsStatus;
     switch (status) {
       case 0:
-        G.router.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
+        G.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
         break;
       case -2:
       case -3: 
@@ -141,13 +141,13 @@ class UserProvide with ChangeNotifier{
       case 2:
       case 3:
       case -1:
-        G.router.navigateTo(G.currentContext, '/resultPage?status=$status', replace: true);
+        G.navigateTo(G.currentContext, '/resultPage?status=$status', replace: true);
         break;
       case 4:
-        G.router.navigateTo(G.currentContext, '/index', replace: true);
+        G.navigateTo(G.currentContext, '/index', replace: true);
         break;
       default:
-        G.router.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
+        G.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
     }
   }
 }

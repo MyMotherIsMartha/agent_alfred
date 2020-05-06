@@ -114,7 +114,7 @@ class VipManageMainState extends State<VipManageMain>
               actions: <Widget>[
                 IconButton(
                   onPressed: () {
-                    G.router.navigateTo(context, '/vipManage/search');
+                    G.navigateTo(context, '/vipManage/search');
                   },
                   icon: iconsearch(color: hex('#666666')),
                 )

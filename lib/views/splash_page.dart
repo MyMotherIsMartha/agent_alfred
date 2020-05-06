@@ -60,11 +60,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     String token = G.getPref('token');
     print(token);
     if (Validate.isNon(token)) {
-      G.router.navigateTo(context, '/login', replace: true);
+      G.navigateTo(context, '/login', replace: true);
     } else {
-      Provider.of<UserProvide>(context).updateUserAuth();
-      Provider.of<UserProvide>(context).updateEnterpriseinfo();
-      Provider.of<UserProvide>(context).updateBankCardInfo();
+      G.navigateTo(context, '/create-account', replace: true);
+      // Provider.of<UserProvide>(context).updateUserAuth();
+      // Provider.of<UserProvide>(context).updateEnterpriseinfo();
+      // Provider.of<UserProvide>(context).updateBankCardInfo();
     }
     
     // UserModel userModel = Provider.of<UserModel>(context);
@@ -72,14 +73,14 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     // if (userModel.user != null) {
     //   await NetUtils.refreshLogin(context).then((value){
     //     if(value.data != -1){
-    //       G.router.navigateTo(context, '/index');
+    //       G.navigateTo(context, '/index');
     //     }
     //   });
     //   Provider.of<PlayListModel>(context).user = userModel.user;
     // } else {
-    //   G.router.navigateTo(context, '/login');
+    //   G.navigateTo(context, '/login');
     // }
-    // G.router.navigateTo(context, '/vipManage', replace: true);
+    // G.navigateTo(context, '/vipManage', replace: true);
   }
 
   @override

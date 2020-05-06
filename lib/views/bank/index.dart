@@ -58,7 +58,7 @@ class _BankMainPageState extends State<BankMainPage> {
           VEmpty(hintText: '暂无任何银行卡，请添加～'),
           G.spacing(50),
           VButton(text: '添加银行卡', width: 300, fn: () {
-            G.router.navigateTo(context, '/bankForm?status=0');
+            G.navigateTo(context, '/bankForm?status=0');
           })
         ]
       )
@@ -125,7 +125,7 @@ class _BankMainPageState extends State<BankMainPage> {
                   fs: 30,
                   text: '编辑原卡', 
                   fn: () {
-                    G.router.navigateTo(context, '/bankForm?status=1');
+                    G.navigateTo(context, '/bankForm?status=1');
                   }),
                 G.spacing(50),
                 VButton(
@@ -137,7 +137,7 @@ class _BankMainPageState extends State<BankMainPage> {
                   rgbStart: [214,219,255],
                   rgbEnd: [214,219,255],
                   fn: () {
-                    G.router.navigateTo(context, '/bankForm?status=0');
+                    G.navigateTo(context, '/bankForm?status=0');
                   })
               ]
             )

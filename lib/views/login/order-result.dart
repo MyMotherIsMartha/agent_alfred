@@ -43,7 +43,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
       'desc': '请尽快填写企业信息，逾期将影响审核进度和礼包发放',
       'btn': '填写企业信息',
       'fn': () {
-        G.router.navigateTo(G.currentContext, '/uploadEnterPrisePic');
+        G.navigateTo(G.currentContext, '/uploadEnterPrisePic');
       },
     },
     'verifyFail': {
@@ -53,7 +53,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
       'desc': '你的支付凭证未通过，请在x小时内完成上传。',
       'btn': '重传支付凭证',
       'fn': () {
-        G.router.navigateTo(G.currentContext, '/create-account');
+        G.navigateTo(G.currentContext, '/create-account');
       },
     }
   };

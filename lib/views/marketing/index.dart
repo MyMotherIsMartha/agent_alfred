@@ -28,7 +28,7 @@ class _MarketingPageState extends State<MarketingPage> {
   Widget _searchHeader() {
     return InkWell(
         onTap: () {
-          G.router.navigateTo(context, '/market/search');
+          G.navigateTo(context, '/market/search');
         },
         child: Container(
             width: double.infinity,
@@ -128,10 +128,10 @@ class _MarketingPageState extends State<MarketingPage> {
           int type = item.findIndexModuleItemVos[0].moduleContactType;
           String id = item.findIndexModuleItemVos[0].contactId;
           if (type == 2) {
-            G.router.navigateTo(context, '/market/course?id=' + id);
+            G.navigateTo(context, '/market/course?id=' + id);
           }
           if (type == 1) {
-            G.router.navigateTo(context, '/market/meeting?id=' + id);
+            G.navigateTo(context, '/market/meeting?id=' + id);
           }
         },
         child: Container(

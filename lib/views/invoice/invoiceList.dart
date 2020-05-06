@@ -170,7 +170,7 @@ class _InvoiceListState extends State<InvoiceList> {
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(20)),
       child: InkWell(
         onTap: () {
-          G.router.navigateTo(context, '/invoiceDetail?invoiceId=' + item['statisticsMakeMoneyId'] + '&status=' + item['invoiceStatus'].toString());
+          G.navigateTo(context, '/invoiceDetail?invoiceId=' + item['statisticsMakeMoneyId'] + '&status=' + item['invoiceStatus'].toString());
         },
         child: Container(
           height: G.setWidth(80),

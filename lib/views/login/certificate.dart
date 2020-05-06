@@ -73,7 +73,7 @@ class _CertificatePageState extends State<CertificatePage> {
               },
             ),
             Container(
-              height: G.setHeight(74),
+              height: G.setWidth(74),
               alignment: Alignment.center,
               child: Text(_clock(_countdownTime),
                   style: TextStyle(fontSize: G.setSp(24), color: hex('#999'))),
@@ -108,7 +108,7 @@ class _CertificatePageState extends State<CertificatePage> {
       return setState(() {
         if (_countdownTime < 1) {
           _timer.cancel();
-          G.router.navigateTo(context, '/create-account', replace: true);
+          G.navigateTo(context, '/create-account', replace: true);
         } else {
           _countdownTime = _countdownTime - 1;
         }
@@ -222,7 +222,7 @@ class _CertificatePageState extends State<CertificatePage> {
             rgbEnd: [214, 219, 255],
             width: 310,
             fn: () {
-              G.router.navigateTo(context, '/create-account', replace: true);
+              G.navigateTo(context, '/create-account', replace: true);
             },
             text: '重选礼包',
             shadown: [BoxShadow(color: hex('#BABFE1'), blurRadius: 4.0, spreadRadius: 2.0)],

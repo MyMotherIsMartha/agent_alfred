@@ -153,7 +153,7 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
                     if (result.data['code'] == 200) {
                       G.toast('修改成功，请重新登录');
                       G.removePref('token');
-                      G.router.navigateTo(context, '/login', replace: true);
+                      G.navigateTo(context, '/login', replace: true);
                     }
                   },
                   text: '确定',

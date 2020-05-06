@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage>
                 child: iconsetting(size: G.setSp(48)),
               ),
               onTap: () {
-                G.router.navigateTo(context, '/setting');
+                G.navigateTo(context, '/setting');
               },
             ),
             InkWell(
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage>
                                           color: hex('#fff'))),
                                   child: iconmsg(size: G.setSp(48)),
                                   position: BadgePosition.topRight(
-                                      top: G.setHeight(16),
+                                      top: G.setWidth(16),
                                       right: G.setWidth(-14)),
                                 )
                               : iconmsg(size: G.setSp(48));
@@ -99,9 +99,9 @@ class _HomePageState extends State<HomePage>
   // 用户信息
   Widget _userInfo() {
     return Container(
-      height: G.setHeight(120),
+      height: G.setWidth(120),
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(50)),
-      margin: EdgeInsets.only(bottom: G.setHeight(20)),
+      margin: EdgeInsets.only(bottom: G.setWidth(40)),
       child: Row(
         children: <Widget>[
           CircleAvatar(
@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage>
                         Container(
                           margin: EdgeInsets.only(left: G.setWidth(10)),
                           padding: EdgeInsets.fromLTRB(G.setWidth(18),
-                              G.setHeight(5), G.setWidth(18), G.setHeight(5)),
+                              G.setWidth(5), G.setWidth(18), G.setWidth(5)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: hex('#FFF'))),
@@ -223,14 +223,14 @@ class _HomePageState extends State<HomePage>
           // if (homeinfo.checkStatus == 1) {
           //   return;
           // } else {
-          //   G.router.navigateTo(context, '/fine-point');
+          //   G.navigateTo(context, '/fine-point');
           // }
         },
         child: Container(
           width: G.setWidth(325),
-          height: G.setHeight(210),
+          height: G.setWidth(210),
           padding: EdgeInsets.symmetric(
-              vertical: G.setHeight(38), horizontal: G.setWidth(30)),
+              vertical: G.setWidth(38), horizontal: G.setWidth(30)),
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: title == '开通钻石会员'
@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage>
                       color: hex('#333'),
                       fontWeight: FontWeight.w500)),
               Container(
-                height: G.setHeight(15),
+                height: G.setWidth(15),
                 decoration: BoxDecoration(
                     border: Border.all(color: hex('#6982FF')),
                     borderRadius: BorderRadius.circular(7.5)),
@@ -270,11 +270,11 @@ class _HomePageState extends State<HomePage>
     return homeinfo.checkStatus == 1 // 2
         ? Container()
         : Container(
-            margin: EdgeInsets.only(bottom: G.setHeight(20)),
+            margin: EdgeInsets.only(bottom: G.setWidth(20)),
             width: G.setWidth(710),
-            height: G.setHeight(380),
+            height: G.setWidth(380),
             padding: EdgeInsets.symmetric(
-                horizontal: G.setWidth(20), vertical: G.setHeight(15)),
+                horizontal: G.setWidth(20), vertical: G.setWidth(15)),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10), color: hex('#FFF')),
             child: Column(
@@ -285,7 +285,7 @@ class _HomePageState extends State<HomePage>
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      height: G.setHeight(80),
+                      height: G.setWidth(80),
                       // color: hex('ff0'),
                       alignment: Alignment.center,
                       child: Column(
@@ -307,11 +307,11 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                     Container(
-                        height: G.setHeight(80),
+                        height: G.setWidth(80),
                         alignment: Alignment.centerRight,
                         child: InkWell(
                           onTap: () {
-                            G.router.navigateTo(context, '/fine-point');
+                            G.navigateTo(context, '/fine-point');
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -333,7 +333,7 @@ class _HomePageState extends State<HomePage>
                   child: Stack(
                     children: <Widget>[
                       Container(
-                        height: G.setHeight(230),
+                        height: G.setWidth(230),
                         width: G.setWidth(690),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -352,7 +352,7 @@ class _HomePageState extends State<HomePage>
                               top: 0,
                               left: 0,
                               width: G.setWidth(690),
-                              height: G.setHeight(230),
+                              height: G.setWidth(230),
                               child: Opacity(
                                 opacity: 0.6,
                                 child: Container(
@@ -367,7 +367,7 @@ class _HomePageState extends State<HomePage>
                                       },
                                       child: Container(
                                         width: G.setWidth(200),
-                                        height: G.setHeight(60),
+                                        height: G.setWidth(60),
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
                                           border:
@@ -462,7 +462,7 @@ class _HomePageState extends State<HomePage>
                 itemCount: 6,
                 itemBuilder: (context, index) {
                   return Container(
-                      height: G.setHeight(200),
+                      height: G.setWidth(200),
                       width: G.setWidth(237),
                       decoration: BoxDecoration(
                           border: Border(
@@ -531,24 +531,24 @@ class _HomePageState extends State<HomePage>
   // 数据统计
   Widget _statistics() {
     return Container(
-        height: G.setHeight(500),
+        height: G.setWidth(500),
         decoration: BoxDecoration(
             color: hex('#FFF'), borderRadius: BorderRadius.circular(10)),
         child: Column(
           children: <Widget>[
             Container(
-                height: G.setHeight(94),
+                height: G.setWidth(94),
                 width: G.setWidth(710),
                 decoration: BoxDecoration(
                     border: Border(bottom: BorderSide(color: hex('#E6E6E6')))),
                 child: TabBar(
                     indicator: VUnderlineTabIndicator(
                         borderSide: BorderSide(
-                            width: G.setHeight(6), color: hex('#6982FF'))),
+                            width: G.setWidth(6), color: hex('#6982FF'))),
                     controller: _tabController,
                     tabs: _statisticsTabItem())),
             Container(
-                height: G.setHeight(400),
+                height: G.setWidth(400),
                 width: G.setWidth(710),
                 child: TabBarView(
                   controller: _tabController,
@@ -618,7 +618,7 @@ class _HomePageState extends State<HomePage>
                   if (item['isShare'] == true) {
                     openShare();
                   } else {
-                    G.router.navigateTo(context, item['url']);
+                    G.navigateTo(context, item['url']);
                   }
                 },
                 child: Column(
@@ -699,7 +699,7 @@ class _HomePageState extends State<HomePage>
                   );
                 } else {
                   return Container(
-                      height: G.setHeight(1334),
+                      height: G.setWidth(1334),
                       width: double.infinity,
                       child: VLoading());
                 }
@@ -745,7 +745,7 @@ class _ToolTipState extends State<ToolTip> {
           }
         },
         child: SimpleTooltip(
-          arrowTipDistance: G.setHeight(10),
+          arrowTipDistance: G.setWidth(10),
           backgroundColor: rgba(0, 0, 0, 0.6),
           ballonPadding: EdgeInsets.all(0),
           borderRadius: G.setWidth(10),
@@ -777,10 +777,10 @@ class _ToolTipState extends State<ToolTip> {
 YYDialog yyAlertDialog(BuildContext context) {
   return YYDialog().build(context)
     ..width = G.setWidth(600)
-    ..height = G.setHeight(240)
+    ..height = G.setWidth(240)
     ..borderRadius = G.setWidth(20)
     ..text(
-      padding: EdgeInsets.all(G.setHeight(60)),
+      padding: EdgeInsets.all(G.setWidth(60)),
       alignment: Alignment.center,
       text: "是否申请延长考核时间？",
       color: hex('#333'),
