@@ -138,7 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             prefixIcon: iconmobile(),
                             type: TextInputType.phone,
                             hintText: '请输入手机号',
-                            // maxLength: 11,
+                            maxLength: 11,
                             validator: (value) {
                               if (errorMsg == null || errorMsg.isEmpty) {
                                 String eStr = Validate.checkMobile(value);

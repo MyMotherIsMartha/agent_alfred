@@ -210,11 +210,15 @@ class _MarketingPageState extends State<MarketingPage> {
     List data = result.data['data'];
     List<ModuleModel> moduleTemp = <ModuleModel>[];
     if (result.data['code'] == 200) {
-      data.forEach((item) {
-        moduleTemp.add(ModuleModel.fromJson(item));
-      });
+      if (data != null) {
+        data.forEach((item) {
+          moduleTemp.add(ModuleModel.fromJson(item));
+        });
+      } else {
+        G.toast('暂无分销管理首页数据');
+      }
     } else {
-      G.toast('获取分销管理首页数据失败');
+      
     }
     
     setState(() {

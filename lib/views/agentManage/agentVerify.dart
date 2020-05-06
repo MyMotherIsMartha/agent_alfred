@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-field.dart';
 import 'package:agent37_flutter/components/v-input.dart';
@@ -10,8 +11,9 @@ import 'package:flutter/material.dart';
 class AgentVerify extends StatefulWidget {
   final String company;
   final String mobile;
+  final String sharecode;
 
-  AgentVerify({this.company, this.mobile});
+  AgentVerify({this.company, this.mobile, this.sharecode});
 
   @override
   _AgentVerifyState createState() => _AgentVerifyState();
@@ -19,8 +21,21 @@ class AgentVerify extends StatefulWidget {
 
 class _AgentVerifyState extends State<AgentVerify> {
   final TextEditingController _smsController = TextEditingController();
-  int smsCode;
+  String smsCode = '';
   String mobile;
+  String sharecode;
+
+  void _verifyFunc() async {
+    var params = {
+      "shareCode": sharecode,
+      "smsCode": smsCode
+    };
+    var result = await MemberApi().verifySubAgent(params);
+    if (result.data['code'] == 200) {
+      G.toast('验证成功');
+      G.router.pop(context);
+    }
+  }
   
   Widget _verifySmsInput(bool disabled) {
     return VInput(
@@ -31,11 +46,7 @@ class _AgentVerifyState extends State<AgentVerify> {
       label: '验证码',
       suffixWidth: 180,
       // suffix: VTimerBtn(disabled, () async {return await LoginApi().getRegisterSmsCode(mobile);}),
-      suffix: VTimerBtn(
-        disabled, 
-        () {},
-        color: '#0091F0',
-      ),
+      suffix: VTimerBtn(false, () async {return await MemberApi().getAgentVerifyCode(sharecode);}, color: '#0091F0'),
       onChange: (e) {
         // String hint = Validate.isNon(e) ? '请输入真实姓名' : null;
         setState(() {
@@ -54,6 +65,7 @@ class _AgentVerifyState extends State<AgentVerify> {
   Widget build(BuildContext context) {
     var company = FluroConvertUtils.fluroCnParamsDecode(widget.company);
     mobile = widget.mobile;
+    sharecode = widget.sharecode;
 
     return Scaffold(
       appBar: AppBar(
@@ -88,7 +100,7 @@ class _AgentVerifyState extends State<AgentVerify> {
           ),
           Container(
             margin: EdgeInsets.only(top: G.setWidth(80)),
-            child: VButton(text: '验证', fn: null)
+            child: VButton(disabled: smsCode == '',text: '验证', fn: _verifyFunc)
           )
          ], 
         )

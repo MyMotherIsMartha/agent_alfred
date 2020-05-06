@@ -54,9 +54,13 @@ class AgentItemModel {
   String qualificationRefuseReason;
   int checkStatus;
   int settleStatus;
+  String shareCode;
+  bool isNewShowFlag;
+  bool smsValid;
 
   AgentItemModel(
-      {this.headSculptureUrl,
+      {this.shareCode,
+      this.headSculptureUrl,
       this.enterpriseName,
       this.mobile,
       this.registerTime,
@@ -66,9 +70,12 @@ class AgentItemModel {
       this.qualificationsStatus,
       this.qualificationRefuseReason,
       this.checkStatus,
-      this.settleStatus});
+      this.settleStatus,
+      this.isNewShowFlag,
+      this.smsValid});
 
   AgentItemModel.fromJson(Map<String, dynamic> json) {
+    shareCode = json['shareCode'];
     headSculptureUrl = json['headSculptureUrl'];
     enterpriseName = json['enterpriseName'];
     mobile = json['mobile'];
@@ -80,10 +87,13 @@ class AgentItemModel {
     qualificationRefuseReason = json['qualificationRefuseReason'];
     checkStatus = json['checkStatus'];
     settleStatus = json['settleStatus'];
+    isNewShowFlag = json['isNewShowFlag'];
+    smsValid = json['smsValid'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['shareCode'] = this.shareCode;
     data['headSculptureUrl'] = this.headSculptureUrl;
     data['enterpriseName'] = this.enterpriseName;
     data['mobile'] = this.mobile;
@@ -95,6 +105,8 @@ class AgentItemModel {
     data['qualificationRefuseReason'] = this.qualificationRefuseReason;
     data['checkStatus'] = this.checkStatus;
     data['settleStatus'] = this.settleStatus;
+    data['isNewShowFlag'] = this.isNewShowFlag;
+    data['smsValid'] = this.smsValid;
     return data;
   }
 }

@@ -7,7 +7,8 @@ Dio service() {
   BaseOptions _baseOptions =
       BaseOptions(
         baseUrl: EnvConfig.dev['api'],
-        headers: {'platform': 'agent_app'}
+        headers: {'platform': 'agent_app'},
+        connectTimeout: 10000
       );
 
   Dio dio = Dio(_baseOptions);
@@ -29,14 +30,22 @@ Dio service() {
     }
     return response.data;
   }, onError: (DioError e) async {
-    G.toast(e.message);
-    throw Exception('接口异常');
+    print(e.type);
+    String errorMsg = '';
+    if (e.type == DioErrorType.CONNECT_TIMEOUT) {
+      errorMsg = '连接超时,请切换网络或稍后再试';
+    } else {
+      errorMsg = '当前网络不可用,请检查是否连接了可用的Wifi或移动网络';
+    }
+    G.toast(errorMsg);
+    // G.toast(e.message);
+    throw Exception(errorMsg);
     // 当请求失败时做一些预处理
     // return e; //continue
   }));
-  // dio.interceptors.add(
-  //   LogInterceptor(requestBody: true, responseBody: true),
-  // );
+  dio.interceptors.add(
+    LogInterceptor(requestBody: true, responseBody: true),
+  );
   // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
   //     (client) {
   //   // config the http client
