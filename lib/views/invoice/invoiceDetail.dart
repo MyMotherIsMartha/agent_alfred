@@ -156,7 +156,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
     print(result.data['data']);
     if (result.data['code'] == 200) {
       var appTitle = FluroConvertUtils.fluroCnParamsEncode('上传发票');
-      G.router.navigateTo(context, '/resultPage?status=12&title=$appTitle&haveExit=no');
+      G.navigateTo(context, '/resultPage?status=12&title=$appTitle&haveExit=no');
     }
   }
 

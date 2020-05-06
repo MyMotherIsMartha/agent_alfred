@@ -160,7 +160,7 @@ class _AddressPageState extends State<AddressPage> {
                     var result = await addressProvide.updateAddress(data);
                     if (result.data['code'] == 200) {
                       G.router.pop(context);
-                      // G.router.navigateTo(context, '/create-account');
+                      // G.navigateTo(context, '/create-account');
                     }
                   },
                   text: '确定',

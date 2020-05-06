@@ -308,7 +308,7 @@ class AgentManageMainState extends State<AgentManageMain>
               actions: <Widget>[
                 IconButton(
                   onPressed: () {
-                    G.router.navigateTo(context, '/agentManage/search');
+                    G.navigateTo(context, '/agentManage/search');
                   },
                   icon: iconsearch(color: hex('#666666')),
                 )

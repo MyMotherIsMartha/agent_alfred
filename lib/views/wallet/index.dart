@@ -88,7 +88,7 @@ class _WalletMainState extends State<WalletMain> {
         actions: <Widget>[
           FlatButton(
               onPressed: () {
-                G.router.navigateTo(context, '/walletMain/billHistory');
+                G.navigateTo(context, '/walletMain/billHistory');
               },
               child: Text('账单',
                   style: TextStyle(color: hex('#000'), fontSize: G.setSp(32))))
@@ -134,7 +134,7 @@ class _WalletMainState extends State<WalletMain> {
                             child: Text('确定'),
                             onPressed: (){
                               Navigator.of(context).pop();
-                              G.router.navigateTo(context, '/bankMain');
+                              G.navigateTo(context, '/bankMain');
                             },
                           )
                         ]
@@ -142,7 +142,7 @@ class _WalletMainState extends State<WalletMain> {
                     },
                   );
                 } else {
-                  G.router.navigateTo(context, '/walletMain/withdraw');
+                  G.navigateTo(context, '/walletMain/withdraw');
                 }
                 
               },
@@ -178,7 +178,7 @@ class _WalletMainState extends State<WalletMain> {
         ),
         InkWell(
           onTap: () {
-            G.router.navigateTo(context, '/invoiceList');
+            G.navigateTo(context, '/invoiceList');
           },
           child:
             Container(
@@ -205,7 +205,7 @@ class _WalletMainState extends State<WalletMain> {
         InkWell(
           onTap: () {
             print('test');
-            G.router.navigateTo(context, '/bankMain');
+            G.navigateTo(context, '/bankMain');
           },
           child: Container(
             color: Colors.white,

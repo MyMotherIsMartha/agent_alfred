@@ -77,7 +77,8 @@ class _VTimerBtnState extends State<VTimerBtn> {
             ? "获取验证码"
             : countDownTime < 10 ? '0$countDownTime' + 'S' : '$countDownTime' + 'S', style: TextStyle(
               fontSize: G.setSp(30),
-              color: widget.color != null ? hex(widget.color):  hex('#333'),
+              // color: widget.color != null ? hex(widget.color):  hex('#333'),
+              color: hex('#6982FF'),
               height: 1.5
             )),
         ),

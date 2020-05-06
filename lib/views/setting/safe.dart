@@ -30,9 +30,9 @@ class SettingSafePage extends StatelessWidget {
               child: InkWell(
                   onTap: () {
                     if (userAuthInfo.isSettingPassword) {
-                      G.router.navigateTo(context, '/setting/resetpwd');
+                      G.navigateTo(context, '/setting/resetpwd');
                     } else {
-                      G.router.navigateTo(context, '/setting/pwd');
+                      G.navigateTo(context, '/setting/pwd');
                     }
                   },
                   child: Row(
@@ -65,7 +65,7 @@ class SettingSafePage extends StatelessWidget {
                   border: Border(top: BorderSide(color: hex('#f3f4f6')))),
               child: InkWell(
                   onTap: () {
-                    G.router.navigateTo(context, '/setting/mobile');
+                    G.navigateTo(context, '/setting/mobile');
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

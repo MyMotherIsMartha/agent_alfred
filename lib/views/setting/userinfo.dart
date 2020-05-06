@@ -61,7 +61,7 @@ class SettingUserInfoPage extends StatelessWidget {
                   border: Border(bottom: BorderSide(color: hex('#f3f4f6')))),
               child: InkWell(
                   onTap: () {
-                    G.router.navigateTo(context, '/setting/nickname');
+                    G.navigateTo(context, '/setting/nickname');
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

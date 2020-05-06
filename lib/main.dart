@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
       locale: const Locale('en'),
       onGenerateRoute: G.router.generator,
       theme: ThemeData(
+        platform: TargetPlatform.iOS,
         pageTransitionsTheme: PageTransitionsTheme(
             builders: <TargetPlatform, PageTransitionsBuilder>{
               TargetPlatform.android: CupertinoPageTransitionsBuilder(),

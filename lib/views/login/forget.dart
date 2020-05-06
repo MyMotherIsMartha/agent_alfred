@@ -150,7 +150,7 @@ class _ForgetPageState extends State<ForgetPage> {
                     print(result);
                     if (result.data['code'] == 200) {
                       G.toast('修改密码成功');
-                      G.router.navigateTo(context, '/login', replace: true);
+                      G.navigateTo(context, '/login', replace: true);
                     }
                     // setState(() {
                     //   errorMsg = null;

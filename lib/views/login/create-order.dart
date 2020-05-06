@@ -128,7 +128,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
       int result = (_orderOverTime / 1000).round() - nowTime;
       if (result < 0) {
         _timer?.cancel();
-        G.router.navigateTo(context, '/create-account', replace: true);
+        G.navigateTo(context, '/create-account', replace: true);
       }
       setState(() {
         _countdownTime = result;
@@ -294,7 +294,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                   payType = type;
                 });
                 if (type == 'downline') {
-                  G.router.navigateTo(context, '/certificate?no=' + widget.no + '&time=' + _countdownTime.toString());
+                  G.navigateTo(context, '/certificate?no=' + widget.no + '&time=' + _countdownTime.toString());
                 }
               },
               child: type == 'downline'

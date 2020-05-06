@@ -50,7 +50,7 @@ class _ResultPageState extends State<ResultPage> {
       'isRequest': true
     };
     var uploadJson = FluroConvertUtils.object2string(uploadData);
-    G.router.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
+    G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
   }
   
 
@@ -407,7 +407,7 @@ class _ResultPageState extends State<ResultPage> {
             ),
             RaisedButton(
               onPressed: () {
-                G.router.navigateTo(context, '/sendAdress');
+                G.navigateTo(context, '/sendAdress');
               },
               elevation: 4.0,
               color: hex('#D6DBFF'),
