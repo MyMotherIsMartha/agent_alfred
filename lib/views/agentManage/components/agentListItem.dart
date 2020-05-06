@@ -90,7 +90,7 @@ class _AgentListItemState extends State<AgentListItem> {
                       overflow: TextOverflow.ellipsis, 
                       style: TextStyle(fontWeight: FontWeight.w600)),
                 ),
-                Image(height: G.setHeight(34),image: item.headSculptureUrl != null ? NetworkImage(item.headSculptureUrl) : AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
+                item.isNewShowFlag ? Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')) : Text(''),
               ]),
               leftTopText(item.qualificationsStatus),
             ]
@@ -116,8 +116,9 @@ class _AgentListItemState extends State<AgentListItem> {
             // print(item["value"].toString());
             var mobile = item.mobile;
             var company = item.enterpriseName ?? '测试企业名称';
+            var sharecode = item.shareCode;
             String companyStr = FluroConvertUtils.fluroCnParamsEncode(company);
-            G.router.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr');
+            G.router.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr&sharecode=$sharecode');
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10),
@@ -127,7 +128,7 @@ class _AgentListItemState extends State<AgentListItem> {
             child: Row(children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
-                child: Image(width: G.setWidth(100),image: AssetImage('lib/assets/images/home/vip.png'))
+                child: Image(width: G.setWidth(100),image: item.headSculptureUrl != null ? NetworkImage(item.headSculptureUrl) : AssetImage('lib/assets/images/home/vip.png'))
               ),
               Column(
                 children: [

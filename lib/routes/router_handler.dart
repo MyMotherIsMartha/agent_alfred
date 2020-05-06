@@ -159,8 +159,8 @@ Handler readPerfectInfoHandler = Handler(
 Handler resultPageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     String status = params['status']?.first;
-    String title = params['title']?.first;
-    String haveExit = params['haveExit']?.first;
+    String title = params['title']?.first ?? 'no';
+    String haveExit = params['haveExit']?.first ?? 'yes';
     return ResultPage(
       status: status,
       title: title,
@@ -304,10 +304,12 @@ Handler agentVerifyHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
     String company = params['company']?.first;
     String mobile = params['mobile']?.first;
+    String sharecode = params['sharecode']?.first;
     
     return AgentVerify(
       company: company,
-      mobile: mobile
+      mobile: mobile,
+      sharecode: sharecode
     );
   }
 );

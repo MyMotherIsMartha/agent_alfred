@@ -77,6 +77,11 @@ class MemberApi{
     return await service().put('$agentMemberApi/v1/checkOrderRecords/applyCheckDelayAudit');
   }
 
+  // 申请资质延迟审核
+  applyQualificationsDelayAudit() async {
+    return await service().put('$agentMemberApi//v1/agentMemberAccounts/applyQualificationsDelayAudit');
+  }
+
   // 查询当前代理服务费
   serviceCharges() async {
     return await service().get('$agentMemberApi/v1/agentMemberServiceCharges/current');
@@ -93,4 +98,14 @@ class MemberApi{
     queryParameters: params);
     return r;
   }
-}
+  // 发送验证下级代理短信验证码
+  getAgentVerifyCode(code) async {
+    var r = await service().get('$agentMemberApi/v1/smsCodeSenders/sendVerifySubAgentSmsCode/$code');
+    return r;
+  }
+  // 短信验证下级代理
+  verifySubAgent(data) async {
+      var r = await service().post('$agentMemberApi/v1/agentMemberAccounts/verifySubAgent', data: data);
+      return r;
+    }
+  }
