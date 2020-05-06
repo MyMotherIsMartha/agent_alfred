@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:color_dart/hex_color.dart';
@@ -10,7 +11,7 @@ class ResultPage extends StatefulWidget {
   final String title;
   final String haveExit;
 
-  ResultPage({this.status, this.title: 'no', this.haveExit: 'yes'});
+  ResultPage({this.status, this.title, this.haveExit});
 
   @override
   _ResultPageState createState() => _ResultPageState();
@@ -28,7 +29,7 @@ class _ResultPageState extends State<ResultPage> {
     print(statusCode);
     print(widget.title);
     print(widget.haveExit);
-    if (widget.title != 'no') {
+    if (widget.title != 'no' && widget.title != null) {
       appTitle = FluroConvertUtils.fluroCnParamsDecode(widget.title);
     }
     
@@ -132,7 +133,7 @@ class _ResultPageState extends State<ResultPage> {
             RaisedButton(
               onPressed: () {
                 setState(() {
-                  statusCode = 3;
+                  G.router.navigateTo(context, '/index', replace: true);
                 });
               },
               elevation: 4.0,
@@ -217,10 +218,14 @@ class _ResultPageState extends State<ResultPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
             RaisedButton(
-              onPressed: () {
-                setState(() {
-                  statusCode = 3;
-                });
+              onPressed: () async {
+                var result = await MemberApi().applyQualificationsDelayAudit();
+                if (result.data['code'] == 200) {
+                  setState(() {
+                    statusCode = 3;
+                  });
+                }
+                
               },
               elevation: 4.0,
               color: hex('#69A5FF'),
@@ -470,7 +475,10 @@ class _ResultPageState extends State<ResultPage> {
               actions: <Widget>[
                 widget.haveExit == 'yes' ? 
                 FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      G.removePref('token');
+                      G.router.navigateTo(context, '/login', replace: true);
+                    },
                     child: Text('退出',
                         style: TextStyle(color: hex('#fff'), fontSize: G.setSp(32)))) : Text('')
               ],

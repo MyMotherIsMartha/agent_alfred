@@ -86,12 +86,12 @@ class _VTimerBtnState extends State<VTimerBtn> {
           if (widget.disabled) return;
           G.showLoading(context);
           var result = await widget.cb();
+          G.closeLoading(context);
           if (result.data['code'] == 200) {
             countDown();
           } else {
             print(result.data['code']);
           }
-          G.router.pop(context);
         },
       ),
       // padding: EdgeInsets.only(left: 10),
