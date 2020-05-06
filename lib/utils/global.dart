@@ -1,15 +1,25 @@
+import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/utils/validate.dart';
+import 'package:color_dart/color_dart.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
 
 class G {
   static Router router;
+  static navigateTo(context, String path, {replace: false}) {
+    router.navigateTo(context, path,
+        replace: replace, transition: TransitionType.inFromRight);
+  }
+
   static GlobalKey<NavigatorState> key = GlobalKey(debugLabel: 'navigate_key');
 
   static SharedPreferences sp;
@@ -138,20 +148,17 @@ class G {
 
   static showLoading(context) {
     showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return Center(
-          child: VLoading()
-        );
-      }
-    );
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return Center(child: VLoading());
+        });
   }
 
   static closeLoading(context) {
     Navigator.pop(context);
   }
-  
+
   /// 每隔 x位 加 pattern
   static String formatDigitPattern(String text,
       {int digit = 4, String pattern = ' '}) {
@@ -171,11 +178,51 @@ class G {
 
   static formatTime(int unix, {String type = 'time'}) {
     return formatDate(
-      DateTime.fromMicrosecondsSinceEpoch(unix * 1000),
-      type == 'time'
-       ? [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]
-       : [yyyy, '-', mm, '-', dd]
-    );
+        DateTime.fromMicrosecondsSinceEpoch(unix * 1000),
+        type == 'time'
+            ? [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]
+            : [yyyy, '-', mm, '-', dd]);
     // return formatDate(new Date(item.payTime), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])
+  }
+
+  static YYDialog logout(BuildContext context) {
+    return YYDialog().build(context)
+      ..width = G.setWidth(600)
+      ..height = G.setWidth(270)
+      ..borderRadius = G.setWidth(20)
+      ..text(
+        padding: EdgeInsets.all(G.setWidth(60)),
+        alignment: Alignment.center,
+        text: "退出登录",
+        color: hex('#333'),
+        fontSize: G.setSp(36),
+        fontWeight: FontWeight.w500,
+      )
+      ..divider()
+      ..doubleButton(
+        padding: EdgeInsets.only(top: 10.0),
+        gravity: Gravity.center,
+        withDivider: true,
+        text1: "取消",
+        color1: hex('#85868A'),
+        fontSize1: G.setSp(36),
+        onTap1: () {
+          print("取消");
+        },
+        text2: "确定",
+        color2: hex('##0091F0'),
+        fontSize2: G.setSp(36),
+        onTap2: () {
+          G.clearPref();
+        },
+      )
+      ..dismissCallBack = () {
+        if (Validate.isNon(G.getPref('token'))) {
+          Future.delayed(Duration(microseconds: 100), () {
+            G.navigateTo(context, '/login', replace: true);
+          });
+        }
+      }
+      ..show();
   }
 }

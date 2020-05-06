@@ -193,7 +193,7 @@ class _MarketSearchPageState extends State<MarketSearchPage> {
         int type = item.moduleContactType;
         String id = item.contactId;
         if (type == 2) {
-          G.router.navigateTo(context, '/market/course?id=' + id);
+          G.navigateTo(context, '/market/course?id=' + id);
         }
       },
     child: Container(

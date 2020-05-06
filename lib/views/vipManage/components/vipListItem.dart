@@ -104,7 +104,7 @@ class _VipListItemState extends State<VipListItem> {
             String vipId = item.memberId.toString();
             print('vipId');
             print(vipId);
-            G.router.navigateTo(context, Routes.vipDetail + '?vipId=$vipId');
+            G.navigateTo(context, Routes.vipDetail + '?vipId=$vipId');
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10),

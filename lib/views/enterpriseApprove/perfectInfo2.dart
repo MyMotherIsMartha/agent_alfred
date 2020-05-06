@@ -196,7 +196,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
       print(result.data.toString());
       if (result.data['code'] == 200) {
         var statusCode = 1;
-        G.router.navigateTo(
+        G.navigateTo(
           context, Routes.perfectEnterpriseAudit + "?currentStatus=$statusCode");
       }
     }

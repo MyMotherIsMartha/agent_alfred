@@ -58,7 +58,7 @@ class _FinancePageState extends State<FinancePage>
       actions: <Widget>[
         IconButton(
           onPressed: () {
-            G.router.navigateTo(context, '/finance/search');
+            G.navigateTo(context, '/finance/search');
           },
           icon: iconsearch(color: hex('#666666')),
         )

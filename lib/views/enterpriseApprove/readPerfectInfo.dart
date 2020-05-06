@@ -295,7 +295,7 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
         actions: <Widget>[
           FlatButton(
               onPressed: () {
-                G.router.navigateTo(context, '/perfectEnterprise1');
+                G.navigateTo(context, '/perfectEnterprise1');
               },
               child: Text('编辑',
                   style: TextStyle(color: hex('#000'), fontSize: G.setSp(32))))

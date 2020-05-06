@@ -54,7 +54,7 @@ class OrderApi{
   // ------------- 发票相关接口 ---------------
   //  服务费结款详细
   getMakeMoneyById(id) async {
-    return await service().get('$orderPrefix/v1/statisticsMakeMoneyRecords/${id}');
+    return await service().get('$orderPrefix/v1/statisticsMakeMoneyRecords/$id');
   }
   //  当前结算服务费列表
   getMakeMoneyList(params) async {

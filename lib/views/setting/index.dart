@@ -9,10 +9,8 @@ import 'package:provider/provider.dart';
 
 class SettingPage extends StatelessWidget {
   void logout(context) {
-    print(G.getPref('token'));
     if (G.getPref('token') == null) {
       Future.delayed(Duration(seconds: 1000), () {
-        print('123412343214');
         Provider.of<UserProvide>(context).updateUserAuth();
       });
       // Provider.of<UserProvide>(context).updateUserAuth();
@@ -25,7 +23,7 @@ class SettingPage extends StatelessWidget {
           style: TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
       trailing: iconarrow(color: hex('#999')),
       onTap: () {
-        G.router.navigateTo(context, '/setting/userinfo');
+        G.navigateTo(context, '/setting/userinfo');
       },
     );
   }
@@ -36,7 +34,7 @@ class SettingPage extends StatelessWidget {
           style: TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
       trailing: iconarrow(color: hex('#999')),
       onTap: () {
-        G.router.navigateTo(context, '/setting/safe');
+        G.navigateTo(context, '/setting/safe');
       },
     );
   }
@@ -75,7 +73,7 @@ class SettingPage extends StatelessWidget {
         ),
       ),
       onTap: () {
-        G.router.navigateTo(context, '/perfectEnterprise1');
+        G.navigateTo(context, '/perfectEnterprise1');
       },
     );
   }
@@ -94,7 +92,7 @@ class SettingPage extends StatelessWidget {
     return ListTile(
       title: Text('清除本地缓存',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
-      trailing: Text('17.99M',
+      trailing: Text('暂无缓存',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#999'))),
       onTap: () {},
     );
@@ -104,7 +102,7 @@ class SettingPage extends StatelessWidget {
     return ListTile(
       title: Text('版本号',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
-      trailing: Text('V1.1.0',
+      trailing: Text('x.x.x',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#999'))),
       onTap: () {},
     );
@@ -164,7 +162,9 @@ class SettingPage extends StatelessWidget {
                             fontSize: G.setSp(24), color: hex('#999'))),
                     G.spacing(10, dir: 'x'),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        G.toast('功能开发中');
+                      },
                       child: Text('设置',
                           style: TextStyle(
                               fontSize: G.setSp(24), color: hex('#0091F0'))),
@@ -212,8 +212,9 @@ class SettingPage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
-                    G.removePref('token');
-                    G.router.navigateTo(context, '/login', replace: true);
+                    G.logout(context);
+                    // G.removePref('token');
+                    // G.navigateTo(context, '/login', replace: true);
                   },
                   child: Text('退出登录',
                       style:
@@ -257,7 +258,7 @@ class SettingPage extends StatelessWidget {
           })
       ..show()
       ..dismissCallBack = () {
-        G.router.navigateTo(context, '/login', replace: true);
+        G.navigateTo(context, '/login', replace: true);
         // if (G.getPref('token') == null) {
         //   Future.delayed(Duration(seconds: 1000), () {
         //     print('123412343214');

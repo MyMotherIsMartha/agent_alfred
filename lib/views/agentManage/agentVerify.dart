@@ -58,7 +58,7 @@ class _AgentVerifyState extends State<AgentVerify> {
 
   void goNextPage() {
     var appTitle = FluroConvertUtils.fluroCnParamsEncode('验证完成');
-    G.router.navigateTo(context, '/resultPage?status=11&title=$appTitle&haveExit=no');
+    G.navigateTo(context, '/resultPage?status=11&title=$appTitle&haveExit=no');
   }
 
   @override
