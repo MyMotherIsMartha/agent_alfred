@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:agent37_flutter/api/marketing.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/models/banner.dart';
 import 'package:agent37_flutter/models/market-module.dart';
+import 'package:agent37_flutter/routes/routes.dart';
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -65,6 +70,19 @@ class _MarketingPageState extends State<MarketingPage> {
       child: InkWell(
           onTap: () {
             print(item.jumpType);
+            var link = 'https://juejin.im/timeline';
+            var bodyJson = {"url": link};
+            var linkTemp = FluroConvertUtils.object2string(bodyJson);
+            G.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp); // ?url=http://www.baidu.com
+            // G.router.navigateTo(context, '/webview');
+            // if (item.jumpType == 1) {
+              
+            // } else if (item.jumpType == 2) {
+            //   var link = item.jumpContent;
+            //   // webview打开
+            // } else if (item.jumpType == 3) {
+
+            // }
           },
           child: Container(
             width: double.infinity,

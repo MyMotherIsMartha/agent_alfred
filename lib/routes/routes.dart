@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/views/index.dart';
 import 'package:agent37_flutter/views/login/login.dart';
 import 'package:flutter/material.dart';
 import './router_handler.dart';
@@ -51,11 +52,12 @@ class Routes {
   static String marketApplyResult = '/market/apply-result';
   static String marketCourse = '/market/course';
   static String marketMeeting = '/market/meeting';
+  static String webviewPage = '/webview/:url';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       print('ERROR====>ROUTE WAS NOT FONUND!!!');
-      return LoginPage();
+      return IndexPage();
     });
     router.define(root, handler: splashHandler);
     router.define(index, handler: indexHandler);
@@ -104,5 +106,6 @@ class Routes {
     router.define(marketApplyResult, handler: marketApplyResultHandler);
     router.define(marketCourse, handler: marketCourseHandler);
     router.define(marketMeeting, handler: marketMeetingHandler);
+    router.define(webviewPage, handler: webviewHandler);
   }
 }
