@@ -143,7 +143,7 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
                           TextStyle(fontSize: G.setSp(28), color: hex('#999'))),
                   InkWell(
                     onTap: () {
-                      // TODO:: 删除警告
+                      //  删除警告
                       SearchUtil.removeHistoryList();
                       _getHistoryFromPref();
                     },

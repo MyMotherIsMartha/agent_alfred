@@ -51,7 +51,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         height: G.setHeight(120),
         alignment: Alignment.center,
         child: FlatButton(
-          // TODO:: 按钮禁用指示
+          // 按钮禁用指示
             onPressed: () {
               if (addressProvide.address == null ||
                   Validate.isNon(addressProvide.address.address)) {
@@ -75,7 +75,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               width: G.setWidth(690),
               height: G.setHeight(80),
               alignment: Alignment.center,
-              // TODO:: 按钮禁用指示
+              // 按钮禁用指示
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(G.setWidth(40)),
                   gradient:

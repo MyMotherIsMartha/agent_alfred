@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:agent37_flutter/api/marketing.dart';
 import 'package:agent37_flutter/components/Icon.dart';
@@ -11,7 +10,6 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:color_dart/color_dart.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
