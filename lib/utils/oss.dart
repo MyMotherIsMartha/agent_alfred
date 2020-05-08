@@ -45,7 +45,7 @@ class Oss {
       "file": await MultipartFile.fromFile(path, filename: name + '.' + suffix)
     });
     var resultInfo = uploadApi == null ? await OssApi().uploadFile(data) : await uploadApi(data);
-    G.closeLoading(G.currentContext);
+    G.closeLoading();
     if (resultInfo.data['code'] == 200) {
       Map uploadData = resultInfo.data['data'];
       cb(uploadData['filePath']);

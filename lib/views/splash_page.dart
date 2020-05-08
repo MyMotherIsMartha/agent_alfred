@@ -61,11 +61,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     print(token);
     if (Validate.isNon(token)) {
       G.navigateTo(context, '/login', replace: true);
-      // G.router.navigateTo(context, '/update-user', replace: true);
+      
     } else {
-      Provider.of<UserProvide>(context).updateUserAuth();
-      Provider.of<UserProvide>(context).updateEnterpriseinfo();
-      Provider.of<UserProvide>(context).updateBankCardInfo();
+      G.navigateTo(context, '/resultPage?status=-2', replace: true);
+      // Provider.of<UserProvide>(context).updateUserAuth();
+      // Provider.of<UserProvide>(context).updateEnterpriseinfo();
+      // Provider.of<UserProvide>(context).updateBankCardInfo();
     }
     
     // UserModel userModel = Provider.of<UserModel>(context);

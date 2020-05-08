@@ -35,12 +35,12 @@ class G {
   // static BuildContext getCurrentContext() => key.currentContext;
 
   static Future toast(String msg,
-          {Color bgColor = Colors.grey, Color color = Colors.white}) =>
+          {Color bgColor = Colors.grey, Color color = Colors.white, int duration = 1}) =>
       Fluttertoast.showToast(
           msg: msg,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
-          timeInSecForIos: 1,
+          timeInSecForIos: duration,
           backgroundColor: bgColor,
           textColor: color,
           fontSize: G.setSp(32));
@@ -147,16 +147,18 @@ class G {
   }
 
   static showLoading(context) {
+    G.setContext(context);
     showDialog(
         barrierDismissible: false,
-        context: context,
+        context: G.currentContext,
         builder: (BuildContext context) {
           return Center(child: VLoading());
         });
   }
 
-  static closeLoading(context) {
-    Navigator.pop(context);
+  static closeLoading() {
+    Navigator.of(G.currentContext, rootNavigator: true).pop();
+
   }
 
   /// 每隔 x位 加 pattern

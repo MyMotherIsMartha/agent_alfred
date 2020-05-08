@@ -150,7 +150,7 @@ class _OrderViewState extends State<OrderView> with AutomaticKeepAliveClientMixi
           });
           G.showLoading(context);
           await _getList(refresh: true);
-          G.closeLoading(context);
+          G.closeLoading();
         },
         child: Container(
             alignment: Alignment.center,
