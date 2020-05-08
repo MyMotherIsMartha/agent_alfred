@@ -1,4 +1,4 @@
-import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/provide/address.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:date_format/date_format.dart';
@@ -185,7 +185,7 @@ class G {
     // return formatDate(new Date(item.payTime), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])
   }
 
-  static YYDialog logout(BuildContext context) {
+  static YYDialog logout(BuildContext context, {String msg}) {
     return YYDialog().build(context)
       ..width = G.setWidth(600)
       ..height = G.setWidth(270)
@@ -193,7 +193,7 @@ class G {
       ..text(
         padding: EdgeInsets.all(G.setWidth(60)),
         alignment: Alignment.center,
-        text: "退出登录",
+        text: msg ?? "退出登录",
         color: hex('#333'),
         fontSize: G.setSp(36),
         fontWeight: FontWeight.w500,
@@ -218,6 +218,7 @@ class G {
       )
       ..dismissCallBack = () {
         if (Validate.isNon(G.getPref('token'))) {
+          Provider.of<AddressProvide>(context).resetAddress();
           Future.delayed(Duration(microseconds: 100), () {
             G.navigateTo(context, '/login', replace: true);
           });

@@ -151,7 +151,15 @@ class _LoginPageState extends State<LoginPage> {
                           });
                           _formKey.currentState.validate();
                           if (Validate.isNon(errorMsg)) {
-                            var result = await LoginApi().login(mobile, sms: sms, pwd: pwd);
+                            Map data = {
+                              'mobile': mobile,
+                            };
+                            if (loginType == 'sms') {
+                              data['sms'] = sms;
+                            } else {
+                              data['pwd'] = pwd;
+                            }
+                            var result = await LoginApi().login(mobile, data);
                             if (result.data['code'] == 200) {
                               String token = result.data['data']['jwtToken'];
                               G.setPref('token', 'bearer ' + token);
@@ -199,8 +207,8 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           loginType = type;
           errorMsg = null;
-          sms = null;
-          pwd = null;
+          // sms = null;
+          // pwd = null;
         });
       },
       child: Text(

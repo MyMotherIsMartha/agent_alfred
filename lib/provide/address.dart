@@ -30,4 +30,9 @@ class AddressProvide with ChangeNotifier {
     }
     return result;
   }
+
+  resetAddress() {
+    address = null;
+    // notifyListeners();
+  }
 }

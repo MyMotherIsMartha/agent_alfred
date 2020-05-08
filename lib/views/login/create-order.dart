@@ -6,10 +6,8 @@ import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
-// import 'package:sy_flutter_alipay/sy_flutter_alipay.dart';
 import 'package:flutter_alipay/flutter_alipay.dart';
 import 'package:fluwx/fluwx.dart';
-// import 'package:sy_flutter_wechat/sy_flutter_wechat.dart';
 
 class CreateOrderPage extends StatefulWidget {
   final String price;
@@ -42,9 +40,10 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
 
   _register() async {
     // bool result = await SyFlutterWechat.register('wx8d911664a4bc3963');
-    registerWxApi(appId: EnvConfig.dev['wx-appid'],universalLink: "https://your.univerallink.com/link/");
+    registerWxApi(
+        appId: EnvConfig.dev['wx-appid'],
+        universalLink: "https://your.univerallink.com/link/");
     // print(result);
-
   }
 
   @override
@@ -200,7 +199,9 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     if (result.data['code'] != 200) return;
                     String payInfo = result.data['data'];
                     print(payInfo);
-                    var result2 = await FlutterAlipay.pay(payInfo);
+                    var result2 = await FlutterAlipay.pay(
+                      payInfo,
+                    );
                     // var result2 = await SyFlutterAlipay.pay(
                     //   payInfo,
                     //   urlScheme: '', //前面配置的urlScheme
@@ -213,7 +214,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     print(result);
                     if (result.data['code'] != 200) return;
                     var payInfo = result.data['data'];
-                    print(payInfo);
+                    print(payInfo['appid']);
                     // print(payInfo['appid']);
                     var result2 = await payWithWeChat(
                       appId: payInfo['appid'],
@@ -224,6 +225,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                       timeStamp: int.parse(payInfo['timestamp']),
                       sign: payInfo['sign'],
                     );
+                    print('result22222');
                     print(result2);
                     // SyPayResult payResult = await SyFlutterWechat.pay(
                     //   SyPayInfo.fromJson(payInfo));
@@ -265,51 +267,55 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
         break;
       default:
     }
-    return Container(
-      height: G.setHeight(120),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Image.asset(icon,
-                    width: G.setWidth(60), height: G.setHeight(60)),
-                Container(
-                  width: G.setWidth(30),
-                ),
-                Text(title,
-                    style:
-                        TextStyle(fontSize: G.setSp(32), color: hex('#333'))),
-              ],
-            ),
-          ),
-          Container(
-            height: G.setHeight(100),
-            width: G.setWidth(100),
-            alignment: Alignment.center,
-            child: InkWell(
-              onTap: () {
-                print(type);
-                setState(() {
-                  payType = type;
-                });
-                if (type == 'downline') {
-                  G.navigateTo(context, '/certificate?no=' + widget.no + '&time=' + _countdownTime.toString());
-                }
-              },
-              child: type == 'downline'
-                  ? iconarrow()
-                  : Icon(
-                      payType == type
-                          ? Icons.check_circle
-                          : Icons.radio_button_unchecked,
-                      size: G.setSp(50),
-                      color: payType == type ? hex('#333') : hex('#999'),
+    return InkWell(
+        onTap: () {
+          print(type);
+          setState(() {
+            payType = type;
+          });
+          if (type == 'downline') {
+            G.navigateTo(
+                context,
+                '/certificate?no=' +
+                    widget.no +
+                    '&time=' +
+                    _countdownTime.toString());
+          }
+        },
+        child: Container(
+          height: G.setHeight(120),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  children: <Widget>[
+                    Image.asset(icon,
+                        width: G.setWidth(60), height: G.setHeight(60)),
+                    Container(
+                      width: G.setWidth(30),
                     ),
-            ),
-          )
-        ],
-      ),
-    );
+                    Text(title,
+                        style: TextStyle(
+                            fontSize: G.setSp(32), color: hex('#333'))),
+                  ],
+                ),
+              ),
+              Container(
+                height: G.setHeight(100),
+                width: G.setWidth(100),
+                alignment: Alignment.center,
+                child: type == 'downline'
+                    ? iconarrow()
+                    : Icon(
+                        payType == type
+                            ? Icons.check_circle
+                            : Icons.radio_button_unchecked,
+                        size: G.setSp(50),
+                        color: payType == type ? hex('#333') : hex('#999'),
+                      ),
+              )
+            ],
+          ),
+        ));
   }
 }

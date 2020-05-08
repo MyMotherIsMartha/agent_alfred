@@ -30,12 +30,19 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     addressProvide = Provider.of<AddressProvide>(context);
     return Scaffold(
       backgroundColor: hex('#E7D1A8'),
-      body: SingleChildScrollView(
-        child: Container(
-          width: G.setWidth(750),
-          child: Column(
-            children: <Widget>[_bannerTop(), _addressWrap(), _giftWrapWidget()],
-          ),
+      body: Container(
+        width: G.setWidth(750),
+        child: Column(
+          children: <Widget>[
+            _bannerTop(),
+            Expanded(
+            child: SingleChildScrollView(child: Column(
+              children: <Widget>[
+                _addressWrap(),
+                _giftWrapWidget()
+              ],
+            )))
+          ],
         ),
       ),
       bottomNavigationBar: Container(
@@ -45,6 +52,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         alignment: Alignment.center,
         child: FlatButton(
             onPressed: () {
+              if (addressProvide.address == null ||
+                  Validate.isNon(addressProvide.address.address)) {
+                G.toast('请填写地址');
+                return;
+              }
               if (!Validate.isNon(selectedPackageNo)) {
                 G.navigateTo(
                     context,

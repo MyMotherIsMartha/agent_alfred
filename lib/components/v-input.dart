@@ -1,5 +1,6 @@
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../utils/global.dart';
 import 'Icon.dart';
@@ -20,6 +21,7 @@ class VInput extends StatefulWidget {
   final Function onTap;
   final double labelWidth;
   final double suffixWidth;
+  final WhitelistingTextInputFormatter inputFormatters;
   VInput(
       {@required this.controller,
       @required this.hintText,
@@ -35,6 +37,7 @@ class VInput extends StatefulWidget {
       this.labelWidth,
       this.suffixWidth,
       this.suffixDivider,
+      this.inputFormatters,
       this.value});
   @override
   _VInputState createState() => _VInputState();
@@ -72,6 +75,9 @@ class _VInputState extends State<VInput> {
                 bottom: BorderSide(color: hex('#eee'), width: G.setWidth(1)))),
         padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
         child: TextFormField(
+          inputFormatters: widget.inputFormatters != null
+           ? [widget.inputFormatters]
+           : null,
             style: TextStyle(
                 color: widget.readOnly ?? false ? hex('#999') : hex('#333')),
             keyboardType: widget.type,

@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/api/marketing.dart';
 import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/models/banner.dart';
 import 'package:agent37_flutter/models/market-module.dart';
 import 'package:agent37_flutter/utils/global.dart';
@@ -8,6 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class MarketingPage extends StatefulWidget {
@@ -35,7 +37,6 @@ class _MarketingPageState extends State<MarketingPage> {
             height: G.setWidth(88),
             padding: EdgeInsets.symmetric(
                 horizontal: G.setWidth(30), vertical: G.setWidth(12)),
-            margin: EdgeInsets.only(bottom: G.setWidth(30)),
             alignment: Alignment.center,
             child: Container(
               height: G.setWidth(64),
@@ -89,7 +90,7 @@ class _MarketingPageState extends State<MarketingPage> {
               itemBuilder: (BuildContext context, int index) {
                 return _bannerItem(banner[index]);
               },
-              autoplay: true,
+              autoplay: banner.length > 1 ? true : false,
               itemCount: banner.length,
               pagination: SwiperPagination(
                   margin: new EdgeInsets.all(5.0),
@@ -217,10 +218,8 @@ class _MarketingPageState extends State<MarketingPage> {
       } else {
         G.toast('暂无分销管理首页数据');
       }
-    } else {
-      
-    }
-    
+    } else {}
+
     setState(() {
       moduleList = moduleTemp;
     });
@@ -260,34 +259,42 @@ class _MarketingPageState extends State<MarketingPage> {
               children: <Widget>[
                 _searchHeader(),
                 Expanded(
-                  child: CustomScrollView(
-                    controller: scrollController,
-                    slivers: <Widget>[
-                      SliverPadding(
-                          padding: const EdgeInsets.all(0.0),
-                          sliver: new SliverGrid(
-                            gridDelegate:
-                                new SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1, //Grid按两列显示
-                              childAspectRatio: 2.142,
-                            ),
-                            delegate: new SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Container(
-                                  margin:
-                                      EdgeInsets.only(bottom: G.setWidth(50)),
-                                  child: _banner(),
-                                );
-                              },
-                              childCount: 1,
-                            ),
-                          )),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          return _moduleItem(moduleList[index]);
-                        }, childCount: moduleList.length),
-                      )
-                    ],
+                  child: EasyRefresh(
+                    header: vRefreshHeader,
+                    onRefresh: () async {
+                      await _getModule();
+                      await _getBanner();
+                    },
+                    child: CustomScrollView(
+                      controller: scrollController,
+                      slivers: <Widget>[
+                        SliverPadding(
+                            padding: const EdgeInsets.all(0.0),
+                            sliver: new SliverGrid(
+                              gridDelegate:
+                                  new SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 1, //Grid按两列显示
+                                childAspectRatio: 2.142,
+                              ),
+                              delegate: new SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  return Container(
+                                    margin:
+                                        EdgeInsets.only(bottom: G.setWidth(50)),
+                                    child: _banner(),
+                                  );
+                                },
+                                childCount: 1,
+                              ),
+                            )),
+                        SliverList(
+                          delegate:
+                              SliverChildBuilderDelegate((context, index) {
+                            return _moduleItem(moduleList[index]);
+                          }, childCount: moduleList.length),
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],

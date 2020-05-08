@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agent37_flutter/routes/routes.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
@@ -494,7 +495,6 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                               ),
                               Expanded(
                                 child: TextFormField(
-                                  keyboardType: TextInputType.phone,
                                   decoration:
                                       InputDecoration(border: InputBorder.none, hintText: '请输入企业法人名称'),
                                   controller: _legalPersonCtrl,
@@ -520,7 +520,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                           hintText: '请输入手机号',
                           label: '法人手机号',
                           maxLength: 11,
-                          type: TextInputType.phone,
+                          type: TextInputType.number,
+                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[0-9]")),
                           validator: (value) {
                             if (Validate.isNon(errorMsg)) {
                               setState(() {
