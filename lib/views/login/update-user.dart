@@ -10,6 +10,7 @@ import 'package:color_dart/hex_color.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   String areaId;
   String areaName;
   String birthday;
-  DateTime birthdayVal = DateTime.now();
+  DateTime birthdayVal = DateTime(1990, 01, 01, 0, 0, 0);
   String errorMsg = '';
   Map<String, bool> formValidate = {
     'name': false,
@@ -56,6 +57,12 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
           title: Text('完善个人信息'),
           centerTitle: true,
           elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              G.logout(context, msg: '信息未提交，确定退出登录');
+            },
+          ),
         ),
         body: SingleChildScrollView(
             child: GestureDetector(
@@ -79,6 +86,8 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                           type: TextInputType.text,
                           controller: nameController,
                           hintText: '请输入真实姓名',
+                          maxLength: 15,
+                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[\u4e00-\u9fa5]")),
                           label: '姓名',
                           onChange: (e) {
                             String hint = Validate.isNon(e) ? '请输入真实姓名' : '';
@@ -92,13 +101,16 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                         VInput(
                           controller: idcardController,
                           hintText: '请输入身份证号',
-                          label: '身份证号',
+                          type: TextInputType.number,
+                          maxLength: 18,
+                          label: '身份证',
                           onChange: (e) {
-                            var reg =
-                                  r"(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)";
+                            // var reg =
+                            //       r"(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)";
                             setState(() {
                               idcard = e;
-                              formValidate['idcard'] = RegExp(reg).hasMatch(e);
+                              // formValidate['idcard'] = RegExp(reg).hasMatch(e);
+                              formValidate['idcard'] = !Validate.isNon(e);
                             });
                             
                           },
@@ -118,10 +130,11 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                         ),
                         VInput(
                           controller: birtydayController,
-                          hintText: '请选择生日日期',
+                          hintText: '请选择日期',
                           label: '生日',
                           readOnly: true,
-                          suffixIcon: iconarrow(size: 24),
+                          suffix: iconarrow(size: G.setSp(36)),
+                          // suffixWidth: G.setWidth(10),
                           onTap: () {
                             DatePicker.showDatePicker(context,
                                 showTitleActions: true,
@@ -162,6 +175,14 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                     setState(() {
                       errorMsg = null;
                     });
+                    var reg = r"(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)";
+                    
+                    if (!RegExp(reg).hasMatch(idcard)) {
+                      setState(() {
+                        errorMsg = '身份证错误，请核对';
+                      });
+                      return;
+                    }
                     if (_formKey.currentState.validate()) {
                       List<String> areaLev = areaName.split(',');
                       Map data = {
@@ -188,6 +209,9 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   Widget _selectSex() {
     return Container(
       height: G.setWidth(100),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: hex('#eee'), width: G.setWidth(1)))
+      ),
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
       child: Row(
         children: <Widget>[

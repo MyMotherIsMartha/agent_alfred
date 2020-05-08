@@ -1,4 +1,3 @@
-import 'package:agent37_flutter/api/finance.dart';
 import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-field.dart';
@@ -9,8 +8,6 @@ import 'package:agent37_flutter/utils/oss.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:agent37_flutter/provide/user.dart';
 
 class InvoiceDetail extends StatefulWidget {
   final String invoiceId;

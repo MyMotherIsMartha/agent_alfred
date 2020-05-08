@@ -6,10 +6,12 @@ class LoginApi{
   static String agentMemberApi = '/agentMemberApi';
 
   // 登录
-  login(String mobile, {String pwd, String sms}) async {
+  login(String mobile, Map originData) async {
     Map data = {
       'mobile': mobile,
     };
+    var pwd = originData['pwd'];
+    var sms = originData['sms'];
     if (pwd != null && pwd.isNotEmpty) {
       data['password'] = pwd;
     }

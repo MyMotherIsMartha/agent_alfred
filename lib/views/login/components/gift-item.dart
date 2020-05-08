@@ -11,6 +11,7 @@ class GiftItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      overflow: Overflow.visible,
       children: <Widget>[
         InkWell(
             onTap: () {
@@ -122,8 +123,8 @@ class GiftItem extends StatelessWidget {
             )),
         selectedPackageNo == item.giftPackageNo
             ? Positioned(
-                top: G.setWidth(25),
-                right: G.setWidth(15),
+                top: G.setWidth(8),
+                right: G.setWidth(-8),
                 child: Image.asset('lib/assets/images/checked_icon.png',
                     width: G.setWidth(44), height: G.setWidth(44)),
               )

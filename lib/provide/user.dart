@@ -61,10 +61,10 @@ class UserProvide with ChangeNotifier{
         // 获取新的认证信息 
         notifyListeners();
       }
-      G.toast('更新成功');
+      // G.toast('更新成功');
       updateUserAuth();
     } else {
-      G.toast('更新失败');
+      // G.toast('更新失败');
     }
   }
 
@@ -85,7 +85,7 @@ class UserProvide with ChangeNotifier{
         return;
       }
       if (!userAuthInfo.isContactsPrefected) {
-        G.navigateTo(G.currentContext, '/update-user', replace: true);
+        G.navigateTo(G.currentContext, '/update-user');
         notifyListeners();
         return;
       }
@@ -93,6 +93,8 @@ class UserProvide with ChangeNotifier{
       //  || userAuthInfo.giftPackageOrderStatus == 0
        || userAuthInfo.giftPackageOrderStatus == -1
        || userAuthInfo.giftPackageOrderStatus == -2
+       || userAuthInfo.giftPackageOrderStatus == 3
+       || userAuthInfo.giftPackageOrderStatus == 5
       ) {
         G.navigateTo(G.currentContext, '/create-account', replace: true);
         notifyListeners();
@@ -101,15 +103,16 @@ class UserProvide with ChangeNotifier{
         int status = userAuthInfo.voucherStatus;
         switch (status) {
           case 1:
+          case 0:
           case 3:
             G.navigateTo(G.currentContext, '/order-result', replace: true);
             break;
           case 2:
             qualificationsStatus();
             break;
-          case 0:
-            G.navigateTo(G.currentContext, '/create-account', replace: true);
-            break;
+          // case 0: // 待验证状态，后台可能状态提供的有问题
+          //   G.navigateTo(G.currentContext, '/create-account', replace: true);
+          //   break;
           default:
             print('获取一下最新信息');
         }
