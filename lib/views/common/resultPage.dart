@@ -219,10 +219,10 @@ class _ResultPageState extends State<ResultPage> {
               style: TextStyle(color: hex('#666'), fontSize: G.setSp(28))
             ),
             TextSpan(
-              text: '40021345678',
+              text: '18758365673',
               style: TextStyle(color: hex('#0091F0'), fontSize: G.setSp(28)),
               recognizer: TapGestureRecognizer()..onTap = () async {
-                _service.call('40021345678');
+                _service.call('18758365673');
                 print('testetstes');
               }
             ),
