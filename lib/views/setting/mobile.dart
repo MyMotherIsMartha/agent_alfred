@@ -9,6 +9,7 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class SettingMobilePage extends StatefulWidget {
@@ -117,7 +118,8 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
               height: G.setWidth(100),
               color: hex('#fff'),
               child: VInput(
-                type: TextInputType.phone,
+                type: TextInputType.number,
+                inputFormatters: WhitelistingTextInputFormatter(RegExp("[0-9]")),
                 // value: userAuthInfo.mobile,
                 controller: _mobileChangeController,
                 hintText: '请输入新手机号',

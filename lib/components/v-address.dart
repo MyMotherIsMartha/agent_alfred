@@ -38,12 +38,16 @@ class VAddress extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
+                      
                       controller: controller,
                       onTap: () {
                         _addressSelect(context);
                       },
                       readOnly: true,
-                      decoration: InputDecoration(border: InputBorder.none),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '请选择地区'
+                      ),
                       validator: validator,
                     ),
                   ),

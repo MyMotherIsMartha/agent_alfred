@@ -9,6 +9,7 @@ import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ForgetPage extends StatefulWidget {
   @override
@@ -57,7 +58,8 @@ class _ForgetPageState extends State<ForgetPage> {
                           hintText: '请输入您的登录手机号',
                           label: '手机号',
                           maxLength: 11,
-                          type: TextInputType.phone,
+                          type: TextInputType.number,
+                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[0-9]")),
                           // validator: (value) {
                           //   if (Validate.isNon(errorMsg)) {
                           //     setState(() {

@@ -45,6 +45,7 @@ import 'package:agent37_flutter/views/vipManage/vipSearch.dart';
 import 'package:agent37_flutter/views/wallet/billHistory.dart';
 import 'package:agent37_flutter/views/wallet/index.dart';
 import 'package:agent37_flutter/views/wallet/withdraw.dart';
+import 'package:agent37_flutter/views/webview.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -227,8 +228,6 @@ Handler vipSearchHandler = Handler(
 Handler vipDetailHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
     String vipId = params['vipId']?.first.toString();
-    print('route vip id:');
-    print(vipId);
     return VipDetail(
       vipId: vipId,
     );
@@ -344,4 +343,13 @@ Handler marketMeetingHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String id = params['id']?.first;
       return MarketMeetingPage(id);
+});
+
+// webview
+Handler webviewHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      String url = params['url'][0];
+      print(url);
+      print('iddddddddddddddddddddddddddds');  
+      return WebPage(url);
 });

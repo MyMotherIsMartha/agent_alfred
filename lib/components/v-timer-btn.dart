@@ -89,6 +89,7 @@ class _VTimerBtnState extends State<VTimerBtn> {
           var result = await widget.cb();
           G.closeLoading(context);
           if (result.data['code'] == 200) {
+            G.toast('验证码已发送');
             countDown();
           } else {
             print(result.data['code']);

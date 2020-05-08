@@ -1,5 +1,6 @@
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../utils/global.dart';
 import 'Icon.dart';
@@ -14,6 +15,7 @@ class VCircleInput extends StatefulWidget {
   final TextInputType type;
   final int maxLength;
   final Widget suffixIcon;
+  final WhitelistingTextInputFormatter inputFormatters;
   final String value;
   VCircleInput(
       {@required this.controller,
@@ -25,6 +27,7 @@ class VCircleInput extends StatefulWidget {
       this.suffix,
       this.suffixIcon,
       this.maxLength,
+      this.inputFormatters,
       this.value});
   @override
   _VCircleInputState createState() => _VCircleInputState();
@@ -78,6 +81,9 @@ class _VCircleInputState extends State<VCircleInput> {
                 // strutStyle: StrutStyle(
                 //   height: 1
                 // ),
+                inputFormatters: widget.inputFormatters != null
+                ? [widget.inputFormatters]
+                : null,
                   textAlignVertical: TextAlignVertical.bottom,
                   keyboardType: widget.type,
                   controller: widget.controller,
