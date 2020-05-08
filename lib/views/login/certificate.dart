@@ -225,7 +225,7 @@ class _CertificatePageState extends State<CertificatePage> {
               G.navigateTo(context, '/create-account', replace: true);
             },
             text: '重选礼包',
-            shadown: [BoxShadow(color: hex('#BABFE1'), blurRadius: 4.0, spreadRadius: 2.0)],
+            shadown: [BoxShadow(color: hex('#BABFE1'), blurRadius: 4.0, spreadRadius: 0.0)],
           ),
           VButton(
             width: 310,
@@ -239,7 +239,6 @@ class _CertificatePageState extends State<CertificatePage> {
                   'offlineVoucher': offlineVoucher
                 };
                 var result = await OrderApi().offlinePay(data);
-                print(result);
                 if (result.data['code'] == 200) {
                   G.toast('提交凭证成功');
                   Provider.of<UserProvide>(context).updateUserAuth();
@@ -247,7 +246,7 @@ class _CertificatePageState extends State<CertificatePage> {
               }
             },
             text: '提交凭证',
-            shadown: [BoxShadow(color: hex('#6D7FFE'), blurRadius: 4.0, spreadRadius: 2.0)]
+            shadown: [BoxShadow(color: hex('#6D7FFE'), blurRadius: 4.0, spreadRadius: 0.0)]
           )
         ],
       ),

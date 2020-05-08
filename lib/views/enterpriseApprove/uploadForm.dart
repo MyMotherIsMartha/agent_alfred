@@ -6,6 +6,7 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-address.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/api/member.dart';
@@ -344,7 +345,8 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                             ),
                             Expanded(
                               child: TextFormField(
-                                keyboardType: TextInputType.phone,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9]"))],
                                 decoration:
                                     InputDecoration(border: InputBorder.none, hintText: '请输入企业法人名称'),
                                 controller: _legalPersonCtrl,

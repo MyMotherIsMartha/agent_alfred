@@ -100,15 +100,16 @@ class _OrderResultPageState extends State<OrderResultPage> {
     );
   }
 
-  Widget getCurrentWidget() {
-    return statusWidget('uploadSuccess');
+  Widget getCurrentWidget(int status) {
+    List<String> statusMap = ['uploadSuccess', 'uploadSuccess', 'verifySuccess', 'verifyFail'];
+    return statusWidget(statusMap[status]);
   }
 
   String _getTitle(BuildContext context) {
     int status = userinfoAuth.voucherStatus;
     String title;
     switch (status) {
-      case 1:
+      case 0:
         title = '待凭证审核';
         break;
       case 2:
@@ -125,10 +126,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      userinfoAuth =
-          Provider.of<UserProvide>(context, listen: false).userAuthInfo;
-    });
+    userinfoAuth = Provider.of<UserProvide>(context, listen: false).userAuthInfo;
   }
 
   @override
@@ -162,7 +160,9 @@ class _OrderResultPageState extends State<OrderResultPage> {
             ),
             actions: <Widget>[
               FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    G.logout(context);
+                  },
                   child: Text('退出',
                       style:
                           TextStyle(color: hex('#fff'), fontSize: G.setSp(32))))
@@ -179,7 +179,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
             ),
             height: G.setHeight(900),
-            child: getCurrentWidget(),
+            child: getCurrentWidget(userinfoAuth.voucherStatus),
           ),
         ],
       ),

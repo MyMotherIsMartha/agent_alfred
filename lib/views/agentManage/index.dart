@@ -58,7 +58,6 @@ class AgentManageMainState extends State<AgentManageMain>
 
   @override
   void deactivate() {
-    // TODO: implement deactivate
     super.deactivate();
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {

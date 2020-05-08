@@ -11,7 +11,7 @@ class VHint extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(25)),
       alignment: Alignment.centerLeft,
-      height: G.setHeight(30),
+      height: G.setWidth(30),
       child: !Validate.isNon(errorMsg)
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -24,7 +24,7 @@ class VHint extends StatelessWidget {
                 Container(width: G.setWidth(8)),
                 Text(errorMsg,
                     style: TextStyle(
-                        color: hex('#f33'), height: 1, fontSize: G.setSp(24)))
+                        color: hex('#f33'), height: 1.24, fontSize: G.setSp(24)))
               ],
             )
           : null,

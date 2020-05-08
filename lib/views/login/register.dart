@@ -5,6 +5,7 @@ import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../api/login.dart';
 import '../../components/Icon.dart';
@@ -137,7 +138,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           VCircleInput(
                             controller: _mobileController,
                             prefixIcon: iconmobile(),
-                            type: TextInputType.phone,
+                            type: TextInputType.number,
+                            inputFormatters: WhitelistingTextInputFormatter(RegExp("[0-9]")),
                             hintText: '请输入手机号',
                             maxLength: 11,
                             validator: (value) {
@@ -168,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     VButton(
-                        text: '立即注册',
+                        text: '同意协议并注册',
                         fn: () async {
                           FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {
@@ -241,8 +243,10 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _loginInviteInput() {
     return VCircleInput(
         controller: _inviteController,
+        type: TextInputType.number,
         hintText: '请输入邀请码（非必填）',
         prefixIcon: iconkey(),
+        maxLength: 9,
         onChange: (e) {
           setState(() {
             invite = e;

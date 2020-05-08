@@ -47,11 +47,11 @@ class FinanceItemModel {
   String orderImageUrl;
   String goodsName;
   String spec;
-  double goodsAmount;
+  double goodsAmount; // 上面的 商品单价
   int quantity;
   String enterpriseName;
   int payTime;
-  double totalOrderAmount;
+  double totalOrderAmount; // 订单金额
   double commissionFeeRate;
   double commission;
   bool isShowTodayFlag;

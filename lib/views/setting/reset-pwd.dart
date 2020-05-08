@@ -88,7 +88,8 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
                       child: _showNewPwd ? iconeye() : iconcloseeye(),
                     ),
                     
-                    type: _showNewPwd ? TextInputType.text : TextInputType.visiblePassword,
+                    // type: _showNewPwd ? TextInputType.text : TextInputType.visiblePassword,
+                    type: TextInputType.number,
                     controller: _newPwdController,
                     hintText: '请输入新密码',
                     label: '新密码',

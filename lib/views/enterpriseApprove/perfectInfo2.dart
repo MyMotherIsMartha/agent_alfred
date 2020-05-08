@@ -9,6 +9,7 @@ import 'package:agent37_flutter/components/v-address.dart';
 import 'package:agent37_flutter/components/v-input.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/utils/oss.dart';
+import 'package:flutter/services.dart';
 
 class PerfectEnterprise2 extends StatefulWidget {
 
@@ -278,7 +279,8 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                         hintText: '请输入手机号',
                         label: '手机号',
                         maxLength: 11,
-                        type: TextInputType.phone,
+                        type: TextInputType.number,
+                        inputFormatters: WhitelistingTextInputFormatter(RegExp("[0-9]")),
                         onChange: (e) {
                           setState(() {
                             formValidate['mobile'] =

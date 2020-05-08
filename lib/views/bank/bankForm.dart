@@ -1,5 +1,4 @@
 import 'package:agent37_flutter/api/llpay.dart';
-import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-field-select.dart';
 import 'package:agent37_flutter/components/v-field.dart';
@@ -103,7 +102,6 @@ class _BankFormPageState extends State<BankFormPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     formStatus = widget.status;
     print(formStatus);
