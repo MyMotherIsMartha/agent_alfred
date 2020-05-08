@@ -2,7 +2,6 @@ import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-field.dart';
 import 'package:agent37_flutter/models/invoiceInfo.dart';
-import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/oss.dart';
 import 'package:color_dart/hex_color.dart';
@@ -152,7 +151,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
     var result = await OrderApi().uploadInvoice(params);
     print(result.data['data']);
     if (result.data['code'] == 200) {
-      var appTitle = FluroConvertUtils.fluroCnParamsEncode('上传发票');
+      // var appTitle = FluroConvertUtils.fluroCnParamsEncode('上传发票');
       G.navigateTo(context, '/resultPage?status=12&haveExit=no');
     }
   }

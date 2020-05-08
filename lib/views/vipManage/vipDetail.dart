@@ -238,7 +238,6 @@ class ServiceList extends StatefulWidget {
 
 class _ServiceListState extends State<ServiceList> {
   static List waitServiceAry = [1, 2, 3, 4];
-  static List alreadyServiceAry = [5, 6, 7, 8];
   EasyRefreshController _refreshController = EasyRefreshController();
   int currentStatus;
   int total = waitServiceAry.length;

@@ -24,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
   String mobile = '';
   String sms = '';
   String pwd = '';
-  FocusNode _focus = FocusNode();
   Map formValidate = {
     'mobile': false,
     'sms': false,

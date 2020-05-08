@@ -4,7 +4,6 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 class InvoiceList extends StatefulWidget {
   @override
@@ -12,7 +11,7 @@ class InvoiceList extends StatefulWidget {
 }
 
 class _InvoiceListState extends State<InvoiceList> {
-  EasyRefreshController _controller = EasyRefreshController();
+  // EasyRefreshController _controller = EasyRefreshController();
   var scrollController = new ScrollController();
   int monthlyStart;
   int monthlyEnd;
@@ -74,7 +73,7 @@ class _InvoiceListState extends State<InvoiceList> {
               child: Row(
                 children: [
                   Icon(Icons.error_outline, color: Colors.white, size: G.setSp(36),),
-                  Text(' 每月${monthlyStart}日-${monthlyEnd}日为开票时间，请勿错过', style: TextStyle(color: Colors.white, fontSize: G.setSp(24)))
+                  Text(' 每月$monthlyStart日-$monthlyEnd日为开票时间，请勿错过', style: TextStyle(color: Colors.white, fontSize: G.setSp(24)))
                 ]
               )
             ),

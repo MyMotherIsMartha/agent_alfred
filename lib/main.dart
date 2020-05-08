@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
         primaryColor: hex('#fff'),
         fontFamily: _fontFamily(),
         textTheme: TextTheme(
-            subhead: TextStyle(textBaseline: TextBaseline.alphabetic)
+            subtitle1: TextStyle(textBaseline: TextBaseline.alphabetic)
             // headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
             // title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
             // body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),

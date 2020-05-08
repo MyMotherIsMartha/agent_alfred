@@ -19,7 +19,7 @@ class _BankMainPageState extends State<BankMainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    // implement initState
     super.initState();
     _getUserBankInfo();
   }

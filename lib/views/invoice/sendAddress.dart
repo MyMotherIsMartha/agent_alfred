@@ -1,4 +1,4 @@
-import 'package:agent37_flutter/api/finance.dart';
+
 import 'package:agent37_flutter/api/system.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-field.dart';
@@ -6,8 +6,6 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:agent37_flutter/provide/user.dart';
 
 class SendAddress extends StatefulWidget {
   @override
