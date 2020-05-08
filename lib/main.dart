@@ -4,12 +4,14 @@ import 'package:agent37_flutter/provide/address.dart';
 import 'package:agent37_flutter/provide/currentIndex.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/routes/routes.dart';
+import 'package:agent37_flutter/utils/ServiceLocator.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/splash_page.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -17,6 +19,8 @@ void main() async {
   Router router = Router();
   Routes.configureRoutes(router);
   G.router = router;
+
+  setupLocator();
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, //设置为透明
@@ -53,7 +57,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: '37度管家',
-      locale: const Locale('en'),
+      locale: Locale('zh', 'CH'),
+      localizationsDelegates: [
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('zh', 'CH'),
+      ],
       onGenerateRoute: G.router.generator,
       theme: ThemeData(
         platform: TargetPlatform.iOS,

@@ -159,11 +159,11 @@ Handler readPerfectInfoHandler = Handler(
 Handler resultPageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     String status = params['status']?.first;
-    String title = params['title']?.first ?? 'no';
+    // String title = params['title']?.first ?? 'no';
     String haveExit = params['haveExit']?.first ?? 'yes';
     return ResultPage(
       status: status,
-      title: title,
+      // title: title,
       haveExit: haveExit
     );
   }

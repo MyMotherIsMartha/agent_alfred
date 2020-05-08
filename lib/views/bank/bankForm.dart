@@ -3,7 +3,7 @@ import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-field-select.dart';
 import 'package:agent37_flutter/components/v-field.dart';
-import 'package:agent37_flutter/components/v-input%20copy.dart';
+import 'package:agent37_flutter/components/v-input.dart';
 import 'package:agent37_flutter/models/userinfo.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';

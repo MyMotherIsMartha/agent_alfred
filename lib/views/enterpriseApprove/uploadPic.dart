@@ -75,7 +75,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     });
     G.showLoading(context);
     var resultInfo = await OssApi().uploadEnterpriseLicense(data);
-    G.closeLoading(context);
+    G.closeLoading();
     if (resultInfo.data['success'] == true) {
       print('success');
       Map uploadData = resultInfo.data['data'];
