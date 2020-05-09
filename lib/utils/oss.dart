@@ -34,7 +34,7 @@ class Oss {
   /*相册*/
   static uploadPic(ImageSource source, Function cb, Function uploadApi) async {
     Navigator.pop(G.currentContext);
-    // TODO:: LOADING弹窗
+    //  LOADING弹窗
     G.showLoading(G.currentContext);
     var image = await ImagePicker.pickImage(source: source);
     if (image == null) return;
@@ -45,7 +45,7 @@ class Oss {
       "file": await MultipartFile.fromFile(path, filename: name + '.' + suffix)
     });
     var resultInfo = uploadApi == null ? await OssApi().uploadFile(data) : await uploadApi(data);
-    G.closeLoading(G.currentContext);
+    G.closeLoading();
     if (resultInfo.data['code'] == 200) {
       Map uploadData = resultInfo.data['data'];
       cb(uploadData['filePath']);

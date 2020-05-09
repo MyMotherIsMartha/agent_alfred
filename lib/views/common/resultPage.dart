@@ -2,16 +2,18 @@ import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:agent37_flutter/api/login.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:agent37_flutter/utils/ServiceLocator.dart';
+import 'package:agent37_flutter/utils/TelAndSmsService.dart';
 
 class ResultPage extends StatefulWidget {
   final String status;
-  final String title;
   final String haveExit;
 
-  ResultPage({this.status, this.title, this.haveExit});
+  ResultPage({this.status, this.haveExit});
 
   @override
   _ResultPageState createState() => _ResultPageState();
@@ -20,19 +22,18 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   var statusCode = 1;
   var appTitle = '企业信息审核';
+  final TelAndSmsService _service = locator<TelAndSmsService>();
+  Widget middleArea;
 
   @override
   void initState() {
     super.initState();
    
+    middleArea = middleStatusWidget4();
     statusCode = int.parse(widget.status);
     print(statusCode);
-    print(widget.title);
     print(widget.haveExit);
-    if (widget.title != 'no' && widget.title != null) {
-      appTitle = FluroConvertUtils.fluroCnParamsDecode(widget.title);
-    }
-    
+    _getCurrentWidgetAndTitle();
   }
 
   void refreshFunc() async {
@@ -42,6 +43,7 @@ class _ResultPageState extends State<ResultPage> {
     int qualificationsStatus = result.data['data']['qualificationsStatus'];
     setState(() {
       statusCode = qualificationsStatus;
+      _getCurrentWidgetAndTitle();
     });
   }
 
@@ -209,8 +211,24 @@ class _ResultPageState extends State<ResultPage> {
         G.spacing(G.setHeight(50)),
         Text('提审窗口期已到期',
               style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
-          G.spacing(G.setHeight(10)),      
-        Text('您的企业信息提交窗口期日期已到期，可申请延期，客服电话：40021345678', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+          G.spacing(G.setHeight(10)),     
+        Text.rich(TextSpan(
+          children: [
+            TextSpan(
+              text: '您的企业信息提交窗口期日期已到期，可申请延期，客服电话：',
+              style: TextStyle(color: hex('#666'), fontSize: G.setSp(28))
+            ),
+            TextSpan(
+              text: '18758365673',
+              style: TextStyle(color: hex('#0091F0'), fontSize: G.setSp(28)),
+              recognizer: TapGestureRecognizer()..onTap = () async {
+                _service.call('18758365673');
+                print('testetstes');
+              }
+            ),
+            
+          ]
+        )),
         Container(
           height: G.setHeight(265),
           child: Row(
@@ -223,6 +241,7 @@ class _ResultPageState extends State<ResultPage> {
                 if (result.data['code'] == 200) {
                   setState(() {
                     statusCode = 3;
+                    _getCurrentWidgetAndTitle();
                   });
                 }
                 
@@ -422,28 +441,35 @@ class _ResultPageState extends State<ResultPage> {
       ],
     ); 
   }
-  Widget getCurrentWidget() {
+
+  void _getCurrentWidgetAndTitle() {
     // 资审状态 -3：资质审核关闭；-2: 资质审核超时; -1: 资质审核拒绝; 0: 待资质审核提交；1: 资质审核已提交 2：待资质审核；3：资质审核延迟申请；4：资质审核成功
+    appTitle = '企业信息审核';
     if (statusCode == 1) {
-      return middleStatusWidget1();
+      middleArea = middleStatusWidget1();
     } else if (statusCode == 4) {
-      return middleStatusWidget2();
+      middleArea = middleStatusWidget2();
     } else if (statusCode == -1) {
-      return middleStatusWidget3();
+      middleArea = middleStatusWidget3();
     } else if (statusCode == -2) {
-      return middleStatusWidget4();
+      appTitle = '提审窗口到期';
+      middleArea = middleStatusWidget4();
     } else if (statusCode == -3) {
-      return middleStatusWidget5();
+      appTitle = '退款待审核';
+      middleArea = middleStatusWidget5();
     } else if (statusCode == 3) {
-      return middleStatusWidget6();
+      appTitle = '提审延时申请';
+      middleArea = middleStatusWidget6();
     } else if (statusCode == 11) {
       //  代理商短信验证
-      return middleStatusWidgetAgent();
+      appTitle = '验证完成';
+      middleArea = middleStatusWidgetAgent();
     } else if (statusCode == 12) {
       //  发票提交审核成功
-      return middleStatusWidgetInvoice();
+      appTitle = '上传发票';
+      middleArea = middleStatusWidgetInvoice();
     } else {
-      return middleStatusWidget4();
+      middleArea = middleStatusWidget4();
     }
   }
 
@@ -491,7 +517,7 @@ class _ResultPageState extends State<ResultPage> {
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
               ),
               height: G.setHeight(900),
-              child: getCurrentWidget(),
+              child: middleArea,
             ),
           ],
         ),

@@ -1,6 +1,5 @@
 import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 // 初始化dio
 Dio service() {
@@ -36,8 +35,9 @@ Dio service() {
       errorMsg = '连接超时,请切换网络或稍后再试';
     } else {
       errorMsg = '当前网络不可用,请检查是否连接了可用的Wifi或移动网络';
+      G.closeLoading();
     }
-    G.toast(errorMsg);
+    G.toast(errorMsg, duration: 5);
     // G.toast(e.message);
     throw Exception(errorMsg);
     // 当请求失败时做一些预处理

@@ -41,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
     // print(G.statusHeight);
     return Scaffold(
         body: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
@@ -187,7 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             var result = await LoginApi().register(data);
                             print(result);
                             if (result.data['code'] == 200) {
-                              G.toast('注册成功');
+                              G.toast('注册成功，请完善个人信息');
                               String token = result.data['data']['jwtToken'];
                               G.setPref('token',  'bearer ' + token);
                               Provider.of<UserProvide>(context).updateUserAuth();

@@ -64,7 +64,7 @@ class _VCircleInputState extends State<VCircleInput> {
             color: hex('#F8F8F8'),
             borderRadius: BorderRadius.circular(G.setHeight(50))),
         padding: EdgeInsets.symmetric(
-            horizontal: G.setWidth(50), vertical: G.setHeight(20)),
+            horizontal: G.setWidth(50)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -76,7 +76,8 @@ class _VCircleInputState extends State<VCircleInput> {
             Expanded(
               child: Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.only(bottom: G.setHeight(18)),
+                // height: G.setWidth(60),
+                margin: EdgeInsets.only(bottom: G.setWidth(60)),
                 child: TextFormField(
                 // strutStyle: StrutStyle(
                 //   height: 1
@@ -90,6 +91,7 @@ class _VCircleInputState extends State<VCircleInput> {
                   focusNode: _focus,
                   obscureText: widget.type == TextInputType.visiblePassword,
                   maxLength: widget.maxLength,
+                  maxLines: 1,
                   buildCounter: (context, {currentLength, isFocused, maxLength}) => null,
                   
                   style: TextStyle(

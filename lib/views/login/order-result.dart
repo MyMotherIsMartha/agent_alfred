@@ -16,7 +16,7 @@ class OrderResultPage extends StatefulWidget {
 class _OrderResultPageState extends State<OrderResultPage> {
   UserAuthModel userinfoAuth;
   final Map<String, dynamic> statusMap = {
-    // TODO:: 支付成功
+    //  支付成功
     'paySuccess': {
       'title': '凭证上传成功',
       'pic': 'lib/assets/images/order-result/upload-success.png',
