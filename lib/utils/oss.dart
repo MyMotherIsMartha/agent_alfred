@@ -37,7 +37,10 @@ class Oss {
     //  LOADING弹窗
     G.showLoading(G.currentContext);
     var image = await ImagePicker.pickImage(source: source);
-    if (image == null) return;
+    if (image == null) {
+      G.closeLoading();
+      return;
+    }
     String path = image.path;
     var name = path.substring(path.lastIndexOf("/") + 1, path.length);
     var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);

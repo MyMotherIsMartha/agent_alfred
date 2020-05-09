@@ -7,7 +7,7 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
-class UserProvide with ChangeNotifier{
+class UserProvide with ChangeNotifier {
   UserAuthModel userAuthInfo;
   EnterpriseInfoModel enterpriseInfo;
   var bankCardInfo;
@@ -27,7 +27,7 @@ class UserProvide with ChangeNotifier{
   // }
   updateEnterpriseinfo() async {
     if (G.getPref('token') == null) {
-       return;
+      return;
     }
     var result = await MemberApi().getEnterpriseInfo();
     if (result.data['code'] == 200) {
@@ -39,7 +39,7 @@ class UserProvide with ChangeNotifier{
 
   updateBankCardInfo() async {
     if (G.getPref('token') == null) {
-       return;
+      return;
     }
     var result = await LLpayApi().getUserBankInfo();
     if (result.data['code'] == 200) {
@@ -48,7 +48,6 @@ class UserProvide with ChangeNotifier{
       G.toast('获取用户银行卡信息失败');
     }
   }
-  
 
   refreshUserAuthinfo() {
     getInfoFlag = true;
@@ -59,7 +58,7 @@ class UserProvide with ChangeNotifier{
     var result = await LoginApi().setUserInfo(data);
     if (result.data['code'] == 200) {
       if (!userAuthInfo.isContactsPrefected) {
-        // 获取新的认证信息 
+        // 获取新的认证信息
         notifyListeners();
       }
       // G.toast('更新成功');
@@ -69,10 +68,12 @@ class UserProvide with ChangeNotifier{
     }
   }
 
-  updateUserAuth({bool isInit = true, TransitionType transition: TransitionType.inFromRight}) async {
+  updateUserAuth(
+      {bool isInit = true,
+      TransitionType transition: TransitionType.inFromRight}) async {
     if (G.getPref('token') == null) {
-       G.navigateTo(G.currentContext, '/login', replace: true);
-       return;
+      G.navigateTo(G.currentContext, '/login', replace: true);
+      return;
     }
     // if (!getInfoFlag) return;
     // getInfoFlag = false;
@@ -91,32 +92,39 @@ class UserProvide with ChangeNotifier{
         return;
       }
       if (userAuthInfo.giftPackageOrderStatus == null
-      //  || userAuthInfo.giftPackageOrderStatus == 0
-       || userAuthInfo.giftPackageOrderStatus == -1
-       || userAuthInfo.giftPackageOrderStatus == -2
-       || userAuthInfo.giftPackageOrderStatus == 3
-       || userAuthInfo.giftPackageOrderStatus == -3
-       || userAuthInfo.giftPackageOrderStatus == 5
-      ) {
+          //  || userAuthInfo.giftPackageOrderStatus == 0
+          ||
+          userAuthInfo.giftPackageOrderStatus == -1 ||
+          userAuthInfo.giftPackageOrderStatus == -2 ||
+          userAuthInfo.giftPackageOrderStatus == 3 ||
+          userAuthInfo.giftPackageOrderStatus == -3 ||
+          userAuthInfo.giftPackageOrderStatus == 5) {
         G.navigateTo(G.currentContext, '/create-account', replace: true);
         notifyListeners();
         return;
       } else {
-        int status = userAuthInfo.voucherStatus;
-        switch (status) {
-          case 1:
-          case 0:
-          case 3:
-            G.navigateTo(G.currentContext, '/order-result', replace: true, transition: transition);
-            break;
-          case 2:
-            qualificationsStatus();
-            break;
-          // case 0: // 待验证状态，后台可能状态提供的有问题
-          //   G.navigateTo(G.currentContext, '/create-account', replace: true);
-          //   break;
-          default:
-            print('获取一下最新信息');
+        if (userAuthInfo.giftPackageOrderStatus == 0 &&
+            userAuthInfo.payType != 3) {
+          G.navigateTo(G.currentContext, '/create-account', replace: true);
+          // notifyListeners();
+        } else { 
+          int status = userAuthInfo.voucherStatus;
+          switch (status) {
+            case 1:
+            case 0:
+            case 3:
+              G.navigateTo(G.currentContext, '/order-result',
+                  replace: true, transition: transition);
+              break;
+            case 2:
+              qualificationsStatus();
+              break;
+            // case 0: // 待验证状态，后台可能状态提供的有问题
+            //   G.navigateTo(G.currentContext, '/create-account', replace: true);
+            //   break;
+            default:
+              print('获取一下最新信息');
+          }
         }
       }
       // qualificationsStatus
@@ -143,12 +151,13 @@ class UserProvide with ChangeNotifier{
         G.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
         break;
       case -2:
-      case -3: 
-      case 1:
       case 2:
+      case -3:
+      case 1:
       case 3:
       case -1:
-        G.navigateTo(G.currentContext, '/resultPage?status=$status', replace: true);
+        G.navigateTo(G.currentContext, '/resultPage?status=$status',
+            replace: true);
         break;
       case 4:
         G.navigateTo(G.currentContext, '/index', replace: true);

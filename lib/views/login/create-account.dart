@@ -28,6 +28,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   @override
   Widget build(BuildContext context) {
     addressProvide = Provider.of<AddressProvide>(context);
+    addressProvide.getAddress();
     return Scaffold(
       backgroundColor: hex('#E7D1A8'),
       body: Container(

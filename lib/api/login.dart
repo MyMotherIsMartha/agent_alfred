@@ -71,4 +71,9 @@ class LoginApi{
   forgetPwd(data) async {
     return await service().put('$agentMemberApi/v1/agentMemberAccounts/forgetPassword', data: data);
   }
+
+  // 验证邀请码对应公司
+  checkInviteCode(String code) async {
+    return await service().get('$agentMemberApi/v1/agentMemberAccounts/parent/$code');
+  }
 }

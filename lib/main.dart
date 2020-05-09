@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
       ],
       onGenerateRoute: G.router.generator,
       theme: ThemeData(
-        platform: TargetPlatform.iOS,
+        platform: TargetPlatform.android,
         pageTransitionsTheme: PageTransitionsTheme(
             builders: <TargetPlatform, PageTransitionsBuilder>{
               TargetPlatform.android: CupertinoPageTransitionsBuilder(),

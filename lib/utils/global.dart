@@ -190,7 +190,6 @@ class G {
   static YYDialog logout(BuildContext context, {String msg}) {
     return YYDialog().build(context)
       ..width = G.setWidth(600)
-      ..height = G.setWidth(270)
       ..borderRadius = G.setWidth(20)
       ..text(
         padding: EdgeInsets.all(G.setWidth(60)),
