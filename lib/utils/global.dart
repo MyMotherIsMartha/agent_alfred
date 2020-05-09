@@ -15,9 +15,9 @@ import 'package:agent37_flutter/components/v-loading.dart';
 
 class G {
   static Router router;
-  static navigateTo(context, String path, {replace: false}) {
+  static navigateTo(context, String path, {replace: false, TransitionType transition: TransitionType.inFromRight}) {
     router.navigateTo(context, path,
-        replace: replace, transition: TransitionType.inFromRight);
+        replace: replace, transition: transition);
   }
 
   static GlobalKey<NavigatorState> key = GlobalKey(debugLabel: 'navigate_key');

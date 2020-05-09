@@ -78,12 +78,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               // 按钮禁用指示
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(G.setWidth(40)),
-                  gradient:
-                      LinearGradient(colors: [hex('#4C5873'), hex('#333949')])),
+                  gradient: addressProvide.address?.areaCode != null && selectedPackageNo != null
+                      ? LinearGradient(colors: [hex('#4C5873'), hex('#333949')])
+                      : LinearGradient(colors: [hex('#c9ccd4'), hex('#c9ccd4')])),
               child: Text('确认开通',
                   style: TextStyle(
                     fontSize: G.setSp(36),
-                    color: hex('#E7D1A8'),
+                    color: addressProvide.address?.areaCode != null && selectedPackageNo != null
+                    ? hex('#E7D1A8')
+                    : hex('#e9e5de'),
                   )),
             )),
       ),

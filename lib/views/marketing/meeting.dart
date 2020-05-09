@@ -23,6 +23,7 @@ class _WebViewState extends State<MarketMeetingPage> {
   void initState() {
     super.initState();
     url = EnvConfig.dev['web-address'] + '/#/meeting/' + widget.id;
+    print(url);
   }
 
   @override
