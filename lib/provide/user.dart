@@ -4,6 +4,7 @@ import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/models/enterpriseInfo.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 class UserProvide with ChangeNotifier{
@@ -68,7 +69,7 @@ class UserProvide with ChangeNotifier{
     }
   }
 
-  updateUserAuth({bool isInit = true}) async {
+  updateUserAuth({bool isInit = true, TransitionType transition: TransitionType.inFromRight}) async {
     if (G.getPref('token') == null) {
        G.navigateTo(G.currentContext, '/login', replace: true);
        return;
@@ -94,6 +95,7 @@ class UserProvide with ChangeNotifier{
        || userAuthInfo.giftPackageOrderStatus == -1
        || userAuthInfo.giftPackageOrderStatus == -2
        || userAuthInfo.giftPackageOrderStatus == 3
+       || userAuthInfo.giftPackageOrderStatus == -3
        || userAuthInfo.giftPackageOrderStatus == 5
       ) {
         G.navigateTo(G.currentContext, '/create-account', replace: true);
@@ -105,7 +107,7 @@ class UserProvide with ChangeNotifier{
           case 1:
           case 0:
           case 3:
-            G.navigateTo(G.currentContext, '/order-result', replace: true);
+            G.navigateTo(G.currentContext, '/order-result', replace: true, transition: transition);
             break;
           case 2:
             qualificationsStatus();

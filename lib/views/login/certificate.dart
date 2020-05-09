@@ -245,6 +245,7 @@ class _CertificatePageState extends State<CertificatePage> {
                 }
               }
             },
+            // TODO:: 上传凭证取消 一直loading中
             text: '提交凭证',
             shadown: [BoxShadow(color: hex('#6D7FFE'), blurRadius: 4.0, spreadRadius: 0.0)]
           )

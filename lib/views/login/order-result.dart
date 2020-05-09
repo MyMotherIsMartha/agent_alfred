@@ -1,6 +1,7 @@
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
 import 'package:agent37_flutter/provide/user.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
       'desc': '待财务审核凭证，请耐心等待',
       'btn': '刷新',
       'fn': () {
-        Provider.of<UserProvide>(G.currentContext).updateUserAuth();
+        Provider.of<UserProvide>(G.currentContext).updateUserAuth(transition: TransitionType.fadeIn);
       },
     },
     'verifySuccess': {
@@ -110,7 +111,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
     String title;
     switch (status) {
       case 0:
-        title = '待凭证审核';
+        title = '凭证上传成功';
         break;
       case 2:
         title = '凭证审核通过';

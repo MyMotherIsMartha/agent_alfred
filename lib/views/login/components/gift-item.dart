@@ -86,21 +86,24 @@ class GiftItem extends StatelessWidget {
                                   : EdgeInsets.only(right: G.setWidth(20)),
                               child: Column(
                                 children: <Widget>[
-                                  Container(
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  child:SizedBox(
                                     height: G.setWidth(150),
                                     width: G.setWidth(150),
-                                    decoration: BoxDecoration(
-                                        color: hex('#F5F5F5'),
-                                        borderRadius: BorderRadius.circular(
-                                            G.setWidth(10))),
-                                    alignment: Alignment.center,
+                                    
+                                    // decoration: BoxDecoration(
+                                    //     color: hex('#F5F5F5'),
+                                    //     borderRadius: BorderRadius.circular(
+                                    //         G.setWidth(10))),
+                                    // alignment: Alignment.center,
                                     child: Image.network(
                                       good.goodsMainImg,
-                                      width: G.setWidth(110),
-                                      height: G.setWidth(110),
+                                      width: G.setWidth(150),
+                                      height: G.setWidth(150),
                                       fit: BoxFit.fitWidth,
                                     ),
-                                  ),
+                                  )),
                                   G.spacing(10),
                                   Container(
                                     width: G.setWidth(150),
