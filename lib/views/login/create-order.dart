@@ -4,6 +4,7 @@ import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alipay/flutter_alipay.dart';
@@ -20,9 +21,9 @@ class CreateOrderPage extends StatefulWidget {
 
 class _CreateOrderPageState extends State<CreateOrderPage> {
   Timer _timer;
-  int _countdownTime;
-  int _orderOverTime;
-  String payType;
+  int _countdownTime = 0;
+  int _orderOverTime = 0;
+  String payType = 'ali';
 
   @override
   void initState() {
@@ -50,7 +51,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
   void dispose() {
     super.dispose();
     if (_timer != null) {
-      _timer.cancel();
+      _timer?.cancel();
     }
   }
 
@@ -188,6 +189,10 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
             child: VButton(
               width: 650,
               fn: () async {
+                if (Validate.isNon(payType)) {
+                  G.toast('请选择支付方式');
+                  return;
+                }
                 Map data = {
                   'giftPackageNo': widget.no,
                   'giftPackagePromotionNo': widget.promotionNo

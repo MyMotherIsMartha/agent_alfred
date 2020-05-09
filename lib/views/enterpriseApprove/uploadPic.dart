@@ -103,7 +103,8 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     return Scaffold(
       appBar: AppBar( //导航栏
         title: Text("企业认证"),
-        centerTitle: true
+        centerTitle: true,
+        elevation: 0,
       ),
       body: Container(
         width: G.setWidth(750),

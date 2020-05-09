@@ -33,9 +33,16 @@ class GiftItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(item.name,
-                          style: TextStyle(
-                              fontSize: G.setSp(30), color: hex('#333'))),
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: G.setWidth(460),
+                        ),
+                        child: Text(item.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                            style: TextStyle(
+                                fontSize: G.setSp(30), color: hex('#333'))),
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
@@ -87,23 +94,24 @@ class GiftItem extends StatelessWidget {
                               child: Column(
                                 children: <Widget>[
                                   ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  child:SizedBox(
-                                    height: G.setWidth(150),
-                                    width: G.setWidth(150),
-                                    
-                                    // decoration: BoxDecoration(
-                                    //     color: hex('#F5F5F5'),
-                                    //     borderRadius: BorderRadius.circular(
-                                    //         G.setWidth(10))),
-                                    // alignment: Alignment.center,
-                                    child: Image.network(
-                                      good.goodsMainImg,
-                                      width: G.setWidth(150),
-                                      height: G.setWidth(150),
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  )),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      child: SizedBox(
+                                        height: G.setWidth(150),
+                                        width: G.setWidth(150),
+
+                                        // decoration: BoxDecoration(
+                                        //     color: hex('#F5F5F5'),
+                                        //     borderRadius: BorderRadius.circular(
+                                        //         G.setWidth(10))),
+                                        // alignment: Alignment.center,
+                                        child: Image.network(
+                                          good.goodsMainImg,
+                                          width: G.setWidth(150),
+                                          height: G.setWidth(150),
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                      )),
                                   G.spacing(10),
                                   Container(
                                     width: G.setWidth(150),
@@ -112,9 +120,7 @@ class GiftItem extends StatelessWidget {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: false,
-                                      style: TextStyle(
-                                        fontSize: G.setSp(24)
-                                      ),
+                                      style: TextStyle(fontSize: G.setSp(24)),
                                     ),
                                   )
                                 ],
@@ -134,6 +140,5 @@ class GiftItem extends StatelessWidget {
             : Container()
       ],
     );
-    
   }
 }

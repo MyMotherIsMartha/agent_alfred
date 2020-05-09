@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-circle-input.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
@@ -6,6 +7,7 @@ import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:provider/provider.dart';
 import '../../api/login.dart';
 import '../../components/Icon.dart';
@@ -179,20 +181,28 @@ class _RegisterPageState extends State<RegisterPage> {
                           _formKey.currentState.validate();
                           print(errorMsg);
                           if (errorMsg == null) {
-                            Map data = {
-                              'memberType': 1,
-                              'mobile': mobile,
-                              'smsCode': sms,
-                              'parentShareCode': invite
-                            };
-                            var result = await LoginApi().register(data);
-                            print(result);
-                            if (result.data['code'] == 200) {
-                              G.toast('注册成功，请完善个人信息');
-                              String token = result.data['data']['jwtToken'];
-                              G.setPref('token',  'bearer ' + token);
-                              Provider.of<UserProvide>(context).updateUserAuth();
+                            if (Validate.isNon(invite)) {
+                              registerApi();
+                            } else {
+                              var result = await LoginApi().checkInviteCode(invite);
+                              var name = result.data['data']['enterpriseName'];
+                              var avatar = result.data['data']['headSculptureUrl'];
+                              checkInvite(context, name, avatar);
                             }
+                            // Map data = {
+                            //   'memberType': 1,
+                            //   'mobile': mobile,
+                            //   'smsCode': sms,
+                            //   'parentShareCode': invite
+                            // };
+                            // var result = await LoginApi().register(data);
+                            // print(result);
+                            // if (result.data['code'] == 200) {
+                            //   G.toast('注册成功，请完善个人信息');
+                            //   String token = result.data['data']['jwtToken'];
+                            //   G.setPref('token',  'bearer ' + token);
+                            //   Provider.of<UserProvide>(context).updateUserAuth();
+                            // }
                           }
                         },
                         disabled: formValidate.containsValue(false)),
@@ -205,6 +215,91 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     ));
+  }
+
+  YYDialog checkInvite(BuildContext context, String name, String avatar) {
+  return YYDialog().build(context)
+    ..width = G.setWidth(600)
+    ..borderRadius = G.setWidth(20)
+    ..text(
+      padding: EdgeInsets.symmetric(horizontal: G.setWidth(30), vertical: G.setWidth(28)),
+      alignment: Alignment.center,
+      text: "邀请码来自",
+      color: hex('#666'),
+      fontSize: G.setSp(28),
+    )
+    ..widget(
+      Container(
+        height: G.setWidth(90),
+        padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
+        margin: EdgeInsets.only(bottom: G.setWidth(24)),
+        child: Row(
+          children: <Widget>[
+            Validate.isNon(avatar)
+            ? Image.asset(
+                '${G.imgBaseUrl}pic-icon/default_avatar.png',
+                width: G.setWidth(80),
+                height: G.setWidth(80),
+              )
+            : Image.network(
+                avatar,
+                width: G.setWidth(80),
+                height: G.setWidth(80),
+              ),
+            G.spacing(20, dir: 'x'),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(name??'未知', style: TextStyle(
+                  color: hex('#333'),
+                  fontSize: G.setSp(30)
+                )),
+                Text('邀请码：$invite', style: TextStyle(
+                  color: hex('#666'),
+                  fontSize: G.setSp(24)
+                ),)
+              ],
+            )
+          ],
+        ),
+      )
+    )
+    ..divider()
+    ..doubleButton(
+      gravity: Gravity.center,
+      withDivider: true,
+      text1: "取消",
+      color1: hex('#85868A'),
+      fontSize1: G.setSp(36),
+      onTap1: () {
+        print("取消");
+      },
+      text2: "确定注册",
+      color2: hex('##0091F0'),
+      fontSize2: G.setSp(36),
+      onTap2: () async {
+        registerApi();
+      },
+    )
+    ..show();
+}
+
+  void registerApi() async {
+    Map data = {
+      'memberType': 1,
+      'mobile': mobile,
+      'smsCode': sms,
+      'parentShareCode': invite
+    };
+    var result = await LoginApi().register(data);
+    print(result);
+    if (result.data['code'] == 200) {
+      G.toast('注册成功，请完善个人信息');
+      String token = result.data['data']['jwtToken'];
+      G.setPref('token',  'bearer ' + token);
+      Provider.of<UserProvide>(context).updateUserAuth();
+    }
   }
 
   Widget _loginSmsInput(bool disabled) {

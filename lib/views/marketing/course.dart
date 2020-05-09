@@ -209,6 +209,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
           }
         },
         child: Container(
+          width: G.setWidth(690),
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -291,7 +292,9 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
         children: <Widget>[
           Text('内容详情',
               style: TextStyle(fontSize: G.setSp(28), color: hex('#333'))),
-          Html(data: currentCourse.contactContent)
+          currentCourse.contactContent  != null
+          ? Html(data: currentCourse.contactContent)
+          : Container()
         ],
       ),
     );

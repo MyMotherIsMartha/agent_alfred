@@ -111,13 +111,13 @@ class _OrderResultPageState extends State<OrderResultPage> {
     String title;
     switch (status) {
       case 0:
-        title = '凭证上传成功';
+        title = '等待凭证上传';
         break;
       case 2:
         title = '凭证审核通过';
         break;
       case 1:
-        title = '凭证审核失败';
+        title = '凭证上传成功';
         break;
       default:
     }

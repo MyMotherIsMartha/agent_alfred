@@ -10,6 +10,7 @@ class UserAuthModel {
   String mobile;
   String nickname;
   bool isSettingPassword;
+  int payType;
 
   UserAuthModel(
       {this.isContactsPrefected,
@@ -23,6 +24,7 @@ class UserAuthModel {
       this.mobile,
       this.nickname,
       this.isSettingPassword,
+      this.payType
       });
 
   UserAuthModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +38,7 @@ class UserAuthModel {
     headSculptureUrl = json['headSculptureUrl'];
     mobile = json['mobile'];
     nickname = json['nickname'];
+    payType = json['payType'];
     isSettingPassword = json['isSettingPassword'];
   }
 
@@ -52,6 +55,7 @@ class UserAuthModel {
     data['mobile'] = this.mobile;
     data['nickname'] = this.nickname;
     data['isSettingPassword'] = this.isSettingPassword;
+    data['payType'] = this.payType;
     return data;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/api/marketing.dart';
 import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
@@ -18,6 +19,8 @@ class _WebViewState extends State<MarketMeetingPage> {
   WebViewController _controller;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String url;
+  String title;
+  String thumb;
 
   @override
   void initState() {
@@ -31,11 +34,19 @@ class _WebViewState extends State<MarketMeetingPage> {
     super.dispose();
   }
 
-  void _share(sence) {
+  void _share(sence) async {
+    if (title == null) {
+      var result = await MarketingApi().detailMeeting(widget.id);
+      print(result.data['data']);
+      title = result.data['data']['meetingName'];
+      thumb = result.data['data']['sharePage'];
+    } else {
+      print('12341234123414124大杀四方神鼎飞丹砂放点水发士大夫 ');
+    }
     var model = WeChatShareWebPageModel(
       url,
-      title: '会议详情',
-      thumbnail: WeChatImage.network("http://img.cixi518.com/ljh_logo.jpeg"),
+      title: title,
+      thumbnail: WeChatImage.network(thumb),
       scene: sence,
     );
     shareToWeChat(model);
@@ -91,7 +102,7 @@ class _WebViewState extends State<MarketMeetingPage> {
                           _share(WeChatScene.TIMELINE);
                         }),
                         _showItem('share_link', '复制链接', () {
-                          String link = "http://192.168.10.44:8080/#/meeting/" +
+                          String link = EnvConfig.dev['web-address'] +  "/#/meeting/" +
                               widget.id;
                           G.setClipboard(link);
                           G.router.pop(context);
@@ -135,6 +146,10 @@ class _WebViewState extends State<MarketMeetingPage> {
     String token = await G.getPref('token');
     _controller.evaluateJavascript(
         'window.sessionStorage.setItem("token", "$token");window.refreshMeeting(${widget.id})');
+  }
+
+  getDetail() async {
+    await MarketingApi().detailMeeting(widget.id);
   }
 
   @override
