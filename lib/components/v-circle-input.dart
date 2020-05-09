@@ -76,7 +76,7 @@ class _VCircleInputState extends State<VCircleInput> {
             Expanded(
               child: Container(
                 alignment: Alignment.center,
-                // height: G.setWidth(60),
+                height: G.setWidth(60),
                 margin: EdgeInsets.only(bottom: G.setWidth(60)),
                 child: TextFormField(
                 // strutStyle: StrutStyle(
