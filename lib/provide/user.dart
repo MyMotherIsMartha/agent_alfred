@@ -95,6 +95,7 @@ class UserProvide with ChangeNotifier{
        || userAuthInfo.giftPackageOrderStatus == -1
        || userAuthInfo.giftPackageOrderStatus == -2
        || userAuthInfo.giftPackageOrderStatus == 3
+       || userAuthInfo.giftPackageOrderStatus == -3
        || userAuthInfo.giftPackageOrderStatus == 5
       ) {
         G.navigateTo(G.currentContext, '/create-account', replace: true);

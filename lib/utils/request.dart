@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 // 初始化dio
 Dio service() {
