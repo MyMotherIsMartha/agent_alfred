@@ -11,7 +11,8 @@ class VAddress extends StatelessWidget {
   final String areaId;
   final Function cb;
   final Function validator;
-  VAddress({this.controller, this.areaId, this.cb, this.validator, this.label});
+  final String hintText;
+  VAddress({this.controller, this.areaId, this.cb, this.validator, this.label, this.hintText});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,7 +47,7 @@ class VAddress extends StatelessWidget {
                       readOnly: true,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: '请选择地区'
+                        hintText: hintText??'请选择地区'
                       ),
                       validator: validator,
                     ),

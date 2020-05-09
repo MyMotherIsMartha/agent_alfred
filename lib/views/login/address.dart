@@ -66,7 +66,7 @@ class _AddressPageState extends State<AddressPage> {
     return Scaffold(
         backgroundColor: hex('#F3F4F6'),
         appBar: AppBar(
-          title: Text('收货地址'),
+          title: Text('新增地址'),
           centerTitle: true,
           elevation: 0,
         ),
@@ -87,10 +87,10 @@ class _AddressPageState extends State<AddressPage> {
                           type: TextInputType.text,
                           value: addressModel?.consigneeName ?? '',
                           controller: nameController,
-                          hintText: '请输入真实姓名',
+                          hintText: '请填写姓名',
                           label: '姓名',
                           onChange: (e) {
-                            // String hint = Validate.isNon(e) ? '请输入真实姓名' : null;
+                            // String hint = Validate.isNon(e) ? '请填写真实姓名' : null;
                             setState(() {
                               consigneeName = e;
                               formValidate['consigneeName'] =
@@ -100,7 +100,7 @@ class _AddressPageState extends State<AddressPage> {
                         ),
                         VInput(
                           controller: mobileController,
-                          hintText: '请输入联系方式',
+                          hintText: '请填写联系方式',
                           value: addressModel?.mobile ?? '',
                           label: '联系方式',
                           maxLength: 11,
@@ -117,6 +117,8 @@ class _AddressPageState extends State<AddressPage> {
                         VAddress(
                           areaId: areaCode,
                           controller: areaController,
+                          label: '所在地区',
+                          hintText: '请选择省市区',
                           cb: (value, areaStr) {
                             setState(() {
                               areaCode = value;
@@ -127,7 +129,7 @@ class _AddressPageState extends State<AddressPage> {
                         ),
                         VInput(
                           controller: addressController,
-                          hintText: '请输入详细地址',
+                          hintText: '请填写详细地址',
                           value: addressModel?.address ?? '',
                           label: '详细地址',
                           onChange: (e) {

@@ -85,12 +85,12 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                         VInput(
                           type: TextInputType.text,
                           controller: nameController,
-                          hintText: '请输入真实姓名',
+                          hintText: '请填写姓名',
                           maxLength: 15,
-                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[\u4e00-\u9fa5]")),
+                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-z][A-Z][\u4e00-\u9fa5]")),
                           label: '姓名',
                           onChange: (e) {
-                            String hint = Validate.isNon(e) ? '请输入真实姓名' : '';
+                            String hint = Validate.isNon(e) ? '请填写真实姓名' : '';
                             setState(() {
                               name = e;
                               formValidate['name'] = Validate.isNon(hint);
@@ -100,7 +100,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                         _selectSex(),
                         VInput(
                           controller: idcardController,
-                          hintText: '请输入身份证号',
+                          hintText: '请填写身份证号',
                           type: TextInputType.number,
                           maxLength: 18,
                           label: '身份证',
