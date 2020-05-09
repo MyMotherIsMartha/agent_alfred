@@ -87,8 +87,10 @@ class _AddressPageState extends State<AddressPage> {
                           type: TextInputType.text,
                           value: addressModel?.consigneeName ?? '',
                           controller: nameController,
+                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[.]")),
                           hintText: '请填写姓名',
                           label: '姓名',
+                          maxLength: 10,
                           onChange: (e) {
                             // String hint = Validate.isNon(e) ? '请填写真实姓名' : null;
                             setState(() {
@@ -132,6 +134,7 @@ class _AddressPageState extends State<AddressPage> {
                           hintText: '请填写详细地址',
                           value: addressModel?.address ?? '',
                           label: '详细地址',
+                          maxLength: 25,
                           onChange: (e) {
                             setState(() {
                               address = e;

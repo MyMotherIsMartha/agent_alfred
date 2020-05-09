@@ -67,20 +67,22 @@ class _MarketingPageState extends State<MarketingPage> {
       height: G.setWidth(300),
       child: InkWell(
           onTap: () {
-            print(item.jumpType);
-            var link = 'https://juejin.im/timeline';
-            var bodyJson = {"url": link};
-            var linkTemp = FluroConvertUtils.object2string(bodyJson);
-            G.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp); // ?url=http://www.baidu.com
-            // G.router.navigateTo(context, '/webview');
-            // if (item.jumpType == 1) {
-              
-            // } else if (item.jumpType == 2) {
-            //   var link = item.jumpContent;
-            //   // webview打开
-            // } else if (item.jumpType == 3) {
-
-            // }
+            if (item.jumpType == 1) {
+              if (item.contactType == 2) {
+                G.navigateTo(context, '/market/course?id=' + item.jumpContent);
+              }
+              if (item.contactType == 1) {
+                G.navigateTo(context, '/market/meeting?id=' + item.jumpContent);
+              }
+            } else if (item.jumpType == 2) {
+              var link = item.jumpContent;
+              var bodyJson = {"url": link};
+              var linkTemp = FluroConvertUtils.object2string(bodyJson);
+              G.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp);
+              // webview打开
+            } else if (item.jumpType == 3) {
+              // TODO:: 内容页
+            }
           },
           child: Container(
             width: double.infinity,

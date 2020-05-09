@@ -87,7 +87,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                           controller: nameController,
                           hintText: '请填写姓名',
                           maxLength: 15,
-                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-z][A-Z][\u4e00-\u9fa5]")),
+                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]")),
                           label: '姓名',
                           onChange: (e) {
                             String hint = Validate.isNon(e) ? '请填写真实姓名' : '';

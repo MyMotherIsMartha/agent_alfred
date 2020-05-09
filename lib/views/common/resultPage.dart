@@ -29,7 +29,7 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
    
-    middleArea = middleStatusWidget4();
+    middleArea = middleStatusWidget1();
     statusCode = int.parse(widget.status);
     print(statusCode);
     print(widget.haveExit);
@@ -469,7 +469,7 @@ class _ResultPageState extends State<ResultPage> {
       appTitle = '上传发票';
       middleArea = middleStatusWidgetInvoice();
     } else {
-      middleArea = middleStatusWidget4();
+      middleArea = middleStatusWidget1();
     }
   }
 

@@ -54,6 +54,7 @@ class _CertificatePageState extends State<CertificatePage> {
       appBar: AppBar(
         title: Text('线下凭证上传'),
         centerTitle: true,
+        elevation: 0,
       ),
       body: Container(
         // padding: G.setWidth(20),
@@ -231,7 +232,7 @@ class _CertificatePageState extends State<CertificatePage> {
             width: 310,
             fn: () async {
               if (Validate.isNon(offlineVoucher)) {
-                G.toast('请上传发票');
+                G.toast('请上传凭证');
               } else {
                 Map data = {
                   'giftPackageNo': curGift.giftPackageNo,
@@ -240,12 +241,11 @@ class _CertificatePageState extends State<CertificatePage> {
                 };
                 var result = await OrderApi().offlinePay(data);
                 if (result.data['code'] == 200) {
-                  G.toast('提交凭证成功');
+                  // G.toast('提交凭证成功');
                   Provider.of<UserProvide>(context).updateUserAuth();
                 }
               }
             },
-            // TODO:: 上传凭证取消 一直loading中
             text: '提交凭证',
             shadown: [BoxShadow(color: hex('#6D7FFE'), blurRadius: 4.0, spreadRadius: 0.0)]
           )
