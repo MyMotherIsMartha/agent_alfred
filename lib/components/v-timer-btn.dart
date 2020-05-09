@@ -79,7 +79,8 @@ class _VTimerBtnState extends State<VTimerBtn> {
               fontSize: G.setSp(30),
               // color: widget.color != null ? hex(widget.color):  hex('#333'),
               color: hex('#6982FF'),
-              height: 1.5
+              height: 1.5,
+              fontWeight: FontWeight.w500
             )),
         ),
         onTap: () async {
