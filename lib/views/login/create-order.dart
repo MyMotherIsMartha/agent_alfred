@@ -44,7 +44,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
     
     registerWxApi(
         appId: EnvConfig.dev['wx-appid'],
-        universalLink: "https://your.univerallink.com/link/");
+        universalLink: "https://agent37app.woouo.com");
     // print(result);
     var result = await FlutterAlipay.setIosUrlSchema('com.woouo.agent37.alipay');
     print(result);
