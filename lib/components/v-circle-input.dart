@@ -102,8 +102,8 @@ class _VCircleInputState extends State<VCircleInput> {
                     
                       contentPadding: EdgeInsets.all(0),
                       border: InputBorder.none,
-                      fillColor: Colors.red,
-                      filled: true,
+                      // fillColor: Colors.red,
+                      // filled: true,
                       hintText: widget.hintText,
                       // prefixIcon: Container(
                       //   margin: EdgeInsets.only(top: 10),
