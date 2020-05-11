@@ -36,7 +36,6 @@ Dio service() {
       errorMsg = '连接超时,请切换网络或稍后再试';
     } else {
       errorMsg = '当前网络不可用,请检查是否连接了可用的Wifi或移动网络';
-      G.closeLoading();
     }
     G.toast(errorMsg, duration: 5);
     // G.toast(e.message);
