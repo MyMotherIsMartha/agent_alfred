@@ -22,6 +22,7 @@ import 'package:agent37_flutter/views/marketing/apply-meeting.dart';
 import 'package:agent37_flutter/views/marketing/apply-result.dart';
 import 'package:agent37_flutter/views/marketing/course.dart';
 import 'package:agent37_flutter/views/marketing/meeting.dart';
+import 'package:agent37_flutter/views/marketing/module-detail.dart';
 import 'package:agent37_flutter/views/marketing/search.dart';
 import 'package:agent37_flutter/views/setting/index.dart';
 import 'package:agent37_flutter/views/setting/mobile.dart';
@@ -101,8 +102,7 @@ Handler createOrderHandler = Handler(
 Handler certificateHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String no = params['no']?.first;
-  String time = params['time']?.first;
-  return CertificatePage(no: no, time: time);
+  return CertificatePage(no: no);
 });
 
 Handler orderResultHandler = Handler(
@@ -345,11 +345,16 @@ Handler marketMeetingHandler = Handler(
       return MarketMeetingPage(id);
 });
 
+// 模块详情
+Handler moduleDetailHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      String id = params['id']?.first;
+      return ModuleDetailPage(id);
+});
+
 // webview
 Handler webviewHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String url = params['url'][0];
-      print(url);
-      print('iddddddddddddddddddddddddddds');  
       return WebPage(url);
 });

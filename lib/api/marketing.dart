@@ -31,6 +31,12 @@ class MarketingApi {
         data: {'courseId': courseId, 'tutorName': tutorName});
   }
 
+  // 模块详情
+  detailModule(String contentId) async {
+    return await service().post('$agentMarketingApi/v1/api/content/detailContent',
+        data: {'contentId': contentId});
+  }
+
   detailMeeting(String meetingId) async {
     return await service().post(
         '$agentMarketingApi/v1/api/meeting/detailMeeting',

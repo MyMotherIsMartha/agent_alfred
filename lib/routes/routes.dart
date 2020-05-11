@@ -51,6 +51,7 @@ class Routes {
   static String marketApplyResult = '/market/apply-result';
   static String marketCourse = '/market/course';
   static String marketMeeting = '/market/meeting';
+  static String moduleDetail = '/module';
   static String webviewPage = '/webview/:url';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
@@ -105,6 +106,7 @@ class Routes {
     router.define(marketApplyResult, handler: marketApplyResultHandler);
     router.define(marketCourse, handler: marketCourseHandler);
     router.define(marketMeeting, handler: marketMeetingHandler);
+    router.define(moduleDetail, handler: moduleDetailHandler);
     router.define(webviewPage, handler: webviewHandler);
   }
 }

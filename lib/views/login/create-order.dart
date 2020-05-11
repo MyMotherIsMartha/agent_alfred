@@ -285,10 +285,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
           if (type == 'downline') {
             G.navigateTo(
                 context,
-                '/certificate?no=' +
-                    widget.no +
-                    '&time=' +
-                    _countdownTime.toString());
+                '/certificate?no=' + widget.no);
           }
         },
         child: Container(
