@@ -10,6 +10,9 @@ class GiftItem extends StatelessWidget {
   GiftItem({this.item, this.selectedPackageNo, this.fn});
   @override
   Widget build(BuildContext context) {
+    print('item.sdfasf');
+    print(item.amount);
+    print(item.promotionAmount);
     return Stack(
       overflow: Overflow.visible,
       children: <Widget>[
@@ -54,8 +57,8 @@ class GiftItem extends StatelessWidget {
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: item.promotionAmount == null
-                                        ? '${item.amount}'
-                                        : '${item.promotionAmount}',
+                                        ? item.amount.toStringAsFixed(2)
+                                        : item.promotionAmount.toStringAsFixed(2),
                                     style: TextStyle(
                                         fontSize: G.setSp(32),
                                         color: hex('#333')),
@@ -64,7 +67,7 @@ class GiftItem extends StatelessWidget {
                           ),
                           item.promotionAmount != null
                               ? Text(
-                                  '￥${item.amount}',
+                                  '￥' + item.amount.toStringAsFixed(2),
                                   style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       fontSize: G.setSp(24),

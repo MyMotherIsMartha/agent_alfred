@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
 import 'package:agent37_flutter/provide/user.dart';
@@ -15,7 +18,8 @@ class OrderResultPage extends StatefulWidget {
 
 class _OrderResultPageState extends State<OrderResultPage> {
   UserAuthModel userinfoAuth;
-  final Map<String, dynamic> statusMap = {
+
+  Map<String, dynamic> statusMap = {
     //  支付成功
     'paySuccess': {
       'title': '凭证上传成功',
@@ -58,6 +62,15 @@ class _OrderResultPageState extends State<OrderResultPage> {
       },
     }
   };
+  
+  void _getOrderInfo() async {
+    var result = await OrderApi().getGiftPackageOrders();
+    var orderOverHours = result.data['data']['overtimePeriodHours'];
+    setState(() {
+      statusMap['verifyFail']['desc'] = '你的支付凭证未通过，请在$orderOverHours小时内完成上传。';
+    });
+  }
+
   Widget statusWidget(String type) {
     Map status = statusMap[type];
     return Column(
@@ -85,7 +98,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
           style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),
         ),
         type == 'verifyFail'
-            ? Text(userinfoAuth.auditRefuseReason,
+            ? Text(userinfoAuth.auditRefuseReason??'',
                 style: TextStyle(
                     color: hex('#000'),
                     fontWeight: FontWeight.w500,
@@ -119,6 +132,9 @@ class _OrderResultPageState extends State<OrderResultPage> {
       case 1:
         title = '凭证上传成功';
         break;
+      case 3:
+        title = '审核未通过';
+        break;
       default:
     }
     return title;
@@ -128,6 +144,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
   void initState() {
     super.initState();
     userinfoAuth = Provider.of<UserProvide>(context, listen: false).userAuthInfo;
+    _getOrderInfo();
   }
 
   @override

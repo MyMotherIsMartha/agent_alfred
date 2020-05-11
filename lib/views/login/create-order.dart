@@ -147,7 +147,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
       int sec = timeUnix % 60;
       return '剩余支付时间：$hour时$min分$sec秒';
     }
-    return '';
+    return '剩余支付时间：计算中……';
   }
 
   void startCountdownTimer() {
