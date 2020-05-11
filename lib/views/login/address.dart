@@ -87,7 +87,7 @@ class _AddressPageState extends State<AddressPage> {
                           type: TextInputType.text,
                           value: addressModel?.consigneeName ?? '',
                           controller: nameController,
-                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[.]")),
+                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[.]+")),
                           hintText: '请填写姓名',
                           label: '姓名',
                           maxLength: 10,
