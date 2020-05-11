@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/provide/address.dart';
+import 'package:agent37_flutter/provide/common.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:date_format/date_format.dart';
@@ -148,16 +149,13 @@ class G {
 
   static showLoading(context) {
     G.setContext(context);
-    showDialog(
-        barrierDismissible: false,
-        context: G.currentContext,
-        builder: (BuildContext context) {
-          return Center(child: VLoading());
-        });
+    Provider.of<CommonProvide>(context).toggleLoadingWindow(true, context);
+    
   }
 
   static closeLoading() {
-    Navigator.of(G.currentContext, rootNavigator: true).pop();
+    var context = G.currentContext;
+    Provider.of<CommonProvide>(context).toggleLoadingWindow(false, context);
 
   }
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:agent37_flutter/provide/address.dart';
+import 'package:agent37_flutter/provide/common.dart';
 import 'package:agent37_flutter/provide/currentIndex.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/routes/routes.dart';
@@ -32,6 +33,7 @@ void main() async {
       ChangeNotifierProvider.value(value: CurrentIndexProvide()),
       ChangeNotifierProvider.value(value: UserProvide()),
       ChangeNotifierProvider.value(value: AddressProvide()),
+      ChangeNotifierProvider.value(value: CommonProvide()),
       // Provider.value(value: '0.0.1'),
       // ChangeNotifierProvider.value(
       //   value: currentIndexProvide,

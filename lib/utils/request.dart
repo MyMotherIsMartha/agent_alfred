@@ -37,6 +37,7 @@ Dio service() {
     } else {
       errorMsg = '当前网络不可用,请检查是否连接了可用的Wifi或移动网络';
     }
+    G.closeLoading();
     G.toast(errorMsg, duration: 5);
     // G.toast(e.message);
     throw Exception(errorMsg);
