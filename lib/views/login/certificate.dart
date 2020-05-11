@@ -15,8 +15,7 @@ import 'package:provider/provider.dart';
 
 class CertificatePage extends StatefulWidget {
   final String no;
-  final String time;
-  CertificatePage({this.no, this.time});
+  CertificatePage({this.no});
   @override
   _CertificatePageState createState() => _CertificatePageState();
 }
@@ -183,12 +182,18 @@ class _CertificatePageState extends State<CertificatePage> {
                                 Validate.isNon(offlineVoucher)
                                     ? 0
                                     : G.setWidth(10)),
-                            image: DecorationImage(
+                            image: Validate.isNon(offlineVoucher)
+                                ? DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                        'lib/assets/images/upload-bill_bg.png'))
+                                : null),
+                        child: Validate.isNon(offlineVoucher)
+                            ? null
+                            : FadeInImage.assetNetwork(
                                 fit: BoxFit.fill,
-                                image: Validate.isNon(offlineVoucher)
-                                    ? AssetImage(
-                                        'lib/assets/images/upload-bill_bg.png')
-                                    : NetworkImage(offlineVoucher))),
+                                placeholder: '${G.imgBaseUrl}loading.gif', // kTransparentImage,
+                                image: offlineVoucher),
                       ),
                       !Validate.isNon(offlineVoucher)
                           ? Container(
@@ -250,29 +255,34 @@ class _CertificatePageState extends State<CertificatePage> {
               G.navigateTo(context, '/create-account', replace: true);
             },
             text: '重选礼包',
-            shadown: [BoxShadow(color: hex('#BABFE1'), blurRadius: 4.0, spreadRadius: 0.0)],
+            shadown: [
+              BoxShadow(
+                  color: hex('#BABFE1'), blurRadius: 4.0, spreadRadius: 0.0)
+            ],
           ),
           VButton(
-            width: 310,
-            fn: () async {
-              if (Validate.isNon(offlineVoucher)) {
-                G.toast('请上传凭证');
-              } else {
-                Map data = {
-                  'giftPackageNo': curGift.giftPackageNo,
-                  'giftPackagePromotionNo': curGift.giftPackagePromotionNo,
-                  'offlineVoucher': offlineVoucher
-                };
-                var result = await OrderApi().offlinePay(data);
-                if (result.data['code'] == 200) {
-                  // G.toast('提交凭证成功');
-                  Provider.of<UserProvide>(context).updateUserAuth();
+              width: 310,
+              fn: () async {
+                if (Validate.isNon(offlineVoucher)) {
+                  G.toast('请上传凭证');
+                } else {
+                  Map data = {
+                    'giftPackageNo': curGift.giftPackageNo,
+                    'giftPackagePromotionNo': curGift.giftPackagePromotionNo,
+                    'offlineVoucher': offlineVoucher
+                  };
+                  var result = await OrderApi().offlinePay(data);
+                  if (result.data['code'] == 200) {
+                    // G.toast('提交凭证成功');
+                    Provider.of<UserProvide>(context).updateUserAuth();
+                  }
                 }
-              }
-            },
-            text: '提交凭证',
-            shadown: [BoxShadow(color: hex('#6D7FFE'), blurRadius: 4.0, spreadRadius: 0.0)]
-          )
+              },
+              text: '提交凭证',
+              shadown: [
+                BoxShadow(
+                    color: hex('#6D7FFE'), blurRadius: 4.0, spreadRadius: 0.0)
+              ])
         ],
       ),
     );

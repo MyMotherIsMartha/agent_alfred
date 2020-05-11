@@ -3,6 +3,7 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Oss {
   static selectSource(cb, {Function uploadApi}) {
@@ -33,6 +34,16 @@ class Oss {
 
   /*相册*/
   static uploadPic(ImageSource source, Function cb, Function uploadApi) async {
+    var pre;
+    if (source == ImageSource.camera) {
+      pre = await Permission.camera.status;
+    } else {
+      pre = await Permission.photos.status;
+    }
+    if (pre == 'denied') {
+      G.toast('请在设置中打开权限');
+      return;
+    }
     Navigator.pop(G.currentContext);
     //  LOADING弹窗
     G.showLoading(G.currentContext);
