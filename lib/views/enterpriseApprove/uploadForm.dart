@@ -85,6 +85,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
     var result = await MemberApi().getEnterpriseInfo();
     var resultData = result.data['data'];
     print(result.data.toString());
+    uploadData =  resultData;
     jobCode = resultData['industryCode'];
     jobCodeCtrl.text = resultData['industryName'];
     enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
@@ -390,7 +391,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         'industryName': jobCodeCtrl.text,
                         'registerAddress': addressStr,
                         'areaCode': int.parse(areaCode),
-                        'businessLicensePicture': uploadData['businessLicenseUrl'],
+                        'businessLicensePicture': uploadData['businessLicensePicture'],
                         'enterpriseName': enterpriseName,
                         'legalPerson': legalPerson,
                         'registerCode': registerCode,

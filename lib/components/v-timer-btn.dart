@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:agent37_flutter/provide/common.dart';
 import 'package:agent37_flutter/utils/event_bus.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/global.dart';
 
@@ -86,7 +88,6 @@ class _VTimerBtnState extends State<VTimerBtn> {
         onTap: () async {
           if (countDownTime > 0) return;
           if (widget.disabled) return;
-
           G.showLoading(context);
           var result = await widget.cb();
           G.closeLoading();

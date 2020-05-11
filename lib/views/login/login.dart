@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                               controller: _mobileController,
                               prefixIcon: iconmobile(),
                               type: TextInputType.number,
-                              hintText: '请输入手机号',
+                              hintText: '请输入手机号 ',
                               maxLength: 11,
                               validator: (value) {
                                 if (errorMsg == null || errorMsg.isEmpty) {
