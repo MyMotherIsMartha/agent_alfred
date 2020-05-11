@@ -10,9 +10,6 @@ class GiftItem extends StatelessWidget {
   GiftItem({this.item, this.selectedPackageNo, this.fn});
   @override
   Widget build(BuildContext context) {
-    print('item.sdfasf');
-    print(item.amount);
-    print(item.promotionAmount);
     return Stack(
       overflow: Overflow.visible,
       children: <Widget>[
@@ -38,7 +35,7 @@ class GiftItem extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         constraints: BoxConstraints(
-                          maxWidth: G.setWidth(460),
+                          maxWidth: G.setWidth(420),
                         ),
                         child: Text(item.name,
                         overflow: TextOverflow.ellipsis,
