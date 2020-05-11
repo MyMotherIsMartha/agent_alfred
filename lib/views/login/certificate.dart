@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-button.dart';
@@ -28,13 +27,38 @@ class _CertificatePageState extends State<CertificatePage> {
   int _countdownTime;
   var giftListFuture;
   String offlineVoucher;
+  int _orderOverTime = 0;
+
+  void _getOrderInfo() async {
+    var result = await OrderApi().getGiftPackageOrders();
+    setState(() {
+      _orderOverTime = result.data['data']['orderOverime'];
+    });
+    countDown();
+  }
+
+  countDown() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
+      int nowTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
+      int result = (_orderOverTime / 1000).round() - nowTime;
+      if (result < 0) {
+        _timer?.cancel();
+        G.navigateTo(context, '/create-account', replace: true);
+      }
+      setState(() {
+        _countdownTime = result;
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _countdownTime = int.parse(widget.time);
-    });
-    startCountdownTimer();
+    // setState(() {
+    //   _countdownTime = int.parse(widget.time);
+    // });
+    // startCountdownTimer();
+    _getOrderInfo();
     giftListFuture = _getGiftList();
     // _getGiftList();
   }
@@ -126,7 +150,7 @@ class _CertificatePageState extends State<CertificatePage> {
       int sec = restTime % 60;
       return '剩余支付时间：$hour时$min分$sec秒';
     }
-    return '';
+    return '剩余支付时间：计算中……';
   }
 
   Widget _upload() {
