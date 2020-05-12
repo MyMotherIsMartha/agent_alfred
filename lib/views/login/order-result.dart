@@ -135,6 +135,9 @@ class _OrderResultPageState extends State<OrderResultPage> {
       case 3:
         title = '审核未通过';
         break;
+      case 4:
+        title = '审核未通过';
+        break;
       default:
     }
     return title;

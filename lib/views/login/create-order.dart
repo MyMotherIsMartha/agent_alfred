@@ -106,6 +106,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
     setState(() {
       _orderOverTime = result.data['data']['orderOverime'];
     });
+    G.setPref('orderOverTime', result.data['data']['orderOverime'].toString());
     countDown();
   }
 
@@ -132,6 +133,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
       int result = (_orderOverTime / 1000).round() - nowTime;
       if (result < 0) {
         _timer?.cancel();
+        G.removePref('orderOverTime');
         G.navigateTo(context, '/create-account', replace: true);
       }
       setState(() {
@@ -285,7 +287,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
           if (type == 'downline') {
             G.navigateTo(
                 context,
-                '/certificate?no=' + widget.no);
+                '/certificate?no=' + widget.no + '&from=order');
           }
         },
         child: Container(

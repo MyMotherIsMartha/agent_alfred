@@ -1,31 +1,31 @@
 class ModuleModel {
-  String moduleId;
-  String moduleName;
+  String id;
+  String name;
   int moduleType;
   int indexCount;
-  List<FindIndexModuleItemVos> findIndexModuleItemVos;
+  List<FindIndexModuleItemVos> itemVos;
   int sequence;
   int total;
 
   ModuleModel(
-      {this.moduleId,
-      this.moduleName,
+      {this.id,
+      this.name,
       this.moduleType,
       this.indexCount,
-      this.findIndexModuleItemVos,
+      this.itemVos,
       this.total,
       this.sequence});
 
   ModuleModel.fromJson(Map<String, dynamic> json) {
-    moduleId = json['moduleId'];
-    moduleName = json['moduleName'];
+    id = json['id'];
+    name = json['name'];
     moduleType = json['moduleType'];
     indexCount = json['indexCount'];
     total = json['total'];
-    if (json['findIndexModuleItemVos'] != null) {
-      findIndexModuleItemVos = new List<FindIndexModuleItemVos>();
-      json['findIndexModuleItemVos'].forEach((v) {
-        findIndexModuleItemVos.add(new FindIndexModuleItemVos.fromJson(v));
+    if (json['itemVos'] != null) {
+      itemVos = new List<FindIndexModuleItemVos>();
+      json['itemVos'].forEach((v) {
+        itemVos.add(new FindIndexModuleItemVos.fromJson(v));
       });
     }
     sequence = json['sequence'];
@@ -33,14 +33,14 @@ class ModuleModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['moduleId'] = this.moduleId;
-    data['moduleName'] = this.moduleName;
+    data['id'] = this.id;
+    data['name'] = this.name;
     data['moduleType'] = this.moduleType;
     data['indexCount'] = this.indexCount;
     data['total'] = this.total;
-    if (this.findIndexModuleItemVos != null) {
-      data['findIndexModuleItemVos'] =
-          this.findIndexModuleItemVos.map((v) => v.toJson()).toList();
+    if (this.itemVos != null) {
+      data['itemVos'] =
+          this.itemVos.map((v) => v.toJson()).toList();
     }
     data['sequence'] = this.sequence;
     return data;
