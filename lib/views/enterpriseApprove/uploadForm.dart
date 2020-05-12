@@ -304,7 +304,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                             ),
                             Expanded(
                               child: TextFormField(
-                                maxLines: 3,
+                                // maxLines: 3,
                                 keyboardType: TextInputType.text,
                                 decoration:
                                     InputDecoration(border: InputBorder.none, hintText: '请输入详细注册地址'),

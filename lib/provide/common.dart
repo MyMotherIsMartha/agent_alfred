@@ -8,10 +8,6 @@ class CommonProvide with ChangeNotifier {
   
 
   toggleLoadingWindow(bool loadingStatus, context){
-    print('isLoadingShow: ');
-    print(isLoadingShow);
-    print('loadingStatus: ');
-    print(loadingStatus);
     if (loadingStatus && !isLoadingShow) {
       isLoadingShow = loadingStatus;
       showDialog(
