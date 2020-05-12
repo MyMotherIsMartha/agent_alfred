@@ -2,6 +2,7 @@ import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-circle-input.dart';
 import 'package:agent37_flutter/components/v-hint.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
+import 'package:agent37_flutter/provide/address.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
@@ -167,6 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                               Provider.of<UserProvide>(context).updateUserAuth();
                               Provider.of<UserProvide>(context).updateEnterpriseinfo();
                               Provider.of<UserProvide>(context).updateBankCardInfo();
+                              Provider.of<AddressProvide>(context).getAddress();
                             }
                           }
                         },

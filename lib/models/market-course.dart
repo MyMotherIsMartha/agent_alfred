@@ -98,6 +98,7 @@ class ContactVos {
     videoName = json['videoName'];
     tutorId = json['tutorId'];
     tutorName = json['tutorName'];
+    tutorDesc = json['tutorDesc'];
     tutorImg = json['tutorImg'];
     contactContent = json['contactContent'];
     isDefault = json['isDefault'];
@@ -114,6 +115,7 @@ class ContactVos {
     data['videoName'] = this.videoName;
     data['tutorId'] = this.tutorId;
     data['tutorName'] = this.tutorName;
+    data['tutorDesc'] = this.tutorDesc;
     data['tutorImg'] = this.tutorImg;
     data['contactContent'] = this.contactContent;
     data['isDefault'] = this.isDefault;

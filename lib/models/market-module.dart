@@ -5,6 +5,7 @@ class ModuleModel {
   int indexCount;
   List<FindIndexModuleItemVos> findIndexModuleItemVos;
   int sequence;
+  int total;
 
   ModuleModel(
       {this.moduleId,
@@ -12,6 +13,7 @@ class ModuleModel {
       this.moduleType,
       this.indexCount,
       this.findIndexModuleItemVos,
+      this.total,
       this.sequence});
 
   ModuleModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +21,7 @@ class ModuleModel {
     moduleName = json['moduleName'];
     moduleType = json['moduleType'];
     indexCount = json['indexCount'];
+    total = json['total'];
     if (json['findIndexModuleItemVos'] != null) {
       findIndexModuleItemVos = new List<FindIndexModuleItemVos>();
       json['findIndexModuleItemVos'].forEach((v) {
@@ -34,6 +37,7 @@ class ModuleModel {
     data['moduleName'] = this.moduleName;
     data['moduleType'] = this.moduleType;
     data['indexCount'] = this.indexCount;
+    data['total'] = this.total;
     if (this.findIndexModuleItemVos != null) {
       data['findIndexModuleItemVos'] =
           this.findIndexModuleItemVos.map((v) => v.toJson()).toList();

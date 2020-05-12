@@ -80,7 +80,9 @@ class _MarketingPageState extends State<MarketingPage> {
               G.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp);
               // webview打开
             } else if (item.jumpType == 3) {
-              // TODO:: 内容页
+              print('123412434444444444444444444444444444444444');
+              var id = item.jumpContent;
+              G.navigateTo(context, '/module?from=banner&id=' + id);
             }
           },
           child: Container(
@@ -154,9 +156,11 @@ class _MarketingPageState extends State<MarketingPage> {
                 item.moduleName,
                 style: TextStyle(fontSize: G.setSp(32), color: hex('#333')),
               ),
-              InkWell(
+              item.findIndexModuleItemVos.length >= item.total ?
+              Container()
+              : InkWell(
                 onTap: () {
-                  G.navigateTo(context, '/module?id=' + item.moduleId);
+                  G.navigateTo(context, '/module?from=module&id=' + item.moduleId);
                 },
                   child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,7 +171,7 @@ class _MarketingPageState extends State<MarketingPage> {
                   ),
                   G.spacing(6, dir: 'x'),
                   Text(
-                    '100',
+                    item.total.toString(),
                     style: TextStyle(fontSize: G.setSp(24), color: hex('#666')),
                   ),
                   G.spacing(6, dir: 'x'),
@@ -337,7 +341,7 @@ class _MarketingPageState extends State<MarketingPage> {
   // }
 
   Future _getModule() async {
-    var result = await MarketingApi().moduleList();
+    var result = await MarketingApi().moduleList(indexSwitch: 1);
     List data = result.data['data'];
     List<ModuleModel> moduleTemp = <ModuleModel>[];
     if (result.data['code'] == 200) {
