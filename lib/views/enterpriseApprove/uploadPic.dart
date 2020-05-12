@@ -9,7 +9,9 @@ import 'package:dio/dio.dart';
 import '../../utils/global.dart';
 
 class UploadEnterprisePic extends StatefulWidget {
-  UploadEnterprisePic({Key key}) : super(key: key);
+  final String isFirstUpload;
+
+  UploadEnterprisePic({this.isFirstUpload});
 
   @override
   _UploadEnterprisePicState createState() => _UploadEnterprisePicState();
@@ -105,6 +107,15 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
         title: Text("企业认证"),
         centerTitle: true,
         elevation: 0,
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                G.removePref('token');
+                G.router.navigateTo(context, '/login', replace: true);
+              },
+              child: Text('退出',
+                  style: TextStyle(color: hex('#333333'), fontSize: G.setSp(32))))
+        ],
       ),
       body: Container(
         width: G.setWidth(750),
@@ -162,6 +173,20 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
                 )
               ),
             ),
+            widget.isFirstUpload != 'yes' ?
+            Container(
+              margin: EdgeInsets.only(top: G.setHeight(50)),
+              child: InkWell(
+                onTap: () {
+                  G.navigateTo(context, 'upload');
+             
+                },
+                child: Text('跳过这步 >', style: TextStyle(
+                  color: hex('#0091F0'),
+                  fontSize: G.setSp(28)
+                )),
+              )
+            ) : Text('')
             // _ImageView(_imgPath)
             // RaisedButton(
             //   onPressed: goToUploadForm, 
