@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 class FinancePage extends StatefulWidget {
+  final String type;
+  final String index;
+  FinancePage({this.type, this.index});
   @override
   _FinancePageState createState() => _FinancePageState();
 }
@@ -21,6 +24,8 @@ class _FinancePageState extends State<FinancePage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
 
+  DateTime startTime;
+  DateTime endTime;
   // tabbar选项栏
   List<Widget> _appTabItem() {
     List<String> types = ['商品销售', '会员订单', '礼包销售'];
@@ -70,6 +75,25 @@ class _FinancePageState extends State<FinancePage>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
+    _tabController.animateTo(int.parse(widget.index));
+    switch (widget.type) {
+      case 'today':
+        startTime = DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day);
+        endTime = DateTime.now();
+        break;
+      case 'thisMonth':
+        startTime = DateTime(DateTime.now().year, DateTime.now().month);
+        endTime = DateTime.now();
+        break;
+      case 'lastMonth':
+        startTime = DateTime(DateTime.now().year, DateTime.now().month - 1);
+        endTime = DateTime(DateTime.now().year, DateTime.now().month, 0);
+        break;
+      default:
+        startTime = DateTime(DateTime.now().year, DateTime.now().month);
+        endTime = DateTime.now();
+    }
   }
 
   @override
@@ -83,15 +107,21 @@ class _FinancePageState extends State<FinancePage>
           OrderView(
               FinanceApi().fetchProduct,
               'pendingPurchaseOrderServiceCharge',
-              'entryPurchaseOrderServiceCharge'),
+              'entryPurchaseOrderServiceCharge',
+              start: startTime,
+              end: endTime),
           OrderView(
               FinanceApi().fetchMemberOrder,
               'pendingMemberOrderServiceCharge',
-              'entryMemberOrderServiceCharge	'),
+              'entryMemberOrderServiceCharge	',
+              start: startTime,
+              end: endTime),
           OrderView(
               FinanceApi().fetchPackageOrder,
               'pendingGiftPackageOrderServiceCharge',
-              'entryGiftPackageOrderServiceCharge')
+              'entryGiftPackageOrderServiceCharge',
+              start: startTime,
+              end: endTime)
         ],
       ),
     );
@@ -102,12 +132,15 @@ class OrderView extends StatefulWidget {
   final Function getListFn;
   final String pending;
   final String entry;
-  OrderView(this.getListFn, this.pending, this.entry);
+  final DateTime start;
+  final DateTime end;
+  OrderView(this.getListFn, this.pending, this.entry, {this.start, this.end});
   @override
   _OrderViewState createState() => _OrderViewState();
 }
 
-class _OrderViewState extends State<OrderView> with AutomaticKeepAliveClientMixin {
+class _OrderViewState extends State<OrderView>
+    with AutomaticKeepAliveClientMixin {
   int pageNo = 1; // 当前页码
   List<FinanceItemModel> itemList = <FinanceItemModel>[]; // 列表项
   int total; // 总条数
@@ -288,9 +321,9 @@ class _OrderViewState extends State<OrderView> with AutomaticKeepAliveClientMixi
       return [0, data[widget.pending] ?? 0, data[widget.entry] ?? 0];
       // serviceCharge = [0, data[widget.pending] ?? 0, data[widget.entry] ?? 0];
       // setState(() {
-       
+
       // });
-    } 
+    }
 
     return [0, 0, 0];
   }
@@ -332,6 +365,8 @@ class _OrderViewState extends State<OrderView> with AutomaticKeepAliveClientMixi
   void initState() {
     super.initState();
     _getList(refresh: true);
+    startTime = widget.start;
+    endTime = widget.end;
     chargeFuture = _getCharge();
   }
 

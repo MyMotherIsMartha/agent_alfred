@@ -414,6 +414,12 @@ class _HomePageState extends State<HomePage>
       '会员注册数',
       '代理商注册数',
     ];
+
+    List<String> desc = [
+      '代理商通过服务会员，从而促使会员在37度礼购APP采购，即可获得会员采购总额的2%作为产品销售分佣。',
+      '代理商推荐的会员成为钻石会员，获得钻石会员软件信息技术服务费的60%作为居间服务费奖励。',
+      '代理商通过销售产品礼包，获得产品礼包总额的30%作为销售分佣。',
+    ];
     switch (type) {
       case 'today':
         data = [
@@ -478,7 +484,16 @@ class _HomePageState extends State<HomePage>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Container(
+                              InkWell(
+                                onTap: () {
+                                  if (index < 3) {
+                                    G.navigateTo(context, '/finance?type=' + type + '&index=' + index.toString());
+                                  }
+                                  if (index == 3) {
+                                    G.navigateTo(context, '/finance?type=thisMonth&index=0');
+                                  }
+                                },
+                              child: Container(
                                 alignment: Alignment.center,
                                 child: Text.rich(TextSpan(children: [
                                   TextSpan(
@@ -492,7 +507,7 @@ class _HomePageState extends State<HomePage>
                                           color: hex('#333'),
                                           fontSize: G.setSp(36))),
                                 ])),
-                              ),
+                              )),
                               G.spacing(15),
                               Text(title[index],
                                   style: TextStyle(
@@ -505,6 +520,7 @@ class _HomePageState extends State<HomePage>
                                   top: G.setWidth(20),
                                   right: G.setWidth(20),
                                   child: ToolTip(
+                                    desc: desc[index],
                                       direction: (index + 1) % 3 == 0
                                           ? 'left'
                                           : 'down'),
@@ -712,7 +728,8 @@ class _HomePageState extends State<HomePage>
 // tooltip 如有需要可封装成组件
 class ToolTip extends StatefulWidget {
   final String direction;
-  ToolTip({@required this.direction});
+  final String desc;
+  ToolTip({@required this.direction, @required this.desc});
   @override
   _ToolTipState createState() => _ToolTipState();
 }
@@ -763,9 +780,10 @@ class _ToolTipState extends State<ToolTip> {
             width: G.setWidth(36),
             height: G.setWidth(36),
           ),
-          content: Text("代理商通过销售产品礼包，获得产品礼包总额的30%作为销售分佣。产品礼包总额的30%作为销售分佣。",
+          content: Text(widget.desc,
               style: TextStyle(
                 decoration: TextDecoration.none,
+                fontWeight: FontWeight.w400,
                 fontSize: G.setSp(24),
                 color: hex('#FFF'),
               )),

@@ -102,7 +102,8 @@ Handler createOrderHandler = Handler(
 Handler certificateHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String no = params['no']?.first;
-  return CertificatePage(no: no);
+  String from = params['from']?.first;
+  return CertificatePage(no: no, from: from);
 });
 
 Handler orderResultHandler = Handler(
@@ -239,7 +240,9 @@ Handler vipDetailHandler = Handler(
 // 财务管理
 Handler financeHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return FinancePage();
+      String type = params['type']?.first;
+  String index = params['index']?.first;
+  return FinancePage(type: type, index: index);
 });
 
 // 财务搜索

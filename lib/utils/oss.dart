@@ -34,13 +34,25 @@ class Oss {
 
   /*相册*/
   static uploadPic(ImageSource source, Function cb, Function uploadApi) async {
-    var pre;
+    bool flag;
+    // print(await Permission.photos.request().isGranted);
+    // var pre;
     if (source == ImageSource.camera) {
-      pre = await Permission.camera.status;
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.camera,
+      ].request();
+      flag = statuses[Permission.camera] == PermissionStatus.granted;
     } else {
-      pre = await Permission.photos.status;
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.storage,
+      ].request();
+      flag = statuses[Permission.storage] == PermissionStatus.granted;
+      // pre = await Permission.photos.status;
     }
-    if (pre == 'denied') {
+    print(flag);
+    // print(pre);
+    // print('权限啊权限');
+    if (!flag) {
       G.toast('请在设置中打开权限');
       return;
     }

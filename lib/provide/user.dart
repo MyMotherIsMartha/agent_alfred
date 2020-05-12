@@ -113,6 +113,7 @@ class UserProvide with ChangeNotifier {
             case 1:
             case 0:
             case 3:
+            case 4:
               G.navigateTo(G.currentContext, '/order-result',
                   replace: true, transition: transition);
               break;
@@ -145,6 +146,10 @@ class UserProvide with ChangeNotifier {
   }
 
   qualificationsStatus() {
+    if (!userAuthInfo.isContactsPrefected) {
+      G.navigateTo(G.currentContext, '/uploadEnterPrisePic', replace: true);
+      return;
+    }
     int status = userAuthInfo.qualificationsStatus;
     switch (status) {
       case 0:

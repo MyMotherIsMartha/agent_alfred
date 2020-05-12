@@ -15,7 +15,8 @@ import 'package:provider/provider.dart';
 
 class CertificatePage extends StatefulWidget {
   final String no;
-  CertificatePage({this.no});
+  final String from;
+  CertificatePage({this.no, this.from});
   @override
   _CertificatePageState createState() => _CertificatePageState();
 }
@@ -29,10 +30,17 @@ class _CertificatePageState extends State<CertificatePage> {
   int _orderOverTime = 0;
 
   void _getOrderInfo() async {
-    var result = await OrderApi().getGiftPackageOrders();
-    setState(() {
-      _orderOverTime = result.data['data']['orderOverime'];
-    });
+    if (widget.from == 'order') {
+      setState(() {
+        _orderOverTime = int.parse(G.getPref('orderOverTime'));
+      });
+    } else {
+      var result = await OrderApi().getGiftPackageOrders();
+      setState(() {
+        _orderOverTime = result.data['data']['orderOverime'];
+      });
+      G.setPref('orderOverTime', result.data['data']['orderOverime'].toString());
+    }
     countDown();
   }
 
@@ -132,6 +140,7 @@ class _CertificatePageState extends State<CertificatePage> {
       return setState(() {
         if (_countdownTime < 1) {
           _timer.cancel();
+          G.removePref('orderOverTime');
           G.navigateTo(context, '/create-account', replace: true);
         } else {
           _countdownTime = _countdownTime - 1;
