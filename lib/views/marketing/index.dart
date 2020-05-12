@@ -80,7 +80,6 @@ class _MarketingPageState extends State<MarketingPage> {
               G.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp);
               // webview打开
             } else if (item.jumpType == 3) {
-              print('123412434444444444444444444444444444444444');
               var id = item.jumpContent;
               G.navigateTo(context, '/module?from=banner&id=' + id);
             }
@@ -153,14 +152,14 @@ class _MarketingPageState extends State<MarketingPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                item.moduleName,
+                item.name,
                 style: TextStyle(fontSize: G.setSp(32), color: hex('#333')),
               ),
-              item.findIndexModuleItemVos.length >= item.total ?
+              item.itemVos.length >= item.total ?
               Container()
               : InkWell(
                 onTap: () {
-                  G.navigateTo(context, '/module?from=module&id=' + item.moduleId);
+                  G.navigateTo(context, '/module?from=module&id=' + item.id);
                 },
                   child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -181,7 +180,7 @@ class _MarketingPageState extends State<MarketingPage> {
             ],
           ),
           G.spacing(30),
-          Column(children: _moduleItemList(item.findIndexModuleItemVos))
+          Column(children: _moduleItemList(item.itemVos))
         ],
       ),
     );
@@ -260,7 +259,7 @@ class _MarketingPageState extends State<MarketingPage> {
   // Widget _moduleItem(ModuleModel item) {
   //   return InkWell(
   //       onTap: () {
-  //         int type = item.findIndexModuleItemVos[0].moduleContactType;
+  //         int type = item.itemVos[0].moduleContactType;
   //         String id = item.findIndexModuleItemVos[0].contactId;
   //         if (type == 2) {
   //           G.navigateTo(context, '/market/course?id=' + id);

@@ -26,8 +26,6 @@ class _ModuleDetailPageState extends State<ModuleDetailPage> {
     } else {
       result = await MarketingApi().moduleList(moduleId: widget.contentId);
     }
-    print(result);
-    print('result');
     List data = result.data['data'];
     if (result.data['code'] == 200) {
       if (data != null) {
@@ -98,15 +96,15 @@ class _ModuleDetailPageState extends State<ModuleDetailPage> {
             appBar: AppBar(
               centerTitle: true,
               elevation: 0,
-              title: Text(moduleDetail.moduleName),
+              title: Text(moduleDetail.name),
             ),
             body: Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
               child: ListView.builder(
-                  itemCount: moduleDetail.findIndexModuleItemVos.length,
+                  itemCount: moduleDetail.itemVos.length,
                   itemBuilder: (context, index) {
-                    return _courseItem(moduleDetail.findIndexModuleItemVos[index]);
+                    return _courseItem(moduleDetail.itemVos[index]);
                   }),
             ),
           );

@@ -42,7 +42,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
     _videoPlayerController = VideoPlayerController.network(item.linkUrl);
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
-      aspectRatio: 750 / 420,
+      // aspectRatio: 750 / 420,
       autoPlay: false,
       looping: false,
       materialProgressColors: ChewieProgressColors(
@@ -59,13 +59,13 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   Widget _headerPlayer() {
     return Container(
         width: double.infinity,
-        height: G.setWidth(420),
+        // height: G.setWidth(420),
         color: hex('#999'),
         child: Stack(
           children: <Widget>[
             Container(
                 width: double.infinity,
-                height: G.setWidth(420),
+                // height: G.setWidth(420),
                 child: currentCourse.contactType == 1
                     ? _videoPlayerController != null
                         ? Chewie(
@@ -191,7 +191,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                   VideoPlayerController.network(item.linkUrl);
               _chewieController = ChewieController(
                 videoPlayerController: _videoPlayerController,
-                aspectRatio: 750 / 420,
+                // aspectRatio: 750 / 420,
                 autoPlay: false,
                 looping: false,
                 materialProgressColors: ChewieProgressColors(
@@ -209,7 +209,6 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
           }
         },
         child: Container(
-          width: G.setWidth(690),
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -265,7 +264,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   // 课程目录
   Widget _courseMenu() {
     return Container(
-      // padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
+      width: G.setWidth(750),
       height: G.setWidth(375),
       child: ListView.separated(
           separatorBuilder: (context, index) {

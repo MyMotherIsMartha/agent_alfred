@@ -36,7 +36,7 @@ class MarketingApi {
 
   // 模块详情
   detailModule(String contentId) async {
-    return await service().post('$agentMarketingApi/v1/api/content/detailContent',
+    return await service().post('$agentMarketingApi/v1/api/content/detailContentToC',
         data: {'contentId': contentId});
   }
 
