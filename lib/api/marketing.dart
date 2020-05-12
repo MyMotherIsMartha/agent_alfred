@@ -13,9 +13,12 @@ class MarketingApi {
   }
 
   // 模板 列表
-  moduleList() async {
+  moduleList({int indexSwitch = 0, String moduleId}) async {
     return await service()
-        .post('$agentMarketingApi/v1/api/module/findIndexModuleList');
+        .post('$agentMarketingApi/v1/api/module/findIndexModuleList', data: {
+          'indexSwitch': indexSwitch,
+          'moduleId': moduleId
+        });
   }
 
   // 搜索

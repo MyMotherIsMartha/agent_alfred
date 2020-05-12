@@ -332,6 +332,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
               width: G.setWidth(550),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(currentCourse.tutorName ?? ''),
                   Text(currentCourse.tutorDesc ?? '')
@@ -350,8 +351,8 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
-    _chewieController.dispose();
+    _videoPlayerController?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 

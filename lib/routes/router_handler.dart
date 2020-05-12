@@ -349,7 +349,8 @@ Handler marketMeetingHandler = Handler(
 Handler moduleDetailHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String id = params['id']?.first;
-      return ModuleDetailPage(id);
+      String from = params['from']?.first;
+      return ModuleDetailPage(id, from);
 });
 
 // webview

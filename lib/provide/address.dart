@@ -9,6 +9,7 @@ class AddressProvide with ChangeNotifier {
 
   getAddress() async {
     if (needRefresh) {
+      print('get address!!!!!!!!!!!!!!!!!!!!!!!!!!');
       needRefresh = false;
       var result = await MemberApi().addressInfo();
       if (result.data['code'] == 200 && result.data['data'] != null) {
