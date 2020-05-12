@@ -33,7 +33,7 @@ class UserProvide with ChangeNotifier {
     if (result.data['code'] == 200) {
       enterpriseInfo = EnterpriseInfoModel.fromJson(result.data['data']);
     } else {
-      G.toast('获取用户企业信息失败');
+      // G.toast('获取用户企业信息失败');
     }
   }
 
@@ -45,7 +45,7 @@ class UserProvide with ChangeNotifier {
     if (result.data['code'] == 200) {
       bankCardInfo = result.data['data'];
     } else {
-      G.toast('获取用户银行卡信息失败');
+      // G.toast('获取用户银行卡信息失败');
     }
   }
 
@@ -160,8 +160,11 @@ class UserProvide with ChangeNotifier {
       case -3:
       case 1:
       case 3:
-      case -1:
         G.navigateTo(G.currentContext, '/resultPage?status=$status',
+            replace: true);
+        break;
+      case -1:
+        G.navigateTo(G.currentContext, '/resultPage?status=$status&refuseReason=${userAuthInfo.auditRefuseReason}',
             replace: true);
         break;
       case 4:

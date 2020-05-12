@@ -1,6 +1,7 @@
 import 'package:agent37_flutter/api/oss.dart';
 import 'package:flutter/material.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
@@ -19,9 +20,15 @@ class UploadEnterprisePic extends StatefulWidget {
 
 class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
   static bool haveUpload = false;
+  bool goNextPage = false;
+  Map uploadData;
 
-  final haveUploadArea = Container(
-    child: Text('haveUpload')
+  final Widget haveUploadArea = Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Text('点击重新上传营业执照', style: TextStyle(color: hex('#434343'), fontSize: G.setSp(30), fontWeight: FontWeight.w500))
+    ],
   );
 
   final Widget noUploadArea = Column(
@@ -46,6 +53,11 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     ],
   );
   
+  @override
+  void initState() { 
+    super.initState();
+    haveUpload = widget.isFirstUpload != 'yes';
+  }
   /*拍照*/
   _takePhoto() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -76,24 +88,77 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
         "file": await MultipartFile.fromFile(path,filename: name + '.' + suffix)
     });
     G.showLoading(context);
-    var resultInfo = await OssApi().uploadEnterpriseLicense(data);
+    var resultInfo = await OssApi().uploadLicenseCanFail(data);
     G.closeLoading();
     if (resultInfo.data['success'] == true) {
       print('success');
-      Map uploadData = resultInfo.data['data'];
-      var uploadJson = FluroConvertUtils.object2string(uploadData);
-      G.navigateTo(
-        context, Routes.uploadLicenseForm + "?uploadJson=$uploadJson");
+      var licenseInfo = resultInfo.data['data']['licenseInfo'];
+      if (licenseInfo == null) {
+        uploadData = {
+          'businessLicenseUrl': resultInfo.data['data']['businessLicenseUrl']
+        };
+        goNextPage = false;
+        yyAlertDialog(context);
+      } else {
+        uploadData = licenseInfo;
+        uploadData['businessLicenseUrl'] = resultInfo.data['data']['businessLicenseUrl'];
+        var uploadJson = FluroConvertUtils.object2string(uploadData);
+        setState(() {
+          haveUpload = true;
+        });
+        G.navigateTo(
+          context, Routes.uploadLicenseForm + "?uploadJson=$uploadJson");
+      }
+      
     } else {
       print(resultInfo.data['message']);
     }
     
   }
 
-  void goToUploadForm() {
-    // License license = new License(name: 'Zeking', age: 18, sex: true);
-    // G.navigateTo(
-    //     context, Routes.uploadLicenseForm + "?name=$mName&age=$age&personjson=$personJson");
+  YYDialog yyAlertDialog(BuildContext context) {
+  return YYDialog().build(context)
+    ..width = G.setWidth(500)
+    ..height = G.setWidth(215)
+    ..borderRadius = G.setWidth(20)
+    ..text(
+      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setWidth(40)),
+      alignment: Alignment.center,
+      text: "未识别出营业执照信息",
+      color: hex('#333'),
+      fontSize: G.setSp(36),
+      fontWeight: FontWeight.w500,
+    )
+    ..divider()
+    ..doubleButton(
+      // padding: EdgeInsets.only(top: G.setWidth(25.0), left: G.setWidth(50), right: G.setWidth(500)),
+      gravity: Gravity.center,
+      withDivider: true,
+      text1: "重新上传",
+      color1: hex('#85868A'),
+      fontSize1: G.setSp(36),
+      fontWeight1: FontWeight.w400,
+      onTap1: () {
+        print("取消");
+      },
+      text2: "手动输入",
+      color2: hex('#0091F0'),
+      fontSize2: G.setSp(36),
+      fontWeight2: FontWeight.w400,
+      onTap2: () {
+        goNextPage = true;
+      },
+    )
+    ..show()
+    ..dismissCallBack = () {
+      if (goNextPage) {
+        var uploadJson = FluroConvertUtils.object2string(uploadData);
+        print(uploadJson);
+        Future.delayed(Duration(microseconds: 100), () {
+            G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
+        });
+      }
+    };
   }
 
   @override
@@ -173,13 +238,17 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
                 )
               ),
             ),
-            widget.isFirstUpload != 'yes' ?
+            haveUpload ?
             Container(
               margin: EdgeInsets.only(top: G.setHeight(50)),
               child: InkWell(
                 onTap: () {
-                  G.navigateTo(context, 'upload');
-             
+                  // yyAlertDialog(context);
+                  Map uploadData = {
+                    'isRequest': true
+                  };
+                  var uploadJson = FluroConvertUtils.object2string(uploadData);
+                  G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
                 },
                 child: Text('跳过这步 >', style: TextStyle(
                   color: hex('#0091F0'),
@@ -188,9 +257,6 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
               )
             ) : Text('')
             // _ImageView(_imgPath)
-            // RaisedButton(
-            //   onPressed: goToUploadForm, 
-            //   child: Text('go upload form'),)
           ],
         )
       ),

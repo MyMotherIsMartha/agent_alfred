@@ -166,8 +166,10 @@ Handler resultPageHandler = Handler(
     String status = params['status']?.first;
     // String title = params['title']?.first ?? 'no';
     String haveExit = params['haveExit']?.first ?? 'yes';
+    String refuseReason = params['refuseReason']?.first ?? '';
     return ResultPage(
       status: status,
+      refuseReason: refuseReason,
       // title: title,
       haveExit: haveExit
     );

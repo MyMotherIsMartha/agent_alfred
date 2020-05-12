@@ -102,7 +102,7 @@ class SettingPage extends StatelessWidget {
     return ListTile(
       title: Text('版本号',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
-      trailing: Text('x.x.x',
+      trailing: Text('Test_1.0.0',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#999'))),
       onTap: () {},
     );

@@ -86,6 +86,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
     var resultData = result.data['data'];
     print(result.data.toString());
     uploadData =  resultData;
+    uploadData['businessLicenseUrl'] = uploadData['businessLicensePicture'];
     jobCode = resultData['industryCode'];
     jobCodeCtrl.text = resultData['industryName'];
     enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
@@ -346,8 +347,8 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                             ),
                             Expanded(
                               child: TextFormField(
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9]"))],
+                                // keyboardType: TextInputType.number,
+                                // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9]"))],
                                 decoration:
                                     InputDecoration(border: InputBorder.none, hintText: '请输入企业法人名称'),
                                 controller: _legalPersonCtrl,
@@ -391,7 +392,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         'industryName': jobCodeCtrl.text,
                         'registerAddress': addressStr,
                         'areaCode': int.parse(areaCode),
-                        'businessLicensePicture': uploadData['businessLicensePicture'],
+                        'businessLicensePicture': uploadData['businessLicenseUrl'],
                         'enterpriseName': enterpriseName,
                         'legalPerson': legalPerson,
                         'registerCode': registerCode,
