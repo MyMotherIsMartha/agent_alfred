@@ -29,7 +29,7 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
    
-    middleArea = middleStatusWidget1();
+    middleArea = middleStatusWidget4();
     statusCode = int.parse(widget.status);
     print(statusCode);
     print(widget.haveExit);
@@ -53,6 +53,10 @@ class _ResultPageState extends State<ResultPage> {
     };
     var uploadJson = FluroConvertUtils.object2string(uploadData);
     G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
+  }
+
+  void modifyInfo() {
+    G.navigateTo(context, '/uploadEnterPrisePic?isFirstUpload=false');
   }
   
 
@@ -179,7 +183,7 @@ class _ResultPageState extends State<ResultPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
             RaisedButton(
-              onPressed: checkQualification,
+              onPressed: modifyInfo,
               elevation: 4.0,
               color: hex('#69A5FF'),
               textColor: Colors.white,
@@ -469,7 +473,7 @@ class _ResultPageState extends State<ResultPage> {
       appTitle = '上传发票';
       middleArea = middleStatusWidgetInvoice();
     } else {
-      middleArea = middleStatusWidget1();
+      middleArea = middleStatusWidget4();
     }
   }
 

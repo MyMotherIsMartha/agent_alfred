@@ -117,7 +117,10 @@ Handler finePointHandel = Handler(
 
 Handler uploadEnterPrisePicHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return UploadEnterprisePic();
+    String isFirstUpload = params['isFirstUpload']?.first ?? 'yes';;
+  return UploadEnterprisePic(
+    isFirstUpload: isFirstUpload
+  );
 });
 
 Handler uploadLicenseFormHandler = Handler(
