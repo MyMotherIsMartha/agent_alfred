@@ -11,6 +11,13 @@ class OssApi{
     print(r);
     return r;
   }
+
+  uploadLicenseCanFail(params) async {
+    var r = await service().post('$serviceAccountApi/v1/license/recognitionsHavePic',
+    data: params);
+    print(r);
+    return r;
+  }
   
   uploadFile(data) async {
     return await service().post('$serviceAccountApi/oss/upload', data: data);

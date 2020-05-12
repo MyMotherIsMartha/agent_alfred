@@ -12,14 +12,16 @@ import 'package:agent37_flutter/utils/TelAndSmsService.dart';
 class ResultPage extends StatefulWidget {
   final String status;
   final String haveExit;
+  final String refuseReason;
 
-  ResultPage({this.status, this.haveExit});
+  ResultPage({this.status, this.haveExit, this.refuseReason});
 
   @override
   _ResultPageState createState() => _ResultPageState();
 }
 
 class _ResultPageState extends State<ResultPage> {
+  String refuseReason = '';
   var statusCode = 1;
   var appTitle = '企业信息审核';
   final TelAndSmsService _service = locator<TelAndSmsService>();
@@ -31,6 +33,7 @@ class _ResultPageState extends State<ResultPage> {
    
     middleArea = middleStatusWidget4();
     statusCode = int.parse(widget.status);
+    refuseReason = widget.refuseReason;
     print(statusCode);
     print(widget.haveExit);
     _getCurrentWidgetAndTitle();
@@ -41,8 +44,10 @@ class _ResultPageState extends State<ResultPage> {
     var result = await LoginApi().getUserAuth();
     print(result.data['data'].toString());
     int qualificationsStatus = result.data['data']['qualificationsStatus'];
+    
     setState(() {
       statusCode = qualificationsStatus;
+      refuseReason = result.data['data']['auditRefuseReason'] ?? '';
       _getCurrentWidgetAndTitle();
     });
   }
@@ -175,7 +180,7 @@ class _ResultPageState extends State<ResultPage> {
               style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
           G.spacing(G.setHeight(10)),      
         Text('您的企业信息审核未通过，请重新填写', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
-        Text('原因：营业执照模糊', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+        Text('原因：$refuseReason', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
         Container(
           height: G.setHeight(265),
           child: Row(
