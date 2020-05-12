@@ -8,7 +8,7 @@ Dio service() {
       BaseOptions(
         baseUrl: EnvConfig.dev['api'],
         headers: {'platform': 'agent_app'},
-        connectTimeout: 10000
+        connectTimeout: 20000
       );
 
   Dio dio = Dio(_baseOptions);
@@ -44,9 +44,9 @@ Dio service() {
     // 当请求失败时做一些预处理
     // return e; //continue
   }));
-  // dio.interceptors.add(
-  //   LogInterceptor(requestBody: true, responseBody: true),
-  // );
+  dio.interceptors.add(
+    LogInterceptor(requestBody: true, responseBody: true),
+  );
   // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
   //     (client) {
   //   // config the http client
