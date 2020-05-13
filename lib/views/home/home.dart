@@ -5,6 +5,8 @@ import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/models/home-info.dart';
+import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
 import './components/shareWindow.dart';
 
@@ -27,6 +30,9 @@ class _HomePageState extends State<HomePage>
   TabController _tabController;
   EasyRefreshController _refreshController = EasyRefreshController();
   HomeInfoModel homeinfo;
+  String nickname;
+  String shareCode;
+  String mobile;
   var msgFuture;
   var homeFuture;
 
@@ -35,8 +41,13 @@ class _HomePageState extends State<HomePage>
     if (result.data['data'] != null) {
       setState(() {
         homeinfo = homeInfoModelFromJson(result.data['data']);
+        print('homeinfo');
+        print(result.data['data']);
       });
     }
+    nickname = FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname);
+    shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode;
+    mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
     return 'feture end';
   }
 
@@ -90,7 +101,9 @@ class _HomePageState extends State<HomePage>
                         }
                       },
                     )),
-                onTap: () {}),
+                onTap: () {
+                  G.navigateTo(context, '/messageCenter');
+                }),
           ],
         ));
   }
@@ -492,6 +505,12 @@ class _HomePageState extends State<HomePage>
                                   if (index == 3) {
                                     G.navigateTo(context, '/finance?type=thisMonth&index=0');
                                   }
+                                  if (index == 4) {
+                                    G.navigateTo(context, '/vipManage');
+                                  }
+                                  if (index == 5) {
+                                    G.navigateTo(context, '/agentManage');
+                                  }
                                 },
                               child: Container(
                                 alignment: Alignment.center,
@@ -605,7 +624,7 @@ class _HomePageState extends State<HomePage>
         'icon': '${G.imgBaseUrl}home/vip.png',
         'url': '/agentManage'
       },
-      {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/'},
+      {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/customerService?nickname=$nickname&shareCode=$shareCode&mobile=$mobile'},
     ];
     return Container(
         margin: EdgeInsets.symmetric(vertical: G.setWidth(20)),

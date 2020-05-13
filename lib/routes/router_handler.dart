@@ -4,7 +4,9 @@ import 'package:agent37_flutter/views/bank/index.dart';
 import 'package:agent37_flutter/views/common/resultPage.dart';
 import 'package:agent37_flutter/views/finance/index.dart';
 import 'package:agent37_flutter/views/finance/search.dart';
+import 'package:agent37_flutter/views/home/customerService.dart';
 import 'package:agent37_flutter/views/home/fine-print.dart';
+import 'package:agent37_flutter/views/home/messageCenter.dart';
 import 'package:agent37_flutter/views/index.dart';
 import 'package:agent37_flutter/views/invoice/invoiceDetail.dart';
 import 'package:agent37_flutter/views/invoice/invoiceList.dart';
@@ -74,6 +76,23 @@ Handler registerHandler = Handler(
 Handler forgetHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return ForgetPage();
+});
+
+Handler messageCenterHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return MessageCenterPage();
+});
+
+Handler customerServiceHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String nickname = params['nickname']?.first;
+  String shareCode = params['shareCode']?.first;
+  String mobile = params['mobile']?.first;
+  return CustomerServicePage(
+    nickname: nickname,
+    shareCode: shareCode,
+    mobile: mobile
+  );
 });
 
 Handler updateUserHandler = Handler(

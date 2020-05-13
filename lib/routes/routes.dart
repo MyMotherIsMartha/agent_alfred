@@ -9,6 +9,8 @@ class Routes {
   static String loginPage = '/login';
   static String registerPage = '/register';
   static String forgetPage = '/forget';
+  static String messageCenter = '/messageCenter';
+  static String customerService = '/customerService';
   static String updateUserPage = '/update-user';
   static String createAccountPage = '/create-account';
   static String addressPage = '/address';
@@ -64,6 +66,8 @@ class Routes {
     router.define(loginPage, handler: loginHandler);
     router.define(registerPage, handler: registerHandler);
     router.define(forgetPage, handler: forgetHandler);
+    router.define(messageCenter, handler: messageCenterHandler);
+    router.define(customerService, handler: customerServiceHandler);
     router.define(updateUserPage, handler: updateUserHandler);
     router.define(createAccountPage, handler: createAccountHandler);
     router.define(addressPage, handler: addressHandler);

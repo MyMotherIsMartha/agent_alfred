@@ -1,20 +1,25 @@
 import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
+import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:agent37_flutter/views/home/components/image_gallery_saver_local.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 void openShareWindow(context, String type) {
-  GlobalKey qrCodeKey;
+  GlobalKey qrCodeKey = GlobalKey();
+  String middleUrl = type == 'member' ? '#/createAccount/1?shareCode=' : '#/register?haveCode=true&shareCode=';
 
-  print(Provider.of<UserProvide>(context).userAuthInfo);
+  var shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode ?? '';
+  var nickname = Provider.of<UserProvide>(context).userAuthInfo.nickname ?? '';
   Uint8List bytes = Uint8List.fromList([71, 73, 70, 56, 57, 97, 1, 0, 1, 0, 128, 0, 0, 0, 0, 0, 255, 255, 255, 33, 249, 4, 1, 0, 0, 0, 0, 44, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 1, 68, 0, 59]);
 
   // 获取Uint8List数据
@@ -23,7 +28,7 @@ void openShareWindow(context, String type) {
     RenderRepaintBoundary boundary =
     qrCodeKey.currentContext.findRenderObject();
     var image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
     return pngBytes; //这个对象就是图片数据
     } catch (e) {
@@ -31,6 +36,28 @@ void openShareWindow(context, String type) {
     }
     return null;
     }
+
+  void saveScreen() async {
+    RenderRepaintBoundary boundary =
+        qrCodeKey.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage();
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final result = await ImageGallerySaver2.saveImage(byteData.buffer.asUint8List());
+    print(result);
+  }
+
+  void saveQrcode() async {
+    print('qr code save');
+    RenderRepaintBoundary boundary =
+        qrCodeKey.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage();
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    String path =
+        'https://image.shutterstock.com/image-photo/montreal-canada-july-11-2019-600w-1450023539.jpg';
+    GallerySaver.saveImage(path).then((bool success) {
+      print('Image is saved');
+    });
+  }
 
   showDialog(
       context: context,
@@ -91,7 +118,7 @@ void openShareWindow(context, String type) {
                                   Container(
                                       margin: EdgeInsets.only(left: G.setWidth(20)),
                                       width: G.setWidth(280),
-                                      child: Text('遇上一家旗舰店遇上一家旗舰店',
+                                      child: Text(nickname,
                                           softWrap: true,
                                           style: TextStyle(
                                               fontSize: G.setSp(30),
@@ -102,13 +129,13 @@ void openShareWindow(context, String type) {
                                 ]),
                           ),
                           QrImage(
-                            data: "1234567890",
+                            data: EnvConfig.dev['web-address'] + middleUrl + shareCode,
                             version: QrVersions.auto,
                             foregroundColor: type == 'member' ? Colors.black : hex('#E7D1A8'),
                             size: G.setWidth(380),
                           ),
                           G.spacing(20),
-                          Text('邀请码：12345678890',
+                          Text('邀请码：$shareCode',
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: G.setSp(28),
@@ -164,11 +191,12 @@ void openShareWindow(context, String type) {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 toPng().then((data) {
                                   bytes = data;
                                   print(bytes);
                                 });
+                                
                                 shareToWeChat(
                                   WeChatShareImageModel(WeChatImage.asset('lib/assets/images/Wechat2.jpeg'),
                                   title: 'title1',
@@ -177,6 +205,11 @@ void openShareWindow(context, String type) {
                                   messageAction: 'messageAction',
                                   messageExt: 'messageExt',
                                   scene: WeChatScene.SESSION));
+                                
+                                var result = await isWeChatInstalled;
+                                if (!result) {
+                                  G.toast('对不起，您还没有安装微信');
+                                }
                               },
                               child:
                               Column(children: [
@@ -196,38 +229,67 @@ void openShareWindow(context, String type) {
                                         height: 1.2)),
                               ])
                             ),
-                            Column(children: [
-                              Image(
-                                  width: G.setWidth(100),
-                                  height: G.setWidth(100),
-                                  image: AssetImage(
-                                      'lib/assets/images/home/pyq.png'),
-                                  fit: BoxFit.contain),
-                              G.spacing(5),
-                              Text('朋友圈',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: G.setSp(24),
-                                      color: hex('#ccc'),
-                                      decoration: TextDecoration.none,
-                                      height: 1.2)),
-                            ]),
-                            Column(children: [
-                              Image(
-                                  width: G.setWidth(100),
-                                  height: G.setWidth(100),
-                                  image: AssetImage(
-                                      'lib/assets/images/home/download.png'),
-                                  fit: BoxFit.contain),
-                              G.spacing(5),
-                              Text('保存图片',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: G.setSp(24),
-                                      color: hex('#ccc'),
-                                      decoration: TextDecoration.none,
-                                      height: 1.2)),
-                            ])
+                            GestureDetector(
+                              onTap: () async {
+                                toPng().then((data) {
+                                  bytes = data;
+                                  print(bytes);
+                                });
+                                
+                                shareToWeChat(
+                                  WeChatShareImageModel(WeChatImage.asset('lib/assets/images/Wechat2.jpeg'),
+                                  title: 'title1',
+                                  description: 'description',
+                                  mediaTagName: 'mediaTag Name', 
+                                  messageAction: 'messageAction',
+                                  messageExt: 'messageExt',
+                                  scene: WeChatScene.SESSION));
+                                
+                                var result = await isWeChatInstalled;
+                                if (!result) {
+                                  G.toast('对不起，您还没有安装微信');
+                                }
+                              },
+                              child:
+                              Column(children: [
+                                Image(
+                                    width: G.setWidth(100),
+                                    height: G.setWidth(100),
+                                    image: AssetImage(
+                                        'lib/assets/images/home/pyq.png'),
+                                    fit: BoxFit.contain),
+                                G.spacing(5),
+                                Text('朋友圈',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: G.setSp(24),
+                                        color: hex('#ccc'),
+                                        decoration: TextDecoration.none,
+                                        height: 1.2)),
+                              ]),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                saveQrcode();
+                              },
+                              child:
+                              Column(children: [
+                                Image(
+                                    width: G.setWidth(100),
+                                    height: G.setWidth(100),
+                                    image: AssetImage(
+                                        'lib/assets/images/home/download.png'),
+                                    fit: BoxFit.contain),
+                                G.spacing(5),
+                                Text('保存图片',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: G.setSp(24),
+                                        color: hex('#ccc'),
+                                        decoration: TextDecoration.none,
+                                        height: 1.2)),
+                              ])
+                            )
                           ])
                     ],
                   )),

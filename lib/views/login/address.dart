@@ -43,6 +43,8 @@ class _AddressPageState extends State<AddressPage> {
   void initState() {
     super.initState();
     addressProvide = Provider.of<AddressProvide>(G.currentContext);
+    print('address is');
+    print(addressModel == null);
     addressModel = addressProvide.address;
     if (addressModel != null) {
       String area =
@@ -87,7 +89,7 @@ class _AddressPageState extends State<AddressPage> {
                           type: TextInputType.text,
                           value: addressModel?.consigneeName ?? '',
                           controller: nameController,
-                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[.]+")),
+                          // inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[.]+")),
                           hintText: '请填写姓名',
                           label: '姓名',
                           maxLength: 10,
@@ -164,6 +166,11 @@ class _AddressPageState extends State<AddressPage> {
                       'district': areaLev[2],
                     };
                     print(data);
+                    var regx = RegExp(r"^[\u4e00-\u9fa5_a-zA-Z0-9.]+$");
+                    if (!regx.hasMatch(consigneeName)) {
+                      G.toast('姓名只能输入中英文');
+                      return;
+                    }
                     var result = await addressProvide.updateAddress(data);
                     if (result.data['code'] == 200) {
                       G.router.pop(context);
