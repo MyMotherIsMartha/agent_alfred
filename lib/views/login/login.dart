@@ -160,7 +160,9 @@ class _LoginPageState extends State<LoginPage> {
                             } else {
                               data['pwd'] = pwd;
                             }
+                            G.showLoading(context);
                             var result = await LoginApi().login(mobile, data);
+                            G.closeLoading();
                             if (result.data['code'] == 200) {
                               String token = result.data['data']['jwtToken'];
                               G.setPref('token', 'bearer ' + token);

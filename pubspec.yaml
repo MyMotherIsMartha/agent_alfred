@@ -27,6 +27,7 @@ dependencies:
   flutter_cupertino_localizations: ^1.0.1
   cupertino_icons: ^0.1.2
   dio: ^3.0.8
+  gallery_saver: ^2.0.1
   keyboard_actions: ^3.2.0
   fluro: ^1.5.2
   provider: ^3.1.0
