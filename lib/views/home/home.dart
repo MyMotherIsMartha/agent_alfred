@@ -35,6 +35,56 @@ class _HomePageState extends State<HomePage>
   String mobile;
   var msgFuture;
   var homeFuture;
+  bool showCheck = true;
+  bool goInfo = false;
+  Timer _timer;
+  String _countdownTime = '';
+
+  checkInfo(BuildContext context) {
+  if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus == 2 ) {
+    return;
+  }
+  return YYDialog().build(context)
+    ..width = G.setWidth(600)
+    ..borderRadius = G.setWidth(20)
+    ..text(
+      padding: EdgeInsets.all(G.setWidth(60)),
+      alignment: Alignment.center,
+      text: "您尚未完善企业信息",
+      color: hex('#333'),
+      fontSize: G.setSp(36),
+      fontWeight: FontWeight.w500,
+    )
+    ..divider()
+    ..doubleButton(
+      padding: EdgeInsets.only(top: 10.0),
+      gravity: Gravity.center,
+      withDivider: true,
+      text1: "取消",
+      color1: hex('#85868A'),
+      fontSize1: G.setSp(36),
+      onTap1: () {
+        print("取消");
+      },
+      text2: "去完善",
+      color2: hex('##0091F0'),
+      fontSize2: G.setSp(36),
+      onTap2: () {
+        print("去完善");
+        goInfo = true;
+      },
+    )
+    ..dismissCallBack = () {
+        if (goInfo) {
+          goInfo = false;
+          Future.delayed(Duration(microseconds: 100), () {
+            G.navigateTo(context, '/perfectEnterprise1');
+          });
+          
+        }
+      }
+    ..show();
+  }
 
   Future _getHomeinfo() async {
     var result = await MemberApi().getHomeInfo();
@@ -44,6 +94,7 @@ class _HomePageState extends State<HomePage>
         print('homeinfo');
         print(result.data['data']);
       });
+      countDown();
     }
     nickname = FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname);
     shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode;
@@ -107,7 +158,6 @@ class _HomePageState extends State<HomePage>
           ],
         ));
   }
-
   // 用户信息
   Widget _userInfo() {
     return Container(
@@ -277,6 +327,22 @@ class _HomePageState extends State<HomePage>
         ));
   }
 
+  countDown() {
+    _timer = Timer.periodic(Duration(seconds: 30), (timer) async {
+      setState(() {
+        _countdownTime = restTime(homeinfo.checkEndTime);
+      });
+      // int nowTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
+      // int result = (homeinfo.checkEndTime / 1000).round() - nowTime;
+      // if (result < 0) {
+      //   _timer?.cancel();
+      // }
+      // setState(() {
+      //   _countdownTime = result;
+      // });
+    });
+  }
+
   // 资格任务
   Widget _mission() {
     return homeinfo.checkStatus == 1 // 2
@@ -311,7 +377,8 @@ class _HomePageState extends State<HomePage>
                           Text(
                               homeinfo.checkStatus == 1
                                   ? '考核时间已过期，未完成考核无法获得服务费'
-                                  : '距结束：${restTime(homeinfo.checkEndTime)}',
+                                  // : '距结束：${restTime(homeinfo.checkEndTime)}',
+                                  : '距结束：$_countdownTime',
                               style: TextStyle(
                                   fontSize: G.setSp(24),
                                   color: hex('#686868'))),
@@ -679,17 +746,24 @@ class _HomePageState extends State<HomePage>
     _tabController = TabController(vsync: this, length: 3);
     msgFuture = _getMsgCount();
     homeFuture = _getHomeinfo();
+    print('1234124134');
+    Future.delayed(Duration.zero, () {
+      checkInfo(context);
+    });
+    // checkInfo(context);
   }
 
   @override
   void deactivate() {
-    super.deactivate();
+    print('1234124124123431241234');
     var bool = ModalRoute.of(context).isCurrent;
+    print(bool);
     if (bool) {
       msgFuture = _getMsgCount();
       homeFuture = _getHomeinfo();
       // _refreshController.callRefresh();
     }
+    super.deactivate();
   }
 
   @override
@@ -810,10 +884,10 @@ class _ToolTipState extends State<ToolTip> {
   }
 }
 
+
 YYDialog yyAlertDialog(BuildContext context) {
   return YYDialog().build(context)
     ..width = G.setWidth(600)
-    ..height = G.setWidth(240)
     ..borderRadius = G.setWidth(20)
     ..text(
       padding: EdgeInsets.all(G.setWidth(60)),

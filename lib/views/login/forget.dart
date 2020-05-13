@@ -54,6 +54,7 @@ class _ForgetPageState extends State<ForgetPage> {
                     child: Column(
                       children: <Widget>[
                         VInput(
+                          labelWidth: G.setWidth(100),
                           controller: mobileController,
                           hintText: '请输入您的登录手机号',
                           label: '手机号',
@@ -78,6 +79,7 @@ class _ForgetPageState extends State<ForgetPage> {
                           },
                         ),
                         VInput(
+                          labelWidth: G.setWidth(100),
                           controller: smsController,
                           hintText: '请输入验证码',
                           label: '验证码',
@@ -101,8 +103,9 @@ class _ForgetPageState extends State<ForgetPage> {
                           ),
                         ),
                         VInput(
+                          labelWidth: G.setWidth(100),
                           controller: pwdController,
-                          hintText: '6-15字符，可输入数字和大小写英文',
+                          hintText: '6-15字符，由数字和大小写英文组成',
                           label: '新密码',
                           maxLength: 16,
                           type: pwdVisible
