@@ -9,6 +9,7 @@ class UserAuthModel {
   String headSculptureUrl;
   String mobile;
   String nickname;
+  String shareCode;
   bool isSettingPassword;
   int payType;
 
@@ -23,6 +24,7 @@ class UserAuthModel {
       this.headSculptureUrl,
       this.mobile,
       this.nickname,
+      this.shareCode,
       this.isSettingPassword,
       this.payType
       });
@@ -38,6 +40,7 @@ class UserAuthModel {
     headSculptureUrl = json['headSculptureUrl'];
     mobile = json['mobile'];
     nickname = json['nickname'];
+    shareCode = json['shareCode'];
     payType = json['payType'];
     isSettingPassword = json['isSettingPassword'];
   }
@@ -54,6 +57,7 @@ class UserAuthModel {
     data['headSculptureUrl'] = this.headSculptureUrl;
     data['mobile'] = this.mobile;
     data['nickname'] = this.nickname;
+    data['shareCode'] = this.shareCode;
     data['isSettingPassword'] = this.isSettingPassword;
     data['payType'] = this.payType;
     return data;
