@@ -147,7 +147,6 @@ class _HomePageState extends State<HomePage>
           ],
         ));
   }
-
   // 用户信息
   Widget _userInfo() {
     return Container(
@@ -730,7 +729,7 @@ class _HomePageState extends State<HomePage>
     _tabController = TabController(vsync: this, length: 3);
     msgFuture = _getMsgCount();
     homeFuture = _getHomeinfo();
-    // TODO:: 根据状态决定是否弹窗完善信息
+    print('1234124134');
     Future.delayed(Duration.zero, () {
       checkInfo(context);
     });
@@ -739,13 +738,15 @@ class _HomePageState extends State<HomePage>
 
   @override
   void deactivate() {
-    super.deactivate();
+    print('1234124124123431241234');
     var bool = ModalRoute.of(context).isCurrent;
+    print(bool);
     if (bool) {
       msgFuture = _getMsgCount();
       homeFuture = _getHomeinfo();
       // _refreshController.callRefresh();
     }
+    super.deactivate();
   }
 
   @override

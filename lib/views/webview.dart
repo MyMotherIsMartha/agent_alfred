@@ -30,7 +30,7 @@ class WebPage extends StatelessWidget {
       ),
       withZoom: false,
       // 允许网页缩放
-      withLocalStorage: false,
+      withLocalStorage: true,
       // 允许LocalStorage
       withJavascript: true, // 允许执行js代码
     );

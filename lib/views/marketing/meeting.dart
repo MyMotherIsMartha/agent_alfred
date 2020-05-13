@@ -1,5 +1,7 @@
 import 'package:agent37_flutter/api/marketing.dart';
 import 'package:agent37_flutter/env.dart';
+import 'package:agent37_flutter/routes/routes.dart';
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +26,14 @@ class _WebViewState extends State<MarketMeetingPage> {
   String url;
   String title;
   String thumb;
+  bool init = true;
+  int urlLen = 1;
 
   @override
   void initState() {
     super.initState();
-    url = EnvConfig.dev['web-address'] + '/#/meeting/' + widget.id;
+    url = EnvConfig.dev['web-address'] + '/#/applymeeting/' + widget.id;
+    // url = 'http://192.168.10.60:8080/#/';
     print(url);
   }
 
@@ -147,7 +152,24 @@ class _WebViewState extends State<MarketMeetingPage> {
   setToken() async {
     String token = await G.getPref('token');
     _controller.evaluateJavascript(
-        'window.sessionStorage.setItem("token", "$token");window.refreshMeeting(${widget.id})');
+        'window.sessionStorage.setItem("token", "$token");window.refreshMeeting(${widget.id}, $init)');
+        setState(() {
+          init = false;
+        });
+        // 'window.sessionStorage.setItem("token", "$token");');
+  }
+
+  JavascriptChannel _alertJavascriptChannel(BuildContext context) {
+    return JavascriptChannel(
+        name: 'setTitle',
+        onMessageReceived: (JavascriptMessage message) {
+          setState(() {
+            title = message.message;
+            if (message.message != '') {
+              urlLen = urlLen + 1;
+            }
+          });
+        });
   }
 
   getDetail() async {
@@ -159,8 +181,17 @@ class _WebViewState extends State<MarketMeetingPage> {
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
+          title: Text(title??''),
           centerTitle: true,
           elevation: 0,
+          leading: urlLen > 1 ? BackButton(
+            onPressed: () {
+              _controller.evaluateJavascript('window.back()');
+              setState(() {
+                urlLen = urlLen - 1;
+              });
+            },
+          ) : BackButton(),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.share),
@@ -178,8 +209,14 @@ class _WebViewState extends State<MarketMeetingPage> {
             onWebViewCreated: (WebViewController wvc) {
               _controller = wvc;
             },
+            javascriptChannels: <JavascriptChannel>[
+              _alertJavascriptChannel(context),
+            ].toSet(),
             onPageFinished: (url) {
               setToken();
+            },
+            navigationDelegate: (NavigationRequest request) {
+              return NavigationDecision.navigate;
             },
           ),
         ));
