@@ -39,6 +39,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
 
   // 设置视频
   void _setVideo(ContactVos item) {
+    print(item.linkUrl);
     _videoPlayerController = VideoPlayerController.network(item.linkUrl);
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
@@ -52,6 +53,14 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
         bufferedColor: hex('#999'),
       ),
       autoInitialize: true,
+      errorBuilder: (context, errorMessage) {
+        return Center(
+          child: Text(
+            errorMessage,
+            style: TextStyle(color: Colors.white),
+          ),
+        );
+      },
     );
   }
 
@@ -65,7 +74,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
           children: <Widget>[
             Container(
                 width: double.infinity,
-                // height: G.setWidth(420),
+                height: G.setWidth(420),
                 child: currentCourse.contactType == 1
                     ? _videoPlayerController != null
                         ? Chewie(
@@ -76,7 +85,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: NetworkImage(detail.courseImg),
-                                fit: BoxFit.fill)),
+                                fit: BoxFit.contain)),
                       )
                 // child: videoController != null && videoController.value.initialized ? VideoPlayer(videoController) : _buildInitingWidget(),
                 ),
@@ -130,6 +139,14 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
       looping: false,
       customControls: Container(),
       autoInitialize: true,
+      errorBuilder: (context, errorMessage) {
+        return Center(
+          child: Text(
+            errorMessage,
+            style: TextStyle(color: Colors.white),
+          ),
+        );
+      },
     );
     // _chewie.addListener(() {
     //   print('_chewie.addListener');
@@ -204,8 +221,8 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
               );
             });
           } else {
-            // _videoPlayerController.dispose();
-            // _chewieController.dispose();
+            _videoPlayerController.dispose();
+            _chewieController.dispose();
           }
         },
         child: Container(
@@ -227,7 +244,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: NetworkImage(detail.courseImg),
-                                        fit: BoxFit.fill)),
+                                        fit: BoxFit.contain)),
                               ),
                         curIndex == index
                             ? Positioned(
@@ -291,9 +308,9 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
         children: <Widget>[
           Text('内容详情',
               style: TextStyle(fontSize: G.setSp(28), color: hex('#333'))),
-          currentCourse.contactContent  != null
-          ? Html(data: currentCourse.contactContent)
-          : Container()
+          currentCourse.contactContent != null
+              ? Html(data: currentCourse.contactContent)
+              : Container()
         ],
       ),
     );
@@ -375,7 +392,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                               child: Column(
                                 children: <Widget>[
                                   _title(),
-                                  _courseMenu(),
+                                  // _courseMenu(),
                                   _tutor(),
                                   _contentHtml()
                                 ],

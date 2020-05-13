@@ -5,6 +5,7 @@ import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/models/home-info.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
 import './components/shareWindow.dart';
 
@@ -29,6 +31,54 @@ class _HomePageState extends State<HomePage>
   HomeInfoModel homeinfo;
   var msgFuture;
   var homeFuture;
+  bool showCheck = true;
+  bool goInfo = false;
+
+  checkInfo(BuildContext context) {
+  if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus == 2 ) {
+    return;
+  }
+  return YYDialog().build(context)
+    ..width = G.setWidth(600)
+    ..borderRadius = G.setWidth(20)
+    ..text(
+      padding: EdgeInsets.all(G.setWidth(60)),
+      alignment: Alignment.center,
+      text: "您尚未完善企业信息",
+      color: hex('#333'),
+      fontSize: G.setSp(36),
+      fontWeight: FontWeight.w500,
+    )
+    ..divider()
+    ..doubleButton(
+      padding: EdgeInsets.only(top: 10.0),
+      gravity: Gravity.center,
+      withDivider: true,
+      text1: "取消",
+      color1: hex('#85868A'),
+      fontSize1: G.setSp(36),
+      onTap1: () {
+        print("取消");
+      },
+      text2: "去完善",
+      color2: hex('##0091F0'),
+      fontSize2: G.setSp(36),
+      onTap2: () {
+        print("去完善");
+        goInfo = true;
+      },
+    )
+    ..dismissCallBack = () {
+        if (goInfo) {
+          goInfo = false;
+          Future.delayed(Duration(microseconds: 100), () {
+            G.navigateTo(context, '/perfectEnterprise1');
+          });
+          
+        }
+      }
+    ..show();
+  }
 
   Future _getHomeinfo() async {
     var result = await MemberApi().getHomeInfo();
@@ -660,6 +710,11 @@ class _HomePageState extends State<HomePage>
     _tabController = TabController(vsync: this, length: 3);
     msgFuture = _getMsgCount();
     homeFuture = _getHomeinfo();
+    // TODO:: 根据状态决定是否弹窗完善信息
+    Future.delayed(Duration.zero, () {
+      checkInfo(context);
+    });
+    // checkInfo(context);
   }
 
   @override
@@ -791,10 +846,10 @@ class _ToolTipState extends State<ToolTip> {
   }
 }
 
+
 YYDialog yyAlertDialog(BuildContext context) {
   return YYDialog().build(context)
     ..width = G.setWidth(600)
-    ..height = G.setWidth(240)
     ..borderRadius = G.setWidth(20)
     ..text(
       padding: EdgeInsets.all(G.setWidth(60)),

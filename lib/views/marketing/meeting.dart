@@ -44,7 +44,6 @@ class _WebViewState extends State<MarketMeetingPage> {
       title = result.data['data']['meetingName'];
       thumb = result.data['data']['sharePage'];
     } else {
-      print('12341234123414124大杀四方神鼎飞丹砂放点水发士大夫 ');
     }
     var model = WeChatShareWebPageModel(
       url,
