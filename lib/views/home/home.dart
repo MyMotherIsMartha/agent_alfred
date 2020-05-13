@@ -33,6 +33,8 @@ class _HomePageState extends State<HomePage>
   var homeFuture;
   bool showCheck = true;
   bool goInfo = false;
+  Timer _timer;
+  String _countdownTime = '';
 
   checkInfo(BuildContext context) {
   if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus == 2 ) {
@@ -86,6 +88,7 @@ class _HomePageState extends State<HomePage>
       setState(() {
         homeinfo = homeInfoModelFromJson(result.data['data']);
       });
+      countDown();
     }
     return 'feture end';
   }
@@ -314,6 +317,22 @@ class _HomePageState extends State<HomePage>
         ));
   }
 
+  countDown() {
+    _timer = Timer.periodic(Duration(seconds: 30), (timer) async {
+      setState(() {
+        _countdownTime = restTime(homeinfo.checkEndTime);
+      });
+      // int nowTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
+      // int result = (homeinfo.checkEndTime / 1000).round() - nowTime;
+      // if (result < 0) {
+      //   _timer?.cancel();
+      // }
+      // setState(() {
+      //   _countdownTime = result;
+      // });
+    });
+  }
+
   // 资格任务
   Widget _mission() {
     return homeinfo.checkStatus == 1 // 2
@@ -348,7 +367,8 @@ class _HomePageState extends State<HomePage>
                           Text(
                               homeinfo.checkStatus == 1
                                   ? '考核时间已过期，未完成考核无法获得服务费'
-                                  : '距结束：${restTime(homeinfo.checkEndTime)}',
+                                  // : '距结束：${restTime(homeinfo.checkEndTime)}',
+                                  : '距结束：$_countdownTime',
                               style: TextStyle(
                                   fontSize: G.setSp(24),
                                   color: hex('#686868'))),

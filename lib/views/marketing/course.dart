@@ -33,7 +33,9 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
       detail = CourseModel.fromJson(data);
       currentCourse = detail.contactVos[0];
     });
-    _setVideo(detail.contactVos[0]);
+    if (currentCourse.contactType == 1) {
+      _setVideo(detail.contactVos[0]);
+    }
     return 'end';
   }
 
@@ -394,7 +396,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                               child: Column(
                                 children: <Widget>[
                                   _title(),
-                                  // _courseMenu(),
+                                  _courseMenu(),
                                   _tutor(),
                                   _contentHtml()
                                 ],

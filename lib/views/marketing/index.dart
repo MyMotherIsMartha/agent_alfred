@@ -153,7 +153,7 @@ class _MarketingPageState extends State<MarketingPage> {
             children: <Widget>[
               Text(
                 item.name,
-                style: TextStyle(fontSize: G.setSp(32), color: hex('#333')),
+                style: TextStyle(fontSize: G.setSp(45), color: hex('#333'), fontWeight: FontWeight.bold),
               ),
               item.itemVos.length >= item.total ?
               Container()
@@ -239,7 +239,7 @@ class _MarketingPageState extends State<MarketingPage> {
                   textAlign: TextAlign.start,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: G.setSp(32),
+                      fontSize: G.setSp(30),
                       color: hex('#333'),
                       height: 45 / 32),
                 ),
