@@ -14,37 +14,51 @@ class AgentListItem extends StatefulWidget {
 
 class _AgentListItemState extends State<AgentListItem> {
 
-  Widget leftTopText(statusCode) {
+  Widget leftTopText(qualiStatus, role, voucherStatus) {
     String statusStr;
-    switch (statusCode) {
-      case -3:
-        statusStr = '资质审核关闭';
-        break;
-      case -2:
-        statusStr = '资质审核超时';
-        break;
-      case -1:
-        statusStr = '资质审核拒绝';
-        break;
-      case 0:
-        statusStr = '待资质审核提交';
-        break;
-      case 1:
-        statusStr = '资质审核已提交';
-        break;
-      case 2:
-        statusStr = '待资质审核';
-        break;
-      case 3:
-        statusStr = '资质审核延迟申请';
-        break;
-      case 4:
-        statusStr = '资质审核成功';
-        break;
-      default:
-        statusStr = '未知状态';
+    if (role == -1) {
+      switch (voucherStatus) {
+        case 1:
+          statusStr = '凭证待审核';
+          break;
+        case 3:
+          statusStr = '凭证审核拒绝';
+          break;
+        default:
+          statusStr = '待支付';
+      }
+    } else {
+      switch (qualiStatus) {
+        case -3:
+          statusStr = '资质审核关闭';
+          break;
+        case -2:
+          statusStr = '资质审核超时';
+          break;
+        case -1:
+          statusStr = '资质审核拒绝';
+          break;
+        case 0:
+          statusStr = '待资质审核提交';
+          break;
+        case 1:
+          statusStr = '资质审核已提交';
+          break;
+        case 2:
+          statusStr = '待资质审核';
+          break;
+        case 3:
+          statusStr = '资质审核延迟申请';
+          break;
+        case 4:
+          statusStr = '资质审核成功';
+          break;
+        default:
+          statusStr = '未知状态';
+      }
     }
-    if (statusCode == -1) {
+    
+    if (qualiStatus == -1) {
       return Row(children: [
         Text(statusStr),
         Container(
@@ -84,7 +98,7 @@ class _AgentListItemState extends State<AgentListItem> {
                   constraints: BoxConstraints(
                     maxWidth: G.setWidth(390),
                   ),
-                  child: Text(item.enterpriseName ?? '', 
+                  child: Text(item.enterpriseName ?? '普通代理', 
                       softWrap: true,
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis, 
@@ -92,7 +106,7 @@ class _AgentListItemState extends State<AgentListItem> {
                 ),
                 item.isNewShowFlag ? Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')) : Text(''),
               ]),
-              leftTopText(item.qualificationsStatus),
+              leftTopText(item.qualificationsStatus, item.role, item.voucherStatus),
             ]
           ),
         ),
@@ -115,22 +129,30 @@ class _AgentListItemState extends State<AgentListItem> {
           onTap: () {
             // print(item["value"].toString());
             var mobile = item.mobile;
-            var company = item.enterpriseName ?? '测试企业名称';
+            var company = item.enterpriseName ?? '普通代理';
             var sharecode = item.shareCode;
             String companyStr = FluroConvertUtils.fluroCnParamsEncode(company);
-            G.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr&sharecode=$sharecode');
+            if (item.smsValid || item.role == -1) {
+              // G.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr&sharecode=$sharecode');
+              return;
+            } else {
+              G.navigateTo(context, Routes.agentVerify + '?mobile=$mobile&company=$companyStr&sharecode=$sharecode');
+            }
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
               border: Border(top: BorderSide(color: hex('#eee'), width:  G.setWidth(1))),
             ),
-            child: Row(children: <Widget>[
+            child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
-                child: Image(width: G.setWidth(100),image: item.headSculptureUrl != null ? NetworkImage(item.headSculptureUrl) : AssetImage('lib/assets/images/home/vip.png'))
+                child: Image(width: G.setWidth(100),image: item.headSculptureUrl != null ? NetworkImage(item.headSculptureUrl) : AssetImage('lib/assets/images/home/agent-avatar.png'))
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(children: <Widget>[
                     Text('手机号:'),

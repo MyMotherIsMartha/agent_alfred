@@ -11,6 +11,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_picker_saver/image_picker_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -48,10 +50,28 @@ void openShareWindow(context, String type) {
 
   void saveQrcode() async {
     print('qr code save');
+    bool flag;
+    // print(await Permission.photos.request().isGranted);
+    // var pre;
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.photos,
+    ].request();
+    flag = statuses[Permission.photos] == PermissionStatus.granted;
+    print('flag');
+    print(flag);
+    // print(pre);
+    // print('权限啊权限');
+    if (!flag) {
+      G.toast('请请在设置中授予相册权限');
+      return;
+    }
     RenderRepaintBoundary boundary =
         qrCodeKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage();
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    var filePath = await ImagePickerSaver.saveFile(
+          fileData: byteData.buffer.asUint8List());
+    print(filePath);
     String path =
         'https://image.shutterstock.com/image-photo/montreal-canada-july-11-2019-600w-1450023539.jpg';
     GallerySaver.saveImage(path).then((bool success) {
@@ -143,7 +163,7 @@ void openShareWindow(context, String type) {
                                   decoration: TextDecoration.none,
                                   height: 1.2)),
                           G.spacing(15),
-                          Text('长按识别二维码立即注册',
+                          Text(type == 'member' ? '长按识别二维码立即注册' : '长按识别二维码立即加入',
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: G.setSp(24),
