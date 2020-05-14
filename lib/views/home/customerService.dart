@@ -58,6 +58,7 @@ class _WebViewState extends State<CustomerServicePage> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
+          title: Text('在线客服'),
         ),
         body: Container(
           child: WebView(

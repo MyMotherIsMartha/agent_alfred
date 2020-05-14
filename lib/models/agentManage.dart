@@ -54,6 +54,7 @@ class AgentItemModel {
   String qualificationRefuseReason;
   int checkStatus;
   int settleStatus;
+  int role;
   String shareCode;
   bool isNewShowFlag;
   bool smsValid;
@@ -70,6 +71,7 @@ class AgentItemModel {
       this.qualificationsStatus,
       this.qualificationRefuseReason,
       this.checkStatus,
+      this.role,
       this.settleStatus,
       this.isNewShowFlag,
       this.smsValid});
@@ -86,6 +88,7 @@ class AgentItemModel {
     qualificationsStatus = json['qualificationsStatus'];
     qualificationRefuseReason = json['qualificationRefuseReason'];
     checkStatus = json['checkStatus'];
+    role = json['role'];
     settleStatus = json['settleStatus'];
     isNewShowFlag = json['isNewShowFlag'];
     smsValid = json['smsValid'];
@@ -104,6 +107,7 @@ class AgentItemModel {
     data['qualificationsStatus'] = this.qualificationsStatus;
     data['qualificationRefuseReason'] = this.qualificationRefuseReason;
     data['checkStatus'] = this.checkStatus;
+    data['role'] = this.role;
     data['settleStatus'] = this.settleStatus;
     data['isNewShowFlag'] = this.isNewShowFlag;
     data['smsValid'] = this.smsValid;

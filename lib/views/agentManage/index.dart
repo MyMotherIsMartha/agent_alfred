@@ -230,7 +230,7 @@ class AgentManageMainState extends State<AgentManageMain>
                     ))
                   ]),
                   G.spacing(10),
-                  Text('待入账代理商名额${_agentNumObj["pendingAgentNum"]}名', style: TextStyle(fontSize: G.setSp(24), color: Color.fromRGBO(255, 255, 255, 0.6)))
+                  Text('待入账代理商名额${_agentNumObj["pendingAgentNum"] ?? 0}名', style: TextStyle(fontSize: G.setSp(24), color: Color.fromRGBO(255, 255, 255, 0.6)))
                 ]
               )
             )
