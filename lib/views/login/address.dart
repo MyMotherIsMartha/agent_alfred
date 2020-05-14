@@ -166,7 +166,7 @@ class _AddressPageState extends State<AddressPage> {
                       'district': areaLev[2],
                     };
                     print(data);
-                    var regx = RegExp(r"^[\u4e00-\u9fa5_a-zA-Z0-9.]+$");
+                    var regx = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9.]+$");
                     if (!regx.hasMatch(consigneeName)) {
                       G.toast('姓名只能输入中英文');
                       return;
