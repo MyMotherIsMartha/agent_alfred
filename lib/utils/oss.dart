@@ -45,10 +45,12 @@ class Oss {
     } else {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
+        Permission.photos
       ].request();
-      flag = statuses[Permission.storage] == PermissionStatus.granted;
+      flag = statuses[Permission.storage] == PermissionStatus.granted && statuses[Permission.photos] == PermissionStatus.granted;
       // pre = await Permission.photos.status;
     }
+    Navigator.pop(G.currentContext);
     print(flag);
     // print(pre);
     // print('权限啊权限');
@@ -56,7 +58,6 @@ class Oss {
       G.toast('请在设置中打开权限');
       return;
     }
-    Navigator.pop(G.currentContext);
     //  LOADING弹窗
     G.showLoading(G.currentContext);
     var image = await ImagePicker.pickImage(source: source);

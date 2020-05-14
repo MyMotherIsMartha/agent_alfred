@@ -10,8 +10,16 @@ class UserAuthModel {
   String mobile;
   String nickname;
   String shareCode;
+  String enterpriseName;
   bool isSettingPassword;
+  bool isQualificationsPrefected;
   int payType;
+  int qualificationsAuditOvertime;
+  int role;
+  int settleStatus;
+  int voucherAuditOvertime;
+  String voucherRefuseReason;
+  String qualificationsRefuseReason;
 
   UserAuthModel(
       {this.isContactsPrefected,
@@ -26,7 +34,15 @@ class UserAuthModel {
       this.nickname,
       this.shareCode,
       this.isSettingPassword,
-      this.payType
+      this.isQualificationsPrefected,
+      this.enterpriseName,
+      this.payType,
+      this.role,
+      this.settleStatus,
+      this.qualificationsRefuseReason,
+      this.voucherAuditOvertime,
+      this.voucherRefuseReason,
+      this.qualificationsAuditOvertime
       });
 
   UserAuthModel.fromJson(Map<String, dynamic> json) {
@@ -42,7 +58,15 @@ class UserAuthModel {
     nickname = json['nickname'];
     shareCode = json['shareCode'];
     payType = json['payType'];
+    enterpriseName = json['enterpriseName'];
     isSettingPassword = json['isSettingPassword'];
+    isQualificationsPrefected = json['isQualificationsPrefected'];
+    qualificationsAuditOvertime = json['qualificationsAuditOvertime'];
+    qualificationsRefuseReason = json['qualificationsRefuseReason'];
+    settleStatus = json['settleStatus'];
+    role = json['role'];
+    voucherAuditOvertime = json['voucherAuditOvertime'];
+    voucherRefuseReason = json['voucherRefuseReason'];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,7 +83,15 @@ class UserAuthModel {
     data['nickname'] = this.nickname;
     data['shareCode'] = this.shareCode;
     data['isSettingPassword'] = this.isSettingPassword;
+    data['isQualificationsPrefected'] = this.isQualificationsPrefected;
     data['payType'] = this.payType;
+    data['enterpriseName'] = this.enterpriseName;
+    data['qualificationsAuditOvertime'] = this.qualificationsAuditOvertime;
+    data['qualificationsRefuseReason'] = this.qualificationsRefuseReason;
+    data['settleStatus'] = this.settleStatus;
+    data['role'] = this.role;
+    data['voucherAuditOvertime'] = this.voucherAuditOvertime;
+    data['voucherRefuseReason'] = this.voucherRefuseReason;
     return data;
   }
 }

@@ -40,6 +40,9 @@ class HomeInfoModel {
     int increasedShowOrderNum;
     int increasedShowMemberNum;
     int increasedShowAgentNum;
+    bool newlyIncreasedShowOrderFlag;
+    bool newlyIncreasedShowMemberFlag;
+    bool newlyIncreasedShowAgentFlag;
 
     HomeInfoModel({
         this.shareCode,
@@ -73,6 +76,9 @@ class HomeInfoModel {
         this.increasedShowOrderNum,
         this.increasedShowMemberNum,
         this.increasedShowAgentNum,
+        this.newlyIncreasedShowOrderFlag,
+        this.newlyIncreasedShowMemberFlag,
+        this.newlyIncreasedShowAgentFlag,
     });
 
     factory HomeInfoModel.fromJson(Map<String, dynamic> json) => HomeInfoModel(
@@ -107,6 +113,9 @@ class HomeInfoModel {
         increasedShowOrderNum: json["increasedShowOrderNum"],
         increasedShowMemberNum: json["increasedShowMemberNum"],
         increasedShowAgentNum: json["increasedShowAgentNum"],
+        newlyIncreasedShowOrderFlag: json["newlyIncreasedShowOrderFlag"],
+        newlyIncreasedShowMemberFlag: json["newlyIncreasedShowMemberFlag"],
+        newlyIncreasedShowAgentFlag: json["newlyIncreasedShowAgentFlag"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -141,5 +150,8 @@ class HomeInfoModel {
         "increasedShowOrderNum": increasedShowOrderNum,
         "increasedShowMemberNum": increasedShowMemberNum,
         "increasedShowAgentNum": increasedShowAgentNum,
+        "newlyIncreasedShowOrderFlag": newlyIncreasedShowOrderFlag,
+        "newlyIncreasedShowMemberFlag": newlyIncreasedShowMemberFlag,
+        "newlyIncreasedShowAgentFlag": newlyIncreasedShowAgentFlag,
     };
 }

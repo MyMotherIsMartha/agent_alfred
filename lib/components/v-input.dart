@@ -22,10 +22,12 @@ class VInput extends StatefulWidget {
   final double labelWidth;
   final double suffixWidth;
   final WhitelistingTextInputFormatter inputFormatters;
+  final MainAxisAlignment fontSize;
   VInput(
       {@required this.controller,
       @required this.hintText,
       this.type,
+      this.fontSize,
       this.label,
       this.validator,
       this.onChange,
@@ -79,6 +81,7 @@ class _VInputState extends State<VInput> {
            ? [widget.inputFormatters]
            : null,
             style: TextStyle(
+              fontSize: widget.fontSize ?? G.setSp(30),
                 color: widget.readOnly ?? false ? hex('#999') : hex('#333')),
             keyboardType: widget.type,
             controller: widget.controller,
@@ -91,10 +94,11 @@ class _VInputState extends State<VInput> {
             readOnly: widget.readOnly ?? false,
             obscureText: widget.type == TextInputType.visiblePassword,
             decoration: InputDecoration(
+              
                 suffixIcon: Container(
                     width: widget.suffix != null
                         ? G.setWidth(widget.suffixWidth ?? 140)
-                        : G.setWidth(70),
+                        : G.setWidth(widget.suffixWidth ?? 70),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[

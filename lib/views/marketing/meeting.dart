@@ -165,9 +165,19 @@ class _WebViewState extends State<MarketMeetingPage> {
         onMessageReceived: (JavascriptMessage message) {
           setState(() {
             title = message.message;
-            if (message.message != '') {
-              urlLen = urlLen + 1;
-            }
+            // if (message.message != '') {
+            //   urlLen = urlLen + 1;
+            // }
+          });
+        });
+  }
+
+  JavascriptChannel _urlLenJavascriptChannel(BuildContext context) {
+    return JavascriptChannel(
+        name: 'setUrlLen',
+        onMessageReceived: (JavascriptMessage message) {
+          setState(() {
+            urlLen = int.parse(message.message);
           });
         });
   }
@@ -211,6 +221,7 @@ class _WebViewState extends State<MarketMeetingPage> {
             },
             javascriptChannels: <JavascriptChannel>[
               _alertJavascriptChannel(context),
+              _urlLenJavascriptChannel(context)
             ].toSet(),
             onPageFinished: (url) {
               setToken();

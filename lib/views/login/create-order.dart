@@ -236,7 +236,6 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                       timeStamp: int.parse(payInfo['timestamp']),
                       sign: payInfo['sign'],
                     );
-                    print('result22222');
                     print(result2);
                     // SyPayResult payResult = await SyFlutterWechat.pay(
                     //   SyPayInfo.fromJson(payInfo));
@@ -285,6 +284,9 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
             payType = type;
           });
           if (type == 'downline') {
+            setState(() {
+              payType = 'ali';
+            });
             G.navigateTo(
                 context,
                 '/certificate?no=' + widget.no + '&from=order');

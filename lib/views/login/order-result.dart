@@ -18,6 +18,7 @@ class OrderResultPage extends StatefulWidget {
 
 class _OrderResultPageState extends State<OrderResultPage> {
   UserAuthModel userinfoAuth;
+  String giftPackageNo;
 
   Map<String, dynamic> statusMap = {
     //  支付成功
@@ -57,23 +58,43 @@ class _OrderResultPageState extends State<OrderResultPage> {
       'subtitle': '审核未通过',
       'desc': '你的支付凭证未通过，请在x小时内完成上传。',
       'btn': '重传支付凭证',
+      'fn': (String no) {
+        G.navigateTo(
+                G.currentContext,
+                '/certificate?no=' + no + '&from=order');
+      },
+    },
+    'verifyOvertime': {
+      'title': '审核超时',
+      'pic': 'lib/assets/images/order-result/verify-fail.png',
+      'subtitle': '审核未通过',
+      'desc': '你的支付凭证未通过，请在x小时内完成上传。',
+      'btn': '重传支付凭证',
       'fn': () {
         G.navigateTo(G.currentContext, '/create-account');
       },
-    }
+    },
   };
+
+  void goCer() {
+    G.navigateTo(
+                G.currentContext,
+                '/certificate?no=' + giftPackageNo + '&from=order');
+  }
   
   void _getOrderInfo() async {
     var result = await OrderApi().getGiftPackageOrders();
     var orderOverHours = result.data['data']['overtimePeriodHours'];
     setState(() {
       statusMap['verifyFail']['desc'] = '你的支付凭证未通过，请在$orderOverHours小时内完成上传。';
+      giftPackageNo = result.data['data']['giftPackageNo'];
     });
   }
 
   Widget statusWidget(String type) {
     Map status = statusMap[type];
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
           width: G.setWidth(350),
@@ -98,24 +119,35 @@ class _OrderResultPageState extends State<OrderResultPage> {
           style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),
         ),
         type == 'verifyFail'
-            ? Text(userinfoAuth.auditRefuseReason??'',
+            ? Text('拒绝原因：' + userinfoAuth.voucherRefuseReason??'',
                 style: TextStyle(
-                    color: hex('#000'),
-                    fontWeight: FontWeight.w500,
-                    fontSize: G.setSp(32)))
+                    color: hex('#666'),
+                    fontSize: G.setSp(28)))
             : Container(),
         G.spacing(G.setHeight(120)),
         VButton(
           width: 400,
           text: status['btn'],
-          fn: status['fn'],
+          fn: () {
+            if (type == 'verifyFail') {
+              print(giftPackageNo);
+              // G.navigateTo(G.currentContext, '/create-account');
+              // G.navigateTo(
+              //   G.currentContext,
+              //   '/certificate?no=' + giftPackageNo + '&from=order');
+              status['fn'](giftPackageNo);
+            } else {
+              print('审核不是失败');
+              status['fn']();
+            }
+          },
         )
       ],
     );
   }
 
   Widget getCurrentWidget(int status) {
-    List<String> statusMap = ['uploadSuccess', 'uploadSuccess', 'verifySuccess', 'verifyFail'];
+    List<String> statusMap = ['uploadSuccess', 'uploadSuccess', 'verifySuccess', 'verifyFail', 'verifyOvertime'];
     return statusWidget(statusMap[status]);
   }
 
@@ -136,7 +168,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
         title = '审核未通过';
         break;
       case 4:
-        title = '审核未通过';
+        title = '审核超时';
         break;
       default:
     }
@@ -174,6 +206,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
             elevation: 0,
             backgroundColor: Colors.transparent,
             centerTitle: true,
+            leading: Container(),
             iconTheme: IconThemeData(color: hex('#E7D1A8')),
             title: Text(
               _getTitle(context),

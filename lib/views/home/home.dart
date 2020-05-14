@@ -193,9 +193,9 @@ class _HomePageState extends State<HomePage>
                   ),
                   Container(width: G.setWidth(10)),
                   Image.asset(
-                      homeinfo.checkStatus == 2
-                          ? '${G.imgBaseUrl}home/agent_status_icon.png'
-                          : '${G.imgBaseUrl}home/check-status_icon.png',
+                      homeinfo.role == 0
+                          ? '${G.imgBaseUrl}home/check-status_icon.png'
+                          : '${G.imgBaseUrl}home/agent_status_icon.png',
                       width: G.setWidth(140),
                       height: G.setWidth(50),
                     ),
@@ -332,14 +332,6 @@ class _HomePageState extends State<HomePage>
       setState(() {
         _countdownTime = restTime(homeinfo.checkEndTime);
       });
-      // int nowTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
-      // int result = (homeinfo.checkEndTime / 1000).round() - nowTime;
-      // if (result < 0) {
-      //   _timer?.cancel();
-      // }
-      // setState(() {
-      //   _countdownTime = result;
-      // });
     });
   }
 
@@ -611,7 +603,7 @@ class _HomePageState extends State<HomePage>
                                           ? 'left'
                                           : 'down'),
                                 )
-                              : Positioned(
+                              : isNew(index) ? Positioned(
                                   top: 0,
                                   right: 0,
                                   child: Container(
@@ -624,9 +616,28 @@ class _HomePageState extends State<HomePage>
                                               '${G.imgBaseUrl}pic-icon/new-tri_icon.png')),
                                     ),
                                   ))
+                              : Container()
                         ],
                       ));
                 })));
+  }
+
+  bool isNew(int index) {
+    bool flag;
+    switch (index) {
+      case 3:
+        flag = homeinfo.newlyIncreasedShowOrderFlag;
+        break;
+      case 4:
+        flag = homeinfo.newlyIncreasedShowMemberFlag;
+        break;
+      case 5:
+        flag = homeinfo.newlyIncreasedShowAgentFlag;
+        break;
+      default:
+        flag = false;
+    }
+    return flag;
   }
 
   // 数据统计
@@ -668,7 +679,7 @@ class _HomePageState extends State<HomePage>
       {
         'title': '财务管理',
         'icon': '${G.imgBaseUrl}home/finance.png',
-        'url': '/finance'
+        'url': '/finance?type=thisMonth&index=0'
       },
       {
         'title': '邀请分享',
@@ -746,7 +757,6 @@ class _HomePageState extends State<HomePage>
     _tabController = TabController(vsync: this, length: 3);
     msgFuture = _getMsgCount();
     homeFuture = _getHomeinfo();
-    print('1234124134');
     Future.delayed(Duration.zero, () {
       checkInfo(context);
     });
@@ -754,17 +764,27 @@ class _HomePageState extends State<HomePage>
   }
 
   @override
-  void deactivate() {
-    print('1234124124123431241234');
+  void didChangeDependencies() {
     var bool = ModalRoute.of(context).isCurrent;
-    print(bool);
     if (bool) {
       msgFuture = _getMsgCount();
       homeFuture = _getHomeinfo();
-      // _refreshController.callRefresh();
     }
-    super.deactivate();
+    super.didChangeDependencies();
   }
+
+  // @override
+  // void deactivate() {
+  //   print('1234124124123431241234');
+  //   var bool = ModalRoute.of(context).isCurrent;
+  //   print(bool);
+  //   if (bool) {
+  //     msgFuture = _getMsgCount();
+  //     homeFuture = _getHomeinfo();
+  //     // _refreshController.callRefresh();
+  //   }
+  //   super.deactivate();
+  // }
 
   @override
   Widget build(BuildContext context) {

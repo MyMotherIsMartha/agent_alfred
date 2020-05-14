@@ -217,7 +217,12 @@ class _MarketSearchPageState extends State<MarketSearchPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(item.contactName),
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: G.setWidth(370)
+                ),
+                child: Text(item.contactName),
+              ),
               Text(item.createTime.toString())
             ],
           )
