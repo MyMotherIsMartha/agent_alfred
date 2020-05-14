@@ -200,7 +200,7 @@ class _CertificatePageState extends State<CertificatePage> {
                         child: Validate.isNon(offlineVoucher)
                             ? null
                             : FadeInImage.assetNetwork(
-                                fit: BoxFit.fill,
+                                fit: BoxFit.scaleDown,
                                 placeholder: '${G.imgBaseUrl}loading.gif', // kTransparentImage,
                                 image: offlineVoucher),
                       ),
@@ -259,6 +259,7 @@ class _CertificatePageState extends State<CertificatePage> {
           VButton(
             rgbStart: [214, 219, 255],
             rgbEnd: [214, 219, 255],
+            textColor: '#6982FF',
             width: 310,
             fn: () {
               G.navigateTo(context, '/create-account', replace: true);
@@ -266,7 +267,7 @@ class _CertificatePageState extends State<CertificatePage> {
             text: '重选礼包',
             shadown: [
               BoxShadow(
-                  color: hex('#BABFE1'), blurRadius: 4.0, spreadRadius: 0.0)
+                  color: hex('#BABFE1'), blurRadius: 2.0, spreadRadius: 0.0)
             ],
           ),
           VButton(
@@ -290,7 +291,7 @@ class _CertificatePageState extends State<CertificatePage> {
               text: '提交凭证',
               shadown: [
                 BoxShadow(
-                    color: hex('#6D7FFE'), blurRadius: 4.0, spreadRadius: 0.0)
+                    color: hex('#6D7FFE'), blurRadius: 2.0, spreadRadius: 0.0)
               ])
         ],
       ),

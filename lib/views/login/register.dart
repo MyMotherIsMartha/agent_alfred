@@ -250,10 +250,20 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(name??'未知', style: TextStyle(
-                  color: hex('#333'),
-                  fontSize: G.setSp(30)
-                )),
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: G.setWidth(360),
+                  ),
+                  child: Text(
+                    name??'未知', 
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: hex('#333'),
+                      fontSize: G.setSp(30)
+                    )),
+                ),
+                
                 Text('邀请码：$invite', style: TextStyle(
                   color: hex('#666'),
                   fontSize: G.setSp(24)

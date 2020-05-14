@@ -114,6 +114,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       brightness: Brightness.dark,
       backgroundColor: Colors.transparent,
       centerTitle: true,
+      leading: Container(),
       iconTheme: IconThemeData(color: hex('#E7D1A8')),
       title: Text(
         '代理商开通',
