@@ -108,18 +108,26 @@ class _ForgetPageState extends State<ForgetPage> {
                           hintText: '6-15字符，由数字和大小写英文组成',
                           label: '新密码',
                           maxLength: 16,
+                          
                           type: pwdVisible
                               ? TextInputType.text
                               : TextInputType.visiblePassword,
-                          
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                pwdVisible = !pwdVisible;
-                              });
-                            },
-                            icon: pwdVisible ? iconeye() : iconcloseeye(),
-                          ),
+                          suffix: pwdVisible ? iconeye() : iconcloseeye(),
+                          suffixWidth: Validate.isNon(pwdController.value.text) ? 80 : 140,
+                          // suffixIcon: IconButton(
+                          //   color: Colors.yellow,
+                          //   // padding: EdgeInsets.all(0),
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       pwdVisible = !pwdVisible;
+                          //     });
+                          //   },
+                          //   icon: pwdVisible ? Container(
+                          //     color: Colors.red,
+                          //     child: iconeye(),
+                          //   ) : iconcloseeye(),
+                          // ),
+                          // suffixWidth: 200,
                           // validator: (value) {
                           //   if (Validate.isNon(errorMsg)) {
                           //     setState(() {

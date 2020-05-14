@@ -72,6 +72,7 @@ class _VTimerBtnState extends State<VTimerBtn> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // padding: EdgeInsets.symmetric(horizontal: G.setWidth(18)),
       child: InkWell(
         child: Opacity(
           opacity: widget.disabled ? .5 : 1,

@@ -72,7 +72,12 @@ class _ModuleDetailPageState extends State<ModuleDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(item.contactName),
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: G.setWidth(370)
+                ),
+                child: Text(item.contactName),
+              )
             ],
           )
         ],

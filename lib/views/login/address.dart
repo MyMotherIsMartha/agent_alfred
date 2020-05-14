@@ -91,7 +91,7 @@ class _AddressPageState extends State<AddressPage> {
                           controller: nameController,
                           // inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[.]+")),
                           hintText: '请填写姓名',
-                          label: '姓名',
+                          label: '收货人',
                           maxLength: 10,
                           onChange: (e) {
                             // String hint = Validate.isNon(e) ? '请填写真实姓名' : null;
@@ -106,7 +106,7 @@ class _AddressPageState extends State<AddressPage> {
                           controller: mobileController,
                           hintText: '请填写联系方式',
                           value: addressModel?.mobile ?? '',
-                          label: '联系方式',
+                          label: '联系电话',
                           maxLength: 11,
                           type: TextInputType.number,
                           inputFormatters: WhitelistingTextInputFormatter(RegExp("[0-9]")),
