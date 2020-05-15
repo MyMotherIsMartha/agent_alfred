@@ -328,6 +328,9 @@ class _HomePageState extends State<HomePage>
   }
 
   countDown() {
+    setState(() {
+        _countdownTime = restTime(homeinfo.checkEndTime);
+      });
     _timer = Timer.periodic(Duration(seconds: 30), (timer) async {
       setState(() {
         _countdownTime = restTime(homeinfo.checkEndTime);
