@@ -41,11 +41,16 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
 
   // 设置视频
   void _setVideo(ContactVos item) {
-    print(item.linkUrl);
+    print(item.videoHeight / item.videoWidth);
+    print(item.videoHeight);
+    print(item.videoWidth);
+    print('item.videoHeight / item.videoWidth');
+    currentCourse = item;
     _videoPlayerController = VideoPlayerController.network(item.linkUrl);
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
-      // aspectRatio: 750 / 420,
+      // aspectRatio: _videoPlayerController.value.size.aspectRatio,
+      aspectRatio: item.videoWidth / item.videoHeight ,
       autoPlay: false,
       looping: false,
       materialProgressColors: ChewieProgressColors(
@@ -64,6 +69,36 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
         );
       },
     );
+    _videoPlayerController.addListener(() {_updateState(item);});
+    // _updateState();
+  }
+
+   _updateState(ContactVos item) {
+    //  print(_videoPlayerController.value);
+    //  print('_videoPlayerController.value');
+    
+    // VideoPlayerValue value = _videoPlayerController?.value;
+    // if (value != null) {
+    //   print(_videoPlayerController.value.position);
+    //   print('_videoPlayerController.value.position');
+    //   if (Validate.isNon(G.getPref(item.linkUrl))) {
+    //     _videoPlayerController.seekTo(Duration(seconds: int.parse(G.getPref(item.linkUrl))));
+    //   }
+    // }
+    // VideoPlayerValue value = _chewieController?.videoPlayerController?.value;
+    // VideoPlayerValue value = _videoPlayerController?.value;
+    // print('视频信息有没有');
+    // if (value != null) {
+    //   return value.size.aspectRatio;
+    // // print(value.size.aspectRatio);
+    // //   double newAspectRatio = value.size != null ? value.aspectRatio : null;
+    // //   if (newAspectRatio != null && newAspectRatio != _aspectRatio) {
+    // //     setState(() {
+    // //       _aspectRatio = newAspectRatio;
+    // //     });
+    // //   }
+    // }
+    // return 1;
   }
 
   // 播放器
@@ -131,25 +166,25 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
 
   Widget _courseItemVideo(int index) {
     ContactVos item = detail.contactVos[index];
-    String timeStr;
-    VideoPlayerController _playerController =
-        VideoPlayerController.network(item.linkUrl);
-    ChewieController _chewie = ChewieController(
-      videoPlayerController: _playerController,
-      aspectRatio: 252 / 142,
-      autoPlay: false,
-      looping: false,
-      customControls: Container(),
-      autoInitialize: true,
-      errorBuilder: (context, errorMessage) {
-        return Center(
-          child: Text(
-            errorMessage,
-            style: TextStyle(color: Colors.white),
-          ),
-        );
-      },
-    );
+    // String timeStr;
+    // VideoPlayerController _playerController =
+    //     VideoPlayerController.network(item.linkUrl);
+    // ChewieController _chewie = ChewieController(
+    //   videoPlayerController: _playerController,
+    //   aspectRatio: 252 / 142,
+    //   autoPlay: false,
+    //   looping: false,
+    //   customControls: Container(),
+    //   autoInitialize: true,
+    //   errorBuilder: (context, errorMessage) {
+    //     return Center(
+    //       child: Text(
+    //         errorMessage,
+    //         style: TextStyle(color: Colors.white),
+    //       ),
+    //     );
+    //   },
+    // );
     // _chewie.addListener(() {
     //   print('_chewie.addListener');
     //   if (_playerController.value.duration != null && videoTime[index] == '') {
@@ -159,34 +194,48 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
     //     });
     //   }
     // });
-    _playerController.addListener(() {
-      if (_playerController.value.duration != null && videoTime[index] == '') {
-        timeStr = _playerController.value.duration.toString().split('.')[0];
-        setState(() {
-          videoTime[index] = timeStr;
-        });
-      }
-    });
-    return _videoPlayerController != null
-        ? Container(
-            width: G.setWidth(252),
-            height: G.setWidth(142),
-            child: Stack(
-              children: <Widget>[
-                Chewie(
-                  controller: _chewie,
-                ),
-                Positioned(
-                    bottom: G.setWidth(10),
-                    right: G.setWidth(10),
-                    child: Text(
-                      videoTime[index],
-                      style:
-                          TextStyle(fontSize: G.setSp(24), color: hex('#FFF')),
-                    ))
-              ],
-            ))
-        : Container();
+    // _playerController.addListener(() {
+    //   if (_playerController.value.duration != null && videoTime[index] == '') {
+    //     timeStr = _playerController.value.duration.toString().split('.')[0];
+    //     setState(() {
+    //       videoTime[index] = timeStr;
+    //     });
+    //   }
+    // });
+    return Container(
+        width: G.setWidth(252),
+        height: G.setWidth(142),
+        color: hex('#aaa'),
+        child: Stack(
+          children: <Widget>[
+            // Chewie(
+            //   controller: _chewie,
+            // ),
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(item.linkUrl +
+                          '?x-oss-process=video/snapshot,t_10000,m_fast'),
+                      fit: BoxFit.contain)),
+            ),
+            Positioned(
+                bottom: G.setWidth(10),
+                right: G.setWidth(10),
+                child: Text(
+                  durationFormat(item.duration),
+                  style: TextStyle(fontSize: G.setSp(24), color: hex('#333')),
+                ))
+          ],
+        ));
+  }
+
+  String durationFormat(int time) {
+    int hour = (time /3600 % 24).floor();
+    int min = time % 3600 ~/ 60;
+    int sec = time % 3600 % 60;
+    String minStr = min > 9 ? '$min:' : '0$min:';
+    String secStr = sec > 9 ? '$sec' : '0$sec';
+    return '$hour:$minStr$secStr';
   }
 
   // 课程目录
@@ -205,26 +254,27 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
           });
           _videoPlayerController.pause();
           if (item.contactType == 1) {
-            setState(() {
-              _videoPlayerController =
-                  VideoPlayerController.network(item.linkUrl);
-              _chewieController = ChewieController(
-                videoPlayerController: _videoPlayerController,
-                // aspectRatio: 750 / 420,
-                autoPlay: false,
-                looping: false,
-                materialProgressColors: ChewieProgressColors(
-                  playedColor: hex('#5974FF'),
-                  handleColor: hex('#5974FF'),
-                  backgroundColor: hex('#999'),
-                  bufferedColor: hex('#999'),
-                ),
-                autoInitialize: true,
-              );
-            });
+            _setVideo(item);
+            // setState(() {
+            //   _videoPlayerController =
+            //       VideoPlayerController.network(item.linkUrl);
+            //   _chewieController = ChewieController(
+            //     videoPlayerController: _videoPlayerController,
+            //     // aspectRatio: 750 / 420,
+            //     autoPlay: false,
+            //     looping: false,
+            //     materialProgressColors: ChewieProgressColors(
+            //       playedColor: hex('#5974FF'),
+            //       handleColor: hex('#5974FF'),
+            //       backgroundColor: hex('#999'),
+            //       bufferedColor: hex('#999'),
+            //     ),
+            //     autoInitialize: true,
+            //   );
+            // });
           } else {
-            _videoPlayerController.dispose();
-            _chewieController.dispose();
+            // _videoPlayerController.dispose();
+            // _chewieController.dispose();
           }
         },
         child: Container(
@@ -236,6 +286,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
             Container(
                 width: G.setWidth(252),
                 height: G.setWidth(142),
+                
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(G.setWidth(10)),
                     child: Stack(
@@ -244,6 +295,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                             ? _courseItemVideo(index)
                             : Container(
                                 decoration: BoxDecoration(
+                                    color: hex('#aaa'),
                                     image: DecorationImage(
                                         image: NetworkImage(detail.courseImg),
                                         fit: BoxFit.contain)),
