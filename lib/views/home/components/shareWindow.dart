@@ -1,12 +1,17 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/home/components/image_gallery_saver_local.dart';
 import 'package:color_dart/color_dart.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
@@ -62,20 +67,29 @@ void openShareWindow(context, String type) {
     // print(pre);
     // print('权限啊权限');
     if (!flag) {
-      G.toast('请请在设置中授予相册权限');
+      G.toast('请在设置中授予相册权限');
       return;
     }
     RenderRepaintBoundary boundary =
         qrCodeKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage();
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    var filePath = await ImagePickerSaver.saveFile(
-          fileData: byteData.buffer.asUint8List());
-    print(filePath);
-    String path =
-        'https://image.shutterstock.com/image-photo/montreal-canada-july-11-2019-600w-1450023539.jpg';
+    Uint8List picBytes = byteData.buffer.asUint8List();
+    // var filePath = await ImagePickerSaver.saveFile(
+    //       fileData: byteData.buffer.asUint8List());
+    // print(filePath);
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = documentsDirectory.path + '/$type.png';
+    print(path);
+    File(path).writeAsBytes(picBytes);
+    // String path =
+    //     'https://image.shutterstock.com/image-photo/montreal-canada-july-11-2019-600w-1450023539.jpg';
     GallerySaver.saveImage(path).then((bool success) {
       print('Image is saved');
+      print(success);
+      if (success) {
+        G.toast('保存图片成功，请到相册查看');
+      }
     });
   }
 
@@ -212,24 +226,37 @@ void openShareWindow(context, String type) {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () async {
-                                toPng().then((data) {
-                                  bytes = data;
-                                  print(bytes);
-                                });
-                                
+                                var result = await isWeChatInstalled;
+                                if (!result) {
+                                  G.toast('对不起，您还没有安装微信');
+                                  return;
+                                }
+                                // var picBytes = await toPng();
+                                // if (picBytes == null) {
+                                //   G.toast('图片解析失败');
+                                //   return;
+                                // }
+                                RenderRepaintBoundary boundary =
+                                    qrCodeKey.currentContext.findRenderObject();
+                                ui.Image image = await boundary.toImage();
+                                ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+                                Uint8List picBytes = byteData.buffer.asUint8List();
+
+                                Directory documentsDirectory = await getTemporaryDirectory();
+
+                                String path = documentsDirectory.path + '/$type.png';
+                                File(path).writeAsBytes(picBytes);
+
+                                print(path);
+
                                 shareToWeChat(
-                                  WeChatShareImageModel(WeChatImage.asset('lib/assets/images/Wechat2.jpeg'),
+                                  WeChatShareImageModel(WeChatImage.asset('/var/mobile/Containers/Data/Application/7299ED24-8BB1-4E21-AD48-F01370BBD0A9/Library/Caches/member.png'),
                                   title: 'title1',
                                   description: 'description',
                                   mediaTagName: 'mediaTag Name', 
                                   messageAction: 'messageAction',
                                   messageExt: 'messageExt',
                                   scene: WeChatScene.SESSION));
-                                
-                                var result = await isWeChatInstalled;
-                                if (!result) {
-                                  G.toast('对不起，您还没有安装微信');
-                                }
                               },
                               child:
                               Column(children: [
@@ -251,6 +278,11 @@ void openShareWindow(context, String type) {
                             ),
                             GestureDetector(
                               onTap: () async {
+                                var result = await isWeChatInstalled;
+                                if (!result) {
+                                  G.toast('对不起，您还没有安装微信');
+                                }
+
                                 toPng().then((data) {
                                   bytes = data;
                                   print(bytes);
@@ -265,10 +297,7 @@ void openShareWindow(context, String type) {
                                   messageExt: 'messageExt',
                                   scene: WeChatScene.SESSION));
                                 
-                                var result = await isWeChatInstalled;
-                                if (!result) {
-                                  G.toast('对不起，您还没有安装微信');
-                                }
+                                
                               },
                               child:
                               Column(children: [

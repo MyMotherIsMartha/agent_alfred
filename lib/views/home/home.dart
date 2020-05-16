@@ -565,7 +565,7 @@ class _HomePageState extends State<HomePage>
                                     G.navigateTo(context, '/finance?type=thisMonth&index=0');
                                   }
                                   if (index == 4) {
-                                    G.navigateTo(context, '/vipManage');
+                                    G.navigateTo(context, '/vipManage?type=' + type + '&index=' + index.toString());
                                   }
                                   if (index == 5) {
                                     G.navigateTo(context, '/agentManage');
