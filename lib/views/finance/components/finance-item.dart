@@ -111,10 +111,10 @@ class FinanceItem extends StatelessWidget {
                                           style: TextStyle(
                                               color: hex('#85868A'),
                                               fontSize: G.setSp(26))),
-                                      Text('X${product.quantity}',
-                                          style: TextStyle(
-                                              color: hex('#85868A'),
-                                              fontSize: G.setSp(26)))
+                                      // Text('X${product.quantity}',
+                                      //     style: TextStyle(
+                                      //         color: hex('#85868A'),
+                                      //         fontSize: G.setSp(26)))
                                     ],
                                   ),
                                   G.spacing(20),
@@ -175,29 +175,38 @@ class FinanceItem extends StatelessWidget {
                 ),
                 // G.spacing(6),
 
-                Text('支付时间：${G.formatTime(item.payTime)}',
+                Text('支付时间：${G.formatTime(item.payTime, type: "date")}',
                     style: TextStyle(
                         color: hex('#666'),
                         fontSize: G.setSp(24),
                         height: 36 / 24))
               ],
             ),
-            Column(
+            Container(
+              color: Colors.red,
+              constraints: BoxConstraints(
+                maxWidth: G.setWidth(370)
+              ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Text.rich(TextSpan(
+                Text.rich(
+                  TextSpan(
                     text: '订单金额：',
+                    
                     style: TextStyle(
                         color: hex('#252525'),
                         fontSize: G.setSp(30),
+                        
                         height: 36 / 24),
+                        
                     children: [
                       TextSpan(
                           text: '￥',
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(24))),
                       TextSpan(
-                          text: item.totalOrderAmount.toString(),
+                          text: item.totalOrderAmount.toStringAsFixed(2),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
@@ -220,12 +229,12 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(24))),
                       TextSpan(
-                          text: item.commission.toString(),
+                          text: item.commission.toStringAsFixed(2),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
               ],
-            )
+            ))
           ],
         ),
       );
@@ -368,10 +377,10 @@ class FinanceProduct extends StatelessWidget {
                                     style: TextStyle(
                                         color: hex('#85868A'),
                                         fontSize: G.setSp(26))),
-                                Text('X${data.quantity}',
-                                    style: TextStyle(
-                                        color: hex('#85868A'),
-                                        fontSize: G.setSp(26)))
+                                // Text('X${data.quantity}',
+                                //     style: TextStyle(
+                                //         color: hex('#85868A'),
+                                //         fontSize: G.setSp(26)))
                               ],
                             ),
                           ],

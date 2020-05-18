@@ -273,7 +273,7 @@ class _OrderViewState extends State<OrderView>
                       Text('预估服务费：',
                           style: TextStyle(
                               fontSize: G.setSp(22), color: hex('#666'))),
-                      Text('￥${shapshot.data[settleStatus]}',
+                      Text('￥${shapshot.data[settleStatus].toStringAsFixed(2)}',
                           style: TextStyle(
                               fontSize: G.setSp(24), color: hex('#E84747')))
                     ],

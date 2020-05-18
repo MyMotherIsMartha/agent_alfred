@@ -146,6 +146,26 @@ class _OrderResultPageState extends State<OrderResultPage> {
     );
   }
 
+  Widget verifyFailMsg() {
+    String str = userinfoAuth.voucherRefuseReason??'';
+    List<String> strList = str.split('##');
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text(strList[1]??'',
+                style: TextStyle(
+                    color: hex('#666'),
+                    fontSize: G.setSp(28))),
+          Text('拒绝原因：' + strList[0]??'',
+                style: TextStyle(
+                    color: hex('#666'),
+                    fontSize: G.setSp(28)))
+          
+        ],
+      ),
+    );
+  }
+
   Widget getCurrentWidget(int status) {
     List<String> statusMap = ['uploadSuccess', 'uploadSuccess', 'verifySuccess', 'verifyFail', 'verifyOvertime'];
     return statusWidget(statusMap[status]);

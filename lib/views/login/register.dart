@@ -184,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               registerApi();
                             } else {
                               var result = await LoginApi().checkInviteCode(invite);
-                              var name = result.data['data']['enterpriseName'];
+                              var name = result.data['data']['nickname'];
                               var avatar = result.data['data']['headSculptureUrl'];
                               checkInvite(context, name, avatar);
                             }
