@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/api/oss.dart';
 import 'package:agent37_flutter/utils/oss.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
   static bool haveUpload = false;
   bool goNextPage = false;
   Map uploadData;
+  String licenseUrl;
 
   final Widget haveUploadArea = Column(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +61,21 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
   void initState() { 
     super.initState();
     haveUpload = widget.isFirstUpload != 'yes';
+    if (haveUpload) {
+      _getEnterpriseInfo();
+    }
   }
+
+  Future _getEnterpriseInfo() async {
+    var result = await MemberApi().getEnterpriseInfo();
+    var resultData = result.data['data'];
+    print(result.data.toString());
+    uploadData =  resultData;
+    setState(() {
+      licenseUrl = uploadData['businessLicensePicture'];
+    });
+  }
+
   /*拍照*/
   _takePhoto(source) async {
     bool flag;
@@ -108,6 +124,10 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     if (resultInfo.data['success'] == true) {
       print('success');
       var licenseInfo = resultInfo.data['data']['licenseInfo'];
+      setState(() {
+        haveUpload = true;
+        licenseUrl = resultInfo.data['data']['businessLicenseUrl'];
+      });
       if (licenseInfo == null) {
         uploadData = {
           'businessLicenseUrl': resultInfo.data['data']['businessLicenseUrl']
@@ -118,9 +138,6 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
         uploadData = licenseInfo;
         uploadData['businessLicenseUrl'] = resultInfo.data['data']['businessLicenseUrl'];
         var uploadJson = FluroConvertUtils.object2string(uploadData);
-        setState(() {
-          haveUpload = true;
-        });
         G.navigateTo(
           context, Routes.uploadLicenseForm + "?uploadJson=$uploadJson");
       }
@@ -202,6 +219,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
         height: G.setHeight(1206),
         padding: EdgeInsets.only(top: G.setHeight(150)),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             InkWell(
               onTap: () {
@@ -230,18 +248,42 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
                     }
                 );
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("lib/assets/images/enterprise/uploadLicence.png"),
-                    fit: BoxFit.fill,
+              child: 
+              Stack(
+                children: <Widget>[
+                  Container(
+                    width: G.setWidth(410),
+                    height: G.setWidth(592),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: haveUpload && licenseUrl != null ? NetworkImage(licenseUrl) : AssetImage("lib/assets/images/enterprise/defaultLicence.png"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                   ),
-                ),
-                // alignment: Alignment.center,
-                width: G.setWidth(410),
-                height: G.setWidth(592),
-                child: haveUpload ? haveUploadArea : noUploadArea,
-              ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     image: DecorationImage(
+                  //       image: haveUpload ? NetworkImage(licenseUrl) : AssetImage("lib/assets/images/enterprise/defaultLicence.png"),
+                  //       fit: BoxFit.fill,
+                  //     ),
+                  //   ),
+                  // ),
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("lib/assets/images/enterprise/four-corner.png"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    width: G.setWidth(410),
+                    height: G.setWidth(592),
+                    child: haveUpload ? haveUploadArea : noUploadArea,
+                  ),
+                ],
+              )
+              
             ),
             Container(
               margin: EdgeInsets.only(top: G.setHeight(50)),

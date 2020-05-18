@@ -392,11 +392,13 @@ class _MemberListState extends State<MemberList> {
   Widget _statucItem(String label, int value) {
     bool selected = value == smsValid;
     return InkWell(
-        onTap: () {
+        onTap: () async{
           setState(() {
             smsValid = value;
           });
-          _getList(true);
+          G.showLoading(context);
+          await _getList(true);
+          G.closeLoading();
         },
         child: Container(
             width: G.setWidth(300),
@@ -441,6 +443,7 @@ class _MemberListState extends State<MemberList> {
   void initState() { 
     super.initState();
     isNormal = widget.status;
+    G.setContext(context);
     _getList(true);
   }
 

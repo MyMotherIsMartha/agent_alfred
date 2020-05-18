@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/components/v-button.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -150,9 +151,8 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      width: G.setWidth(120),
-                      height: G.setWidth(120),
-                      margin: EdgeInsets.only(bottom: 10),
+                      width: G.setWidth(80),
+                      height: G.setWidth(80),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage("lib/assets/images/enterprise/cameraBlue.png"),
@@ -358,26 +358,35 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                 ),
               ),
               Center(
-                child: Container(
-                  width: G.setWidth(710),
-                  height: G.setHeight(100),
+                child: 
+                Container(
                   margin: EdgeInsets.only(top: 20, bottom: 30),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
-                    borderRadius: BorderRadius.circular(G.setHeight(50))
-                  ),
-                  child: FlatButton(
-                    disabledColor: hex('#666'),
-                    color: Colors.transparent,
-                    shape: StadiumBorder(),
-                    textColor: Colors.white,
-                    onPressed: _isDisableBtn() ? null : submitFunc,
-                    child: Text('提交审核', style: TextStyle(
-                      fontSize: G.setSp(36),
-                      color: Colors.white
-                    )),
-                  ),
+                  child: VButton(
+                    disabled: _isDisableBtn(),
+                    text: '提交审核', 
+                    fn: submitFunc
+                  )
                 ),
+                // Container(
+                //   width: G.setWidth(710),
+                //   height: G.setHeight(100),
+                //   margin: EdgeInsets.only(top: 20, bottom: 30),
+                //   decoration: BoxDecoration(
+                //     gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
+                //     borderRadius: BorderRadius.circular(G.setHeight(50))
+                //   ),
+                //   child: FlatButton(
+                //     disabledColor: hex('#666'),
+                //     color: Colors.transparent,
+                //     shape: StadiumBorder(),
+                //     textColor: Colors.white,
+                //     onPressed: _isDisableBtn() ? null : submitFunc,
+                //     child: Text('提交审核', style: TextStyle(
+                //       fontSize: G.setSp(36),
+                //       color: Colors.white
+                //     )),
+                //   ),
+                // ),
               )
             ],
           ),

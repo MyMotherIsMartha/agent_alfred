@@ -152,7 +152,7 @@ class _ResultPageState extends State<ResultPage> {
               textColor: Colors.white,
               shape: StadiumBorder(),
               child: Padding(padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                child: Text('返回首页', style: TextStyle(fontSize: G.setSp(36))),
+                child: Text('进入我的管家', style: TextStyle(fontSize: G.setSp(36))),
               )
             )
           ],)
