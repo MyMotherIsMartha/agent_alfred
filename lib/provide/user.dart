@@ -115,6 +115,7 @@ class UserProvide with ChangeNotifier {
                   replace: true, transition: transition);
               break;
             case 4:
+              G.toast('订单已超时，请重新下单');
               G.navigateTo(G.currentContext, '/create-account',
                   replace: true);
               break;

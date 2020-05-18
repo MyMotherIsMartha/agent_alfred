@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/models/finance.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class FinanceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     // 财务列表子项产品内容
     List<Widget> _financeItemProduct() {
       Widget product(RefundOrders product) {
@@ -33,7 +35,9 @@ class FinanceItem extends StatelessWidget {
                           height: G.setWidth(170),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
+                              child: Validate.isNon(product.orderImageUrl) 
+                              ? Image.asset('${G.imgBaseUrl}package_icon.png')
+                              : CachedNetworkImage(
                                 imageUrl: product.orderImageUrl,
                                 placeholder: (context, url) =>
                                     CircularProgressIndicator(),
@@ -92,8 +96,7 @@ class FinanceItem extends StatelessWidget {
                                             text: '￥',
                                             children: [
                                               TextSpan(
-                                                  text: product.refundAmount
-                                                      .toString(),
+                                                  text: G.moneyToStr(product.refundAmount),
                                                   style: TextStyle(
                                                       fontSize: G.setSp(26),
                                                       color: hex('#333'))),
@@ -183,7 +186,6 @@ class FinanceItem extends StatelessWidget {
               ],
             ),
             Container(
-              color: Colors.red,
               constraints: BoxConstraints(
                 maxWidth: G.setWidth(370)
               ),
@@ -193,20 +195,17 @@ class FinanceItem extends StatelessWidget {
                 Text.rich(
                   TextSpan(
                     text: '订单金额：',
-                    
                     style: TextStyle(
                         color: hex('#252525'),
                         fontSize: G.setSp(30),
-                        
                         height: 36 / 24),
-                        
                     children: [
                       TextSpan(
                           text: '￥',
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(24))),
                       TextSpan(
-                          text: item.totalOrderAmount.toStringAsFixed(2),
+                          text: G.moneyToStr(item.totalOrderAmount),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
@@ -229,7 +228,7 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(24))),
                       TextSpan(
-                          text: item.commission.toStringAsFixed(2),
+                          text: G.moneyToStr(item.commission),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
@@ -324,6 +323,9 @@ class FinanceProduct extends StatelessWidget {
                                 ),
                                 fit: BoxFit.fill)
                             : null),
+                    child: data.orderImageUrl != null
+                            ? null
+                            : Image.asset('${G.imgBaseUrl}package_icon.png'),
                   ),
                   Expanded(
                     // 内容区域
@@ -360,7 +362,7 @@ class FinanceProduct extends StatelessWidget {
                                       text: '￥',
                                       children: [
                                         TextSpan(
-                                            text: data.goodsAmount.toString(),
+                                            text: G.moneyToStr(data.goodsAmount),
                                             style: TextStyle(
                                                 fontSize: G.setSp(26),
                                                 color: hex('#333'))),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/v-avatar.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
@@ -45,12 +46,12 @@ class _HomePageState extends State<HomePage>
     return;
   }
   return YYDialog().build(context)
-    ..width = G.setWidth(600)
+    ..width = G.setWidth(440)
     ..borderRadius = G.setWidth(20)
     ..text(
       padding: EdgeInsets.all(G.setWidth(60)),
       alignment: Alignment.center,
-      text: "您尚未完善企业信息",
+      text: "尚未完善企业信息",
       color: hex('#333'),
       fontSize: G.setSp(36),
       fontWeight: FontWeight.w500,
@@ -166,10 +167,11 @@ class _HomePageState extends State<HomePage>
       margin: EdgeInsets.only(bottom: G.setWidth(40)),
       child: Row(
         children: <Widget>[
-          CircleAvatar(
-            radius: G.setWidth(60),
-            backgroundImage: AssetImage('${G.imgBaseUrl}logo.png'),
-          ),
+          VAvatar(null, homeinfo.role, width: 120,),
+          // CircleAvatar(
+          //   radius: G.setWidth(60),
+          //   backgroundImage: AssetImage('${G.imgBaseUrl}logo.png'),
+          // ),
           Container(width: G.setWidth(20)),
           Column(
             mainAxisAlignment: Validate.isNon(homeinfo.shareCode)
@@ -490,6 +492,12 @@ class _HomePageState extends State<HomePage>
       '代理商注册数',
     ];
 
+    List<String> statTitle = [
+      '预估商品销售分佣',
+      '预估会员居间服务费',
+      '预估礼包销售分佣',
+    ];
+
     List<String> desc = [
       '代理商通过服务会员，从而促使会员在37度礼购APP采购，即可获得会员采购总额的2%作为产品销售分佣。',
       '代理商推荐的会员成为钻石会员，获得钻石会员软件信息技术服务费的60%作为居间服务费奖励。',
@@ -541,7 +549,22 @@ class _HomePageState extends State<HomePage>
                 ),
                 itemCount: 6,
                 itemBuilder: (context, index) {
-                  return Container(
+                  return InkWell(
+                    onTap: () {
+                      if (index < 3) {
+                        G.navigateTo(context, '/finance?type=' + type + '&index=' + index.toString());
+                      }
+                      if (index == 3) {
+                        G.navigateTo(context, '/finance?type=' + type + '&index=0');
+                      }
+                      if (index == 4) {
+                        G.navigateTo(context, '/vipManage?type=' + type + '&index=' + index.toString());
+                      }
+                      if (index == 5) {
+                        G.navigateTo(context, '/agentManage');
+                      }
+                    },
+                  child: Container(
                       height: G.setWidth(200),
                       width: G.setWidth(237),
                       decoration: BoxDecoration(
@@ -559,22 +582,7 @@ class _HomePageState extends State<HomePage>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              InkWell(
-                                onTap: () {
-                                  if (index < 3) {
-                                    G.navigateTo(context, '/finance?type=' + type + '&index=' + index.toString());
-                                  }
-                                  if (index == 3) {
-                                    G.navigateTo(context, '/finance?type=thisMonth&index=0');
-                                  }
-                                  if (index == 4) {
-                                    G.navigateTo(context, '/vipManage?type=' + type + '&index=' + index.toString());
-                                  }
-                                  if (index == 5) {
-                                    G.navigateTo(context, '/agentManage');
-                                  }
-                                },
-                              child: Container(
+                              Container(
                                 alignment: Alignment.center,
                                 child: Text.rich(TextSpan(children: [
                                   TextSpan(
@@ -588,7 +596,7 @@ class _HomePageState extends State<HomePage>
                                           color: hex('#333'),
                                           fontSize: G.setSp(36))),
                                 ])),
-                              )),
+                              ),
                               G.spacing(15),
                               Text(title[index],
                                   style: TextStyle(
@@ -600,11 +608,21 @@ class _HomePageState extends State<HomePage>
                               ? Positioned(
                                   top: G.setWidth(20),
                                   right: G.setWidth(20),
-                                  child: ToolTip(
-                                    desc: desc[index],
-                                      direction: (index + 1) % 3 == 0
-                                          ? 'left'
-                                          : 'down'),
+                                  child: InkWell(
+                                    onTap: () {
+                                      statisticsDialog(context, statTitle[index], desc[index]);
+                                    },
+                                    child: Image.asset(
+                                      '${G.imgBaseUrl}pic-icon/info_icon.png',
+                                      width: G.setWidth(36),
+                                      height: G.setWidth(36),
+                                    ),
+                                  )
+                                  // ToolTip(
+                                  //   desc: desc[index],
+                                  //     direction: (index + 1) % 3 == 0
+                                  //         ? 'left'
+                                  //         : 'down'),
                                 )
                               : isNew(index) ? Positioned(
                                   top: 0,
@@ -621,7 +639,7 @@ class _HomePageState extends State<HomePage>
                                   ))
                               : Container()
                         ],
-                      ));
+                      )));
                 })));
   }
 
@@ -907,10 +925,55 @@ class _ToolTipState extends State<ToolTip> {
   }
 }
 
+YYDialog statisticsDialog(BuildContext context, String title, String desc) {
+  return YYDialog().build(context)
+    // ..gravity = Gravity()
+    ..width = G.setWidth(670)
+    ..borderRadius = G.setWidth(10)
+    ..barrierColor = hex('#fff').withOpacity(0)
+    ..backgroundColor = hex('#333').withOpacity(.8)
+    ..widget(
+      Container(
+        padding: EdgeInsets.all(G.setWidth(20)),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(title, style: TextStyle(
+                  color: hex('#FFF'),
+                  fontSize: G.setSp(26),
+                  fontWeight: FontWeight.bold
+                ),),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Icon(Icons.close, size: 22, color: hex('#FFF')),
+                )
+              ],
+            ),
+            G.spacing(10),
+            Container(
+              child: Text(
+                desc,
+                style: TextStyle(
+                  color: hex('#FFF'),
+                  fontSize: G.setSp(24)
+                ),
+              ),
+            )
+          ],
+        ),
+      )
+    )
+    ..show();
+}
+
 
 YYDialog yyAlertDialog(BuildContext context) {
   return YYDialog().build(context)
-    ..width = G.setWidth(600)
+    ..width = G.setWidth(440)
     ..borderRadius = G.setWidth(20)
     ..text(
       padding: EdgeInsets.all(G.setWidth(60)),

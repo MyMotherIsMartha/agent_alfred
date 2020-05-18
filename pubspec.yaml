@@ -46,7 +46,7 @@ dependencies:
   qr_flutter: ^3.2.0
   date_format: ^1.0.8
   flutter_swiper: ^1.1.6
-  image_picker: ^0.6.3+4
+  image_picker: ^0.6.6+1
   path_provider: ^1.6.8
   image_picker_saver: ^0.3.0
   flutter_picker: ^1.1.3

@@ -23,6 +23,7 @@ class VInput extends StatefulWidget {
   final double suffixWidth;
   final WhitelistingTextInputFormatter inputFormatters;
   final MainAxisAlignment fontSize;
+  final FocusNode focus;
   VInput(
       {@required this.controller,
       @required this.hintText,
@@ -40,6 +41,7 @@ class VInput extends StatefulWidget {
       this.suffixWidth,
       this.suffixDivider,
       this.inputFormatters,
+      this.focus,
       this.value});
   @override
   _VInputState createState() => _VInputState();
@@ -52,6 +54,9 @@ class _VInputState extends State<VInput> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _focus = widget.focus == null ? FocusNode() : widget.focus;
+    });
     _focus.addListener(() {
       if (!_focus.hasFocus) {
         setState(() {

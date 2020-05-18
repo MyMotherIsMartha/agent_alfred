@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _smsController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
+  FocusNode _smsFocus = FocusNode();
 
   @override
   void initState() {
@@ -60,12 +61,12 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text('登录',
-                    style: TextStyle(
-                        fontSize: G.setSp(36),
-                        color: hex('#FFF'),
-                        fontWeight: FontWeight.w500)),
-                Container(height: G.setHeight(171)),
+                // Text('登录',
+                //     style: TextStyle(
+                //         fontSize: G.setSp(36),
+                //         color: hex('#FFF'),
+                //         fontWeight: FontWeight.w500)),
+                Container(height: G.setHeight(204)),
                 Container(
                   height: G.setHeight(650),
                   width: G.setWidth(690),
@@ -219,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
         text,
         style: TextStyle(
             fontSize: G.setSp(36),
-            color: type == loginType ? hex('#333') : hex('#BFBFBF')),
+            color: type == loginType ? hex('#333') : hex('#BFBFBF'), fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -235,10 +236,14 @@ class _LoginPageState extends State<LoginPage> {
                 formValidate['sms'] = e.length == 4;
               });
             },
+            focus: _smsFocus,
             hintText: '请输入验证码',
             prefixIcon: iconsafety(),
             type: TextInputType.number,
-            suffix: VTimerBtn(disabled, () async {return await LoginApi().getLoginSmsCode(mobile);}),
+            suffix: VTimerBtn(disabled, () async {
+              FocusScope.of(context).requestFocus(_smsFocus);  
+              return await LoginApi().getLoginSmsCode(mobile);
+            }),
             maxLength: 4,
             validator: (value) {
               if (loginType != 'sms') return null;

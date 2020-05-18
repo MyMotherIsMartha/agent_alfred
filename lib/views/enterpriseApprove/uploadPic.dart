@@ -150,7 +150,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
 
   YYDialog yyAlertDialog(BuildContext context) {
   return YYDialog().build(context)
-    ..width = G.setWidth(500)
+    ..width = G.setWidth(440)
     ..height = G.setWidth(215)
     ..borderRadius = G.setWidth(20)
     ..text(

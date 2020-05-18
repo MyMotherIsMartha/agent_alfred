@@ -187,7 +187,7 @@ class G {
 
   static YYDialog logout(BuildContext context, {String msg}) {
     return YYDialog().build(context)
-      ..width = G.setWidth(600)
+      ..width = G.setWidth(440)
       ..borderRadius = G.setWidth(20)
       ..text(
         padding: EdgeInsets.all(G.setWidth(60)),
@@ -224,5 +224,13 @@ class G {
         }
       }
       ..show();
+  }
+
+  static String moneyToStr(double money) {
+    if (money < 10000) {
+      return money.toStringAsFixed(2);
+    } else {
+      return (money / 10000).toStringAsFixed(2) + 'W';
+    }
   }
 }

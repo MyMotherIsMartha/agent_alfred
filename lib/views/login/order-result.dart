@@ -93,6 +93,16 @@ class _OrderResultPageState extends State<OrderResultPage> {
 
   Widget statusWidget(String type) {
     Map status = statusMap[type];
+    List<String> refund;
+    String reason;
+    String remark;
+    if (type == 'verifyFail') {
+      refund = (userinfoAuth.voucherRefuseReason??'').split('##');
+      print(refund);
+      print('拒绝');
+      reason = refund[1];
+      remark = refund[0];
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -119,10 +129,11 @@ class _OrderResultPageState extends State<OrderResultPage> {
           style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),
         ),
         type == 'verifyFail'
-            ? Text('拒绝原因：' + userinfoAuth.voucherRefuseReason??'',
-                style: TextStyle(
-                    color: hex('#666'),
-                    fontSize: G.setSp(28)))
+            ? verifyFailMsg()
+            // Text('拒绝原因：' + reason??'',
+            //     style: TextStyle(
+            //         color: hex('#666'),
+            //         fontSize: G.setSp(28)))
             : Container(),
         G.spacing(G.setHeight(120)),
         VButton(
@@ -152,14 +163,29 @@ class _OrderResultPageState extends State<OrderResultPage> {
     return Container(
       child: Column(
         children: <Widget>[
-          Text(strList[1]??'',
+          // Text(strList[1]??'',
+          //       style: TextStyle(
+          //           color: hex('#666'),
+          //           fontSize: G.setSp(28))),
+          Text('拒绝原因：' + strList[1]??'',
                 style: TextStyle(
                     color: hex('#666'),
                     fontSize: G.setSp(28))),
-          Text('拒绝原因：' + strList[0]??'',
-                style: TextStyle(
-                    color: hex('#666'),
-                    fontSize: G.setSp(28)))
+          G.spacing(10),
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: G.setWidth(610)
+            ),
+            padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setWidth(15)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: hex('#f3f4f6')
+            ),
+            child: Text('备注：' + strList[0], style: TextStyle(
+              fontSize: G.setSp(24),
+              color: hex('#666')
+            ), ),
+          )
           
         ],
       ),
