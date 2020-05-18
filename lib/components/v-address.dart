@@ -12,7 +12,8 @@ class VAddress extends StatelessWidget {
   final Function cb;
   final Function validator;
   final String hintText;
-  VAddress({this.controller, this.areaId, this.cb, this.validator, this.label, this.hintText});
+  final double labelWidth;
+  VAddress({this.controller, this.areaId, this.cb, this.validator, this.label, this.hintText, this.labelWidth});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +27,7 @@ class VAddress extends StatelessWidget {
         children: <Widget>[
           Container(
               // padding: EdgeInsets.only(right: G.setWidth(20)),
-              width: G.setWidth(160),
+              width: labelWidth ?? G.setWidth(160),
               child: Text(label??'地区',
                   style: TextStyle(fontSize: G.setSp(30), color: hex('#666')))),
           Expanded(
@@ -39,7 +40,8 @@ class VAddress extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
-                      
+                      style: TextStyle(
+                                    fontSize: G.setSp(30)),
                       controller: controller,
                       onTap: () {
                         _addressSelect(context);

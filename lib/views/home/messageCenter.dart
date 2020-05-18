@@ -22,11 +22,12 @@ class _WebViewState extends State<MessageCenterPage> {
   String url;
   String title;
   String thumb;
+  bool init = true;
 
   @override
   void initState() {
     super.initState();
-    url = EnvConfig.dev['web-address'] + '#/newsCenter';
+    url = EnvConfig.dev['web-address'] + '#/newsCenter?noHeader=yes';
     print(url);
   }
 
@@ -39,7 +40,10 @@ class _WebViewState extends State<MessageCenterPage> {
     String token = await G.getPref('token');
     print(token);
     _controller.evaluateJavascript(
-        'window.sessionStorage.setItem("token", "$token");window.refreshMessage()');
+        'window.sessionStorage.setItem("token", "$token");window.refreshMessage($init)');
+        setState(() {
+          init = false;
+        });
   }
 
 
@@ -50,6 +54,7 @@ class _WebViewState extends State<MessageCenterPage> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
+          title: Text('消息'),
         ),
         body: Container(
           child: WebView(

@@ -62,10 +62,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     if (Validate.isNon(token)) {
       G.navigateTo(context, '/login', replace: true);
     } else {
-      // G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
-      Provider.of<UserProvide>(context).updateUserAuth();
-      Provider.of<UserProvide>(context).updateEnterpriseinfo();
-      Provider.of<UserProvide>(context).updateBankCardInfo();
+      G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+      // Provider.of<UserProvide>(context).updateUserAuth();
+      // Provider.of<UserProvide>(context).updateEnterpriseinfo();
+      // Provider.of<UserProvide>(context).updateBankCardInfo();
     }
     
     // UserModel userModel = Provider.of<UserModel>(context);
@@ -89,7 +89,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     G.setContext(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
+      body: SafeArea(
+        bottom: true,
+        left: false,
+        right: false,
+        child: 
+      Container(
         height: double.infinity,
         width: double.infinity,
         padding: EdgeInsets.only(bottom: 50),
@@ -120,7 +125,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
         //   ),
         // ),
       ),
-    );
+    ));
   }
 
   // @override

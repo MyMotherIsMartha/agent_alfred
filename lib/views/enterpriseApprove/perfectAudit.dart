@@ -37,7 +37,7 @@ class _PerfectEnterpriseAuditState extends State<PerfectEnterpriseAudit> {
           ),
         ),
         G.spacing(G.setHeight(50)),
-        Text('企业信息待审核2',
+        Text('企业信息待审核',
               style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
           G.spacing(G.setHeight(10)),      
         Text('您的企业信息正在审核中，将在24小时内审核完成，请耐心等候', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
@@ -156,7 +156,7 @@ class _PerfectEnterpriseAuditState extends State<PerfectEnterpriseAudit> {
               elevation: 0,
               backgroundColor: Colors.transparent,
               centerTitle: true,
-              iconTheme: IconThemeData(color: hex('#E7D1A8')),
+              iconTheme: IconThemeData(color: hex('#fff')),
               title: Text(
                 '完善企业信息',
                 style: TextStyle(color: hex('#fff'), fontSize: G.setSp(36)),

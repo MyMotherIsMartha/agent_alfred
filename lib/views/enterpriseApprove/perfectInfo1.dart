@@ -1,6 +1,7 @@
 import 'package:agent37_flutter/api/dic.dart';
 import 'package:agent37_flutter/api/oss.dart';
 import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/components/v-button.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -274,7 +275,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                width: G.setWidth(160),
+                                width: G.setWidth(180),
                                 child: Text('所属行业', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -291,6 +292,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                                       children: <Widget>[
                                         Expanded(
                                           child: TextFormField(
+                                            style: TextStyle(
+                                               fontSize: G.setSp(30)),
                                             controller: jobCodeCtrl,
                                             // initialValue: '1234',
                                             onTap: () {
@@ -342,7 +345,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                width: G.setWidth(160),
+                                width: G.setWidth(180),
                                 child: Text('企业名称', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -351,6 +354,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                               Expanded(
                                 child: TextFormField(
                                   keyboardType: TextInputType.text,
+                                  style: TextStyle(
+                                    fontSize: G.setSp(30)),
                                   decoration:
                                       InputDecoration(border: InputBorder.none, hintText: '请输入企业名称'),
                                   controller: _enterpriseNameCtrl,
@@ -389,7 +394,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                width: G.setWidth(160),
+                                width: G.setWidth(180),
                                 child: Text('营业执照号', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -397,6 +402,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                               ),
                               Expanded(
                                 child: TextFormField(
+                                  style: TextStyle(
+                                    fontSize: G.setSp(30)),
                                   decoration:
                                       InputDecoration(border: InputBorder.none, hintText: '请输入统一社会信用代码'),
                                   controller: _registerCodeCtrl,
@@ -419,6 +426,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                         ),
                         VAddress(
                           label: '注册地区',
+                          labelWidth: G.setWidth(180),
                           areaId: areaCode,
                           controller: areaCtrl,
                           cb: (value, areaStr) {
@@ -426,7 +434,6 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             print(areaStr);
                             areaName = areaStr;
                             setState(() {
-                              
                               formValidate['areaCode'] = !Validate.isNon(value);
                             });
                           },
@@ -444,7 +451,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                width: G.setWidth(160),
+                                width: G.setWidth(180),
                                 child: Text('注册地址', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -452,7 +459,9 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                               ),
                               Expanded(
                                 child: TextFormField(
-                                  maxLines: 3,
+                                  // maxLines: 3,
+                                  style: TextStyle(
+                                    fontSize: G.setSp(30)),
                                   keyboardType: TextInputType.text,
                                   decoration:
                                       InputDecoration(border: InputBorder.none, hintText: '请输入详细注册地址'),
@@ -487,7 +496,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                width: G.setWidth(160),
+                                width: G.setWidth(180),
                                 child: Text('法人姓名', style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#666')
@@ -519,6 +528,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                           controller: mobileController,
                           hintText: '请输入手机号',
                           label: '法人手机号',
+                          labelWidth: G.setWidth(180),
                           maxLength: 11,
                           type: TextInputType.number,
                           inputFormatters: WhitelistingTextInputFormatter(RegExp("[0-9]")),
@@ -543,6 +553,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             controller: idNoController,
                             hintText: '请输入身份证号',
                             label: '法人身份证',
+                            labelWidth: G.setWidth(180),
                             onChange: (e) {
                               idNo = e;
                               var reg =
@@ -557,21 +568,11 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                   ),
                 ),
                 Container(
-                  width: G.setWidth(710),
-                  height: G.setHeight(100),
                   margin: EdgeInsets.only(top: 20, bottom: 30),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
-                    borderRadius: BorderRadius.circular(G.setHeight(50))
-                  ),
-                  child: FlatButton(
-                    disabledColor: hex('#666'),
-                    color: Colors.transparent,
-                    shape: StadiumBorder(),
-                    textColor: Colors.white,
-                    onPressed: formValidate.containsValue(false) ? null : () async {
-                      
-                      // Validate returns true if the form is valid, otherwise false.
+                  child: VButton(
+                    disabled: formValidate.containsValue(false),
+                    text: '下一步', 
+                    fn: () async {
                       if (_formKey.currentState.validate()) {
                         var areaAry = areaName.split(',');
                         print('test');
@@ -598,13 +599,59 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                         context, Routes.perfectEnterprise2 + "?legalName=$legalName2");
                         
                       }
-                    },
-                    child: Text('下一步', style: TextStyle(
-                      fontSize: G.setSp(36),
-                      color: Colors.white
-                    )),
-                  ),
-                ),
+                    }
+                  )
+                )
+                // Container(
+                //   width: G.setWidth(710),
+                //   height: G.setHeight(100),
+                //   margin: EdgeInsets.only(top: 20, bottom: 30),
+                //   decoration: BoxDecoration(
+                //     gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
+                //     borderRadius: BorderRadius.circular(G.setHeight(50))
+                //   ),
+
+                //   child: FlatButton(
+                //     disabledColor: hex('#666'),
+                //     color: Colors.transparent,
+                //     shape: StadiumBorder(),
+                //     textColor: Colors.white,
+                //     onPressed: formValidate.containsValue(false) ? null : () async {
+                      
+                //       // Validate returns true if the form is valid, otherwise false.
+                //       if (_formKey.currentState.validate()) {
+                //         var areaAry = areaName.split(',');
+                //         print('test');
+                //         print(areaAry);
+                //         Map params = {
+                //           'industryCode': jobCode,
+                //           'industryName': jobCodeCtrl.text,
+                //           'registerAddress': addressStr,
+                //           'areaCode': int.parse(areaCode),
+                //           'businessLicensePicture': licenseUrl,
+                //           'enterpriseName': enterpriseName,
+                //           'legalPerson': legalName,
+                //           'registerCode':registerCode,
+                //           'province': areaAry[0],
+                //           'city': areaAry[1],
+                //           'district': areaAry[2],
+                //           'legalMobile': mobile,
+                //           'idCard': idNo
+                //           // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
+                //         };
+                //         var legalName2 = FluroConvertUtils.fluroCnParamsEncode(legalName);
+                //         print(params);
+                //         G.navigateTo(
+                //         context, Routes.perfectEnterprise2 + "?legalName=$legalName2");
+                        
+                //       }
+                //     },
+                //     child: Text('下一步', style: TextStyle(
+                //       fontSize: G.setSp(36),
+                //       color: Colors.white
+                //     )),
+                //   ),
+                // ),
               ],
             ),
           ),

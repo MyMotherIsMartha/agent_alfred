@@ -207,6 +207,7 @@ class _MemberListState extends State<MemberList> {
     print(widget.label);
     beginRegisterDate = widget.start;
     endRegisterDate = widget.end;
+    G.setContext(context);
     _getList(true);
   }
 
