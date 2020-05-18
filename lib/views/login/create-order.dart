@@ -279,7 +279,6 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
     }
     return InkWell(
         onTap: () {
-          print(type);
           setState(() {
             payType = type;
           });
