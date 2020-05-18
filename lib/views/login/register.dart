@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/components/v-avatar.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-circle-input.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
@@ -29,6 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _smsController = TextEditingController();
   final TextEditingController _inviteController = TextEditingController();
+  FocusNode _smsFocus = FocusNode();
 
   @override
   void initState() {
@@ -84,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Container(height: G.setHeight(171)),
               Container(
-                height: G.setHeight(790),
+                height: G.setHeight(800),
                 width: G.setWidth(690),
                 padding: EdgeInsets.fromLTRB(
                     G.setWidth(50), G.setHeight(70), G.setWidth(50), 0),
@@ -103,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Text(
                         '注册账号',
                         style: TextStyle(
-                            fontSize: G.setSp(36), color: hex('#333')),
+                            fontSize: G.setSp(36), color: hex('#333'), fontWeight: FontWeight.bold),
                       ),
                     ),
                     Container(
@@ -178,15 +180,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             errorMsg = null;
                           });
                           _formKey.currentState.validate();
-                          print(errorMsg);
                           if (errorMsg == null) {
                             if (Validate.isNon(invite)) {
                               registerApi();
                             } else {
                               var result = await LoginApi().checkInviteCode(invite);
-                              var name = result.data['data']['nickname'];
-                              var avatar = result.data['data']['headSculptureUrl'];
-                              checkInvite(context, name, avatar);
+                              if (result.data['code'] == 200) {
+                                var name = result.data['data']['nickname'];
+                                var avatar = result.data['data']['headSculptureUrl'];
+                                int role = result.data['data']['role'];
+                                checkInvite(context, name, avatar, role);
+                              }
                             }
                             // Map data = {
                             //   'memberType': 1,
@@ -216,8 +220,8 @@ class _RegisterPageState extends State<RegisterPage> {
     ));
   }
 
-  YYDialog checkInvite(BuildContext context, String name, String avatar) {
-  return YYDialog().build(context)
+  YYDialog checkInvite(BuildContext context, String name, String avatar, int role) {
+   return YYDialog().build(context)
     ..width = G.setWidth(600)
     ..borderRadius = G.setWidth(20)
     ..text(
@@ -235,11 +239,12 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Row(
           children: <Widget>[
             Validate.isNon(avatar)
-            ? Image.asset(
-                '${G.imgBaseUrl}pic-icon/default_avatar.png',
-                width: G.setWidth(80),
-                height: G.setWidth(80),
-              )
+            ? VAvatar(avatar, role, width: 80,)
+            // Image.asset(
+            //     '${G.imgBaseUrl}pic-icon/default_avatar.png',
+            //     width: G.setWidth(80),
+            //     height: G.setWidth(80),
+            //   )
             : Image.network(
                 avatar,
                 width: G.setWidth(80),
@@ -275,22 +280,69 @@ class _RegisterPageState extends State<RegisterPage> {
       )
     )
     ..divider()
-    ..doubleButton(
-      gravity: Gravity.center,
-      withDivider: true,
-      text1: "取消",
-      color1: hex('#85868A'),
-      fontSize1: G.setSp(36),
-      onTap1: () {
-        print("取消");
-      },
-      text2: "确定注册",
-      color2: hex('##0091F0'),
-      fontSize2: G.setSp(36),
-      onTap2: () async {
-        registerApi();
-      },
+    ..widget(
+      Container(
+        height: G.setWidth(100),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                // YYDialog().dismiss();
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: G.setWidth(100),
+                width: G.setWidth(300),
+                alignment: Alignment.center,
+                child: Text('取消', textAlign: TextAlign.center, style: TextStyle(
+                  color: hex('#85868A'),
+                  fontSize: G.setSp(36)
+                )),
+              ),
+            ),
+            Container(
+              height: G.setWidth(100),
+              width: G.setWidth(1),
+              color: hex('#E5E6E5'),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+                registerApi();
+              },
+              child: Container(
+                width: G.setWidth(299),
+                height: G.setWidth(100),
+                alignment: Alignment.center,
+                child: Text('确定注册', textAlign: TextAlign.center, style: TextStyle(
+                  color: hex('#0091F0'),
+                  fontSize: G.setSp(36)
+                )),
+              ),
+            )
+          ],
+        )
+      )
     )
+    // ..doubleButton(
+    //   padding: EdgeInsets.symmetric(horizontal: 0),
+    //   gravity: Gravity.center,
+    //   withDivider: true,
+    //   text1: "取消",
+    //   color1: hex('#85868A'),
+      
+    //   fontSize1: G.setSp(36),
+    //   onTap1: () {
+    //     print("取消");
+    //   },
+    //   text2: "确定注册",
+    //   color2: hex('#0091F0'),
+    //   fontSize2: G.setSp(36),
+    //   onTap2: () async {
+    //     registerApi();
+    //   },
+    // )
     ..show();
 }
 
@@ -302,7 +354,6 @@ class _RegisterPageState extends State<RegisterPage> {
       'parentShareCode': invite
     };
     var result = await LoginApi().register(data);
-    print(result);
     if (result.data['code'] == 200) {
       G.toast('注册成功，请完善个人信息');
       String token = result.data['data']['jwtToken'];
@@ -313,8 +364,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _loginSmsInput(bool disabled) {
     return VCircleInput(
-        
         controller: _smsController,
+        focus: _smsFocus,
         onChange: (String e) {
           setState(() {
             sms = e;
@@ -324,7 +375,10 @@ class _RegisterPageState extends State<RegisterPage> {
         hintText: '请输入验证码',
         prefixIcon: iconsafety(),
         type: TextInputType.number,
-        suffix: VTimerBtn(disabled, () async {return await LoginApi().getRegisterSmsCode(mobile);}),
+        suffix: VTimerBtn(disabled, () async {
+          FocusScope.of(context).requestFocus(_smsFocus);  
+          return await LoginApi().getRegisterSmsCode(mobile);
+        }),
         maxLength: 4,
         validator: (value) {
           if (errorMsg == null || errorMsg.isEmpty) {

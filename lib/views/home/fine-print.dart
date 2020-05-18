@@ -32,7 +32,7 @@ class _FinePointPageState extends State<FinePointPage> {
   Widget _head() {
     return Container(
         padding: EdgeInsets.symmetric(
-            horizontal: G.setWidth(20), vertical: G.setHeight(30)),
+            horizontal: G.setWidth(20), vertical: G.setHeight(20)),
         decoration: BoxDecoration(
             color: hex('#FFF'),
             borderRadius: BorderRadius.circular(G.setWidth(10))),
@@ -48,7 +48,8 @@ class _FinePointPageState extends State<FinePointPage> {
                   children: <Widget>[
                     Text('资格任务',
                         style: TextStyle(
-                            color: hex('#333'), fontSize: G.setSp(30))),
+                            color: hex('#333'), fontSize: G.setSp(30), fontWeight: FontWeight.bold)),
+                    G.spacing(15),
                     Text(
                               orderinfo.checkStatus == 1
                                   ? '考核时间已过期，未完成考核无法获得服务费'
@@ -152,7 +153,7 @@ class _FinePointPageState extends State<FinePointPage> {
       width: G.setWidth(710),
       margin: EdgeInsets.symmetric(vertical: G.setHeight(20)),
       padding: EdgeInsets.symmetric(
-          vertical: G.setHeight(30), horizontal: G.setWidth(20)),
+          vertical: G.setHeight(20), horizontal: G.setWidth(20)),
       decoration: BoxDecoration(
           color: hex('#FFF'),
           borderRadius: BorderRadius.circular(G.setWidth(10))),
@@ -160,7 +161,8 @@ class _FinePointPageState extends State<FinePointPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text('考核细则',
-              style: TextStyle(fontSize: G.setSp(30), color: hex('#424242'))),
+              style: TextStyle(fontSize: G.setSp(30), color: hex('#424242'), fontWeight: FontWeight.bold)),
+          G.spacing(15),
           Text('1）自审核通过起，${orderinfo.checkDays}天内在名下开通${orderinfo.checkDiamondMemberNum}个钻石会员，且名下至少${orderinfo.checkEffectiveOrderNum}个钻石有产生有效订单；',
               style: TextStyle(fontSize: G.setSp(26), color: hex('#434343'))),
           Text('2）考核通过后才可获得服务费。',
@@ -179,7 +181,7 @@ class _FinePointPageState extends State<FinePointPage> {
     return Container(
       width: G.setWidth(710),
       padding: EdgeInsets.symmetric(
-          vertical: G.setHeight(30), horizontal: G.setWidth(20)),
+          vertical: G.setHeight(20), horizontal: G.setWidth(20)),
       decoration: BoxDecoration(
           color: hex('#FFF'),
           borderRadius: BorderRadius.circular(G.setWidth(10))),
@@ -187,7 +189,8 @@ class _FinePointPageState extends State<FinePointPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text('代理商权益',
-              style: TextStyle(fontSize: G.setSp(30), color: hex('#424242'))),
+              style: TextStyle(fontSize: G.setSp(30), color: hex('#424242'), fontWeight: FontWeight.bold)),
+          G.spacing(15),
           Text('1、代理豪礼：精选好物，豪华大礼；', style: subStyle()),
           Text('2、无限分享：标准版会员，无限数量分享；', style: subStyle()),
           Text('3、推荐奖励：推荐有回报，分享赚不停；', style: subStyle()),

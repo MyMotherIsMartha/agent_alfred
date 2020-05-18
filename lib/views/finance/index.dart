@@ -10,7 +10,9 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/finance/components/finance-item.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:agent37_flutter/api/system.dart';
 
 class FinancePage extends StatefulWidget {
   final String type;
@@ -152,6 +154,21 @@ class _OrderViewState extends State<OrderView>
   DateTime startTime = DateTime(DateTime.now().year, DateTime.now().month);
   DateTime endTime = DateTime.now();
   var chargeFuture;
+  String dateCalc = '15'; // 每月X号结算
+
+  Future getDateCalc() async {
+    if (Validate.isNon(G.getPref('generateSettleBillDatesMonthly'))) {
+      var result = await SystemApi().getSystemSettings();
+      setState(() {
+        dateCalc = result.data['data']['generateSettleBillDatesMonthly'];
+      });
+      G.setPref('generateSettleBillDatesMonthly', result.data['data']['generateSettleBillDatesMonthly']);
+    } else {
+      setState(() {
+        dateCalc = G.getPref('generateSettleBillDatesMonthly');
+      });
+    }
+  }
 
   // 待结算提示
   Widget _hint() {
@@ -166,7 +183,7 @@ class _OrderViewState extends State<OrderView>
               children: <Widget>[
                 iconhint(color: hex('#fff'), size: G.setSp(30)),
                 G.spacing(10, dir: 'x'),
-                Text('考核期代理的服务费结算将在考核过后当月/下月15日结算',
+                Text('考核期代理的服务费结算将在考核过后当月/下月$dateCalc日结算',
                     style: TextStyle(fontSize: G.setSp(24), color: hex('#fff')))
               ],
             ),
@@ -304,14 +321,16 @@ class _OrderViewState extends State<OrderView>
     var data = result.data['data'];
     if (data == null) return;
     sourceData = FinanceModel.fromJson(data);
-    setState(() {
-      total = sourceData.total;
+    Future.delayed(Duration(microseconds: 0), (){
+      setState(() {
+        total = sourceData.total;
+      });
+      itemList.addAll(sourceData.records);
+      if (itemList.length >= total) {
+        _refreshController?.finishLoad(success: true, noMore: true);
+      }
     });
-    itemList.addAll(sourceData.records);
-
-    if (itemList.length >= total) {
-      _refreshController?.finishLoad(success: true, noMore: true);
-    }
+    
   }
 
   Future _getCharge() async {
@@ -368,6 +387,7 @@ class _OrderViewState extends State<OrderView>
     startTime = widget.start;
     endTime = widget.end;
     chargeFuture = _getCharge();
+    getDateCalc();
   }
 
   @override

@@ -17,6 +17,7 @@ class VCircleInput extends StatefulWidget {
   final Widget suffixIcon;
   final WhitelistingTextInputFormatter inputFormatters;
   final String value;
+  final FocusNode focus;
   VCircleInput(
       {@required this.controller,
       @required this.hintText,
@@ -28,6 +29,7 @@ class VCircleInput extends StatefulWidget {
       this.suffixIcon,
       this.maxLength,
       this.inputFormatters,
+      this.focus,
       this.value});
   @override
   _VCircleInputState createState() => _VCircleInputState();
@@ -36,9 +38,13 @@ class VCircleInput extends StatefulWidget {
 class _VCircleInputState extends State<VCircleInput> {
   bool _hasdeleteIcon = false;
   FocusNode _focus = FocusNode();
+
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _focus = widget.focus == null ? FocusNode() : widget.focus;
+    });
     _focus.addListener(() {
       if (!_focus.hasFocus) {
         setState(() {
@@ -77,11 +83,12 @@ class _VCircleInputState extends State<VCircleInput> {
               child: Container(
                 alignment: Alignment.center,
                 // height: G.setWidth(60),
-                margin: EdgeInsets.only(bottom: G.setWidth(36)),
+                margin: EdgeInsets.only(bottom: G.setWidth(56)),
                 child: TextFormField(
                 // strutStyle: StrutStyle(
                 //   height: 1
                 // ),
+                
                 inputFormatters: widget.inputFormatters != null
                 ? [widget.inputFormatters]
                 : null,
@@ -99,7 +106,7 @@ class _VCircleInputState extends State<VCircleInput> {
                       height: 1.2,
                       ),
                   decoration: InputDecoration(
-                    
+                      
                       contentPadding: EdgeInsets.all(0),
                       border: InputBorder.none,
                       // fillColor: Colors.red,
