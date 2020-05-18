@@ -97,7 +97,7 @@ void openShareWindow(context, String type) {
       context: context,
       builder: (BuildContext context) {
         return
-        Stack(
+        Column(
           children: <Widget>[
             RepaintBoundary(
               key: qrCodeKey,
@@ -117,24 +117,24 @@ void openShareWindow(context, String type) {
                       width: G.setWidth(620),
                       height: G.setWidth(874),
                       child: Stack(children: <Widget>[
-                        Positioned(
-                            top: G.setWidth(20),
-                            right: G.setWidth(20),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: hex('#F9F9F9').withOpacity(0.5),
-                                  shape: BoxShape.circle,
-                                ),
-                                width: G.setWidth(44),
-                                height: G.setWidth(44),
-                                child: Center(
-                                    child: Icon(Icons.close, size: G.setSp(36))),
-                              ),
-                            )),
+                        // Positioned(
+                        //     top: G.setWidth(20),
+                        //     right: G.setWidth(20),
+                        //     child: GestureDetector(
+                        //       onTap: () {
+                        //         Navigator.pop(context);
+                        //       },
+                        //       child: Container(
+                        //         decoration: BoxDecoration(
+                        //           color: hex('#F9F9F9').withOpacity(0.5),
+                        //           shape: BoxShape.circle,
+                        //         ),
+                        //         width: G.setWidth(44),
+                        //         height: G.setWidth(44),
+                        //         child: Center(
+                        //             child: showClose ? Icon(Icons.close, size: G.setSp(36)) : Text('')),
+                        //       ),
+                        //     )),
                         Column(children: [
                           Container(
                             margin: EdgeInsets.only(
@@ -190,37 +190,14 @@ void openShareWindow(context, String type) {
                   ],
                 )
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              child: Container(
+            Container(
                   height: G.setHeight(260),
                   width: G.setWidth(750),
+                  margin: EdgeInsets.only(top: G.setWidth(60)),
                   padding: EdgeInsets.only(
                       left: G.setWidth(125),
-                      right: G.setWidth(125),
-                      top: G.setHeight(30)),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(G.setWidth(50))),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            G.horizontalLine(207, color: hex('#ccc')),
-                            Text('分享',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: G.setSp(24),
-                                    color: hex('#ccc'),
-                                    decoration: TextDecoration.none,
-                                    height: 1.2)),
-                            G.horizontalLine(207, color: hex('#ccc')),
-                          ]),
-                      G.spacing(30),
+                      right: G.setWidth(125)),
+                  child: 
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -264,14 +241,14 @@ void openShareWindow(context, String type) {
                                     width: G.setWidth(100),
                                     height: G.setWidth(100),
                                     image: AssetImage(
-                                        'lib/assets/images/home/wechat.png'),
+                                        'lib/assets/images/home/wechat-white.png'),
                                     fit: BoxFit.contain),
-                                G.spacing(5),
+                                G.spacing(10),
                                 Text('微信好友',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: G.setSp(24),
-                                        color: hex('#ccc'),
+                                        color: hex('#fff'),
                                         decoration: TextDecoration.none,
                                         height: 1.2)),
                               ])
@@ -305,14 +282,14 @@ void openShareWindow(context, String type) {
                                     width: G.setWidth(100),
                                     height: G.setWidth(100),
                                     image: AssetImage(
-                                        'lib/assets/images/home/pyq.png'),
+                                        'lib/assets/images/home/pyq-white.png'),
                                     fit: BoxFit.contain),
-                                G.spacing(5),
+                                G.spacing(10),
                                 Text('朋友圈',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: G.setSp(24),
-                                        color: hex('#ccc'),
+                                        color: hex('#fff'),
                                         decoration: TextDecoration.none,
                                         height: 1.2)),
                               ]),
@@ -327,22 +304,173 @@ void openShareWindow(context, String type) {
                                     width: G.setWidth(100),
                                     height: G.setWidth(100),
                                     image: AssetImage(
-                                        'lib/assets/images/home/download.png'),
+                                        'lib/assets/images/home/download-white.png'),
                                     fit: BoxFit.contain),
-                                G.spacing(5),
+                                G.spacing(10),
                                 Text('保存图片',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: G.setSp(24),
-                                        color: hex('#ccc'),
+                                        color: hex('#fff'),
                                         decoration: TextDecoration.none,
                                         height: 1.2)),
                               ])
                             )
                           ])
-                    ],
-                  )),
-            )
+                  ),
+            // Positioned(
+            //   bottom: 0,
+            //   left: 0,
+            //   child: Container(
+            //       height: G.setHeight(260),
+            //       width: G.setWidth(750),
+            //       padding: EdgeInsets.only(
+            //           left: G.setWidth(125),
+            //           right: G.setWidth(125),
+            //           top: G.setHeight(30)),
+            //       decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.vertical(
+            //             top: Radius.circular(G.setWidth(50))),
+            //       ),
+            //       child: Column(
+            //         children: <Widget>[
+            //           Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: <Widget>[
+            //                 G.horizontalLine(207, color: hex('#ccc')),
+            //                 Text('分享',
+            //                     style: TextStyle(
+            //                         fontWeight: FontWeight.w400,
+            //                         fontSize: G.setSp(24),
+            //                         color: hex('#ccc'),
+            //                         decoration: TextDecoration.none,
+            //                         height: 1.2)),
+            //                 G.horizontalLine(207, color: hex('#ccc')),
+            //               ]),
+            //           G.spacing(30),
+            //           Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: <Widget>[
+            //                 GestureDetector(
+            //                   onTap: () async {
+            //                     var result = await isWeChatInstalled;
+            //                     if (!result) {
+            //                       G.toast('对不起，您还没有安装微信');
+            //                       return;
+            //                     }
+            //                     // var picBytes = await toPng();
+            //                     // if (picBytes == null) {
+            //                     //   G.toast('图片解析失败');
+            //                     //   return;
+            //                     // }
+            //                     RenderRepaintBoundary boundary =
+            //                         qrCodeKey.currentContext.findRenderObject();
+            //                     ui.Image image = await boundary.toImage();
+            //                     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+            //                     Uint8List picBytes = byteData.buffer.asUint8List();
+
+            //                     Directory documentsDirectory = await getTemporaryDirectory();
+
+            //                     String path = documentsDirectory.path + '/$type.png';
+            //                     File(path).writeAsBytes(picBytes);
+
+            //                     print(path);
+
+            //                     shareToWeChat(
+            //                       WeChatShareImageModel(WeChatImage.asset('/var/mobile/Containers/Data/Application/7299ED24-8BB1-4E21-AD48-F01370BBD0A9/Library/Caches/member.png'),
+            //                       title: 'title1',
+            //                       description: 'description',
+            //                       mediaTagName: 'mediaTag Name', 
+            //                       messageAction: 'messageAction',
+            //                       messageExt: 'messageExt',
+            //                       scene: WeChatScene.SESSION));
+            //                   },
+            //                   child:
+            //                   Column(children: [
+            //                     Image(
+            //                         width: G.setWidth(100),
+            //                         height: G.setWidth(100),
+            //                         image: AssetImage(
+            //                             'lib/assets/images/home/wechat.png'),
+            //                         fit: BoxFit.contain),
+            //                     G.spacing(5),
+            //                     Text('微信好友',
+            //                         style: TextStyle(
+            //                             fontWeight: FontWeight.w400,
+            //                             fontSize: G.setSp(24),
+            //                             color: hex('#ccc'),
+            //                             decoration: TextDecoration.none,
+            //                             height: 1.2)),
+            //                   ])
+            //                 ),
+            //                 GestureDetector(
+            //                   onTap: () async {
+            //                     var result = await isWeChatInstalled;
+            //                     if (!result) {
+            //                       G.toast('对不起，您还没有安装微信');
+            //                     }
+
+            //                     toPng().then((data) {
+            //                       bytes = data;
+            //                       print(bytes);
+            //                     });
+                                
+            //                     shareToWeChat(
+            //                       WeChatShareImageModel(WeChatImage.asset('lib/assets/images/Wechat2.jpeg'),
+            //                       title: 'title1',
+            //                       description: 'description',
+            //                       mediaTagName: 'mediaTag Name', 
+            //                       messageAction: 'messageAction',
+            //                       messageExt: 'messageExt',
+            //                       scene: WeChatScene.SESSION));
+                                
+                                
+            //                   },
+            //                   child:
+            //                   Column(children: [
+            //                     Image(
+            //                         width: G.setWidth(100),
+            //                         height: G.setWidth(100),
+            //                         image: AssetImage(
+            //                             'lib/assets/images/home/pyq.png'),
+            //                         fit: BoxFit.contain),
+            //                     G.spacing(5),
+            //                     Text('朋友圈',
+            //                         style: TextStyle(
+            //                             fontWeight: FontWeight.w400,
+            //                             fontSize: G.setSp(24),
+            //                             color: hex('#ccc'),
+            //                             decoration: TextDecoration.none,
+            //                             height: 1.2)),
+            //                   ]),
+            //                 ),
+            //                 GestureDetector(
+            //                   onTap: () async {
+            //                     saveQrcode();
+            //                   },
+            //                   child:
+            //                   Column(children: [
+            //                     Image(
+            //                         width: G.setWidth(100),
+            //                         height: G.setWidth(100),
+            //                         image: AssetImage(
+            //                             'lib/assets/images/home/download.png'),
+            //                         fit: BoxFit.contain),
+            //                     G.spacing(5),
+            //                     Text('保存图片',
+            //                         style: TextStyle(
+            //                             fontWeight: FontWeight.w400,
+            //                             fontSize: G.setSp(24),
+            //                             color: hex('#ccc'),
+            //                             decoration: TextDecoration.none,
+            //                             height: 1.2)),
+            //                   ])
+            //                 )
+            //               ])
+            //         ],
+            //       )),
+            // )
           ],
         );
       });

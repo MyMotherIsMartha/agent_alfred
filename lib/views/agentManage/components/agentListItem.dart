@@ -58,13 +58,13 @@ class _AgentListItemState extends State<AgentListItem> {
       }
     }
     
-    if (qualiStatus == -1) {
+    if (qualiStatus == -1 || voucherStatus == 3) {
       return Row(children: [
-        Text(statusStr),
+        Text(statusStr, style: TextStyle(color: hex('#E84747'))),
         Container(
           margin: EdgeInsets.only(left: G.setWidth(5)),
           decoration: BoxDecoration(
-            color: hex('#E84747'),
+            color: hex('#E6E6E6'),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
@@ -111,7 +111,7 @@ class _AgentListItemState extends State<AgentListItem> {
           ),
         ),
         Offstage( // 控制拒绝原因的显隐
-          offstage: item.qualificationsStatus != -1,
+          offstage: item.qualificationsStatus != -1 && item.voucherStatus != 3,
           child: Container(
             margin: EdgeInsets.only(bottom: G.setWidth(15)),
             padding: EdgeInsets.symmetric(vertical: G.setWidth(15), horizontal: G.setWidth(20)),
@@ -122,7 +122,7 @@ class _AgentListItemState extends State<AgentListItem> {
             constraints: BoxConstraints(
               minWidth: double.infinity, //宽度尽可能大
             ),
-            child: Text(item.qualificationRefuseReason ?? '', style: TextStyle(color: hex('#666666')),),
+            child: Text(item.qualificationsStatus == -1 ? item.qualificationRefuseReason ?? '' : item.voucherRefuseReason ?? '6666', style: TextStyle(color: hex('#666666'))),
           ),
         ),
         InkWell(

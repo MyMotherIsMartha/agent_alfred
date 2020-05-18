@@ -1,16 +1,15 @@
 {
   "images" : [
     {
+      "filename" : "app_name.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "37度管家@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "37度管家@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
