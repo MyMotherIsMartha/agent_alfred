@@ -282,9 +282,11 @@ class _CertificatePageState extends State<CertificatePage> {
                     'offlineVoucher': offlineVoucher
                   };
                   var result = await OrderApi().offlinePay(data);
-                  if (result.data['code'] == 200) {
+                  if (result.data['code'] == 200 && result.data['data'] == true) {
                     // G.toast('提交凭证成功');
                     Provider.of<UserProvide>(context).updateUserAuth();
+                  } else {
+                    G.toast('凭证提交失败');
                   }
                 }
               },

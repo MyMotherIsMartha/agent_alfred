@@ -173,7 +173,7 @@ class SettingPage extends StatelessWidget {
                 ),
               ),
               Container(
-                  height: G.setHeight(300),
+                  height: G.setWidth(380),
                   color: hex('#FFF'),
                   child: ListView.separated(
                       physics: NeverScrollableScrollPhysics(),
@@ -228,7 +228,7 @@ class SettingPage extends StatelessWidget {
 
   YYDialog yyAlertDialog(BuildContext context) {
     return YYDialog().build(context)
-      ..width = G.setWidth(600)
+      ..width = G.setWidth(440)
       ..height = G.setHeight(240)
       ..borderRadius = G.setWidth(20)
       ..text(

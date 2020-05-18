@@ -101,7 +101,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                         VInput(
                           controller: idcardController,
                           hintText: '请填写身份证号',
-                          type: TextInputType.phone,
+                          type: TextInputType.text,
                           maxLength: 18,
                           label: '身份证',
                           onChange: (e) {

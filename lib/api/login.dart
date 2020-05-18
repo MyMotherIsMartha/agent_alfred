@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/utils/request.dart';
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 
 
 class LoginApi{
@@ -74,6 +75,7 @@ class LoginApi{
 
   // 验证邀请码对应公司
   checkInviteCode(String code) async {
-    return await service().get('$agentMemberApi/v1/agentMemberAccounts/parent/$code');
+    String codeStr = code.replaceAll('/', '');
+    return await service().get('$agentMemberApi/v1/agentMemberAccounts/parent/$codeStr');
   }
 }
