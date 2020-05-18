@@ -112,7 +112,14 @@ class _ForgetPageState extends State<ForgetPage> {
                           type: pwdVisible
                               ? TextInputType.text
                               : TextInputType.visiblePassword,
-                          suffix: pwdVisible ? iconeye() : iconcloseeye(),
+                          suffix: InkWell(
+                            onTap: () {
+                              setState(() {
+                                pwdVisible = !pwdVisible;
+                              });
+                            },
+                            child: pwdVisible ? iconeye() : iconcloseeye(),
+                          ),
                           suffixWidth: Validate.isNon(pwdController.value.text) ? 80 : 140,
                           // suffixIcon: IconButton(
                           //   color: Colors.yellow,

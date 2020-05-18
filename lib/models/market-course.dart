@@ -72,6 +72,9 @@ class ContactVos {
   String contactContent;
   String tutorImg;
   int isDefault;
+  int duration;
+  int videoWidth;
+  int videoHeight;
 
   ContactVos(
       {this.courseId,
@@ -86,6 +89,9 @@ class ContactVos {
       this.tutorImg,
       this.tutorDesc,
       this.contactContent,
+      this.duration,
+      this.videoWidth,
+      this.videoHeight,
       this.isDefault});
 
   ContactVos.fromJson(Map<String, dynamic> json) {
@@ -102,6 +108,9 @@ class ContactVos {
     tutorImg = json['tutorImg'];
     contactContent = json['contactContent'];
     isDefault = json['isDefault'];
+    videoWidth = json['videoWidth'];
+    videoHeight = json['videoHeight'];
+    duration = json['duration'];
   }
 
   Map<String, dynamic> toJson() {
@@ -119,6 +128,9 @@ class ContactVos {
     data['tutorImg'] = this.tutorImg;
     data['contactContent'] = this.contactContent;
     data['isDefault'] = this.isDefault;
+    data['duration'] = this.duration;
+    data['videoWidth'] = this.videoWidth;
+    data['videoHeight'] = this.videoHeight;
     return data;
   }
 }
