@@ -454,7 +454,7 @@ class _ResultPageState extends State<ResultPage> {
   void _getCurrentWidgetAndTitle() {
     // 资审状态 -3：资质审核关闭；-2: 资质审核超时; -1: 资质审核拒绝; 0: 待资质审核提交；1: 资质审核已提交 2：待资质审核；3：资质审核延迟申请；4：资质审核成功
     appTitle = '企业信息审核';
-    if (statusCode == 1) {
+    if (statusCode == 1 || statusCode == 2) {
       middleArea = middleStatusWidget1();
     } else if (statusCode == 4) {
       middleArea = middleStatusWidget2();
@@ -478,7 +478,7 @@ class _ResultPageState extends State<ResultPage> {
       appTitle = '上传发票';
       middleArea = middleStatusWidgetInvoice();
     } else {
-      middleArea = middleStatusWidget4();
+      middleArea = middleStatusWidget1();
     }
   }
 

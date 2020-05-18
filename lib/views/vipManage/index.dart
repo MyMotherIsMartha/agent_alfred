@@ -17,6 +17,10 @@ import 'package:agent37_flutter/utils/global.dart';
 
 /// NestedScrollView示例页面
 class VipManageMain extends StatefulWidget {
+  final String type;
+  final String index;
+  VipManageMain({this.type, this.index});
+
   @override
   VipManageMainState createState() {
     return VipManageMainState();
@@ -29,6 +33,8 @@ class VipManageMainState extends State<VipManageMain>
   ScrollController _scrollController;
   // Tab控制器
   TabController _tabController;
+  DateTime startTime;
+  DateTime endTime;
 
   static List<Map> statusMap = [
     {'value': 0, 'label': '普通'},
@@ -46,6 +52,24 @@ class VipManageMainState extends State<VipManageMain>
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    switch (widget.type) {
+      case 'today':
+        startTime = DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day);
+        endTime = DateTime.now();
+        break;
+      case 'thisMonth':
+        startTime = DateTime(DateTime.now().year, DateTime.now().month);
+        endTime = DateTime.now();
+        break;
+      case 'lastMonth':
+        startTime = DateTime(DateTime.now().year, DateTime.now().month - 1);
+        endTime = DateTime(DateTime.now().year, DateTime.now().month, 0);
+        break;
+      default:
+        startTime = DateTime(DateTime.now().year, DateTime.now().month);
+        endTime = DateTime.now();
+    }
     loadCateGoryData();
   }
 
@@ -66,7 +90,7 @@ class VipManageMainState extends State<VipManageMain>
     for (int i = 0; i < statusMap.length; i++) {
       Map model = list[i];
       myTabsTmp.add(Tab(text: model['label']));
-      bodys.add(MemberList(model['value'], model['label']));
+      bodys.add(MemberList(model['value'], model['label'], start: startTime, end: endTime));
     }
     setState(() {
       tabs.addAll(myTabsTmp);
@@ -157,7 +181,9 @@ class VipManageMainState extends State<VipManageMain>
 class MemberList extends StatefulWidget {
   final int role;
   final String label;
-  MemberList(this.role, this.label);
+  final DateTime start;
+  final DateTime end;
+  MemberList(this.role, this.label, {this.start, this.end});
 
   @override
   _MemberListState createState() => _MemberListState();
@@ -179,6 +205,8 @@ class _MemberListState extends State<MemberList> {
     super.initState();
     role = widget.role;
     print(widget.label);
+    beginRegisterDate = widget.start;
+    endRegisterDate = widget.end;
     _getList(true);
   }
 

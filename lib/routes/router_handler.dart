@@ -243,7 +243,9 @@ Handler bankFormHandler = Handler(
 
 Handler vipManageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return VipManageMain();
+    String type = params['type']?.first;
+    String index = params['index']?.first;
+  return VipManageMain(type: type, index: index);
 });
 Handler vipSearchHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {

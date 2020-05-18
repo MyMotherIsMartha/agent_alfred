@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/api/oss.dart';
+import 'package:agent37_flutter/utils/oss.dart';
 import 'package:flutter/material.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
@@ -7,6 +8,7 @@ import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../utils/global.dart';
 
 class UploadEnterprisePic extends StatefulWidget {
@@ -59,17 +61,30 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     haveUpload = widget.isFirstUpload != 'yes';
   }
   /*拍照*/
-  _takePhoto() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      _uploadImage(image);
+  _takePhoto(source) async {
+    bool flag;
+    if (source == ImageSource.camera) {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.camera,
+      ].request();
+      flag = statuses[Permission.camera] == PermissionStatus.granted;
+    } else {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.storage,
+        Permission.photos
+      ].request();
+      flag = statuses[Permission.storage] == PermissionStatus.granted && statuses[Permission.photos] == PermissionStatus.granted;
+      // pre = await Permission.photos.status;
     }
-  }
-
-  /*相册*/
-  _openGallery() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    print(image);
+    Navigator.pop(context);
+    print(flag);
+    // print(pre);
+    // print('权限啊权限');
+    if (!flag) {
+      G.toast('请在设置中打开权限');
+      return;
+    }
+    var image = await ImagePicker.pickImage(source: source);
     if (image != null) {
       _uploadImage(image);
     }
@@ -200,16 +215,14 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
                             leading: new Icon(Icons.photo_camera),
                             title: new Text("拍照"),
                             onTap: () {
-                              _takePhoto();
-                              Navigator.pop(context);
+                              _takePhoto(ImageSource.camera);
                             },
                           ),
                           new ListTile(
                             leading: new Icon(Icons.photo_library),
                             title: new Text("相册"),
                             onTap: () {
-                              _openGallery();
-                              Navigator.pop(context);
+                              _takePhoto(ImageSource.gallery);
                             },
                           ),
                         ],
