@@ -48,12 +48,10 @@ class Oss {
         Permission.photos
       ].request();
       flag = statuses[Permission.storage] == PermissionStatus.granted && statuses[Permission.photos] == PermissionStatus.granted;
+      // flag = statuses[Permission.storage] == PermissionStatus.granted;
       // pre = await Permission.photos.status;
     }
     Navigator.pop(G.currentContext);
-    print(flag);
-    // print(pre);
-    // print('权限啊权限');
     if (!flag) {
       G.toast('请在设置中打开权限');
       return;
