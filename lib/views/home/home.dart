@@ -252,7 +252,7 @@ class _HomePageState extends State<HomePage>
                 onTap: () {
                   // _openGallery();
                   Navigator.pop(context);
-                  openShareWindow(context, 'member');
+                  openShareWindow(context, 'member', homeinfo.role);
                 },
               ),
               new ListTile(
@@ -263,7 +263,7 @@ class _HomePageState extends State<HomePage>
                 onTap: () {
                   // _openGallery();
                   Navigator.pop(context);
-                  openShareWindow(context, 'agent');
+                  openShareWindow(context, 'agent', homeinfo.role);
                 },
               ),
               new ListTile(
