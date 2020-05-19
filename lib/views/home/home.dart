@@ -371,14 +371,30 @@ class _HomePageState extends State<HomePage>
                               style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#424242'))),
-                          Text(
+                          Row(
+                            children: <Widget>[
+                              Text(
                               homeinfo.checkStatus == 1
                                   ? '考核时间已过期，未完成考核无法获得服务费'
                                   // : '距结束：${restTime(homeinfo.checkEndTime)}',
-                                  : '距结束：$_countdownTime',
+                                  : '距服务费减少：$_countdownTime',
                               style: TextStyle(
                                   fontSize: G.setSp(24),
                                   color: hex('#686868'))),
+                              G.spacing(10, dir: 'x'),
+                              InkWell(
+                                onTap: () {
+                                  statisticsDialog(context, '1341234', 'sdfdsfs');
+                                },
+                                child: Image.asset(
+                                  '${G.imgBaseUrl}pic-icon/info_icon.png',
+                                  width: G.setWidth(36),
+                                  height: G.setWidth(36),
+                                ),
+                          )
+                            ],
+                          )
+                          ,
                         ],
                       ),
                     ),

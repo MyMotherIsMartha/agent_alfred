@@ -16,7 +16,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:image_picker_saver/image_picker_saver.dart';
+//import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
