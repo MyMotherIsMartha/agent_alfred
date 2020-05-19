@@ -81,6 +81,7 @@ class _ForgetPageState extends State<ForgetPage> {
                         VInput(
                           labelWidth: G.setWidth(100),
                           controller: smsController,
+                          type: TextInputType.number,
                           hintText: '请输入验证码',
                           label: '验证码',
                           maxLength: 4,
@@ -107,8 +108,7 @@ class _ForgetPageState extends State<ForgetPage> {
                           controller: pwdController,
                           hintText: '6-15字符，由数字和大小写英文组成',
                           label: '新密码',
-                          maxLength: 16,
-                          
+                          maxLength: 15,
                           type: pwdVisible
                               ? TextInputType.text
                               : TextInputType.visiblePassword,

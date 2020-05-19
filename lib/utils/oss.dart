@@ -58,6 +58,12 @@ class Oss {
     }
     //  LOADING弹窗
     G.showLoading(G.currentContext);
+    // final LostDataResponse response = await ImagePicker.retrieveLostData();
+    // if (response == null) {
+    //     return;
+    // } else {
+    //   print(response);
+    // }
     var image = await ImagePicker.pickImage(source: source);
     if (image == null) {
       G.closeLoading();
