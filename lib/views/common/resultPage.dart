@@ -559,6 +559,7 @@ class _ResultPageState extends State<ResultPage> {
                 )
             ),
             AppBar(
+              leading: Container(),
               brightness: Brightness.dark,
               elevation: 0,
               backgroundColor: Colors.transparent,

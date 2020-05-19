@@ -352,6 +352,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           item: gift,
           selectedPackageNo: selectedPackageNo,
           fn: () {
+            G.removePref('orderOverTime');
             setState(() {
               selectedPackageNo = item.giftPackageNo;
               selectedGiftPackagePromotionNo =
