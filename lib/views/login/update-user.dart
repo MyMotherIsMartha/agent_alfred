@@ -87,7 +87,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                           controller: nameController,
                           hintText: '请填写姓名',
                           maxLength: 15,
-                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]")),
+                          // inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]")),
                           label: '姓名',
                           onChange: (e) {
                             String hint = Validate.isNon(e) ? '请填写真实姓名' : '';
@@ -112,7 +112,6 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                               // formValidate['idcard'] = RegExp(reg).hasMatch(e);
                               formValidate['idcard'] = !Validate.isNon(e);
                             });
-                            
                           },
                         ),
                         VAddress(
@@ -181,6 +180,11 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                       setState(() {
                         errorMsg = '身份证错误，请核对';
                       });
+                      return;
+                    }
+                    var regx = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9.]+$");
+                    if (!regx.hasMatch(name)) {
+                      G.toast('姓名只能输入中英文');
                       return;
                     }
                     if (_formKey.currentState.validate()) {

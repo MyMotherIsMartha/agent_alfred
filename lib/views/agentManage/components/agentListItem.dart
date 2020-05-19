@@ -13,6 +13,20 @@ class AgentListItem extends StatefulWidget {
 }
 
 class _AgentListItemState extends State<AgentListItem> {
+  bool showRefuse = false;
+  String refuseReason = '';
+  AgentItemModel item;
+
+  @override
+  void initState() { 
+    super.initState();
+    item = widget.item;
+    if (item.voucherStatus == 3) {
+      refuseReason = item.voucherRefuseReason.split('##')[0];
+    } else if (item.qualificationsStatus == -1) {
+      refuseReason = item.qualificationRefuseReason.split('##')[0];
+    }
+  }
 
   Widget leftTopText(qualiStatus, role, voucherStatus) {
     String statusStr;
@@ -59,25 +73,43 @@ class _AgentListItemState extends State<AgentListItem> {
     }
     
     if (qualiStatus == -1 || voucherStatus == 3) {
-      return Row(children: [
-        Text(statusStr, style: TextStyle(color: hex('#E84747'))),
-        Container(
-          margin: EdgeInsets.only(left: G.setWidth(5)),
-          decoration: BoxDecoration(
-            color: hex('#E6E6E6'),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
-        )
-      ]);
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            showRefuse = !showRefuse;
+          });
+        },
+        child:
+          Row(children: [
+            Text(statusStr, style: TextStyle(color: hex('#E84747'))),
+            Container(
+              margin: EdgeInsets.only(left: G.setWidth(5)),
+              decoration: BoxDecoration(
+                color: hex('#E6E6E6'),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Icon(showRefuse ? Icons.arrow_drop_up : Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
+            )
+          ])
+        );
     } else {
       return Text(statusStr, style: TextStyle(color: hex('#333')));
     }
   }
 
+  getRoleImg(role) {
+    if (role == -1) {
+      return AssetImage('lib/assets/images/home/agent-normal.png');
+    } else if (role == 0) {
+      return AssetImage('lib/assets/images/home/agent-underway.png');
+    } else if (role == 1) {
+      return AssetImage('lib/assets/images/home/agent-already.png');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    AgentItemModel item = widget.item;
+
     int currentTab = item.checkStatus == -1 ? 0 : 1;
 
     return Container(
@@ -111,7 +143,7 @@ class _AgentListItemState extends State<AgentListItem> {
           ),
         ),
         Offstage( // 控制拒绝原因的显隐
-          offstage: item.qualificationsStatus != -1 && item.voucherStatus != 3,
+          offstage: item.qualificationsStatus != -1 && item.voucherStatus != 3 || !showRefuse,
           child: Container(
             margin: EdgeInsets.only(bottom: G.setWidth(15)),
             padding: EdgeInsets.symmetric(vertical: G.setWidth(15), horizontal: G.setWidth(20)),
@@ -122,7 +154,7 @@ class _AgentListItemState extends State<AgentListItem> {
             constraints: BoxConstraints(
               minWidth: double.infinity, //宽度尽可能大
             ),
-            child: Text(item.qualificationsStatus == -1 ? item.qualificationRefuseReason ?? '' : item.voucherRefuseReason ?? '6666', style: TextStyle(color: hex('#666666'))),
+            child: Text(refuseReason, style: TextStyle(color: hex('#666666'))),
           ),
         ),
         InkWell(
@@ -149,7 +181,7 @@ class _AgentListItemState extends State<AgentListItem> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
-                child: Image(width: G.setWidth(100),image: item.headSculptureUrl != null ? NetworkImage(item.headSculptureUrl) : AssetImage('lib/assets/images/home/agent-avatar.png'))
+                child: Image(width: G.setWidth(100),image: item.headSculptureUrl != null ? NetworkImage(item.headSculptureUrl) : getRoleImg(item.role))
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
