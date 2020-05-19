@@ -228,7 +228,7 @@ class _CertificatePageState extends State<CertificatePage> {
                     ],
                   ),
                 )),
-            G.spacing(30),
+            G.spacing(25),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -96,6 +96,10 @@ class _VInputState extends State<VInput> {
                 widget.onTap();
               }
             },
+            maxLength: widget.maxLength,
+            buildCounter: (context, {currentLength = 10, maxLength = 10, isFocused = false}) {
+              return null;
+            },
             readOnly: widget.readOnly ?? false,
             obscureText: widget.type == TextInputType.visiblePassword,
             decoration: InputDecoration(
@@ -145,12 +149,12 @@ class _VInputState extends State<VInput> {
                 )),
             onChanged: (str) {
               String newStr = str;
-              if (widget.maxLength != null && str.length > widget.maxLength) {
-                String newStr = str.substring(0, widget.maxLength);
-                widget.controller.value = G.setTextEdit(newStr);
-              } else {
+              // if (widget.maxLength != null && str.length > widget.maxLength) {
+              //   String newStr = str.substring(0, widget.maxLength);
+              //   widget.controller.value = G.setTextEdit(newStr);
+              // } else {
                 widget.onChange(newStr);
-              }
+              // }
               setState(() {
                 _hasdeleteIcon = (str.isNotEmpty);
               });

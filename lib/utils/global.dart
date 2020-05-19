@@ -212,7 +212,9 @@ class G {
         color2: hex('##0091F0'),
         fontSize2: G.setSp(36),
         onTap2: () {
-          G.clearPref();
+          // G.clearPref();
+          G.removePref('token');
+          G.removePref('orderOverTime');
         },
       )
       ..dismissCallBack = () {

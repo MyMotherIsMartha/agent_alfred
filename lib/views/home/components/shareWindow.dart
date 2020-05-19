@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'dart:async';
 
+import 'package:agent37_flutter/components/v-avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -16,12 +17,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-void openShareWindow(context, String type) {
+void openShareWindow(context, String type, int role) {
   GlobalKey qrCodeKey = GlobalKey();
   String middleUrl = type == 'member' ? '#/createAccount/1?shareCode=' : '#/register?haveCode=true&shareCode=';
 
@@ -113,7 +113,7 @@ void openShareWindow(context, String type) {
                               image: AssetImage(
                                   type == 'member' ? "lib/assets/images/home/member-share-bg.png" : "lib/assets/images/home/agent-share-bg.png"),
                               fit: BoxFit.contain)),
-                      margin: EdgeInsets.only(top: G.setHeight(140)),
+                      margin: EdgeInsets.only(top: G.setWidth(100)),
                       width: G.setWidth(620),
                       height: G.setWidth(874),
                       child: Stack(children: <Widget>[
@@ -144,11 +144,12 @@ void openShareWindow(context, String type) {
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Image(
-                                      width: G.setWidth(80),
-                                      height: G.setWidth(80),
-                                      image: AssetImage(
-                                          'lib/assets/images/home/underway-agent-logo.png')),
+                                  VAvatar(null, role, width: 80,),
+                                  // Image(
+                                  //     width: G.setWidth(80),
+                                  //     height: G.setWidth(80),
+                                  //     image: AssetImage(
+                                  //         'lib/assets/images/home/agent-underway.png')),
                                   Container(
                                       margin: EdgeInsets.only(left: G.setWidth(20)),
                                       width: G.setWidth(280),
@@ -190,6 +191,8 @@ void openShareWindow(context, String type) {
                   ],
                 )
             ),
+            Expanded(
+              child: 
             Container(
                   height: G.setHeight(260),
                   width: G.setWidth(750),
@@ -219,15 +222,8 @@ void openShareWindow(context, String type) {
                                 ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
                                 Uint8List picBytes = byteData.buffer.asUint8List();
 
-                                Directory documentsDirectory = await getTemporaryDirectory();
-
-                                String path = documentsDirectory.path + '/$type.png';
-                                File(path).writeAsBytes(picBytes);
-
-                                print(path);
-
                                 shareToWeChat(
-                                  WeChatShareImageModel(WeChatImage.asset('/var/mobile/Containers/Data/Application/7299ED24-8BB1-4E21-AD48-F01370BBD0A9/Library/Caches/member.png'),
+                                  WeChatShareImageModel(WeChatImage.binary(picBytes, suffix: '.png'),
                                   title: 'title1',
                                   description: 'description',
                                   mediaTagName: 'mediaTag Name', 
@@ -260,24 +256,18 @@ void openShareWindow(context, String type) {
                                   G.toast('对不起，您还没有安装微信');
                                 }
 
-                                toPng().then((data) {
-                                  bytes = data;
-                                  print(bytes);
-                                });
+                                var picBytes = await toPng();
                                 
                                 shareToWeChat(
-                                  WeChatShareImageModel(WeChatImage.asset('lib/assets/images/Wechat2.jpeg'),
+                                  WeChatShareImageModel(WeChatImage.binary(picBytes, suffix: '.png'),
                                   title: 'title1',
                                   description: 'description',
                                   mediaTagName: 'mediaTag Name', 
                                   messageAction: 'messageAction',
                                   messageExt: 'messageExt',
-                                  scene: WeChatScene.SESSION));
-                                
-                                
+                                  scene: WeChatScene.TIMELINE));
                               },
-                              child:
-                              Column(children: [
+                              child: Column(children: [
                                 Image(
                                     width: G.setWidth(100),
                                     height: G.setWidth(100),
@@ -317,7 +307,8 @@ void openShareWindow(context, String type) {
                               ])
                             )
                           ])
-                  ),
+                  )
+                ),
             // Positioned(
             //   bottom: 0,
             //   left: 0,

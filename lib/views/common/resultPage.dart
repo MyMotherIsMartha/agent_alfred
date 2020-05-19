@@ -22,6 +22,7 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   String refuseReason = '';
+  String refuseRemark = '';
   var statusCode = 1;
   var appTitle = '企业信息审核';
   final TelAndSmsService _service = locator<TelAndSmsService>();
@@ -31,13 +32,45 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
    
-    middleArea = middleStatusWidget4();
-    statusCode = int.parse(widget.status);
+    middleArea = middleStatusWidget1();
     refuseReason = widget.refuseReason;
-    print(statusCode);
-    print(widget.haveExit);
-    _getCurrentWidgetAndTitle();
+    statusCode = int.parse(widget.status);
+    if (statusCode == 1 || statusCode == 2) {
+      refreshFunc();
+    } else {
+      _getCurrentWidgetAndTitle();
+    }
+    // _getCurrentWidgetAndTitle();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   print('didChangeDependencies');
+  //   var bool = ModalRoute.of(context).isCurrent;
+  //   if (bool) {
+  //     if (statusCode == 1 || statusCode == 2) {
+  //       refreshFunc();
+  //     } else {
+  //       _getCurrentWidgetAndTitle();
+  //     }
+  //   }
+  //   super.didChangeDependencies();
+  // }
+
+  // @override
+  // void deactivate() {
+  //   super.deactivate();
+  //   statusCode = int.parse(widget.status);
+  //   print('deactivate');
+  //   var bool = ModalRoute.of(context).isCurrent;
+  //   if (bool) {
+  //     if (statusCode == 1 || statusCode == 2) {
+  //       refreshFunc();
+  //     } else {
+  //       _getCurrentWidgetAndTitle();
+  //     }
+  //   }
+  // }
 
   void refreshFunc() async {
     // Provider.of<UserProvide>(context).updateUserAuth();
@@ -47,7 +80,13 @@ class _ResultPageState extends State<ResultPage> {
     
     setState(() {
       statusCode = qualificationsStatus;
-      refuseReason = result.data['data']['auditRefuseReason'] ?? '';
+      if (statusCode == -1) {
+        var reasonStr = result.data['data']['qualificationsRefuseReason'];
+        if (reasonStr && reasonStr != '') {
+          refuseReason = reasonStr.split('##')[0];
+          refuseRemark = reasonStr.split('##')[1];
+        }
+      }
       _getCurrentWidgetAndTitle();
     });
   }
@@ -180,9 +219,20 @@ class _ResultPageState extends State<ResultPage> {
               style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
           G.spacing(G.setHeight(10)),      
         Text('您的企业信息审核未通过，请重新填写', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
-        Text('原因：$refuseReason', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+        Text('原因：$refuseReason', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28))),
+        G.spacing(G.setWidth(5)),
+        refuseRemark != '' && refuseRemark != null ? 
         Container(
-          height: G.setHeight(265),
+          decoration: BoxDecoration(
+            color: hex('#F3F4F6'),
+            borderRadius: BorderRadius.circular(G.setWidth(10))
+          ),
+          padding: EdgeInsets.symmetric(horizontal: G.setWidth(10), vertical: G.setWidth(5)),
+          child: Text('备注：$refuseRemark', style: TextStyle(color: hex('#666'), fontSize: G.setSp(24))),
+        ) : Text(''),
+        G.spacing(G.setWidth(60)),
+        Container(
+          // height: G.setHeight(265),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -451,7 +501,7 @@ class _ResultPageState extends State<ResultPage> {
     ); 
   }
 
-  void _getCurrentWidgetAndTitle() {
+  void _getCurrentWidgetAndTitle() async {
     // 资审状态 -3：资质审核关闭；-2: 资质审核超时; -1: 资质审核拒绝; 0: 待资质审核提交；1: 资质审核已提交 2：待资质审核；3：资质审核延迟申请；4：资质审核成功
     appTitle = '企业信息审核';
     if (statusCode == 1 || statusCode == 2) {
@@ -460,6 +510,17 @@ class _ResultPageState extends State<ResultPage> {
       middleArea = middleStatusWidget2();
     } else if (statusCode == -1) {
       middleArea = middleStatusWidget3();
+      var result = await LoginApi().getUserAuth();
+      print(result.data['data'].toString());
+      if (result.data['data']['qualificationsStatus'] == -1) {
+        var reasonStr = result.data['data']['qualificationsRefuseReason'];
+        if (reasonStr && reasonStr != '') {
+          setState(() {
+            refuseReason = reasonStr.split('##')[0];
+            refuseRemark = reasonStr.split('##')[1];
+          });
+        }
+      }
     } else if (statusCode == -2) {
       appTitle = '提审窗口到期';
       middleArea = middleStatusWidget4();
@@ -511,8 +572,7 @@ class _ResultPageState extends State<ResultPage> {
                 widget.haveExit == 'yes' ? 
                 FlatButton(
                     onPressed: () {
-                      G.removePref('token');
-                      G.router.navigateTo(context, '/login', replace: true);
+                      G.logout(context);
                     },
                     child: Text('退出',
                         style: TextStyle(color: hex('#fff'), fontSize: G.setSp(32)))) : Text('')
