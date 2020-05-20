@@ -84,20 +84,24 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
         Permission.camera,
       ].request();
       flag = statuses[Permission.camera] == PermissionStatus.granted;
+      if (!flag) {
+        G.toast('请在设置里打开应用的相机权限');
+      }
     } else {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
         Permission.photos
       ].request();
       flag = statuses[Permission.storage] == PermissionStatus.granted && statuses[Permission.photos] == PermissionStatus.granted;
+      if (!flag) {
+        G.toast('请在设置里打开应用的照片权限');
+      }
       // pre = await Permission.photos.status;
     }
     Navigator.pop(context);
-    print(flag);
     // print(pre);
     // print('权限啊权限');
     if (!flag) {
-      G.toast('请在设置中打开权限');
       return;
     }
     var image = await ImagePicker.pickImage(source: source);
@@ -298,10 +302,6 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
               margin: EdgeInsets.only(top: G.setHeight(50)),
               child: InkWell(
                 onTap: () {
-                  // yyAlertDialog(context);
-                  Map uploadData = {
-                    'isRequest': true
-                  };
                   var uploadJson = FluroConvertUtils.object2string(uploadData);
                   G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
                 },
