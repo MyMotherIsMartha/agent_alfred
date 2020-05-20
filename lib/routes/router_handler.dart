@@ -386,5 +386,6 @@ Handler moduleDetailHandler = Handler(
 Handler webviewHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String url = params['url'][0];
-      return WebPage(url);
+      // String title = params['title']?.first;
+      return WebPage(url, title: 'title',);
 });

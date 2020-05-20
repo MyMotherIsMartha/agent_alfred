@@ -104,7 +104,6 @@ class _AddressPageState extends State<AddressPage> {
   void initState() {
     super.initState();
     addressProvide = Provider.of<AddressProvide>(G.currentContext);
-    print('address is');
     print(addressModel == null);
     addressModel = addressProvide.address;
     if (addressModel != null) {

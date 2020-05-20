@@ -271,6 +271,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       style: TextStyle(color: hex('#333'), fontSize: 14))
                 ],
               ),
+              Container(
+                    constraints: BoxConstraints(
+                      maxWidth: G.setWidth(600),
+                    ),
+                    child:
               Text(
                   address.province +
                       address.city +
@@ -279,7 +284,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style:
-                      TextStyle(color: hex('#999999'), fontSize: G.setSp(24)))
+                      TextStyle(color: hex('#999999'), fontSize: G.setSp(24))))
             ],
           ),
           iconarrow(size: G.setSp(30))

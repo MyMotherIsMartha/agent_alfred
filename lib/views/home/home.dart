@@ -3,6 +3,7 @@ import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-avatar.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
+import 'package:agent37_flutter/components/v-net-error.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/models/home-info.dart';
@@ -42,65 +43,67 @@ class _HomePageState extends State<HomePage>
   String _countdownTime = '';
 
   checkInfo(BuildContext context) {
-  if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus == 2 ) {
-    return;
-  }
-  return YYDialog().build(context)
-    ..width = G.setWidth(440)
-    ..borderRadius = G.setWidth(20)
-    ..text(
-      padding: EdgeInsets.all(G.setWidth(60)),
-      alignment: Alignment.center,
-      text: "尚未完善企业信息",
-      color: hex('#333'),
-      fontSize: G.setSp(36),
-      fontWeight: FontWeight.w500,
-    )
-    ..divider()
-    ..doubleButton(
-      padding: EdgeInsets.only(top: 10.0),
-      gravity: Gravity.center,
-      withDivider: true,
-      text1: "取消",
-      color1: hex('#85868A'),
-      fontSize1: G.setSp(36),
-      onTap1: () {
-        print("取消");
-      },
-      text2: "去完善",
-      color2: hex('##0091F0'),
-      fontSize2: G.setSp(36),
-      onTap2: () {
-        print("去完善");
-        goInfo = true;
-      },
-    )
-    ..dismissCallBack = () {
+    if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus == 2) {
+      return;
+    }
+    return YYDialog().build(context)
+      ..width = G.setWidth(440)
+      ..borderRadius = G.setWidth(20)
+      ..text(
+        padding: EdgeInsets.all(G.setWidth(60)),
+        alignment: Alignment.center,
+        text: "尚未完善企业信息",
+        color: hex('#333'),
+        fontSize: G.setSp(36),
+        fontWeight: FontWeight.w500,
+      )
+      ..divider()
+      ..doubleButton(
+        padding: EdgeInsets.only(top: 10.0),
+        gravity: Gravity.center,
+        withDivider: true,
+        text1: "取消",
+        color1: hex('#85868A'),
+        fontSize1: G.setSp(36),
+        onTap1: () {
+          print("取消");
+        },
+        text2: "去完善",
+        color2: hex('##0091F0'),
+        fontSize2: G.setSp(36),
+        onTap2: () {
+          print("去完善");
+          goInfo = true;
+        },
+      )
+      ..dismissCallBack = () {
         if (goInfo) {
           goInfo = false;
           Future.delayed(Duration(microseconds: 100), () {
             G.navigateTo(context, '/perfectEnterprise1');
           });
-          
         }
       }
-    ..show();
+      ..show();
   }
 
   Future _getHomeinfo() async {
-    var result = await MemberApi().getHomeInfo();
-    if (result.data['data'] != null) {
-      setState(() {
-        homeinfo = homeInfoModelFromJson(result.data['data']);
-        print('homeinfo');
-        print(result.data['data']);
-      });
-      countDown();
+    try {
+      var result = await MemberApi().getHomeInfo();
+      if (result.data['data'] != null) {
+        setState(() {
+          homeinfo = homeInfoModelFromJson(result.data['data']);
+        });
+        countDown();
+      }
+      nickname = FluroConvertUtils.fluroCnParamsEncode(
+          Provider.of<UserProvide>(context).userAuthInfo.nickname);
+      shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode;
+      mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
+      return 'feture end';
+    } catch (e) {
+      return 'future error';
     }
-    nickname = FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname);
-    shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode;
-    mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
-    return 'feture end';
   }
 
   Future _getMsgCount() async {
@@ -159,6 +162,7 @@ class _HomePageState extends State<HomePage>
           ],
         ));
   }
+
   // 用户信息
   Widget _userInfo() {
     return Container(
@@ -167,7 +171,11 @@ class _HomePageState extends State<HomePage>
       margin: EdgeInsets.only(bottom: G.setWidth(40)),
       child: Row(
         children: <Widget>[
-          VAvatar(null, homeinfo.role, width: 120,),
+          VAvatar(
+            null,
+            homeinfo.role,
+            width: 120,
+          ),
           // CircleAvatar(
           //   radius: G.setWidth(60),
           //   backgroundImage: AssetImage('${G.imgBaseUrl}logo.png'),
@@ -195,12 +203,12 @@ class _HomePageState extends State<HomePage>
                   ),
                   Container(width: G.setWidth(10)),
                   Image.asset(
-                      homeinfo.role == 0
-                          ? '${G.imgBaseUrl}home/check-status_icon.png'
-                          : '${G.imgBaseUrl}home/agent_status_icon.png',
-                      width: G.setWidth(140),
-                      height: G.setWidth(50),
-                    ),
+                    homeinfo.role == 0
+                        ? '${G.imgBaseUrl}home/check-status_icon.png'
+                        : '${G.imgBaseUrl}home/agent_status_icon.png',
+                    width: G.setWidth(140),
+                    height: G.setWidth(50),
+                  ),
                 ],
               ),
               Validate.isNon(homeinfo.shareCode)
@@ -331,8 +339,8 @@ class _HomePageState extends State<HomePage>
 
   countDown() {
     setState(() {
-        _countdownTime = restTime(homeinfo.checkEndTime);
-      });
+      _countdownTime = restTime(homeinfo.checkEndTime);
+    });
     _timer = Timer.periodic(Duration(seconds: 30), (timer) async {
       setState(() {
         _countdownTime = restTime(homeinfo.checkEndTime);
@@ -374,27 +382,27 @@ class _HomePageState extends State<HomePage>
                           Row(
                             children: <Widget>[
                               Text(
-                              homeinfo.checkStatus == 1
-                                  ? '考核时间已过期，未完成考核无法获得服务费'
-                                  // : '距结束：${restTime(homeinfo.checkEndTime)}',
-                                  : '距服务费减少：$_countdownTime',
-                              style: TextStyle(
-                                  fontSize: G.setSp(24),
-                                  color: hex('#686868'))),
+                                  homeinfo.checkStatus == 1
+                                      ? '考核时间已过期，未完成考核无法获得服务费'
+                                      // : '距结束：${restTime(homeinfo.checkEndTime)}',
+                                      : '距服务费减少：$_countdownTime',
+                                  style: TextStyle(
+                                      fontSize: G.setSp(24),
+                                      color: hex('#686868'))),
                               G.spacing(10, dir: 'x'),
                               InkWell(
                                 onTap: () {
-                                  statisticsDialog(context, '1341234', 'sdfdsfs');
+                                  statisticsDialog(
+                                      context, '1341234', 'sdfdsfs');
                                 },
                                 child: Image.asset(
                                   '${G.imgBaseUrl}pic-icon/info_icon.png',
                                   width: G.setWidth(36),
                                   height: G.setWidth(36),
                                 ),
-                          )
+                              )
                             ],
-                          )
-                          ,
+                          ),
                         ],
                       ),
                     ),
@@ -559,103 +567,116 @@ class _HomePageState extends State<HomePage>
             child: GridView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, //横轴三个子widget
-                  childAspectRatio: 1.2
-                  // childAspectRatio: 237 / 200 //宽高比为1时，子widget
-                ),
+                    crossAxisCount: 3, //横轴三个子widget
+                    childAspectRatio: 1.2
+                    // childAspectRatio: 237 / 200 //宽高比为1时，子widget
+                    ),
                 itemCount: 6,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {
-                      if (index < 3) {
-                        G.navigateTo(context, '/finance?type=' + type + '&index=' + index.toString());
-                      }
-                      if (index == 3) {
-                        G.navigateTo(context, '/finance?type=' + type + '&index=0');
-                      }
-                      if (index == 4) {
-                        G.navigateTo(context, '/vipManage?type=' + type + '&index=' + index.toString());
-                      }
-                      if (index == 5) {
-                        G.navigateTo(context, '/agentManage');
-                      }
-                    },
-                  child: Container(
-                      height: G.setWidth(200),
-                      width: G.setWidth(237),
-                      decoration: BoxDecoration(
-                          border: Border(
-                        bottom: index < 3
-                            ? BorderSide(color: hex('#E6E6E6'))
-                            : BorderSide.none,
-                        right: (index + 1) % 3 != 0
-                            ? BorderSide(color: hex('#E6E6E6'))
-                            : BorderSide.none,
-                      )),
-                      child: Stack(
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      onTap: () {
+                        if (index < 3) {
+                          G.navigateTo(
+                              context,
+                              '/finance?type=' +
+                                  type +
+                                  '&index=' +
+                                  index.toString());
+                        }
+                        if (index == 3) {
+                          G.navigateTo(
+                              context, '/finance?type=' + type + '&index=0');
+                        }
+                        if (index == 4) {
+                          G.navigateTo(
+                              context,
+                              '/vipManage?type=' +
+                                  type +
+                                  '&index=' +
+                                  index.toString());
+                        }
+                        if (index == 5) {
+                          G.navigateTo(context, '/agentManage');
+                        }
+                      },
+                      child: Container(
+                          height: G.setWidth(200),
+                          width: G.setWidth(237),
+                          decoration: BoxDecoration(
+                              border: Border(
+                            bottom: index < 3
+                                ? BorderSide(color: hex('#E6E6E6'))
+                                : BorderSide.none,
+                            right: (index + 1) % 3 != 0
+                                ? BorderSide(color: hex('#E6E6E6'))
+                                : BorderSide.none,
+                          )),
+                          child: Stack(
                             children: <Widget>[
-                              Container(
-                                alignment: Alignment.center,
-                                child: Text.rich(TextSpan(children: [
-                                  TextSpan(
-                                      text: "￥",
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: Text.rich(TextSpan(children: [
+                                      TextSpan(
+                                          text: "￥",
+                                          style: TextStyle(
+                                              color: hex('#333'),
+                                              fontSize: G.setSp(24))),
+                                      TextSpan(
+                                          text: data[index].toString(),
+                                          style: TextStyle(
+                                              color: hex('#333'),
+                                              fontSize: G.setSp(36))),
+                                    ])),
+                                  ),
+                                  G.spacing(15),
+                                  Text(title[index],
                                       style: TextStyle(
-                                          color: hex('#333'),
-                                          fontSize: G.setSp(24))),
-                                  TextSpan(
-                                      text: data[index].toString(),
-                                      style: TextStyle(
-                                          color: hex('#333'),
-                                          fontSize: G.setSp(36))),
-                                ])),
+                                          fontSize: G.setSp(24),
+                                          color: hex('#999')))
+                                ],
                               ),
-                              G.spacing(15),
-                              Text(title[index],
-                                  style: TextStyle(
-                                      fontSize: G.setSp(24),
-                                      color: hex('#999')))
+                              index < 3
+                                  ? Positioned(
+                                      top: G.setWidth(20),
+                                      right: G.setWidth(20),
+                                      child: InkWell(
+                                        onTap: () {
+                                          statisticsDialog(context,
+                                              statTitle[index], desc[index]);
+                                        },
+                                        child: Image.asset(
+                                          '${G.imgBaseUrl}pic-icon/info_icon.png',
+                                          width: G.setWidth(36),
+                                          height: G.setWidth(36),
+                                        ),
+                                      )
+                                      // ToolTip(
+                                      //   desc: desc[index],
+                                      //     direction: (index + 1) % 3 == 0
+                                      //         ? 'left'
+                                      //         : 'down'),
+                                      )
+                                  : isNew(index)
+                                      ? Positioned(
+                                          top: 0,
+                                          right: 0,
+                                          child: Container(
+                                            width: G.setWidth(65),
+                                            height: G.setWidth(65),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  fit: BoxFit.contain,
+                                                  image: AssetImage(
+                                                      '${G.imgBaseUrl}pic-icon/new-tri_icon.png')),
+                                            ),
+                                          ))
+                                      : Container()
                             ],
-                          ),
-                          index < 3
-                              ? Positioned(
-                                  top: G.setWidth(20),
-                                  right: G.setWidth(20),
-                                  child: InkWell(
-                                    onTap: () {
-                                      statisticsDialog(context, statTitle[index], desc[index]);
-                                    },
-                                    child: Image.asset(
-                                      '${G.imgBaseUrl}pic-icon/info_icon.png',
-                                      width: G.setWidth(36),
-                                      height: G.setWidth(36),
-                                    ),
-                                  )
-                                  // ToolTip(
-                                  //   desc: desc[index],
-                                  //     direction: (index + 1) % 3 == 0
-                                  //         ? 'left'
-                                  //         : 'down'),
-                                )
-                              : isNew(index) ? Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: Container(
-                                    width: G.setWidth(65),
-                                    height: G.setWidth(65),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          fit: BoxFit.contain,
-                                          image: AssetImage(
-                                              '${G.imgBaseUrl}pic-icon/new-tri_icon.png')),
-                                    ),
-                                  ))
-                              : Container()
-                        ],
-                      )));
+                          )));
                 })));
   }
 
@@ -739,7 +760,12 @@ class _HomePageState extends State<HomePage>
         'icon': '${G.imgBaseUrl}home/vip.png',
         'url': '/agentManage'
       },
-      {'title': '客户服务', 'icon': '${G.imgBaseUrl}home/contact.png', 'url': '/customerService?nickname=$nickname&shareCode=$shareCode&mobile=$mobile'},
+      {
+        'title': '客户服务',
+        'icon': '${G.imgBaseUrl}home/contact.png',
+        'url':
+            '/customerService?nickname=$nickname&shareCode=$shareCode&mobile=$mobile'
+      },
     ];
     return Container(
         margin: EdgeInsets.symmetric(vertical: G.setWidth(20)),
@@ -810,19 +836,6 @@ class _HomePageState extends State<HomePage>
     super.didChangeDependencies();
   }
 
-  // @override
-  // void deactivate() {
-  //   print('1234124124123431241234');
-  //   var bool = ModalRoute.of(context).isCurrent;
-  //   print(bool);
-  //   if (bool) {
-  //     msgFuture = _getMsgCount();
-  //     homeFuture = _getHomeinfo();
-  //     // _refreshController.callRefresh();
-  //   }
-  //   super.deactivate();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -840,6 +853,18 @@ class _HomePageState extends State<HomePage>
             child: FutureBuilder(
               future: homeFuture,
               builder: (context, shapshot) {
+                print(shapshot.hasData);
+                print(shapshot.data);
+                print('shapshot.data');
+                if (shapshot.data == 'future error') {
+                  return Container(
+                    height: G.setWidth(1334),
+                    width: double.infinity,
+                    child: VNetError(() {
+                      msgFuture = _getMsgCount();
+                      homeFuture = _getHomeinfo();
+                    }));
+                }
                 if (shapshot.hasData && homeinfo != null) {
                   return Container(
                     width: double.infinity,
@@ -864,9 +889,9 @@ class _HomePageState extends State<HomePage>
                   );
                 } else {
                   return Container(
-                      height: G.setWidth(1334),
-                      width: double.infinity,
-                      child: VLoading());
+                    height: G.setWidth(1334),
+                    width: double.infinity,
+                    child: VLoading());
                 }
               },
             ),
@@ -948,44 +973,40 @@ YYDialog statisticsDialog(BuildContext context, String title, String desc) {
     ..borderRadius = G.setWidth(10)
     ..barrierColor = hex('#fff').withOpacity(0)
     ..backgroundColor = hex('#333').withOpacity(.8)
-    ..widget(
-      Container(
-        padding: EdgeInsets.all(G.setWidth(20)),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(title, style: TextStyle(
-                  color: hex('#FFF'),
-                  fontSize: G.setSp(26),
-                  fontWeight: FontWeight.bold
-                ),),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(Icons.close, size: 22, color: hex('#FFF')),
-                )
-              ],
-            ),
-            G.spacing(10),
-            Container(
-              child: Text(
-                desc,
+    ..widget(Container(
+      padding: EdgeInsets.all(G.setWidth(20)),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                title,
                 style: TextStyle(
-                  color: hex('#FFF'),
-                  fontSize: G.setSp(24)
-                ),
+                    color: hex('#FFF'),
+                    fontSize: G.setSp(26),
+                    fontWeight: FontWeight.bold),
               ),
-            )
-          ],
-        ),
-      )
-    )
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Icon(Icons.close, size: 22, color: hex('#FFF')),
+              )
+            ],
+          ),
+          G.spacing(10),
+          Container(
+            child: Text(
+              desc,
+              style: TextStyle(color: hex('#FFF'), fontSize: G.setSp(24)),
+            ),
+          )
+        ],
+      ),
+    ))
     ..show();
 }
-
 
 YYDialog yyAlertDialog(BuildContext context) {
   return YYDialog().build(context)
