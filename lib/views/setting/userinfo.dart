@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/v-avatar.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
@@ -15,6 +16,7 @@ class SettingUserInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String nickname = Provider.of<UserProvide>(context).userAuthInfo?.nickname;
+    int role = Provider.of<UserProvide>(context).userAuthInfo?.role;
     return Scaffold(
       backgroundColor: hex('#f3f4f6'),
       appBar: AppBar(
@@ -40,13 +42,18 @@ class SettingUserInfoPage extends StatelessWidget {
                       style:
                           TextStyle(color: hex('#333'), fontSize: G.setSp(30))),
                   InkWell(
-                    child: ClipOval(
-                      child: Image.network(
-                        'http://img.cixi518.com/ljh_logo.jpeg',
-                        width: G.setWidth(80),
-                        height: G.setWidth(80),
-                      ),
+                    child: VAvatar(
+                      null,
+                      role,
+                      width: 80,
                     ),
+                    // ClipOval(
+                    //   child: Image.network(
+                    //     'http://img.cixi518.com/ljh_logo.jpeg',
+                    //     width: G.setWidth(80),
+                    //     height: G.setWidth(80),
+                    //   ),
+                    // ),
                     onTap: () {},
                   ),
                 ],

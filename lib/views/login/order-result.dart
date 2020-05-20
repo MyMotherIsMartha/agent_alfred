@@ -4,6 +4,7 @@ import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
 import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/utils/validate.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:color_dart/hex_color.dart';
@@ -167,12 +168,14 @@ class _OrderResultPageState extends State<OrderResultPage> {
           //       style: TextStyle(
           //           color: hex('#666'),
           //           fontSize: G.setSp(28))),
-          Text('拒绝原因：' + strList[1]??'',
+          Text('拒绝原因：' + strList[0]??'',
                 style: TextStyle(
                     color: hex('#666'),
                     fontSize: G.setSp(28))),
           G.spacing(10),
-          Container(
+          Validate.isNon(strList[1]) 
+          ? Container()
+          : Container(
             constraints: BoxConstraints(
               maxHeight: G.setWidth(610)
             ),
@@ -181,10 +184,10 @@ class _OrderResultPageState extends State<OrderResultPage> {
               borderRadius: BorderRadius.circular(10),
               color: hex('#f3f4f6')
             ),
-            child: Text('备注：' + strList[0], style: TextStyle(
+            child: Text('备注：' + strList[1]??'', style: TextStyle(
               fontSize: G.setSp(24),
               color: hex('#666')
-            ), ),
+            )),
           )
           
         ],

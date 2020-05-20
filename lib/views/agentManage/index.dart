@@ -449,8 +449,25 @@ class _MemberListState extends State<MemberList> {
 
   Future _getList(refresh) async {
     if (_listData.length == total && !refresh) {
-      G.toast('已加载全部');
-      _controller.finishLoad(success: true, noMore: true);
+      
+      // List<AgentItemModel> tempList = _listData;
+      // _listData.map((e) {
+      //   tempList.add(e);
+      // });
+      // for (int i = 0; i < _listData.length; i++) {
+      //   tempList[i] = _listData[i];
+      // }
+      // print(tempList[1].shareCode);
+      // print('tempList[1].shareCode');
+      
+      // _listData = [];
+      // return await Future.delayed(Duration(microseconds: 1000), () {
+      //   setState(() {
+      //     _listData = tempList;
+      //   });
+      // });
+      _controller.callLoad();
+      // _controller.finishLoad(success: true, noMore: true);
       return null;
     }
     var params = {
@@ -459,16 +476,11 @@ class _MemberListState extends State<MemberList> {
       'isNormal': isNormal,
       'smsValid': isNormal == 0 ? smsValid : ''
     };
-    print('params');
-    print(params);
     void _api() async {
       var result = await MemberApi().getAgentChildren(params);
-      print(result);
       Map originalData = result.data['data'];
-      print(originalData.toString());
       AgentResultModel resultData = AgentResultModel.fromJson(originalData);
       if (resultData == null) return;
-      print(resultData);
       setState(() {
         total = resultData.total;
       });
@@ -480,11 +492,9 @@ class _MemberListState extends State<MemberList> {
         _listData.addAll(resultData.records);
       }
     }
-
     setState(() {
       pageNo = refresh ? 1 : pageNo + 1;
     });
-
     _api();
   }
 
@@ -512,14 +522,15 @@ class _MemberListState extends State<MemberList> {
                     controller: scrollController,
                     itemCount: _listData.length,
                     itemBuilder: (context, index) {
-                      if (index == total) {
-                        return Container(
-                          alignment: Alignment.center,
-                          child: Text('没有更多了'),
-                        );
-                      } else {
-                        return AgentListItem(_listData[index]);
-                      }
+                      return AgentListItem(_listData[index]);
+                      // if (index == total) {
+                      //   return Container(
+                      //     alignment: Alignment.center,
+                      //     child: Text('没有更多了'),
+                      //   );
+                      // } else {
+                      //   return AgentListItem(_listData[index]);
+                      // }
                     }),
                 emptyWidget: _listData.length == 0
                     ? Container(
