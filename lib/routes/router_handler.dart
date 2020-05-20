@@ -1,6 +1,7 @@
 import 'package:agent37_flutter/views/agentManage/agentSearch.dart';
 import 'package:agent37_flutter/views/bank/bankForm.dart';
 import 'package:agent37_flutter/views/bank/index.dart';
+import 'package:agent37_flutter/views/common/netErrorPage.dart';
 import 'package:agent37_flutter/views/common/resultPage.dart';
 import 'package:agent37_flutter/views/finance/index.dart';
 import 'package:agent37_flutter/views/finance/search.dart';
@@ -195,6 +196,10 @@ Handler resultPageHandler = Handler(
   }
 );
 
+Handler netErrorPageHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return NetErrorPage();
+});
 
 //  钱包
 Handler walletMainHandler = Handler(

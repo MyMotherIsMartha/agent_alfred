@@ -21,6 +21,7 @@ class Routes {
   static String uploadEnterPrisePic = '/uploadEnterPrisePic';
   static String uploadLicenseForm = '/uploadLicenseForm';
   static String resultPage = '/resultPage';
+  static String netErrorPage = '/netErrorPage';
   static String vipManage = '/vipManage';
   static String vipSearch = '/vipManage/search';
   static String vipDetail = '/vipDetail';
@@ -78,6 +79,7 @@ class Routes {
     router.define(uploadEnterPrisePic, handler: uploadEnterPrisePicHandler);
     router.define(uploadLicenseForm, handler: uploadLicenseFormHandler);
     router.define(resultPage, handler: resultPageHandler);
+    router.define(netErrorPage, handler: netErrorPageHandler);
     router.define(vipManage, handler: vipManageHandler);
     router.define(vipSearch, handler: vipSearchHandler);
     router.define(vipDetail, handler: vipDetailHandler);

@@ -37,8 +37,10 @@ Dio service() {
       errorMsg = '连接超时,请切换网络或稍后再试';
     } else {
       errorMsg = '网络貌似出了问题';
+
     }
     G.closeLoading();
+    G.navigateTo(G.currentContext, '/netErrorPage');
     G.toast(errorMsg, duration: 5);
     // G.toast(e.message);
     // throw Exception(errorMsg);
