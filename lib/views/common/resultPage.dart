@@ -33,9 +33,8 @@ class _ResultPageState extends State<ResultPage> {
     super.initState();
    
     middleArea = middleStatusWidget1();
-    refuseReason = widget.refuseReason;
     statusCode = int.parse(widget.status);
-    if (statusCode == 1 || statusCode == 2) {
+    if (statusCode == 1 || statusCode == 2 || statusCode == -1) {
       refreshFunc();
     } else {
       _getCurrentWidgetAndTitle();
@@ -82,7 +81,7 @@ class _ResultPageState extends State<ResultPage> {
       statusCode = qualificationsStatus;
       if (statusCode == -1) {
         var reasonStr = result.data['data']['qualificationsRefuseReason'];
-        if (reasonStr && reasonStr != '') {
+        if (reasonStr != null && reasonStr != '') {
           refuseReason = reasonStr.split('##')[0];
           refuseRemark = reasonStr.split('##')[1];
         }
@@ -510,17 +509,6 @@ class _ResultPageState extends State<ResultPage> {
       middleArea = middleStatusWidget2();
     } else if (statusCode == -1) {
       middleArea = middleStatusWidget3();
-      var result = await LoginApi().getUserAuth();
-      print(result.data['data'].toString());
-      if (result.data['data']['qualificationsStatus'] == -1) {
-        var reasonStr = result.data['data']['qualificationsRefuseReason'];
-        if (reasonStr && reasonStr != '') {
-          setState(() {
-            refuseReason = reasonStr.split('##')[0];
-            refuseRemark = reasonStr.split('##')[1];
-          });
-        }
-      }
     } else if (statusCode == -2) {
       appTitle = '提审窗口到期';
       middleArea = middleStatusWidget4();

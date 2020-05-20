@@ -42,18 +42,24 @@ class Oss {
         Permission.camera,
       ].request();
       flag = statuses[Permission.camera] == PermissionStatus.granted;
+      if (!flag) {
+        G.toast('请在设置里打开应用的相机权限');
+      }
     } else {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
         Permission.photos
       ].request();
       flag = statuses[Permission.storage] == PermissionStatus.granted && statuses[Permission.photos] == PermissionStatus.granted;
+      if (!flag) {
+        G.toast('请在设置里打开应用的照片权限');
+      }
       // flag = statuses[Permission.storage] == PermissionStatus.granted;
       // pre = await Permission.photos.status;
     }
     Navigator.pop(G.currentContext);
     if (!flag) {
-      G.toast('请在设置中打开权限');
+      // G.toast('请在设置中打开权限');
       return;
     }
     //  LOADING弹窗

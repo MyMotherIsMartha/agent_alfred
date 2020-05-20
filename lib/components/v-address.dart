@@ -66,6 +66,7 @@ class VAddress extends StatelessWidget {
   }
 
   _addressSelect(context) async {
+    print(areaId);
     Result result2 = await CityPickers.showCityPicker(
         context: context,
         locationCode: areaId ?? '110000',
