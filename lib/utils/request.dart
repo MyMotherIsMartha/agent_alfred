@@ -31,16 +31,17 @@ Dio service() {
     return response.data;
   }, onError: (DioError e) async {
     print(e.type);
+    
     String errorMsg = '';
     if (e.type == DioErrorType.CONNECT_TIMEOUT) {
       errorMsg = '连接超时,请切换网络或稍后再试';
     } else {
-      errorMsg = '当前网络不可用,请检查是否连接了可用的Wifi或移动网络';
+      errorMsg = '网络貌似出了问题';
     }
     G.closeLoading();
     G.toast(errorMsg, duration: 5);
     // G.toast(e.message);
-    throw Exception(errorMsg);
+    // throw Exception(errorMsg);
     // 当请求失败时做一些预处理
     // return e; //continue
   }));
