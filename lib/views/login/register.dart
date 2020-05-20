@@ -2,7 +2,10 @@ import 'package:agent37_flutter/components/v-avatar.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-circle-input.dart';
 import 'package:agent37_flutter/components/v-timer-btn.dart';
+import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/routes/routes.dart';
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
@@ -418,6 +421,9 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
         child: FlatButton(
             onPressed: () {
+              var bodyJson = {"url": EnvConfig.dev['web-address'] + '/#/userAgreement'};
+              var linkTemp = FluroConvertUtils.object2string(bodyJson);
+              G.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp + '&title=userAgreement');
               print('新代理注册');
             },
             child: RichText(

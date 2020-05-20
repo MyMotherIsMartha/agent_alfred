@@ -4,12 +4,19 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
  
 class WebPage extends StatelessWidget {
   final String url;
-  WebPage(this.url);
+  final String title;
+  WebPage(this.url, {this.title});
 
   @override
   Widget build(BuildContext context) {
     Map obj = FluroConvertUtils.string2map(url);
-    print(obj);
+    String titleCn;
+    switch (title) {
+      case 'userAgreement':
+        titleCn = '代理协议';
+        break;
+      default:
+    }
     List<Widget> titleContent = [];
     titleContent.add(new Text(
       "关于我们",
@@ -21,7 +28,8 @@ class WebPage extends StatelessWidget {
       url: obj['url'], // url
       // 登录的URL
       appBar: AppBar(
-        title: Text('网页详情')
+        title: Text(titleCn??'网页详情'),
+        centerTitle: true,
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.center,
         //   children: titleContent,

@@ -162,7 +162,7 @@ class _OrderViewState extends State<OrderView>
       setState(() {
         dateCalc = result.data['data']['generateSettleBillDatesMonthly'];
       });
-      G.setPref('generateSettleBillDatesMonthly', result.data['data']['generateSettleBillDatesMonthly']);
+      // G.setPref('generateSettleBillDatesMonthly', result.data['data']['generateSettleBillDatesMonthly']);
     } else {
       setState(() {
         dateCalc = G.getPref('generateSettleBillDatesMonthly');
