@@ -156,7 +156,7 @@ class _AddressPageState extends State<AddressPage> {
                           // inputFormatters: WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[.]+")),
                           hintText: '请填写姓名',
                           label: '收货人',
-                          maxLength: 10,
+                          maxLength: 50,
                           onChange: (e) {
                             // String hint = Validate.isNon(e) ? '请填写真实姓名' : null;
                             setState(() {
@@ -219,6 +219,7 @@ class _AddressPageState extends State<AddressPage> {
                   width: 690,
                   height: 100,
                   fn: () async {
+                    G.showLoading(context);
                     List<String> areaLev = areaName.split(',');
                     Map data = {
                       'consigneeName': consigneeName,
@@ -236,6 +237,7 @@ class _AddressPageState extends State<AddressPage> {
                       return;
                     }
                     var result = await addressProvide.updateAddress(data);
+                    G.closeLoading();
                     if (result.data['code'] == 200) {
                       G.router.pop(context);
                       // G.navigateTo(context, '/create-account');
