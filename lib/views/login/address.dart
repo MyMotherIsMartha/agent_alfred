@@ -182,11 +182,13 @@ class _AddressPageState extends State<AddressPage> {
                           },
                         ),
                         VAddress(
-                          areaId: areaCode,
+                          areaId: '460100', //areaCode,
                           controller: areaController,
                           label: '所在地区',
                           hintText: '请选择省市区',
                           cb: (value, areaStr) {
+                            print(value);
+                            print(areaStr);
                             setState(() {
                               areaCode = value;
                               areaName = areaStr;
