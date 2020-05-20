@@ -853,9 +853,6 @@ class _HomePageState extends State<HomePage>
             child: FutureBuilder(
               future: homeFuture,
               builder: (context, shapshot) {
-                print(shapshot.hasData);
-                print(shapshot.data);
-                print('shapshot.data');
                 if (shapshot.data == 'future error') {
                   return Container(
                     height: G.setWidth(1334),
