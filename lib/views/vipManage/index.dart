@@ -115,17 +115,7 @@ class VipManageMainState extends State<VipManageMain>
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: extended.NestedScrollView(
-        // pinnedHeaderSliverHeightBuilder: () {
-        //   // return MediaQuery.of(context).padding.top + kToolbarHeight;
-        //   return G.setHeight(400);
-        // },
-        innerScrollPositionKeyBuilder: () {
-          return Key('Tab-' + _tabController.index.toString());
-        },
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return <Widget>[
-            new SliverAppBar(
+      appBar: AppBar(
               title: Text("会员管理"),
               centerTitle: true,
               // expandedHeight: 190.0,
@@ -133,8 +123,8 @@ class VipManageMainState extends State<VipManageMain>
               //   physics: NeverScrollableScrollPhysics(),
               //   child: Container(),
               // ),
-              floating: false,
-              pinned: true,
+              // floating: false,
+              // pinned: true,
               actions: <Widget>[
                 IconButton(
                   onPressed: () {
@@ -168,13 +158,10 @@ class VipManageMainState extends State<VipManageMain>
                 preferredSize: new Size(double.infinity, 46.0),
               ),
             ),
-          ];
-        },
-        body: TabBarView(
+      body:  TabBarView(
           controller: _tabController,
           children: bodys),
-      ),
-    );
+      );
   }
 }
 

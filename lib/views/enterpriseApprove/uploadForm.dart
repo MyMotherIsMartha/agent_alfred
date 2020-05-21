@@ -385,6 +385,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                   textColor: Colors.white,
                   onPressed: () async {
                     // Validate returns true if the form is valid, otherwise false.
+                    G.showLoading(context);
                     if (_formKey.currentState.validate()) {
                       var areaAry = areaName.split(',');
                       Map params = {
@@ -404,6 +405,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                       print(params);
                       // G.navigateTo(context, '/resultPage');
                       var result = await MemberApi().updateEnterpriseInfo(params);
+                      G.closeLoading();
                       print(result.data.toString());
                       if (result.data['code'] == 200) {
                         print('test');
