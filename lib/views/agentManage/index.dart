@@ -284,17 +284,7 @@ class AgentManageMainState extends State<AgentManageMain>
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: extended.NestedScrollView(
-        // pinnedHeaderSliverHeightBuilder: () {
-        //   // return MediaQuery.of(context).padding.top + kToolbarHeight;
-        //   return G.setHeight(400);
-        // },
-        innerScrollPositionKeyBuilder: () {
-          return Key('Tab-' + _tabController.index.toString());
-        },
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return <Widget>[
-            new SliverAppBar(
+      appBar: AppBar(
               title: Text("代理商管理"),
               centerTitle: true,
               // expandedHeight: 190.0,
@@ -302,8 +292,8 @@ class AgentManageMainState extends State<AgentManageMain>
               //   physics: NeverScrollableScrollPhysics(),
               //   child: Container(),
               // ),
-              floating: false,
-              pinned: true,
+              // floating: false,
+              // pinned: true,
               actions: <Widget>[
                 IconButton(
                   onPressed: () {
@@ -313,9 +303,7 @@ class AgentManageMainState extends State<AgentManageMain>
                 )
               ],
             ),
-          ];
-        },
-        body: Column(children: <Widget>[
+      body:  Column(children: <Widget>[
           _topArea(),
           Container(
             color: Colors.white,
@@ -343,8 +331,7 @@ class AgentManageMainState extends State<AgentManageMain>
               children: bodys),
           )
         ])
-      ),
-    );
+      );
   }
 }
 
@@ -466,8 +453,8 @@ class _MemberListState extends State<MemberList> {
       //     _listData = tempList;
       //   });
       // });
-      _controller.callLoad();
-      // _controller.finishLoad(success: true, noMore: true);
+      // _controller.callLoad();
+      _controller.finishLoad(success: true, noMore: true);
       return null;
     }
     var params = {
