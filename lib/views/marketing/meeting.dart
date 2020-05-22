@@ -33,8 +33,7 @@ class _WebViewState extends State<MarketMeetingPage> {
   void initState() {
     super.initState();
     url = EnvConfig.dev['web-address'] + '/#/applymeeting/' + widget.id;
-    // url = 'http://192.168.10.60:8080/#/';
-    print(url);
+    getDetail();
   }
 
   @override
@@ -43,17 +42,14 @@ class _WebViewState extends State<MarketMeetingPage> {
   }
 
   void _share(sence) async {
-    if (title == null) {
-      var result = await MarketingApi().detailMeeting(widget.id);
-      print(result.data['data']);
-      title = result.data['data']['meetingName'];
-      thumb = result.data['data']['sharePage'];
-    } else {
+    var result = await isWeChatInstalled;
+    if (!result) {
+      G.toast('对不起，您还没有安装微信');
     }
     var model = WeChatShareWebPageModel(
       url,
       title: title,
-      thumbnail: WeChatImage.network(thumb),
+      thumbnail: WeChatImage.network(thumb), //WeChatImage.network(thumb),
       scene: sence,
     );
     shareToWeChat(model);
@@ -183,7 +179,12 @@ class _WebViewState extends State<MarketMeetingPage> {
   }
 
   getDetail() async {
-    await MarketingApi().detailMeeting(widget.id);
+    // await MarketingApi().detailMeeting(widget.id);
+  var result = await MarketingApi().detailMeeting(widget.id);
+    setState(() {
+      title = result.data['data']['meetingName'];
+      thumb = result.data['data']['sharePage'];
+    });
   }
 
   @override

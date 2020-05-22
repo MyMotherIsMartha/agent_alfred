@@ -30,7 +30,7 @@ class _CertificatePageState extends State<CertificatePage> {
   int _orderOverTime = 0;
 
   void _getOrderInfo() async {
-    if (widget.from == 'order') {
+    if (widget.from == 'order' && !Validate.isNon(G.getPref('orderOverTime'))) {
       setState(() {
         _orderOverTime = int.parse(G.getPref('orderOverTime'));
       });
