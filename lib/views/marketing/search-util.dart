@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:provider/provider.dart';
  
 class MarketingSearchUtil {
+  static final historyKey = 'marketing-searchList' + Provider.of<UserProvide>(G.currentContext).userAuthInfo.shareCode;
+
   static setHistoryData(keywords) {
     /**
      * 1.获取本地存储里面的数据。(searchList)
@@ -17,25 +21,25 @@ class MarketingSearchUtil {
      *
      *  */
     try {
-      List searchListData = json.decode(G.getPref('marketing-searchList'));
+      List searchListData = json.decode(G.getPref(historyKey));
       // print(searchListData);
       var hasData = searchListData.any((v) {
         return v == keywords;
       });
       if (!hasData) {
         searchListData.add(keywords);
-        G.setPref('marketing-searchList', json.encode(searchListData));
+        G.setPref(historyKey, json.encode(searchListData));
       }
     } catch (e) {
       List tempList = new List();
       tempList.add(keywords);
-      G.setPref('marketing-searchList', json.encode(tempList));
+      G.setPref(historyKey, json.encode(tempList));
     }
   }
  
   static getHistoryList() {
     try {
-      List searchListData = json.decode(G.getPref('marketing-searchList'));
+      List searchListData = json.decode(G.getPref(historyKey));
       return searchListData;
     } catch (e) {
       return [];
@@ -43,6 +47,6 @@ class MarketingSearchUtil {
   }
  
   static removeHistoryList() {
-    G.removePref('marketing-searchList');
+    G.removePref(historyKey);
   }
 }
