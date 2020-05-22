@@ -32,14 +32,14 @@ void openShareWindow(context, String type, int role) {
   // 获取Uint8List数据
     Future<Uint8List> toPng() async {
     try {
-    RenderRepaintBoundary boundary =
-    qrCodeKey.currentContext.findRenderObject();
-    var image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-    return pngBytes; //这个对象就是图片数据
+      RenderRepaintBoundary boundary =
+      qrCodeKey.currentContext.findRenderObject();
+      var image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+      return pngBytes; //这个对象就是图片数据
     } catch (e) {
-    print(e);
+      print(e);
     }
     return null;
     }
