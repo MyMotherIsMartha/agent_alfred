@@ -61,6 +61,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
   void initState() { 
     super.initState();
     haveUpload = widget.isFirstUpload != 'yes';
+    print(widget.isFirstUpload);
     if (haveUpload) {
       _getEnterpriseInfo();
     }
@@ -302,6 +303,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
               margin: EdgeInsets.only(top: G.setHeight(50)),
               child: InkWell(
                 onTap: () {
+                  uploadData['isRequest'] = true;
                   var uploadJson = FluroConvertUtils.object2string(uploadData);
                   G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
                 },

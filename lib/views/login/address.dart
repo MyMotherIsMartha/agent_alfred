@@ -43,60 +43,64 @@ class _AddressPageState extends State<AddressPage> {
 
   checkChange() {
     bool flag = true;
-    if (consigneeName != addressProvide.address.consigneeName) {
-      flag = false;
-    }
-    if (mobile != addressProvide.address.mobile) {
-      flag = false;
-    }
-    if (areaCode != addressProvide.address.areaCode) {
-      flag = false;
-    }
-    if (address != addressProvide.address.address) {
-      flag = false;
-    }
-    if (flag) {
-      G.router.pop(context);
-    } else {
-      // 
-      YYDialog().build(context)
-      ..width = G.setWidth(440)
-      ..borderRadius = G.setWidth(20)
-      ..text(
-        padding: EdgeInsets.all(G.setWidth(60)),
-        alignment: Alignment.center,
-        text: "您填写的信息尚未保存，是否返回",
-        color: hex('#333'),
-        fontSize: G.setSp(36),
-        fontWeight: FontWeight.w500,
-      )
-      ..divider()
-      ..doubleButton(
-        padding: EdgeInsets.only(top: 10.0),
-        gravity: Gravity.center,
-        withDivider: true,
-        text1: "取消",
-        color1: hex('#85868A'),
-        fontSize1: G.setSp(36),
-        onTap1: () {
-          print("取消");
-        },
-        text2: "确定",
-        color2: hex('##0091F0'),
-        fontSize2: G.setSp(36),
-        onTap2: () {
-          G.router.pop(context);
-        },
-      )
-      ..dismissCallBack = () {
-        if (Validate.isNon(G.getPref('token'))) {
-          Provider.of<AddressProvide>(context).resetAddress();
-          Future.delayed(Duration(microseconds: 100), () {
-            G.navigateTo(context, '/login', replace: true);
-          });
-        }
+    if (addressProvide.address != null) {
+      if (consigneeName != addressProvide.address.consigneeName) {
+        flag = false;
       }
-      ..show();
+      if (mobile != addressProvide.address.mobile) {
+        flag = false;
+      }
+      if (areaCode != addressProvide.address.areaCode) {
+        flag = false;
+      }
+      if (address != addressProvide.address.address) {
+        flag = false;
+      }
+      if (flag) {
+        G.router.pop(context);
+      } else {
+        // 
+        YYDialog().build(context)
+        ..width = G.setWidth(440)
+        ..borderRadius = G.setWidth(20)
+        ..text(
+          padding: EdgeInsets.all(G.setWidth(60)),
+          alignment: Alignment.center,
+          text: "您填写的信息尚未保存，是否返回",
+          color: hex('#333'),
+          fontSize: G.setSp(36),
+          fontWeight: FontWeight.w500,
+        )
+        ..divider()
+        ..doubleButton(
+          padding: EdgeInsets.only(top: 10.0),
+          gravity: Gravity.center,
+          withDivider: true,
+          text1: "取消",
+          color1: hex('#85868A'),
+          fontSize1: G.setSp(36),
+          onTap1: () {
+            print("取消");
+          },
+          text2: "确定",
+          color2: hex('##0091F0'),
+          fontSize2: G.setSp(36),
+          onTap2: () {
+            G.router.pop(context);
+          },
+        )
+        ..dismissCallBack = () {
+          if (Validate.isNon(G.getPref('token'))) {
+            Provider.of<AddressProvide>(context).resetAddress();
+            Future.delayed(Duration(microseconds: 100), () {
+              G.navigateTo(context, '/login', replace: true);
+            });
+          }
+        }
+        ..show();
+      }
+    } else {
+      G.router.pop(context);
     }
   }
 

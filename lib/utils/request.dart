@@ -2,6 +2,7 @@ import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 // 初始化dio
 Dio service() {
   BaseOptions _baseOptions =
@@ -40,7 +41,9 @@ Dio service() {
 
     }
     G.closeLoading();
-    G.navigateTo(G.currentContext, '/netErrorPage');
+    if(ModalRoute.of(G.currentContext).settings.name != '/') {
+      G.navigateTo(G.currentContext, '/netErrorPage');
+    }
     G.toast(errorMsg, duration: 5);
     // G.toast(e.message);
     // throw Exception(errorMsg);

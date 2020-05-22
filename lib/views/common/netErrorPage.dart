@@ -2,7 +2,8 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
-
+import 'dart:async';
+import 'dart:io';
 
 class NetErrorPage extends StatefulWidget {
   @override
@@ -10,23 +11,31 @@ class NetErrorPage extends StatefulWidget {
 }
 
 class _NetErrorPageState extends State<NetErrorPage> {
+  bool haveClick = false;
+
   void checkNetStatus() async {
-    ConnectivityResult result;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      result = await Connectivity().checkConnectivity();
+    if (!haveClick) {
+      print('checkConnectivity');
+      haveClick = true;
+      ConnectivityResult result;
+      // Platform messages may fail, so we use a try/catch PlatformException.
+      result = await (Connectivity().checkConnectivity());
+      Timer(new Duration(seconds: 1), () => {
+        haveClick = false
+      });
+      
       if (result == ConnectivityResult.mobile) {
+        print('mobile');
         // I am connected to a mobile network.
         Navigator.pop(context);
       } else if (result == ConnectivityResult.wifi) {
+        print('wifi');
         // I am connected to a wifi network.
         Navigator.pop(context);
       } else {
-        G.toast('网络还是有问题');
+        print('TEST');
+        G.toast('网络依然不可用哦...', duration: 1);
       }
-    } catch (e) {
-      print(e.toString());
-      G.toast('网络还是有问题');
     }
   }
 
