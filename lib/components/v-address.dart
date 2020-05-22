@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/utils/city-data.dart';
 import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:city_pickers/city_pickers.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 
 class VAddress extends StatelessWidget {
   final TextEditingController controller;
@@ -75,7 +79,7 @@ class VAddress extends StatelessWidget {
             style: TextStyle(fontSize: G.setSp(32), color: hex('#999'))),
         confirmWidget: Text('确认',
             style: TextStyle(fontSize: G.setSp(32), color: hex('#108EE9'))),
-        citiesData: citiesData,
+        citiesData: citiesData, // citiesData,
         provincesData: provincesData);
     if (result2 != null) {
       String area;
@@ -95,4 +99,17 @@ class VAddress extends StatelessWidget {
       cb(area, areaName);
     }
   }
+
+  // _addressSelect(BuildContext context) {
+  //   Picker(
+  //       adapter: PickerDataAdapter<String>(data: AreaModle.formatData()),
+  //       title: Text("Select Icon"),
+  //       selectedTextStyle: TextStyle(color: Colors.blue),
+  //       onConfirm: (Picker picker, List value) {
+  //         print(value.toString());
+  //         print(picker.getSelectedValues());
+  //         print(provinceTreeData);
+  //       },
+  //   ).showModal(context);
+  // }
 }

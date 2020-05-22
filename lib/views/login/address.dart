@@ -43,24 +43,38 @@ class _AddressPageState extends State<AddressPage> {
 
   checkChange() {
     bool flag = true;
-    if (addressProvide.address != null) {
-      if (consigneeName != addressProvide.address.consigneeName) {
+    if (addressProvide.address == null) {
+      if (!Validate.isNon(consigneeName)) {
         flag = false;
       }
-      if (mobile != addressProvide.address.mobile) {
+      if (!Validate.isNon(mobile)) {
         flag = false;
       }
-      if (areaCode != addressProvide.address.areaCode) {
+      if (!Validate.isNon(areaCode)) {
         flag = false;
       }
-      if (address != addressProvide.address.address) {
+      if (!Validate.isNon(address)) {
         flag = false;
       }
-      if (flag) {
-        G.router.pop(context);
-      } else {
-        // 
-        YYDialog().build(context)
+    } else {
+      if (consigneeName != addressProvide.address?.consigneeName) {
+        flag = false;
+      }
+      if (mobile != addressProvide.address?.mobile) {
+        flag = false;
+      }
+      if (areaCode != addressProvide.address?.areaCode) {
+        flag = false;
+      }
+      if (address != addressProvide.address?.address) {
+        flag = false;
+      }
+    }
+    if (flag) {
+      G.router.pop(context);
+    } else {
+      //
+      YYDialog().build(context)
         ..width = G.setWidth(440)
         ..borderRadius = G.setWidth(20)
         ..text(
@@ -98,9 +112,6 @@ class _AddressPageState extends State<AddressPage> {
           }
         }
         ..show();
-      }
-    } else {
-      G.router.pop(context);
     }
   }
 
@@ -176,7 +187,8 @@ class _AddressPageState extends State<AddressPage> {
                           label: '联系电话',
                           maxLength: 11,
                           type: TextInputType.number,
-                          inputFormatters: WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                          inputFormatters:
+                              WhitelistingTextInputFormatter(RegExp("[0-9]")),
                           onChange: (e) {
                             setState(() {
                               mobile = e;
@@ -186,7 +198,8 @@ class _AddressPageState extends State<AddressPage> {
                           },
                         ),
                         VAddress(
-                          areaId: '460100', //areaCode,
+                          // areaId: '110000',
+                          areaId: areaCode,
                           controller: areaController,
                           label: '所在地区',
                           hintText: '请选择省市区',
