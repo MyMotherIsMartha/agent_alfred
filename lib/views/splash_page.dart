@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/env.dart';
 import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       G.navigateTo(context, '/login', replace: true);
       // G.navigateTo(context, '/address', replace: true);
     } else {
-      // G.navigateTo(context, '/address', replace: true);
+      // var uploadData = {
+      //   'isRequest': true
+      // };
+      // var uploadJson = FluroConvertUtils.object2string(uploadData);
+      // G.navigateTo(context, 'uploadLicenseForm?uploadJson=$uploadJson', replace: true);
       Provider.of<UserProvide>(context).updateUserAuth();
       Provider.of<UserProvide>(context).updateEnterpriseinfo();
       Provider.of<UserProvide>(context).updateBankCardInfo();

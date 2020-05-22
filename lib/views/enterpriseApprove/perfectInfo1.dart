@@ -234,8 +234,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Container(
-                              width: G.setWidth(120),
-                              height: G.setWidth(120),
+                              width: G.setWidth(80),
+                              height: G.setWidth(80),
                               margin: EdgeInsets.only(bottom: 10),
                               decoration: BoxDecoration(
                                 image: DecorationImage(

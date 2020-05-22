@@ -303,8 +303,11 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
               margin: EdgeInsets.only(top: G.setHeight(50)),
               child: InkWell(
                 onTap: () {
-                  uploadData['isRequest'] = true;
+                  if (widget.isFirstUpload != 'yes') {
+                    uploadData['isRequest'] = true;
+                  }
                   var uploadJson = FluroConvertUtils.object2string(uploadData);
+                  print(uploadData);
                   G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
                 },
                 child: Text('跳过这步 >', style: TextStyle(

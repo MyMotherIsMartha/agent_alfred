@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:provider/provider.dart';
  
 class SearchUtil {
+  // static final historyKey = 'searchList' + Provider.of<UserProvide>(G.currentContext).userAuthInfo.shareCode;
+
   static setHistoryData(keywords) {
     /**
      * 1.获取本地存储里面的数据。(searchList)
@@ -16,26 +20,31 @@ class SearchUtil {
      *
      *
      *  */
+    var userInfo = Provider.of<UserProvide>(G.currentContext).userAuthInfo;
+    String historyKey = 'searchList' + userInfo.shareCode;
+
     try {
-      List searchListData = json.decode(G.getPref('searchList'));
+      List searchListData = json.decode(G.getPref(historyKey));
       // print(searchListData);
       var hasData = searchListData.any((v) {
         return v == keywords;
       });
       if (!hasData) {
         searchListData.add(keywords);
-        G.setPref('searchList', json.encode(searchListData));
+        G.setPref(historyKey, json.encode(searchListData));
       }
     } catch (e) {
       List tempList = new List();
       tempList.add(keywords);
-      G.setPref('searchList', json.encode(tempList));
+      G.setPref(historyKey, json.encode(tempList));
     }
   }
  
   static getHistoryList() {
+    var userInfo = Provider.of<UserProvide>(G.currentContext).userAuthInfo;
+    String historyKey = 'searchList' + userInfo.shareCode;
     try {
-      List searchListData = json.decode(G.getPref('searchList'));
+      List searchListData = json.decode(G.getPref(historyKey));
       return searchListData;
     } catch (e) {
       return [];
@@ -43,6 +52,8 @@ class SearchUtil {
   }
  
   static removeHistoryList() {
-    G.removePref('searchList');
+    var userInfo = Provider.of<UserProvide>(G.currentContext).userAuthInfo;
+    String historyKey = 'searchList' + userInfo.shareCode;
+    G.removePref(historyKey);
   }
 }

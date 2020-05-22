@@ -7,6 +7,7 @@ import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-address.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/api/member.dart';
@@ -409,7 +410,50 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                       print(result.data.toString());
                       if (result.data['code'] == 200) {
                         print('test');
-                        G.navigateTo(context, '/resultPage?status=1');
+                        if (result.data['isPopup']) {
+                          bool goHome = false;
+                          return YYDialog().build(context)
+                            ..width = G.setWidth(500)
+                            ..borderRadius = G.setWidth(20)
+                            ..text(
+                              padding: EdgeInsets.all(G.setWidth(60)),
+                              alignment: Alignment.center,
+                              text: "资质审核已通过",
+                              color: hex('#333'),
+                              fontSize: G.setSp(36),
+                              fontWeight: FontWeight.w500,
+                            )
+                            ..divider()
+                            ..doubleButton(
+                              padding: EdgeInsets.only(top: 10.0),
+                              gravity: Gravity.center,
+                              withDivider: true,
+                              text1: "取消",
+                              color1: hex('#85868A'),
+                              fontSize1: G.setSp(36),
+                              onTap1: () {
+                                print("取消");
+                                goHome = false;
+                              },
+                              text2: "进入我的管家",
+                              color2: hex('##0091F0'),
+                              fontSize2: G.setSp(36),
+                              onTap2: () {
+                                print("进入我的管家");
+                                goHome = true;
+                              },
+                            )
+                            ..dismissCallBack = () {
+                              if (goHome) {
+                                Future.delayed(Duration(microseconds: 100), () {
+                                  G.navigateTo(context, '/index');
+                                });
+                              }
+                            }
+                            ..show();
+                        } else {
+                          G.navigateTo(context, '/resultPage?status=1');
+                        }
                       } else {
                         print('出错');
                       }

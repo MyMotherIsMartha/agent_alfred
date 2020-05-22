@@ -38,6 +38,22 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
+    _smsController.addListener(_printLatestValue);
+  }
+
+  @override
+  void dispose() {
+    _smsController?.dispose();
+    super.dispose();
+  }
+
+  _printLatestValue() {
+    setState(() {
+      sms = _smsController.text;
+      formValidate['sms'] = sms.length == 4;
+      print(formValidate['sms']);
+    });
   }
 
   Widget build(BuildContext context) {
@@ -230,12 +246,13 @@ class _LoginPageState extends State<LoginPage> {
         offstage: loginType != 'sms',
         child: VCircleInput(
             controller: _smsController,
-            onChange: (String e) {
-              setState(() {
-                sms = e;
-                formValidate['sms'] = e.length == 4;
-              });
-            },
+            // onChange: (String e) {
+            //   setState(() {
+            //     sms = e;
+            //     formValidate['sms'] = !Validate.isNon(e) && e != '';
+            //     print(formValidate['sms']);
+            //   });
+            // },
             focus: _smsFocus,
             hintText: '请输入验证码',
             prefixIcon: iconsafety(),
