@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage>
   EasyRefreshController _refreshController = EasyRefreshController();
   HomeInfoModel homeinfo;
   String nickname;
+  var nicknameForUrl;
   String shareCode;
   String mobile;
   var msgFuture;
@@ -96,12 +97,15 @@ class _HomePageState extends State<HomePage>
         });
         countDown();
       }
-      nickname = FluroConvertUtils.fluroCnParamsEncode(
-          Provider.of<UserProvide>(context).userAuthInfo.nickname);
+      nickname = Provider.of<UserProvide>(context).userAuthInfo.nickname;
+      nicknameForUrl = FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname.toString());
       shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode;
       mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
       return 'feture end';
     } catch (e) {
+      print(e.toString());
+      print(e);
+      print('ddfdsfasfsdfsad');
       return 'future error';
     }
   }
@@ -763,8 +767,8 @@ class _HomePageState extends State<HomePage>
       {
         'title': '客户服务',
         'icon': '${G.imgBaseUrl}home/contact.png',
-        'url':
-            '/customerService?nickname=$nickname&shareCode=$shareCode&mobile=$mobile'
+        'url': 
+            '/customerService?nickname=$nicknameForUrl&shareCode=$shareCode&mobile=$mobile'
       },
     ];
     return Container(
@@ -853,6 +857,8 @@ class _HomePageState extends State<HomePage>
             child: FutureBuilder(
               future: homeFuture,
               builder: (context, shapshot) {
+                print(shapshot.data);
+                print('shapshot');
                 if (shapshot.data == 'future error') {
                   return Container(
                     height: G.setWidth(1334),

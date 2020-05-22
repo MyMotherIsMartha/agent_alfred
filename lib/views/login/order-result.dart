@@ -20,6 +20,7 @@ class OrderResultPage extends StatefulWidget {
 class _OrderResultPageState extends State<OrderResultPage> {
   UserAuthModel userinfoAuth;
   String giftPackageNo;
+  int orderOverTime;
 
   Map<String, dynamic> statusMap = {
     //  支付成功
@@ -89,6 +90,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
     setState(() {
       statusMap['verifyFail']['desc'] = '你的支付凭证未通过，请在$orderOverHours小时内完成上传。';
       giftPackageNo = result.data['data']['giftPackageNo'];
+      orderOverTime = result.data['data']['orderOverime'];
     });
   }
 
@@ -147,7 +149,13 @@ class _OrderResultPageState extends State<OrderResultPage> {
               // G.navigateTo(
               //   G.currentContext,
               //   '/certificate?no=' + giftPackageNo + '&from=order');
-              status['fn'](giftPackageNo);
+              if (DateTime.now().millisecondsSinceEpoch > orderOverTime) {
+                G.toast('订单已超时，请重新下单');
+              G.navigateTo(G.currentContext, '/create-account',
+                  replace: true);
+              } else {
+                status['fn'](giftPackageNo);
+              }
             } else {
               print('审核不是失败');
               status['fn']();

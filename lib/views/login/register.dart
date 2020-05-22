@@ -8,6 +8,7 @@ import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
@@ -419,26 +420,57 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _agreement() {
     return Container(
-        child: FlatButton(
-            onPressed: () {
-              var bodyJson = {"url": EnvConfig.dev['web-address'] + '/#/userAgreement'};
-              var linkTemp = FluroConvertUtils.object2string(bodyJson);
-              G.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp + '&title=userAgreement');
-              print('新代理注册');
-            },
-            child: RichText(
-                text: TextSpan(children: <TextSpan>[
-              TextSpan(
-                text: '我已阅读接受',
+        margin: EdgeInsets.only(top: G.setWidth(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              '我已阅读接受',
                 style: TextStyle(fontSize: G.setSp(26), color: hex('#999')),
-              ),
-              TextSpan(
-                  text: '《代理协议》',
-                  style: TextStyle(fontSize: G.setSp(26), color: hex('#333'))),
-              TextSpan(
-                text: '，并同意注册',
-                style: TextStyle(fontSize: G.setSp(26), color: hex('#999')),
-              ),
-            ]))));
+            ),
+            InkWell(
+              onTap: () {
+                var bodyJson = {"url": EnvConfig.dev['web-address'] + '/#/userAgreement'};
+                var linkTemp = FluroConvertUtils.object2string(bodyJson);
+                G.router.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp + '&title=userAgreement', transition: TransitionType.fadeIn);
+              },
+              child: Text('《代理协议》',
+                style: TextStyle(fontSize: G.setSp(26), color: hex('#333'))),
+            ),
+            InkWell(
+              onTap: () {
+                var bodyJson = {"url": EnvConfig.dev['web-address'] + '/#/privacyAgreement'};
+                var linkTemp = FluroConvertUtils.object2string(bodyJson);
+                G.router.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp + '&title=privacyAgreement', transition: TransitionType.fadeIn);
+              },
+              child: Text('《隐私协议》',
+                style: TextStyle(fontSize: G.setSp(26), color: hex('#333'))),
+            ),
+            // Text('，并同意注册',
+            //   style: TextStyle(fontSize: G.setSp(26), color: hex('#999'))),
+          ],
+        )
+        // FlatButton(
+        //     onPressed: () {
+        //       var bodyJson = {"url": EnvConfig.dev['web-address'] + '/#/userAgreement'};
+        //       var linkTemp = FluroConvertUtils.object2string(bodyJson);
+        //       G.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp + '&title=userAgreement');
+        //       print('新代理注册');
+        //     },
+        //     child: RichText(
+        //         text: TextSpan(children: <TextSpan>[
+        //       TextSpan(
+        //         text: '我已阅读接受',
+        //         style: TextStyle(fontSize: G.setSp(26), color: hex('#999')),
+        //       ),
+        //       TextSpan(
+        //           text: '《代理协议》',
+        //           style: TextStyle(fontSize: G.setSp(26), color: hex('#333'))),
+        //       TextSpan(
+        //         text: '，并同意注册',
+        //         style: TextStyle(fontSize: G.setSp(26), color: hex('#999')),
+        //       ),
+        //     ])))
+            );
   }
 }

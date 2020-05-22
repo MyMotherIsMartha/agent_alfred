@@ -61,8 +61,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     print(token);
     if (Validate.isNon(token)) {
       G.navigateTo(context, '/login', replace: true);
+      // G.navigateTo(context, '/address', replace: true);
     } else {
-      // G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+      // G.navigateTo(context, '/address', replace: true);
       Provider.of<UserProvide>(context).updateUserAuth();
       Provider.of<UserProvide>(context).updateEnterpriseinfo();
       Provider.of<UserProvide>(context).updateBankCardInfo();

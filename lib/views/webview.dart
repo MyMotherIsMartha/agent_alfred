@@ -15,8 +15,14 @@ class WebPage extends StatelessWidget {
       case 'userAgreement':
         titleCn = '代理协议';
         break;
+      case 'privacyAgreement':
+        titleCn = '隐私协议';
+        break;
       default:
     }
+    print(titleCn);
+    print(title);
+    print('标题去哪里了');
     List<Widget> titleContent = [];
     titleContent.add(new Text(
       "关于我们",

@@ -182,7 +182,8 @@ class _AddressPageState extends State<AddressPage> {
                           },
                         ),
                         VAddress(
-                          areaId: '460100', //areaCode,
+                          // areaId: '110000',
+                          areaId: areaCode,
                           controller: areaController,
                           label: '所在地区',
                           hintText: '请选择省市区',
