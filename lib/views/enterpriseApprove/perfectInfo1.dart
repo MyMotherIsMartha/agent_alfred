@@ -427,7 +427,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                         VAddress(
                           label: '注册地区',
                           labelWidth: G.setWidth(180),
-                          areaId: areaCode,
+                          areaId: '130000,130200,130203', // areaCode,
                           controller: areaCtrl,
                           cb: (value, areaStr) {
                             areaCode = value;
@@ -581,7 +581,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                           'industryCode': jobCode,
                           'industryName': jobCodeCtrl.text,
                           'registerAddress': addressStr,
-                          'areaCode': int.parse(areaCode),
+                          'areaCode': areaCode,
                           'businessLicensePicture': licenseUrl,
                           'enterpriseName': enterpriseName,
                           'legalPerson': legalName,

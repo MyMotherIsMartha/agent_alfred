@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:agent37_flutter/components/Icon.dart';
+import 'package:agent37_flutter/components/address-picker/address_picker.dart';
 import 'package:agent37_flutter/utils/city-data.dart';
 import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
@@ -17,7 +18,14 @@ class VAddress extends StatelessWidget {
   final Function validator;
   final String hintText;
   final double labelWidth;
-  VAddress({this.controller, this.areaId, this.cb, this.validator, this.label, this.hintText, this.labelWidth});
+  VAddress(
+      {this.controller,
+      this.areaId,
+      this.cb,
+      this.validator,
+      this.label,
+      this.hintText,
+      this.labelWidth});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,29 +40,27 @@ class VAddress extends StatelessWidget {
           Container(
               // padding: EdgeInsets.only(right: G.setWidth(20)),
               width: labelWidth ?? G.setWidth(160),
-              child: Text(label??'地区',
+              child: Text(label ?? '地区',
                   style: TextStyle(fontSize: G.setSp(30), color: hex('#666')))),
           Expanded(
             child: InkWell(
               onTap: () {
-                _addressSelect(context);
+                _addressSelect2(context);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
-                      style: TextStyle(
-                                    fontSize: G.setSp(30)),
+                      style: TextStyle(fontSize: G.setSp(30)),
                       controller: controller,
                       onTap: () {
-                        _addressSelect(context);
+                        _addressSelect2(context);
                       },
                       readOnly: true,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: hintText??'请选择地区'
-                      ),
+                          border: InputBorder.none,
+                          hintText: hintText ?? '请选择地区'),
                       validator: validator,
                     ),
                   ),
@@ -70,7 +76,6 @@ class VAddress extends StatelessWidget {
   }
 
   _addressSelect(context) async {
-    print(areaId);
     Result result2 = await CityPickers.showCityPicker(
         context: context,
         locationCode: areaId ?? '110000',
@@ -100,16 +105,36 @@ class VAddress extends StatelessWidget {
     }
   }
 
-  // _addressSelect(BuildContext context) {
-  //   Picker(
-  //       adapter: PickerDataAdapter<String>(data: AreaModle.formatData()),
-  //       title: Text("Select Icon"),
-  //       selectedTextStyle: TextStyle(color: Colors.blue),
-  //       onConfirm: (Picker picker, List value) {
-  //         print(value.toString());
-  //         print(picker.getSelectedValues());
-  //         print(provinceTreeData);
-  //       },
-  //   ).showModal(context);
-  // }
+  _addressSelect2(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return BottomSheet(
+              onClosing: () {},
+              builder: (context) {
+                return Container(
+                  height: 250.0,
+                  child: AddressPicker(
+                    areaCode: areaId,
+                    style: TextStyle(color: Colors.black, fontSize: 17),
+                    mode: AddressPickerMode.provinceCityAndDistrict,
+                    onSelectedAddressChanged: (address) {
+                      String areaName = address.currentProvince.province +
+                          ',' +
+                          address.currentCity.city +
+                          ',' +
+                          address.currentDistrict.area;
+                      String value = address.currentProvince.provinceid +
+                          ',' +
+                          address.currentCity.cityid +
+                          ',' +
+                          address.currentDistrict.areaid;
+                      controller.value = TextEditingValue(text: areaName);
+                      cb(value, areaName);
+                    },
+                  ),
+                );
+              });
+        });
+  }
 }
