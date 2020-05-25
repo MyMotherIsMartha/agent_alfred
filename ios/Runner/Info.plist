@@ -101,6 +101,22 @@
 	<string>将分享图片加入到您到相册</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>方便您取得支付凭证和企业认证所需营业执照</string>
+	<key>NSContactsUsageDescription</key>
+	<string>方便您取得朋友的联系方式</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>方便您查看您的行程安排</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>方便您取得手机媒体资料</string>
+	<key>NSMotionUsageDescription</key>
+	<string>方便您取得运动与健康数据</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+    <string>方便您语音识别功能</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>地理位置权限</string>
+    <key>NSLocationUsageDescription</key>
+    <string>地理位置权限</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>地理位置权限</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
