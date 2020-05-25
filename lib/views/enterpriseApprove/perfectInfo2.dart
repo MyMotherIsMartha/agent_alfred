@@ -51,6 +51,60 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
     'legalName': true,
   };
 
+  @override
+  void initState() {
+    super.initState();
+    // G.setContext(context);
+    // G.setPref('token', 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpemF0aW9uIjoiIiwibmJmIjoxNTg2MzI2MjE0LCJpc3MiOiIzN2R1bGlnb3UiLCJtb2JpbGUiOiIxODg5MjY2MzAyNSIsImV4cCI6MTU4NjkzMTAxNCwiaWF0IjoxNTg2MzI2MjE0LCJ1c2VySWQiOjEyMDQ1ODkwNDYxNjM5MDI0NjYsInVzZXJuYW1lIjoiMTg4OTI2NjMwMjUifQ.FwMvr15n_TU7kmJwKCSGO97gx5qcwtQCFIn0-tEv65c');
+    
+    _getPerfectInfo();
+  }
+
+  _getPerfectInfo() async {
+    var result = await MemberApi().getPerfectInfo();
+    var resultData = result.data['data'];
+    print(result.data.toString());
+    setState(() {
+      frontIdCardImg1 = resultData['legalIdCardFront'];
+      backIdCardImg1 = resultData['legalIdCardBack'];
+      frontIdCardImg2 = resultData['idCardFront'];
+      backIdCardImg2 = resultData['idCardBack'];
+      areaCode = resultData['areaCode'];
+      mobile = mobileController.text = resultData['mobile'];
+      email = emailController.text = resultData['email'];
+      areaName = areaController.text = resultData['province'] + ',' + resultData['city'] + ',' + resultData['district'];
+      addressStr = addressStrController.text = resultData['address'];
+    });
+    // resultData2['legalName'] = resultData['name'];
+    // resultData2['frontIdCard1'] = resultData['legalIdCardFront'];
+    // resultData2['backIdCard1'] = resultData['legalIdCardBack'];
+    // resultData2['frontIdCard2'] = resultData['idCardFront'];
+    // resultData2['backIdCard2'] = resultData['idCardBack'];
+
+    // formData2['principalName']['val'] = resultData['name'];
+    // formData2['mobile']['val'] = resultData['mobile'];
+    // formData2['email']['val'] = resultData['email'];
+    // formData2['areaName']['val'] = resultData['province'] + resultData['city'] + resultData['district'];
+    // formData2['addressStr']['val'] = resultData['address'];
+
+    // List<Widget> fieldWidgetAry2 = [];
+    // formData2.forEach((key, val) {
+    //   print(val);
+    //   fieldWidgetAry2.add(
+    //     VField(
+    //       label: val['label'],
+    //       fieldVal: val['val'],
+    //     )
+    //   );
+    // });
+
+    // setState(() {
+    //   formDataWrap2 = Column(
+    //     children: fieldWidgetAry2
+    //   );
+    // });
+  }
+
   Widget titleWidget(padding, size, String text) {
     return Padding(padding: EdgeInsets.only(left: padding), child: Text(text, textAlign: TextAlign.left, style: TextStyle(fontSize: size, height: 2.4, color: hex('#666'))));
   }
@@ -270,7 +324,6 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                     children: <Widget>[
                       VInput(
                         controller: legalNameController,
-                        hintText: '请输入手机号',
                         label: '姓名',
                         readOnly: true
                       ),
