@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/components/address-picker/address_picker.dart';
 import 'package:agent37_flutter/components/v-address.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-input.dart';
@@ -197,6 +198,42 @@ class _AddressPageState extends State<AddressPage> {
                             });
                           },
                         ),
+                        // Container(
+                        //     height: G.setWidth(80),
+                        //     color: Colors.red,
+                        //     child: InkWell(
+                        //         child: Text('show'),
+                        //         onTap: () {
+                        //           showModalBottomSheet(
+                        //               context: context,
+                        //               builder: (context) {
+                        //                 return BottomSheet(
+                        //                     onClosing: () {},
+                        //                     builder: (context) {
+                        //                       return Container(
+                        //                         height: 250.0,
+                        //                         child: AddressPicker(
+                        //                           areaCode: '130000,130200,130203',
+                        //                           style: TextStyle(
+                        //                               color: Colors.black,
+                        //                               fontSize: 17),
+                        //                           mode: AddressPickerMode
+                        //                               .provinceCityAndDistrict,
+                        //                           onSelectedAddressChanged:
+                        //                               (address) {
+                        //                                 print(address.currentCity.cityid);
+                        //                             print(
+                        //                                 '${address.currentProvince.province}');
+                        //                             print(
+                        //                                 '${address.currentCity.city}');
+                        //                             print(
+                        //                                 '${address.currentDistrict.area}');
+                        //                           },
+                        //                         ),
+                        //                       );
+                        //                     });
+                        //               });
+                        //         })),
                         VAddress(
                           // areaId: '110000',
                           areaId: areaCode,

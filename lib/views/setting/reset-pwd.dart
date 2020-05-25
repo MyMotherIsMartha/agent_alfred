@@ -34,7 +34,7 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
     return Scaffold(
       backgroundColor: hex('#F3F4F6'),
       appBar: AppBar(
-        title: Text('设置登录密码'),
+        title: Text('重置登录密码'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -89,7 +89,7 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
                     ),
                     
                     // type: _showNewPwd ? TextInputType.text : TextInputType.visiblePassword,
-                    type: TextInputType.number,
+                    type: TextInputType.text,
                     controller: _newPwdController,
                     hintText: '请输入新密码',
                     label: '新密码',
@@ -131,7 +131,7 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
                   padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
                   alignment: Alignment.centerLeft,
                   height: G.setWidth(60),
-                  child: Text('请输入1-16位，可由中英文、数字组成',
+                  child: Text('请输入6-15位登录密码，需同时包含英文和数字',
                       style:
                           TextStyle(fontSize: G.setSp(24), color: hex('#999'))),
                 ),
