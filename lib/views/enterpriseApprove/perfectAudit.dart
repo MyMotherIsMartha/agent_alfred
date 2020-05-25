@@ -22,6 +22,10 @@ class _PerfectEnterpriseAuditState extends State<PerfectEnterpriseAudit> {
     });
   }
 
+  void viewQualifaction() {
+    G.navigateTo(context, '/readPerfectInfo');
+  }
+
   Widget middleStatusWidget1() {
     return Column(
       children: <Widget>[
@@ -58,7 +62,7 @@ class _PerfectEnterpriseAuditState extends State<PerfectEnterpriseAudit> {
               )
             ),
             RaisedButton(
-              onPressed: refreshFunc,
+              onPressed: viewQualifaction,
               elevation: 4.0,
               color: hex('#D6DBFF'),
               textColor: hex('#6982FF'),

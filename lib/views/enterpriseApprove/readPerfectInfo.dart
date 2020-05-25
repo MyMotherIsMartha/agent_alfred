@@ -287,7 +287,7 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: hex('#E7D1A8')),
+        iconTheme: IconThemeData(color: hex('#000')),
         title: Text(
           '企业信息',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),
