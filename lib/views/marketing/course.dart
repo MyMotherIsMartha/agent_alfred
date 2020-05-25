@@ -105,6 +105,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   Widget _headerPlayer() {
     return Container(
         width: double.infinity,
+        // padding: EdgeInsets.only(top: G.statusHeight),
         // height: G.setWidth(420),
         color: hex('#999'),
         child: Stack(
@@ -433,7 +434,8 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
         child: Scaffold(
-            body: Container(
+            body: SafeArea(
+            child: Container(
                 height: G.setHeight(1334),
                 child: FutureBuilder(
                   future: detailFuture,
@@ -461,6 +463,6 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                       return VLoading();
                     }
                   },
-                ))));
+                )))));
   }
 }

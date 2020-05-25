@@ -160,15 +160,15 @@ class SettingPage extends StatelessWidget {
                     Text('要修改通知，您可以在系统设置中修改',
                         style: TextStyle(
                             fontSize: G.setSp(24), color: hex('#999'))),
-                    G.spacing(10, dir: 'x'),
-                    InkWell(
-                      onTap: () {
-                        G.toast('功能开发中');
-                      },
-                      child: Text('设置',
-                          style: TextStyle(
-                              fontSize: G.setSp(24), color: hex('#0091F0'))),
-                    )
+                    // G.spacing(10, dir: 'x'),
+                    // InkWell(
+                    //   onTap: () {
+                    //     G.toast('功能开发中');
+                    //   },
+                    //   child: Text('设置',
+                    //       style: TextStyle(
+                    //           fontSize: G.setSp(24), color: hex('#0091F0'))),
+                    // )
                   ],
                 ),
               ),

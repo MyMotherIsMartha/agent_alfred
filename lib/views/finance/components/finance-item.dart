@@ -167,8 +167,11 @@ class FinanceItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  width: G.setWidth(300),
-                  child: Text('购买企业：${item.enterpriseName ?? "未知"}',
+                   constraints: BoxConstraints(
+                    maxWidth: G.setWidth(360)
+                  ),
+                  // width: G.setWidth(360),
+                  child: Text('购买企业：${item.enterpriseName ?? ""}',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
@@ -186,9 +189,9 @@ class FinanceItem extends StatelessWidget {
               ],
             ),
             Container(
-              constraints: BoxConstraints(
-                maxWidth: G.setWidth(370)
-              ),
+              // constraints: BoxConstraints(
+              //   maxWidth: G.setWidth(550)
+              // ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
@@ -205,7 +208,7 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(24))),
                       TextSpan(
-                          text: G.moneyToStr(item.totalOrderAmount),
+                          text: item.totalOrderAmount.toStringAsFixed(2),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
@@ -345,7 +348,7 @@ class FinanceProduct extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                    width: G.setWidth(324),
+                                    width: G.setWidth(284),
                                     child: Text(
                                       data.goodsName,
                                       maxLines: 2,
@@ -362,7 +365,7 @@ class FinanceProduct extends StatelessWidget {
                                       text: '￥',
                                       children: [
                                         TextSpan(
-                                            text: G.moneyToStr(data.goodsAmount),
+                                            text: data.goodsAmount.toStringAsFixed(2),
                                             style: TextStyle(
                                                 fontSize: G.setSp(26),
                                                 color: hex('#333'))),
