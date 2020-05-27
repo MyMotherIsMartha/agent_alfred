@@ -169,7 +169,7 @@ class _BillHistoryState extends State<BillHistory> {
                 emptyWidget: _listData.length == 0
                     ? Container(
                         margin: EdgeInsets.only(top: G.setHeight(240)),
-                        child: VEmpty(hintText: '暂无任何会员哦～'),
+                        child: VEmpty(hintText: '暂无任何账单哦～'),
                       )
                     : null,
                 onLoad: () async {

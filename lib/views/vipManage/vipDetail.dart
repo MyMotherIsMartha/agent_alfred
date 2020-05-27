@@ -27,9 +27,9 @@ class _VipDetailState extends State<VipDetail>
   List bodys;
   String currentMemberId;
   String _enterpriseName = '';
-  double _pengdingCharge;
-  double _entryCharge;
-  double _totalCharge;
+  double _pengdingCharge = 0;
+  double _entryCharge = 0;
+  double _totalCharge = 0;
 
   
 
@@ -54,7 +54,7 @@ class _VipDetailState extends State<VipDetail>
     _entryCharge = resultData['entryPurchaseOrderServiceCharge'];
     _totalCharge = _pengdingCharge + _entryCharge;
     print('object');
-    print(_totalCharge);
+    print(resultData);
   }
 
   @override
