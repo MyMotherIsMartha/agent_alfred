@@ -14,23 +14,45 @@ class VipListItem extends StatefulWidget {
 class _VipListItemState extends State<VipListItem> {
   bool showRefuse = false;
 
-  Widget leftTopText(statusCode) {
+  Widget leftTopText(statusCode, role) {
     String statusStr;
-    switch (statusCode) {
-      case -1:
-        statusStr = '未提交审核';
-        break;
-      case 1:
-        statusStr = '已通过认证';
-        break;
-      case 0:
-        statusStr = '未通过认证';
-        break;
-      case 2:
-        statusStr = '驳回认证';
-        break;
-      default:
-        statusStr = '未知状态';
+    if (role == 0) {
+      switch (statusCode) {
+        case -1:
+          statusStr = '未提交审核';
+          break;
+        case 1:
+          statusStr = '审核通过';
+          break;
+        case 0:
+          statusStr = '待审核';
+          break;
+        case 2:
+          statusStr = '审核拒绝';
+          break;
+        case 3:
+          statusStr = '退款降级';
+          break;
+        default:
+          statusStr = '未知状态';
+      }
+    } else {
+      switch (statusCode) {
+        case -1:
+          statusStr = '未提交审核';
+          break;
+        case 1:
+          statusStr = '已通过认证';
+          break;
+        case 0:
+          statusStr = '未通过认证';
+          break;
+        case 2:
+          statusStr = '驳回认证';
+          break;
+        default:
+          statusStr = '未知状态';
+      }
     }
     if (statusCode == 2) {
       return GestureDetector(
@@ -89,7 +111,7 @@ class _VipListItemState extends State<VipListItem> {
                       style: TextStyle(fontWeight: FontWeight.w600)),
                 ),
               ]),
-              leftTopText(item.auditStatus)
+              leftTopText(item.auditStatus, item.role)
             ]
           ),
         ),

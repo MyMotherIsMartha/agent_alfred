@@ -73,7 +73,11 @@ class SettingPage extends StatelessWidget {
         ),
       ),
       onTap: () {
-        G.navigateTo(context, '/perfectEnterprise1');
+        if (userAuthInfo.prefectStatus == -1) {
+          G.navigateTo(context, '/perfectEnterprise1');
+        } else {
+          G.navigateTo(context, '/readPerfectInfo?status=${userAuthInfo.prefectStatus}');
+        }
       },
     );
   }
@@ -120,6 +124,12 @@ class SettingPage extends StatelessWidget {
         appBar: AppBar(
           title: Text('设置'),
           centerTitle: true,
+          // leading: IconButton(
+          //   icon: Icon(Icons.arrow_back_ios),
+          //   onPressed: () {
+          //     G.navigateTo(context, '/index');
+          //   },
+          // ),
           elevation: 0,
         ),
         backgroundColor: hex('#F3F4F6'),

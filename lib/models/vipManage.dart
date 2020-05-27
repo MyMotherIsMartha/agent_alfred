@@ -47,7 +47,7 @@ class VipItemModel {
   String memberId;
   String headImg;
   String mobile;
-  Null role;
+  int role;
   int payTime;
   double pendingPurchaseOrderServiceCharge;
   double entryPurchaseOrderServiceCharge;
