@@ -76,18 +76,24 @@ class _ResultPageState extends State<ResultPage> {
     var result = await LoginApi().getUserAuth();
     print(result.data['data'].toString());
     int qualificationsStatus = result.data['data']['qualificationsStatus'];
+    print(qualificationsStatus);
     
-    setState(() {
-      statusCode = qualificationsStatus;
-      if (statusCode == -1) {
-        var reasonStr = result.data['data']['qualificationsRefuseReason'];
-        if (reasonStr != null && reasonStr != '') {
-          refuseReason = reasonStr.split('##')[0];
-          refuseRemark = reasonStr.split('##')[1];
+    if (qualificationsStatus == 0) {
+      G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+    } else {
+      setState(() {
+        statusCode = qualificationsStatus;
+        if (statusCode == -1) {
+          var reasonStr = result.data['data']['qualificationsRefuseReason'];
+          if (reasonStr != null && reasonStr != '') {
+            refuseReason = reasonStr.split('##')[0];
+            refuseRemark = reasonStr.split('##')[1];
+          }
         }
-      }
-      _getCurrentWidgetAndTitle();
-    });
+        _getCurrentWidgetAndTitle();
+      });
+    } 
+    
   }
 
   void checkQualification() {
