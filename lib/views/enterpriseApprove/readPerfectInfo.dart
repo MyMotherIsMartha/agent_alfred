@@ -6,7 +6,8 @@ import 'package:agent37_flutter/components/v-field.dart';
 import 'package:agent37_flutter/utils/global.dart';
 
 class ReadPerfectInfo extends StatefulWidget {
-  ReadPerfectInfo({Key key}) : super(key: key);
+  final String status;
+  ReadPerfectInfo({this.status});
 
   @override
   _ReadPerfectInfoState createState() => _ReadPerfectInfoState();
@@ -19,6 +20,9 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
 
   var licenseUrl = 'https://static37.woouo.com/agent/20200408/22b14781819d49ab98a9e9d547f9e48f.jpg';
   List tabs = ["企业信息", "证件信息"];
+  int currentStatus = 1;
+  String auditRefundReason = '';
+  String topBarStr = '';
   Widget formDataWrap1;
   Widget formDataWrap2 = Text('加载中...');
 
@@ -54,6 +58,8 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     formData1['legalName']['val'] = resultData['legalPerson'];
     formData1['legalMobile']['val'] = resultData['mobile'];
     formData1['legalIdNo']['val'] = resultData['legalIdCard'];
+    
+
 
     List<Widget> fieldWidgetAry1 = [];
     formData1.forEach((key, val) {
@@ -83,7 +89,7 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     'legalIdNo': {'label': '法人身份证', 'val': ''}
   };
 
-    Widget enterpriseInfo() {
+  Widget enterpriseInfo() {
     return Column(
       children: [
         Container(
@@ -122,6 +128,17 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     formData2['email']['val'] = resultData['email'];
     formData2['areaName']['val'] = resultData['province'] + resultData['city'] + resultData['district'];
     formData2['addressStr']['val'] = resultData['address'];
+
+    currentStatus = resultData['auditStatus'];
+    auditRefundReason = resultData['auditRefundReason'] ?? '';
+
+    print('currentStatus');
+    print(currentStatus);
+    if (currentStatus == 0) {
+      topBarStr = '拒绝原因: $auditRefundReason';
+    } else if (currentStatus == 1) {
+      topBarStr = '已提交成功，请耐心等待审核';
+    }
 
     List<Widget> fieldWidgetAry2 = [];
     formData2.forEach((key, val) {
@@ -293,12 +310,12 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),
         ),
         actions: <Widget>[
-          FlatButton(
+          currentStatus == 0 ? FlatButton(
               onPressed: () {
                 G.navigateTo(context, '/perfectEnterprise1');
               },
               child: Text('编辑',
-                  style: TextStyle(color: hex('#000'), fontSize: G.setSp(32))))
+                  style: TextStyle(color: hex('#000'), fontSize: G.setSp(32)))) : Text('')
         ],
       ),
       body: SingleChildScrollView(
@@ -306,15 +323,16 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
           color: hex('#F3F4F6'),
           child: Column(
             children: <Widget>[
+              currentStatus != 2 ?
               Container(
                 color: hex('#CABEA6'),
-                padding: EdgeInsets.symmetric(vertical: 5),
+                padding: EdgeInsets.only(top: 5, bottom: 5, left: 5),
                 width: G.setWidth(750),
-                child: Text('拒绝原因：营业执照拍摄不够清晰，请在右上角点击编辑后再提交',
-                textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: G.setSp(24),color: hex('#fff'))
-                )
-              ),
+                child: Text(topBarStr,
+                  textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: G.setSp(24),color: hex('#fff'))
+                  )
+              ) : Container(),
               Container(
                 color: Colors.white,
                 child: TabBar(

@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/v-button.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:agent37_flutter/components/v-input.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/utils/oss.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class PerfectEnterprise2 extends StatefulWidget {
 
@@ -258,12 +260,16 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
 
       params.addAll(stepJson);
 
+      print('params:');
+      print(params);
+
       var result = await MemberApi().perfectEnterpriseInfo(params);
       print(result.data.toString());
       if (result.data['code'] == 200) {
         var statusCode = 1;
+        Provider.of<UserProvide>(context).updateUserAuth(isInit: false);
         G.navigateTo(
-          context, Routes.perfectEnterpriseAudit + "?currentStatus=$statusCode");
+          context, Routes.perfectEnterpriseAudit + "?currentStatus=$statusCode", replace: true);
       }
     }
   }

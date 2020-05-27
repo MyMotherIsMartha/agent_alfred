@@ -180,7 +180,10 @@ Handler perfectEnterpriseAuditHandler = Handler(
 
 Handler readPerfectInfoHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return ReadPerfectInfo();
+  String status = params['status']?.first ?? '-1';
+  return ReadPerfectInfo(
+    status: status
+  );
 });
 
 Handler resultPageHandler = Handler(
