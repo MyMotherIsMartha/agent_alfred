@@ -12,6 +12,7 @@ class VipListItem extends StatefulWidget {
 }
 
 class _VipListItemState extends State<VipListItem> {
+  bool showRefuse = false;
 
   Widget leftTopText(statusCode) {
     String statusStr;
@@ -32,17 +33,25 @@ class _VipListItemState extends State<VipListItem> {
         statusStr = '未知状态';
     }
     if (statusCode == 2) {
-      return Row(children: [
-        Text(statusStr),
-        Container(
-          margin: EdgeInsets.only(left: G.setWidth(5)),
-          decoration: BoxDecoration(
-            color: hex('#E6E6E6'),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Icon(Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
-        )
-      ]);
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            showRefuse = !showRefuse;
+          });
+        },
+        child:
+          Row(children: [
+            Text(statusStr, style: TextStyle(color: hex('#E84747'))),
+            Container(
+              margin: EdgeInsets.only(left: G.setWidth(5)),
+              decoration: BoxDecoration(
+                color: hex('#E6E6E6'),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Icon(showRefuse ? Icons.arrow_drop_up : Icons.arrow_drop_down, size: G.setSp(40), color: hex('#666666'),)
+            )
+          ])
+        );
     } else {
       return Text(statusStr);
     }
@@ -66,13 +75,14 @@ class _VipListItemState extends State<VipListItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(children: [
-                Image(height: G.setHeight(34),image: item.headImg != '' ? NetworkImage(item.headImg) : AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
+                // Image(height: G.setHeight(34),image: item.headImg != '' ? NetworkImage(item.headImg) : AssetImage('lib/assets/images/pic-icon/new-ellipse.png')),
+                item.isNewShowFlag ? Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')) : Text(''),
                 Container(
                   margin: EdgeInsets.only(left: G.setWidth(5)),
                   constraints: BoxConstraints(
                     maxWidth: G.setWidth(425),
                   ),
-                  child: Text(item.enterpriseName ?? '',
+                  child: Text(item.enterpriseName.length <= 10 ? item.enterpriseName : item.enterpriseName.substring(0, 10) + '...',
                       softWrap: true,
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis, 
@@ -84,7 +94,7 @@ class _VipListItemState extends State<VipListItem> {
           ),
         ),
         Offstage( // 控制拒绝原因的显隐
-          offstage: item.auditStatus != 2,
+          offstage: item.auditStatus != 2 || !showRefuse,
           child: Container(
             margin: EdgeInsets.only(bottom: G.setWidth(15)),
             padding: EdgeInsets.symmetric(vertical: G.setWidth(15), horizontal: G.setWidth(20)),

@@ -15,8 +15,9 @@ import 'package:flutter/services.dart';
 class PerfectEnterprise2 extends StatefulWidget {
 
   final String legalName;
+  final String stepJson;
 
-  PerfectEnterprise2({this.legalName});
+  PerfectEnterprise2({this.legalName, this.stepJson});
 
   @override
   _PerfectEnterprise2State createState() => _PerfectEnterprise2State();
@@ -25,8 +26,10 @@ class PerfectEnterprise2 extends StatefulWidget {
 class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
   final _formKey = GlobalKey<FormState>();
   String legalName2;
+  Map stepJson;
 
   final legalNameController = TextEditingController();
+  final nameController = TextEditingController();
   final mobileController = TextEditingController();
   final emailController = TextEditingController();
   final areaController = TextEditingController();
@@ -44,6 +47,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
   var backIdCardImg2;
 
   Map formValidate = {
+    'name': true,
     'mobile': true,
     'email': true,
     'areaCode': true,
@@ -56,7 +60,12 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
     super.initState();
     // G.setContext(context);
     // G.setPref('token', 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpemF0aW9uIjoiIiwibmJmIjoxNTg2MzI2MjE0LCJpc3MiOiIzN2R1bGlnb3UiLCJtb2JpbGUiOiIxODg5MjY2MzAyNSIsImV4cCI6MTU4NjkzMTAxNCwiaWF0IjoxNTg2MzI2MjE0LCJ1c2VySWQiOjEyMDQ1ODkwNDYxNjM5MDI0NjYsInVzZXJuYW1lIjoiMTg4OTI2NjMwMjUifQ.FwMvr15n_TU7kmJwKCSGO97gx5qcwtQCFIn0-tEv65c');
+    legalName2 = FluroConvertUtils.fluroCnParamsDecode(widget.legalName);
+    nameController.value = G.setTextEdit(legalName2);
+    legalNameController.text = legalName2;
     
+    stepJson = FluroConvertUtils.string2map(widget.stepJson);
+    print(stepJson);
     _getPerfectInfo();
   }
 
@@ -244,8 +253,10 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
         "legalIdCardBack": backIdCardImg1,
         "legalIdCardFront": frontIdCardImg1,
         "mobile": mobile,
-        "name": legalName2
+        "name": nameController.text
       };
+
+      params.addAll(stepJson);
 
       var result = await MemberApi().perfectEnterpriseInfo(params);
       print(result.data.toString());
@@ -259,8 +270,6 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
 
   @override
   Widget build(BuildContext context) {
-    legalName2 = FluroConvertUtils.fluroCnParamsDecode(widget.legalName);
-    legalNameController.text = legalName2;
 
     return Scaffold(
       appBar: AppBar(
@@ -323,9 +332,14 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       VInput(
-                        controller: legalNameController,
+                        controller: nameController,
                         label: '姓名',
-                        readOnly: true
+                        hintText: '请输入负责人姓名',
+                        onChange: (e) {
+                          setState(() {
+                            formValidate['name'] = !Validate.isNon(e);
+                          });
+                        },
                       ),
                       VInput(
                         controller: mobileController,
@@ -344,7 +358,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                       ),
                       VInput(
                         controller: emailController,
-                        hintText: '请输入邮箱',
+                        hintText: '请输入邮箱以便接受信息',
                         label: '邮箱',
                         type: TextInputType.text,
                         onChange: (e) {
@@ -355,7 +369,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                         },
                       ),
                       VAddress(
-                        label: '注册地区',
+                        label: '工作地区',
                         areaId: areaCode,
                         controller: areaController,
                         cb: (value, areaStr) {
@@ -371,6 +385,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                         controller: addressStrController,
                         hintText: '请填写详细地址',
                         label: '详细地址',
+                        maxLength: 50,
                         type: TextInputType.text,
                         onChange: (e) {
                           setState(() {

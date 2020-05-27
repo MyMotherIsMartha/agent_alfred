@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/api/system.dart';
+import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,12 +80,16 @@ class _InvoiceListState extends State<InvoiceList> {
             ),
             Expanded(
               child: 
+              _invoiceList.length > 0 ?
               ListView.builder(
                 controller: scrollController,
                 itemCount: _invoiceList.length,
                 itemBuilder: (context, index) {
                   return childList(_invoiceList[index]);
-                }),
+                }) : Container(
+                  margin: EdgeInsets.only(top: G.setWidth(250)),
+                  child: VEmpty(hintText: '暂无任何开票信息'),
+                ),
             )
           ]
         )

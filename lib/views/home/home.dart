@@ -94,6 +94,8 @@ class _HomePageState extends State<HomePage>
       if (result.data['data'] != null) {
         setState(() {
           homeinfo = homeInfoModelFromJson(result.data['data']);
+          print('homeinfo');
+          print(result.data['data']);
         });
         countDown();
       }

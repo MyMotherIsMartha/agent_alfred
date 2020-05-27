@@ -56,6 +56,7 @@ class VipItemModel {
   int auditStatus;
   int registerTime;
   bool isShowTodayFlag;
+  bool isNewShowFlag;
 
   VipItemModel(
       {this.shareCode,
@@ -70,7 +71,8 @@ class VipItemModel {
       this.rejectReason,
       this.auditStatus,
       this.registerTime,
-      this.isShowTodayFlag});
+      this.isShowTodayFlag,
+      this.isNewShowFlag});
 
   VipItemModel.fromJson(Map<String, dynamic> json) {
     shareCode = json['shareCode'];
@@ -87,6 +89,7 @@ class VipItemModel {
     auditStatus = json['auditStatus'];
     registerTime = json['registerTime'];
     isShowTodayFlag = json['isShowTodayFlag'];
+    isNewShowFlag = json['isNewShowFlag'];
   }
 
   Map<String, dynamic> toJson() {
@@ -106,6 +109,7 @@ class VipItemModel {
     data['auditStatus'] = this.auditStatus;
     data['registerTime'] = this.registerTime;
     data['isShowTodayFlag'] = this.isShowTodayFlag;
+    data['isNewShowFlag'] = this.isNewShowFlag;
     return data;
   }
 }
