@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
+import 'package:agent37_flutter/provide/packageinfo.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
@@ -102,11 +103,11 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  Widget _versionInfo() {
+  Widget _versionInfo(context) {
     return ListTile(
       title: Text('版本号',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
-      trailing: Text('Test_1.0.0',
+      trailing: Text(Provider.of<PackageInfoProvide>(context).packageInfo.version,
           style: TextStyle(fontSize: G.setSp(30), color: hex('#999'))),
       onTap: () {},
     );
@@ -209,7 +210,7 @@ class SettingPage extends StatelessWidget {
                         } else if (index == 1) {
                           return _clearCache();
                         } else if (index == 2) {
-                          return _versionInfo();
+                          return _versionInfo(context);
                         } else {
                           return Container();
                         }

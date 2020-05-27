@@ -24,7 +24,7 @@ Dio service() {
   }, onResponse: (Response response) async {
     if (response.data['code'] == 401) {
       G.clearPref();
-      G.toast('请重新登录');
+      G.toast(response.data['message'] ?? '请重新登录');
       G.key.currentState.pushNamed('/login');
     } else if (response.data['code'] != 200) {
       G.toast(response.data['message'] ?? '接口错误');

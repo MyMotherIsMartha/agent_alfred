@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/env.dart';
+import 'package:agent37_flutter/provide/packageinfo.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
@@ -57,13 +58,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   void goPage() async {
     await G.initSp();
+    // await Provider.of<PackageInfoProvide>(context).initInfo();
     // G.clearPref();
     String token = G.getPref('token');
     print(token);
     if (Validate.isNon(token)) {
       G.navigateTo(context, '/login', replace: true);
     } else {
-      // G.navigateTo(context, '/address', replace: true);
       // var uploadData = {
       //   'isRequest': true
       // };
