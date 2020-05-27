@@ -349,7 +349,7 @@ class _MarketingPageState extends State<MarketingPage> {
           moduleTemp.add(ModuleModel.fromJson(item));
         });
       } else {
-        G.toast('暂无分销管理首页数据');
+        G.toast('暂无营销管理首页数据');
       }
     } else {}
 

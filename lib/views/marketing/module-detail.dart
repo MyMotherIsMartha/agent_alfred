@@ -33,7 +33,7 @@ class _ModuleDetailPageState extends State<ModuleDetailPage> {
           moduleDetail = ModuleModel.fromJson(data[0]);
         });
       } else {
-        G.toast('暂无分销管理首页数据');
+        G.toast('暂无营销管理首页数据');
       }
     }
     return 'end';
