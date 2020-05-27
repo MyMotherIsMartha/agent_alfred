@@ -106,8 +106,8 @@ class VipManageMainState extends State<VipManageMain>
     var resultData = result.data['data'];
     setState(() {
       tabs[0] = Tab(text: '普通(${resultData['normalMemberNum']})');
-      tabs[1] = Tab(text: '标准(${resultData['standMemberNum']})');
-      tabs[2] = Tab(text: '钻石(${resultData['diamondMemberNum']})');
+      tabs[1] = Tab(text: '体验版(${resultData['standMemberNum']})');
+      tabs[2] = Tab(text: '企业版(${resultData['diamondMemberNum']})');
     });
   }
 

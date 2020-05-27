@@ -161,9 +161,11 @@ Handler perfectEnterprise1Handler = Handler(
 Handler perfectEnterprise2Handler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
   String legalName = params['legalName']?.first;
+  String stepJson = params['stepJson']?.first;
 
   return PerfectEnterprise2(
     legalName: legalName,
+    stepJson: stepJson
   );
 });
 

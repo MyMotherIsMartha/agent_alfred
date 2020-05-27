@@ -5,6 +5,7 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:agent37_flutter/provide/user.dart';
 
@@ -67,6 +68,35 @@ class _WalletMainState extends State<WalletMain> {
       // _refreshController.callRefresh();
     }
   }
+
+  void _showEnterpriseAlert() {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return CupertinoAlertDialog(
+          title: Text('请先完善企业信息'),
+          // content:Text('我是content'),
+          actions:<Widget>[
+            
+            CupertinoDialogAction(
+              child: Text('取消', style: TextStyle(color: hex('#85868A')),),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+        
+            CupertinoDialogAction(
+              child: Text('确定'),
+              onPressed: (){
+                Navigator.of(context).pop();
+                G.navigateTo(context, '/perfectEnterprise1');
+              },
+            )
+          ]
+        );
+      },
+    );
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -111,9 +141,26 @@ class _WalletMainState extends State<WalletMain> {
             G.spacing(10),
             Text(withdrawalBalance.toStringAsFixed(2), style: TextStyle(color: Colors.white, fontSize: G.setSp(70)),),
             G.spacing(10),
+            withdrawalBalance <= 0 ? 
+            Opacity(
+              opacity: 0.3,
+              child: FlatButton(
+                onPressed: () {},
+                color: Colors.white,
+                shape: StadiumBorder(),
+                // textColor: hex('#6982FF'),
+                child: Text('提现', style: TextStyle(
+                    fontSize: G.setSp(30),
+                    color: hex('#6982FF')
+                  ),
+                )
+              )
+            ) :
             FlatButton(
               onPressed: () {
-                if (bankCardInfo == null) {
+                if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus != 2) {
+                  _showEnterpriseAlert();
+                } else if (bankCardInfo == null) {
                   showDialog(
                     context: context,
                     builder: (ctx) {
@@ -167,7 +214,7 @@ class _WalletMainState extends State<WalletMain> {
               G.spacingWidth(5),
               Expanded(
                 child: Text(
-                  '已过考核期代理每月$paymentEnd日结算上月预估服务费，$monthlyStart至$monthlyEnd日为服务费的开票周期，25日把服务费入账至可提现金额', 
+                  '已过考核期代理每月$paymentEnd日结算上月预估服务费，$monthlyStart至$monthlyEnd日为服务费的开票周期，发票审核通过服务费入账至可提现金额', 
                   softWrap: true, 
                   style: TextStyle(color: Colors.white, fontSize: G.setSp(24)),
                 ),
@@ -175,9 +222,13 @@ class _WalletMainState extends State<WalletMain> {
             ]
           ),
         ),
-        InkWell(
+        GestureDetector(
           onTap: () {
-            G.navigateTo(context, '/invoiceList');
+            if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus != 2) {
+              _showEnterpriseAlert();
+            } else {
+              G.navigateTo(context, '/invoiceList');
+            }
           },
           child:
             Container(
@@ -201,10 +252,14 @@ class _WalletMainState extends State<WalletMain> {
               ),
             )
         ),
-        InkWell(
+        GestureDetector(
           onTap: () {
             print('test');
-            G.navigateTo(context, '/bankMain');
+            if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus != 2) {
+              _showEnterpriseAlert();
+            } else {
+              G.navigateTo(context, '/bankMain');
+            }
           },
           child: Container(
             color: Colors.white,

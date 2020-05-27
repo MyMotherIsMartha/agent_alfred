@@ -104,9 +104,7 @@ class _PerfectEnterpriseAuditState extends State<PerfectEnterpriseAudit> {
             children: <Widget>[
             RaisedButton(
               onPressed: () {
-                setState(() {
-                  statusCode = 3;
-                });
+                G.navigateTo(context, '/setting');
               },
               elevation: 4.0,
               color: hex('#69A5FF'),
@@ -124,13 +122,13 @@ class _PerfectEnterpriseAuditState extends State<PerfectEnterpriseAudit> {
 
   Widget getCurrentWidget() {
     print(statusCode);
-    if (statusCode == 1) {
-      return middleStatusWidget1();
-    } else if (statusCode == 2) {
+    // if (statusCode == 1) {
+    //   return middleStatusWidget1();
+    // } else if (statusCode == 2) {
       return middleStatusWidget2();
-    } else {
-      return middleStatusWidget1();
-    }
+    // } else {
+    //   return middleStatusWidget1();
+    // }
   }
 
   @override
@@ -158,6 +156,7 @@ class _PerfectEnterpriseAuditState extends State<PerfectEnterpriseAudit> {
             AppBar(
               brightness: Brightness.dark,
               elevation: 0,
+              leading: Container(),
               backgroundColor: Colors.transparent,
               centerTitle: true,
               iconTheme: IconThemeData(color: hex('#fff')),

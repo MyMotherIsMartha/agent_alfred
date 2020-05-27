@@ -94,6 +94,27 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     jobList = response.data['data'];
   }
 
+  _getPerfectInfo() async {
+    var result = await MemberApi().getPerfectInfo();
+    var resultData = result.data['data'];
+    print(result.data.toString());
+    setState(() {
+      licenseUrl = resultData['businessLicensePicture'];
+    });
+    jobCode = resultData['industryCode'];
+    jobCodeCtrl.text = resultData['industryName'];
+    enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
+    areaName = areaCtrl.text = resultData['enterpriseProvince'] + ',' + resultData['enterpriseCity'] + ',' + resultData['enterpriseDistrict'];
+    areaCode = resultData['enterpriseAreaCode'];
+    registerCode = _registerCodeCtrl.text = resultData['registerCode'];
+    addressStr = _addressCtrl.text = resultData['registerAddress'];
+    legalName = _legalPersonCtrl.text = resultData['legalPerson'];
+    mobile = mobileController.text = resultData['legalMobile'];
+    idNo = idNoController.text = resultData['legalIdCard'];
+    formValidate['mobile'] = mobile != null;
+    formValidate['idNo'] = idNo != null;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -101,6 +122,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     // G.setPref('token', 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpemF0aW9uIjoiIiwibmJmIjoxNTg2MzI2MjE0LCJpc3MiOiIzN2R1bGlnb3UiLCJtb2JpbGUiOiIxODg5MjY2MzAyNSIsImV4cCI6MTU4NjkzMTAxNCwiaWF0IjoxNTg2MzI2MjE0LCJ1c2VySWQiOjEyMDQ1ODkwNDYxNjM5MDI0NjYsInVzZXJuYW1lIjoiMTg4OTI2NjMwMjUifQ.FwMvr15n_TU7kmJwKCSGO97gx5qcwtQCFIn0-tEv65c');
     
     _getEnterpriseInfo();
+    _getPerfectInfo();
     _getJobList();
   }
 
@@ -553,6 +575,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             controller: idNoController,
                             hintText: '请输入身份证号',
                             label: '法人身份证',
+                            maxLength: 18,
                             labelWidth: G.setWidth(180),
                             onChange: (e) {
                               idNo = e;
@@ -581,22 +604,23 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                           'industryCode': jobCode,
                           'industryName': jobCodeCtrl.text,
                           'registerAddress': addressStr,
-                          'areaCode': areaCode,
+                          'enterpriseAreaCode': areaCode,
                           'businessLicensePicture': licenseUrl,
                           'enterpriseName': enterpriseName,
                           'legalPerson': legalName,
                           'registerCode':registerCode,
-                          'province': areaAry[0],
-                          'city': areaAry[1],
-                          'district': areaAry[2],
+                          'enterpriseProvince': areaAry[0],
+                          'enterpriseCity': areaAry[1],
+                          'enterpriseDistrict': areaAry[2],
                           'legalMobile': mobile,
-                          'idCard': idNo
+                          'legalIdCard': idNo
                           // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
                         };
                         var legalName2 = FluroConvertUtils.fluroCnParamsEncode(legalName);
+                        var stepJson = FluroConvertUtils.object2string(params);
                         print(params);
                         G.navigateTo(
-                        context, Routes.perfectEnterprise2 + "?legalName=$legalName2");
+                        context, Routes.perfectEnterprise2 + "?legalName=$legalName2&stepJson=$stepJson");
                         
                       }
                     }

@@ -386,14 +386,15 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                   textColor: Colors.white,
                   onPressed: () async {
                     // Validate returns true if the form is valid, otherwise false.
-                    G.showLoading(context);
+                    // G.showLoading(context);
                     if (_formKey.currentState.validate()) {
+                      print('test1121');
                       var areaAry = areaName.split(',');
                       Map params = {
                         'industryCode': jobCode,
                         'industryName': jobCodeCtrl.text,
                         'registerAddress': addressStr,
-                        'areaCode': int.parse(areaCode),
+                        'areaCode': areaCode,
                         'businessLicensePicture': uploadData['businessLicenseUrl'],
                         'enterpriseName': enterpriseName,
                         'legalPerson': legalPerson,
