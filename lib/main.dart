@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:agent37_flutter/provide/address.dart';
 import 'package:agent37_flutter/provide/common.dart';
 import 'package:agent37_flutter/provide/currentIndex.dart';
+import 'package:agent37_flutter/provide/packageinfo.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/ServiceLocator.dart';
@@ -34,6 +35,7 @@ void main() async {
       ChangeNotifierProvider.value(value: UserProvide()),
       ChangeNotifierProvider.value(value: AddressProvide()),
       ChangeNotifierProvider.value(value: CommonProvide()),
+      ChangeNotifierProvider.value(value: PackageInfoProvide()),
       // Provider.value(value: '0.0.1'),
       // ChangeNotifierProvider.value(
       //   value: currentIndexProvide,
