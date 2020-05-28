@@ -7,7 +7,6 @@ class EnvConfig {
     // 'web-address': 'https://h5-uat-37agent.woouo.com/',
     // 'web-address': 'http://192.168.10.60:8082/',
     // 'web-address': 'http://192.168.10.142:8080/',
-    'web-address': 'http://192.168.10.186:9000/',
     // 'web-address': 'https://h5-uat-37agent.woouo.com/',
     'wx-appid': 'wx902617a0eaaca56f'
   };

@@ -30,9 +30,9 @@ class SettingSafePage extends StatelessWidget {
               child: InkWell(
                   onTap: () {
                     if (userAuthInfo.isSettingPassword) {
-                      G.navigateTo(context, '/setting/resetpwd');
-                    } else {
                       G.navigateTo(context, '/setting/pwd');
+                    } else {
+                      G.navigateTo(context, '/setting/resetpwd');
                     }
                   },
                   child: Row(
