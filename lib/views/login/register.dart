@@ -430,7 +430,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             InkWell(
               onTap: () {
-                var bodyJson = {"url": EnvConfig.dev['web-address'] + '/#/userAgreement'};
+                var bodyJson = {"url": EnvConfig.dev['web-address'] + '#/userAgreement'};
                 var linkTemp = FluroConvertUtils.object2string(bodyJson);
                 G.router.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp + '&title=userAgreement', transition: TransitionType.fadeIn);
               },
@@ -439,7 +439,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             InkWell(
               onTap: () {
-                var bodyJson = {"url": EnvConfig.dev['web-address'] + '/#/privacyAgreement'};
+                var bodyJson = {"url": EnvConfig.dev['web-address'] + '#/privacyAgreement'};
                 var linkTemp = FluroConvertUtils.object2string(bodyJson);
                 G.router.navigateTo(context, Routes.webviewPage + '?url=' + linkTemp + '&title=privacyAgreement', transition: TransitionType.fadeIn);
               },
