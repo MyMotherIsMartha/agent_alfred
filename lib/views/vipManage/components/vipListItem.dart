@@ -79,6 +79,17 @@ class _VipListItemState extends State<VipListItem> {
     }
   }
 
+  _getImageByRole(role) {
+    print(role);
+    if (role == 0) {
+      return AssetImage('lib/assets/images/vip/vip.png');
+    } else if (role == 1) {
+      return AssetImage('lib/assets/images/vip/diamond.png');
+    } else {
+      return AssetImage('lib/assets/images/vip/diamond2.png');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     VipItemModel item = widget.item;
@@ -136,7 +147,9 @@ class _VipListItemState extends State<VipListItem> {
             String vipId = item.memberId.toString();
             print('vipId');
             print(vipId);
-            G.navigateTo(context, Routes.vipDetail + '?vipId=$vipId');
+            if (item.role != 0) {
+              G.navigateTo(context, Routes.vipDetail + '?vipId=$vipId&role=${item.role}');
+            }
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10),
@@ -146,7 +159,7 @@ class _VipListItemState extends State<VipListItem> {
             child: Row(children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 5, 20, 0), 
-                child: Image(width: G.setWidth(100),image: AssetImage('lib/assets/images/home/vip.png'))
+                child: Image(width: G.setWidth(100),image: _getImageByRole(item.role))
               ),
               Column(
                 children: [

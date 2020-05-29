@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
@@ -10,7 +11,8 @@ import 'package:agent37_flutter/utils/global.dart';
 
 class VipDetail extends StatefulWidget {
   final String vipId;
-  VipDetail({this.vipId});
+  final String role;
+  VipDetail({this.vipId, this.role});
 
   @override
   _VipDetailState createState() => _VipDetailState();
@@ -25,7 +27,9 @@ class _VipDetailState extends State<VipDetail>
     {'value': 2, 'label': '已结算服务费'}
   ];
   List bodys;
+  String currentRole;
   String currentMemberId;
+  String mainTextColor = '#333333';
   String _enterpriseName = '';
   double _pengdingCharge = 0;
   double _entryCharge = 0;
@@ -39,9 +43,11 @@ class _VipDetailState extends State<VipDetail>
     // 创建Controller  
     scrollController = ScrollController();
     _tabController = TabController(length: tabs.length, vsync: this);
-    print('tes2t');
+    print('test role:');
+    print(widget.role);
+    currentRole = widget.role;
+    mainTextColor = widget.role == '1' ? '#333333' : '#FFE8A7';
     currentMemberId = widget.vipId;
-    print(currentMemberId);
 
     _getInfo();
   }
@@ -49,12 +55,15 @@ class _VipDetailState extends State<VipDetail>
   void _getInfo() async{
     var result = await OrderApi().getAppMemberDetail(currentMemberId);
     Map resultData = result.data['data'];
-    _enterpriseName = resultData['enterpriseName'] ?? '';
-    _pengdingCharge = resultData['pendingPurchaseOrderServiceCharge'];
-    _entryCharge = resultData['entryPurchaseOrderServiceCharge'];
-    _totalCharge = _pengdingCharge + _entryCharge;
-    print('object');
-    print(resultData);
+    setState(() {
+      _enterpriseName = resultData['enterpriseName'] ?? '';
+      _pengdingCharge = resultData['pendingPurchaseOrderServiceCharge'];
+      _entryCharge = resultData['entryPurchaseOrderServiceCharge'];
+      _totalCharge = _pengdingCharge + _entryCharge;
+      print('object');
+      print(resultData);
+    });
+    
   }
 
   @override
@@ -80,18 +89,18 @@ class _VipDetailState extends State<VipDetail>
             padding: EdgeInsets.all(G.setWidth(20)),
             child: Container(
               height: G.setWidth(360),
-              padding: EdgeInsets.fromLTRB(G.setWidth(30), G.setWidth(30), G.setWidth(80), G.setWidth(30)),
+              padding: EdgeInsets.fromLTRB(G.setWidth(30), G.setWidth(30), G.setWidth(60), G.setWidth(30)),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("lib/assets/images/vip/bg1.png"),
+                  image: AssetImage(currentRole == '1' ? "lib/assets/images/vip/bg1.png" : "lib/assets/images/vip/bg2.png"),
                   fit: BoxFit.contain,
                 ),
               ),
               child: Column(children: [
                 Row(children: [
-                  Image(width: G.setWidth(80), height: G.setWidth(80),image: AssetImage('lib/assets/images/vip/diamond.png')),
+                  Image(width: G.setWidth(80), height: G.setWidth(80),image: AssetImage(currentRole == '1' ? 'lib/assets/images/vip/diamond.png' : 'lib/assets/images/vip/diamond2.png')),
                   G.spacingWidth(20),
-                  Text(_enterpriseName, style: TextStyle(fontWeight: FontWeight.w500))
+                  Text(_enterpriseName, style: TextStyle(fontWeight: FontWeight.w500, color: hex(mainTextColor)))
                 ]),
                 G.spacing(30),
                 Text.rich(TextSpan(
@@ -99,21 +108,23 @@ class _VipDetailState extends State<VipDetail>
                       TextSpan(
                         text: '预估总服务费:  ￥',
                         style: TextStyle(
-                          fontSize: G.setSp(24)
+                          fontSize: G.setSp(24),
+                          color: hex(mainTextColor)
                         )
                       ),
                       TextSpan(
-                        text: _totalCharge.toString().split('.')[0],
+                        text: _totalCharge.toStringAsFixed(2).split('.')[0],
                         style: TextStyle(
                           fontSize: G.setSp(30),
-                          color: hex('#333'),
-                          fontWeight: FontWeight.w500
+                          fontWeight: FontWeight.w500,
+                          color: hex(mainTextColor)
                         )
                       ),
                       TextSpan(
-                        text: '.' + _totalCharge.toString().split('.')[1],
+                        text: '.' + _totalCharge.toStringAsFixed(2).split('.')[1],
                         style: TextStyle(
-                          fontSize: G.setSp(24)
+                          fontSize: G.setSp(24),
+                          color: hex(mainTextColor)
                         )
                       )
                     ]
@@ -145,7 +156,8 @@ class _VipDetailState extends State<VipDetail>
                   children: [
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
                     Text('待结算服务费',style: TextStyle(
-                      fontSize: G.setSp(24)
+                      fontSize: G.setSp(24),
+                      color: hex(mainTextColor),
                     )),
                     G.spacing(10),
                     Text.rich(TextSpan(
@@ -153,21 +165,23 @@ class _VipDetailState extends State<VipDetail>
                         TextSpan(
                           text: '￥',
                           style: TextStyle(
-                            fontSize: G.setSp(24)
+                            fontSize: G.setSp(24),
+                            color: hex(mainTextColor)
                           )
                         ),
                         TextSpan(
-                          text: _pengdingCharge.toString().split('.')[0],
+                          text: _pengdingCharge.toStringAsFixed(2).split('.')[0],
                           style: TextStyle(
                             fontSize: G.setSp(30),
-                            color: hex('#333'),
+                            color: hex(mainTextColor),
                             fontWeight: FontWeight.w500
                           )
                         ),
                         TextSpan(
-                          text: '.' + _pengdingCharge.toString().split('.')[1],
+                          text: '.' + _pengdingCharge.toStringAsFixed(2).split('.')[1],
                           style: TextStyle(
-                            fontSize: G.setSp(24)
+                            fontSize: G.setSp(24),
+                            color: hex(mainTextColor)
                           )
                         )
                       ]
@@ -175,7 +189,8 @@ class _VipDetailState extends State<VipDetail>
                   ]),
                   Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
                     Text('已结算服务费', style: TextStyle(
-                      fontSize: G.setSp(24)
+                      fontSize: G.setSp(24),
+                      color: hex(mainTextColor),
                     )),
                     G.spacing(10),
                     Text.rich(TextSpan(
@@ -183,21 +198,23 @@ class _VipDetailState extends State<VipDetail>
                         TextSpan(
                           text: '￥',
                           style: TextStyle(
-                            fontSize: G.setSp(24)
+                            fontSize: G.setSp(24),
+                            color: hex(mainTextColor)
                           )
                         ),
                         TextSpan(
-                          text: _entryCharge.toString().split('.')[0],
+                          text: _entryCharge.toStringAsFixed(2).split('.')[0],
                           style: TextStyle(
                             fontSize: G.setSp(30),
-                            color: hex('#333'),
+                            color: hex(mainTextColor),
                             fontWeight: FontWeight.w500
                           )
                         ),
                         TextSpan(
-                          text: '.' + _entryCharge.toString().split('.')[1],
+                          text: '.' + _entryCharge.toStringAsFixed(2).split('.')[1],
                           style: TextStyle(
-                            fontSize: G.setSp(24)
+                            fontSize: G.setSp(24),
+                            color: hex(mainTextColor)
                           )
                         )
                       ]
@@ -218,7 +235,7 @@ class _VipDetailState extends State<VipDetail>
             child: TabBarView(
             controller: _tabController,
             children: tabs.map((item) {
-              return ServiceList(status: item['value']);
+              return ServiceList(status: item['value'], currentMemberId: currentMemberId,);
             }).toList()),
           ) 
         ],
@@ -230,7 +247,8 @@ class _VipDetailState extends State<VipDetail>
 
 class ServiceList extends StatefulWidget {
   final int status;
-  ServiceList({this.status});
+  final String currentMemberId;
+  ServiceList({this.status, this.currentMemberId});
 
   @override
   _ServiceListState createState() => _ServiceListState();
@@ -251,6 +269,7 @@ class _ServiceListState extends State<ServiceList> {
       return null;
     }
     var params = {
+      'memberId': widget.currentMemberId,
       'pageNo': pageNo,
       'pageSize': 10,
       'settleStatus': currentStatus
@@ -300,8 +319,8 @@ class _ServiceListState extends State<ServiceList> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Text('test'),
-          Text('2018-05-06 14:20', style: TextStyle(color: hex('#999'), fontSize: G.setSp(24)),)
+          Text(item['orderNo']),
+          Text(G.formatTime(item['payTime']), style: TextStyle(color: hex('#999'), fontSize: G.setSp(24)),)
         ]),
         Text.rich(
           TextSpan(
@@ -313,7 +332,7 @@ class _ServiceListState extends State<ServiceList> {
                 )
               ),
               TextSpan(
-                text: '9999',
+                text: item['commission'].toStringAsFixed(2).split('.')[0],
                 style: TextStyle(
                   fontSize: G.setSp(30),
                   color: hex('#333'),
@@ -321,7 +340,7 @@ class _ServiceListState extends State<ServiceList> {
                 )
               ),
               TextSpan(
-                text: '.00',
+                text: '.' + item['commission'].toStringAsFixed(2).split('.')[1],
                 style: TextStyle(
                   fontSize: G.setSp(24)
                 )
