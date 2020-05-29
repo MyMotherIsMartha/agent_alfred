@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage>
   TabController _tabController;
   EasyRefreshController _refreshController = EasyRefreshController();
   HomeInfoModel homeinfo;
+  var messageCountInfo;
   String nickname;
   var nicknameForUrl;
   String shareCode;
@@ -92,6 +93,7 @@ class _HomePageState extends State<HomePage>
   Future _getHomeinfo() async {
     try {
       var result = await MemberApi().getHomeInfo();
+      var result2 = await MemberApi().getMessageCount();
       if (result.data['data'] != null) {
         setState(() {
           homeinfo = homeInfoModelFromJson(result.data['data']);
@@ -100,11 +102,16 @@ class _HomePageState extends State<HomePage>
         });
         countDown();
       }
+      if (result2.data['data'] != null) {
+        messageCountInfo = result2.data['data'];
+        print('messageCountInfo');
+        print(messageCountInfo);
+      }
       nickname = Provider.of<UserProvide>(context).userAuthInfo.nickname;
       nicknameForUrl = FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname.toString());
       shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode;
       mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
-      return 'feture end';
+      return 'future end';
     } catch (e) {
       return 'future error';
     }
@@ -139,12 +146,12 @@ class _HomePageState extends State<HomePage>
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: G.setWidth(15)),
                     child: FutureBuilder(
-                      future: msgFuture,
+                      future: homeFuture,
                       builder: (context, shapshot) {
                         if (shapshot.hasData) {
-                          return shapshot.data > 0
+                          return messageCountInfo > 0
                               ? Badge(
-                                  badgeContent: Text(shapshot.data.toString(),
+                                  badgeContent: Text(messageCountInfo.toString(),
                                       style: TextStyle(
                                           fontSize: G.setWidth(18),
                                           color: hex('#fff'))),
@@ -822,7 +829,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
-    msgFuture = _getMsgCount();
+    // msgFuture = _getMsgCount();
     homeFuture = _getHomeinfo();
     Future.delayed(Duration.zero, () {
       checkInfo(context);
@@ -834,7 +841,7 @@ class _HomePageState extends State<HomePage>
   void didChangeDependencies() {
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
-      msgFuture = _getMsgCount();
+      // msgFuture = _getMsgCount();
       homeFuture = _getHomeinfo();
     }
     super.didChangeDependencies();
@@ -849,7 +856,7 @@ class _HomePageState extends State<HomePage>
           header: vRefreshHeader,
           onRefresh: () async {
             setState(() {
-              msgFuture = _getMsgCount();
+              // msgFuture = _getMsgCount();
               homeFuture = _getHomeinfo();
             });
           },
@@ -862,7 +869,7 @@ class _HomePageState extends State<HomePage>
                     height: G.setWidth(1334),
                     width: double.infinity,
                     child: VNetError(() {
-                      msgFuture = _getMsgCount();
+                      // msgFuture = _getMsgCount();
                       homeFuture = _getHomeinfo();
                     }));
                 }

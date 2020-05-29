@@ -1,7 +1,9 @@
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/marketing/index.dart';
 import 'package:agent37_flutter/views/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class IndexPage extends StatefulWidget {
   @override
@@ -9,7 +11,7 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  final List<BottomNavigationBarItem> bottomTabs = [
+  List<BottomNavigationBarItem> bottomTabs = [
     BottomNavigationBarItem(
       icon: Image.asset('lib/assets/images/pic-icon/user.png', width: G.setWidth(44)), 
       title: Container(
@@ -27,11 +29,14 @@ class _IndexPageState extends State<IndexPage> {
       activeIcon: Image.asset('lib/assets/images/pic-icon/dashboard_active.png', width: G.setWidth(44))
     ),
   ];
-  final List<Widget> tabBodies = [HomePage(), MarketingPage()];
+  List<Widget> tabBodies = [HomePage(), MarketingPage()];
   int curIndex = 0;
+
+
   // tabBodies
   @override
   Widget build(BuildContext context) {
+    bool isSpecialAccount = Provider.of<UserProvide>(context).specialAccount;
     return Scaffold(
       body: IndexedStack(
         index: curIndex,
@@ -43,7 +48,10 @@ class _IndexPageState extends State<IndexPage> {
             highlightColor: Colors.transparent,
             // canvasColor: Colors.transparent, // 透明
             splashColor: Colors.transparent),
-        child: BottomNavigationBar(
+        child: isSpecialAccount ? 
+          Container(
+            child: MarketingPage()
+          ) : BottomNavigationBar(
           selectedFontSize: G.setSp(20),
           unselectedFontSize: G.setSp(20),
           currentIndex: curIndex,

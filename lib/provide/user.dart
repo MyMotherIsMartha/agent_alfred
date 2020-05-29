@@ -14,6 +14,7 @@ class UserProvide with ChangeNotifier {
   // UserinfoModel userinfo;
   bool getInfoFlag = true;
 
+  bool specialAccount = false;
   // getUserInfo() async {
   //   if (!getInfoFlag) return;
   //   print('get userinfo from provide');
@@ -53,6 +54,13 @@ class UserProvide with ChangeNotifier {
     getInfoFlag = true;
     notifyListeners();
   }
+
+  changeSpecial(bool val) {
+    specialAccount = val;
+    notifyListeners();
+  }
+
+  
 
   setUserInfo(data) async {
     var result = await LoginApi().setUserInfo(data);

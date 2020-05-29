@@ -29,6 +29,12 @@ void main() async {
     );
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: CurrentIndexProvide()),

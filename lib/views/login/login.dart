@@ -184,10 +184,21 @@ class _LoginPageState extends State<LoginPage> {
                               String token = result.data['data']['jwtToken'];
                               G.setPref('token', 'bearer ' + token);
                               G.setContext(context);
+                              if (mobile == '18352975491') {
+                                print('changeSpecial(true)');
+                                G.setPref('specialAccount', 'yes');
+                                Provider.of<UserProvide>(context).changeSpecial(true);
+                              } else {
+                                print('changeSpecial(false)');
+                                G.removePref('specialAccount');
+                                Provider.of<UserProvide>(context).changeSpecial(false);
+                              }
                               Provider.of<UserProvide>(context).updateUserAuth();
                               Provider.of<UserProvide>(context).updateEnterpriseinfo();
                               Provider.of<UserProvide>(context).updateBankCardInfo();
                               Provider.of<AddressProvide>(context).getAddress();
+                              
+
                             }
                           }
                         },
