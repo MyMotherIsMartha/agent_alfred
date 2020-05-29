@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage>
   bool goInfo = false;
   Timer _timer;
   String _countdownTime = '';
+  bool isSpecialAccount;
 
   checkInfo(BuildContext context) {
     if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus != -1) {
@@ -390,6 +391,8 @@ class _HomePageState extends State<HomePage>
                               style: TextStyle(
                                   fontSize: G.setSp(30),
                                   color: hex('#424242'))),
+                          isSpecialAccount ? 
+                          Container() :        
                           Row(
                             children: <Widget>[
                               Text(
@@ -850,6 +853,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    isSpecialAccount = Provider.of<UserProvide>(context).specialAccount;
+
     return Scaffold(
       body: EasyRefresh(
           controller: _refreshController,

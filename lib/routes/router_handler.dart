@@ -265,8 +265,10 @@ Handler vipSearchHandler = Handler(
 Handler vipDetailHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
     String vipId = params['vipId']?.first.toString();
+    String role = params['role']?.first.toString();
     return VipDetail(
       vipId: vipId,
+      role: role
     );
   }
 );

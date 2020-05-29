@@ -83,6 +83,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
       areaCode = resultData['areaCode'];
       mobile = mobileController.text = resultData['mobile'];
       email = emailController.text = resultData['email'];
+      formValidate['email'] = !Validate.isNon(email);
       areaName = areaController.text = resultData['province'] + ',' + resultData['city'] + ',' + resultData['district'];
       addressStr = addressStrController.text = resultData['address'];
     });
