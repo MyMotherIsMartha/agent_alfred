@@ -24,6 +24,7 @@ class VInput extends StatefulWidget {
   final WhitelistingTextInputFormatter inputFormatters;
   final MainAxisAlignment fontSize;
   final FocusNode focus;
+  final double lineHeight;
   VInput(
       {@required this.controller,
       @required this.hintText,
@@ -42,6 +43,7 @@ class VInput extends StatefulWidget {
       this.suffixDivider,
       this.inputFormatters,
       this.focus,
+      this.lineHeight,
       this.value});
   @override
   _VInputState createState() => _VInputState();
@@ -86,6 +88,7 @@ class _VInputState extends State<VInput> {
            ? [widget.inputFormatters]
            : null,
             style: TextStyle(
+              height: widget.lineHeight ?? 1.5,
               fontSize: widget.fontSize ?? G.setSp(30),
                 color: widget.readOnly ?? false ? hex('#999') : hex('#333')),
             keyboardType: widget.type,

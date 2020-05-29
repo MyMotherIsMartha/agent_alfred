@@ -152,17 +152,33 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   List<AdItem> adList = [
     AdItem(
-        icon: '这是一张icon',
-        title: '奢侈品9.5折',
-        desc: '天猫奢侈品9.5折，预计可省1000元，还可以享受尊贵会员超值待遇，快来抢购吧'),
+        icon: 'lib/assets/images/pic-icon/vip-icon1.png',
+        title: '超值大礼包',
+        desc: '代理商可选购市场价值超豪华大礼包，豪华阵容，不可错过。'),
     AdItem(
-        icon: '这是一张icon',
-        title: '网易严选7.5折',
-        desc: '天猫奢侈品9.5折，预计可省1000元，还可以享受尊贵会员超值待遇，快来抢购吧'),
+        icon: 'lib/assets/images/pic-icon/vip-icon2.png',
+        title: '居间服务费1',
+        desc: '招募实体商家成为会员，成功后最高可获得软件信息技术服务费60%的居间服务费。'),
     AdItem(
-        icon: '这是一张icon',
-        title: '小米家电7.5折',
-        desc: '天猫奢侈品9.5折，预计可省1000元，还可以享受尊贵会员超值待遇，快来抢购吧')
+        icon: 'lib/assets/images/pic-icon/vip-icon2.png',
+        title: '居间服务费2',
+        desc: '帮助会员成长为代理商且通过考核，可提取礼包采购额的30%作为服务费。'),
+    AdItem(
+        icon: 'lib/assets/images/pic-icon/vip-icon2.png',
+        title: '居间服务费3',
+        desc: '推广使用营销工具，即可获得营销工具软件信息技术服务费的30%作为居间服务费。'),
+    AdItem(
+        icon: 'lib/assets/images/pic-icon/vip-icon3.png',
+        title: '销售服务费',
+        desc: '帮助会员策划商铺促销活动或帮助其落地执行并长传图片，可提取会员采购总额的2%。'),
+    AdItem(
+        icon: 'lib/assets/images/pic-icon/vip-icon4.png',
+        title: '技能培训支持',
+        desc: '专业的落地策划服务培训、技术产品培训等，帮助代理商提高市场拓展技能。'),
+    AdItem(
+        icon: 'lib/assets/images/pic-icon/vip-icon5.png',
+        title: '社群服务支持',
+        desc: '专业的社群服务，提供海量的推广素材，帮助代理商轻松开拓市场。')
   ];
 
   Widget _adItem(AdItem item) {
