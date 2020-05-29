@@ -17,7 +17,7 @@ class FinanceSearchPage extends StatefulWidget {
 }
 
 class _FinanceSearchState extends State<FinanceSearchPage> {
-  List<String> historyList; // 历史搜索记录列表
+  List<String> historyList = []; // 历史搜索记录列表
   String searchContext;
   int pageNo = 1; // 当前页码
   List<FinanceItemModel> itemList = <FinanceItemModel>[]; // 订单列表
@@ -27,15 +27,18 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
   int listCount = 0;
   var getFuture;
 
-  void _getHistoryFromPref() {
-    List list = SearchUtil.getHistoryList()??[];
-    List<String> tempList = [];
-    list.forEach((item) {
-      tempList.add(item.toString());
-    });
-    setState(() {
-      historyList = tempList;
-    });
+  void _getHistoryFromPref(context) {
+    G.setContext(context);
+    List list = SearchUtil.getHistoryList();
+    // print(list);
+    print('listlistlist');
+    // List<String> tempList = [];
+    // list.forEach((item) {
+    //   tempList.add(item.toString());
+    // });
+    // setState(() {
+    //   historyList = tempList;
+    // });
   }
 
   Future goSearch() async {
@@ -69,7 +72,7 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
                     });
                     goSearch();
                     SearchUtil.setHistoryData(e);
-                    _getHistoryFromPref();
+                    _getHistoryFromPref(context);
                   }
                 },
                 onChanged: (e) {
@@ -145,7 +148,7 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
                     onTap: () {
                       //  删除警告
                       SearchUtil.removeHistoryList();
-                      _getHistoryFromPref();
+                      _getHistoryFromPref(context);
                     },
                     child: icondelete(color: hex('#999')),
                   )
@@ -184,7 +187,7 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
                         ),
                     itemCount: itemList.length,
                     itemBuilder: (context, index) {
-                      return FinanceItem(itemList[index]);
+                      return FinanceItem(itemList[index], 1);
                     }),
                 // onRefresh: () async {
                 //   await _getList(refresh: true);
@@ -226,7 +229,10 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
   @override
   void initState() {
     super.initState();
-    _getHistoryFromPref();
+    Future.delayed(Duration.zero, () {
+      _getHistoryFromPref(context);
+    });
+    
   }
 
   @override

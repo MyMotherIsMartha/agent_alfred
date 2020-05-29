@@ -287,7 +287,7 @@ class _OrderViewState extends State<OrderView>
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('预估服务费：',
+                      Text(settleStatus == 1 ? '预估服务费：' : '服务费',
                           style: TextStyle(
                               fontSize: G.setSp(22), color: hex('#666'))),
                       Text('￥${shapshot.data[settleStatus].toStringAsFixed(2)}',
@@ -364,7 +364,7 @@ class _OrderViewState extends State<OrderView>
                       ),
                   itemCount: itemList.length,
                   itemBuilder: (context, index) {
-                    return FinanceItem(itemList[index]);
+                    return FinanceItem(itemList[index], settleStatus);
                   }),
               onRefresh: () async {
                 await _getList(refresh: true);

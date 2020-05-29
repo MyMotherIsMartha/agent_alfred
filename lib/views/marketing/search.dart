@@ -195,6 +195,9 @@ class _MarketSearchPageState extends State<MarketSearchPage> {
         if (type == 2) {
           G.navigateTo(context, '/market/course?id=' + id);
         }
+        if (type == 1) {
+            G.navigateTo(context, '/market/meeting?id=' + id);
+          }
       },
     child: Container(
       padding: EdgeInsets.symmetric(vertical: G.setWidth(30)),
