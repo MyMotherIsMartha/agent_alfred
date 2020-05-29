@@ -58,9 +58,14 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   void goPage() async {
     await G.initSp();
-    // await Provider.of<PackageInfoProvide>(context).initInfo();
+    await Provider.of<PackageInfoProvide>(context).initInfo();
     // G.clearPref();
     String token = G.getPref('token');
+    var isSpecialAccount = G.getPref('specialAccount');
+    print(isSpecialAccount);
+    if (isSpecialAccount != null) {
+      Provider.of<UserProvide>(context).changeSpecial(true);
+    }
     print(token);
     if (Validate.isNon(token)) {
       G.navigateTo(context, '/login', replace: true);
