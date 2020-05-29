@@ -44,9 +44,13 @@ class _AgentVerifyState extends State<AgentVerify> {
       suffixDivider: true,
       hintText: '请输入验证码',
       label: '验证码',
-      suffixWidth: 180,
-      // suffix: VTimerBtn(disabled, () async {return await LoginApi().getRegisterSmsCode(mobile);}),
+      suffixWidth: 260,
+      // maxLength: 4,
+      // prefixIcon: iconsafety(),
       suffix: VTimerBtn(false, () async {return await MemberApi().getAgentVerifyCode(sharecode);}, color: '#0091F0'),
+      maxLength: 4,
+      // suffix: VTimerBtn(disabled, () async {return await LoginApi().getRegisterSmsCode(mobile);}),
+      // suffix: VTimerBtn(false, () async {return await MemberApi().getAgentVerifyCode(sharecode);}, color: '#0091F0'),
       onChange: (e) {
         // String hint = Validate.isNon(e) ? '请输入真实姓名' : null;
         setState(() {
@@ -69,7 +73,7 @@ class _AgentVerifyState extends State<AgentVerify> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('企业认证'),
+        title: Text('代理商短信验证'),
         centerTitle: true
       ),
       body: Container(

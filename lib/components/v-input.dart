@@ -111,16 +111,6 @@ class _VInputState extends State<VInput> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
-                          height: G.setWidth(36),
-                          decoration: BoxDecoration(
-                              border: widget.suffixDivider ?? false
-                                  ? Border(
-                                      left: BorderSide(
-                                          color: hex('#CCC'),
-                                          width: G.setWidth(1)))
-                                  : Border()),
-                        ),
                         widget.suffixIcon != null
                             ? widget.suffixIcon
                             : _hasdeleteIcon
@@ -132,6 +122,17 @@ class _VInputState extends State<VInput> {
                                     },
                                   )
                                 : SizedBox(width: 0),
+                        Container(
+                          height: G.setWidth(36),
+                          decoration: BoxDecoration(
+                              border: widget.suffixDivider ?? false
+                                  ? Border(
+                                      left: BorderSide(
+                                          color: hex('#CCC'),
+                                          width: G.setWidth(1)))
+                                  : Border()),
+                        ),
+                        
                         widget.suffix != null
                             ? widget.suffix
                             : SizedBox(width: 0)

@@ -1,9 +1,7 @@
-import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/views/marketing/index.dart';
 import 'package:agent37_flutter/views/home/home.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class IndexPage extends StatefulWidget {
   @override
@@ -36,7 +34,6 @@ class _IndexPageState extends State<IndexPage> {
   // tabBodies
   @override
   Widget build(BuildContext context) {
-    bool isSpecialAccount = Provider.of<UserProvide>(context).specialAccount;
     return Scaffold(
       body: IndexedStack(
         index: curIndex,
@@ -48,10 +45,7 @@ class _IndexPageState extends State<IndexPage> {
             highlightColor: Colors.transparent,
             // canvasColor: Colors.transparent, // 透明
             splashColor: Colors.transparent),
-        child: isSpecialAccount ? 
-          Container(
-            child: MarketingPage()
-          ) : BottomNavigationBar(
+        child: BottomNavigationBar(
           selectedFontSize: G.setSp(20),
           unselectedFontSize: G.setSp(20),
           currentIndex: curIndex,
