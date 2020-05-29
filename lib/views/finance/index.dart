@@ -383,9 +383,11 @@ class _OrderViewState extends State<OrderView>
   @override
   void initState() {
     super.initState();
-    _getList(refresh: true);
     startTime = widget.start;
     endTime = widget.end;
+    _getList(refresh: true);
+    
+    
     chargeFuture = _getCharge();
     getDateCalc();
   }

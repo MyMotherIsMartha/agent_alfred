@@ -14,6 +14,7 @@ import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:badges/badges.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage>
   String _countdownTime = '';
 
   checkInfo(BuildContext context) {
-    if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus == 2) {
+    if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus != -1) {
       return;
     }
     return YYDialog().build(context)
@@ -112,9 +113,6 @@ class _HomePageState extends State<HomePage>
       mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
       return 'future end';
     } catch (e) {
-      print(e.toString());
-      print(e);
-      print('ddfdsfasfsdfsad');
       return 'future error';
     }
   }
@@ -318,7 +316,7 @@ class _HomePageState extends State<HomePage>
               vertical: G.setWidth(38), horizontal: G.setWidth(30)),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: title == '开通钻石会员'
+                  image: title == '开通企业会员'
                       ? AssetImage('${G.imgBaseUrl}home/subordinate_bg.png')
                       : AssetImage('${G.imgBaseUrl}home/order-num_bg.png'),
                   fit: BoxFit.fill)),
@@ -452,10 +450,10 @@ class _HomePageState extends State<HomePage>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             _missionItem(
-                                '开通钻石会员',
+                                '开通企业会员',
                                 homeinfo.openedDiamondMemberNum,
                                 homeinfo.checkDiamondMemberNum),
-                            _missionItem('钻石会员有效订单', homeinfo.effectiveOrderNum,
+                            _missionItem('企业会员有效订单', homeinfo.effectiveOrderNum,
                                 homeinfo.checkEffectiveOrderNum)
                           ],
                         ),
@@ -537,7 +535,7 @@ class _HomePageState extends State<HomePage>
 
     List<String> desc = [
       '代理商通过服务会员，从而促使会员在37度礼购APP采购，即可获得会员采购总额的2%作为产品销售分佣。',
-      '代理商推荐的会员成为钻石会员，获得钻石会员软件信息技术服务费的60%作为居间服务费奖励。',
+      '代理商推荐的会员成为企业会员，获得企业会员软件信息技术服务费的60%作为居间服务费奖励。',
       '代理商通过销售产品礼包，获得产品礼包总额的30%作为销售分佣。',
     ];
     switch (type) {
@@ -634,12 +632,12 @@ class _HomePageState extends State<HomePage>
                                     alignment: Alignment.center,
                                     child: Text.rich(TextSpan(children: [
                                       TextSpan(
-                                          text: "￥",
+                                          text: index < 3 ? "￥" : '',
                                           style: TextStyle(
                                               color: hex('#333'),
                                               fontSize: G.setSp(24))),
                                       TextSpan(
-                                          text: data[index].toString(),
+                                          text: index < 3 ? data[index].toStringAsFixed(2) : data[index].toString(),
                                           style: TextStyle(
                                               color: hex('#333'),
                                               fontSize: G.setSp(36))),
@@ -866,8 +864,6 @@ class _HomePageState extends State<HomePage>
             child: FutureBuilder(
               future: homeFuture,
               builder: (context, shapshot) {
-                print(shapshot.data);
-                print('shapshot');
                 if (shapshot.data == 'future error') {
                   return Container(
                     height: G.setWidth(1334),

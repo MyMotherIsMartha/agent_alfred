@@ -41,16 +41,12 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
 
   // 设置视频
   void _setVideo(ContactVos item) {
-    print(item.videoHeight / item.videoWidth);
-    print(item.videoHeight);
-    print(item.videoWidth);
-    print('item.videoHeight / item.videoWidth');
     currentCourse = item;
     _videoPlayerController = VideoPlayerController.network(item.linkUrl);
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       // aspectRatio: _videoPlayerController.value.size.aspectRatio,
-      aspectRatio: item.videoWidth / item.videoHeight ,
+      aspectRatio: item.videoWidth / item.videoHeight,
       autoPlay: false,
       looping: false,
       materialProgressColors: ChewieProgressColors(
@@ -69,36 +65,6 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
         );
       },
     );
-    _videoPlayerController.addListener(() {_updateState(item);});
-    // _updateState();
-  }
-
-   _updateState(ContactVos item) {
-    //  print(_videoPlayerController.value);
-    //  print('_videoPlayerController.value');
-    
-    // VideoPlayerValue value = _videoPlayerController?.value;
-    // if (value != null) {
-    //   print(_videoPlayerController.value.position);
-    //   print('_videoPlayerController.value.position');
-    //   if (Validate.isNon(G.getPref(item.linkUrl))) {
-    //     _videoPlayerController.seekTo(Duration(seconds: int.parse(G.getPref(item.linkUrl))));
-    //   }
-    // }
-    // VideoPlayerValue value = _chewieController?.videoPlayerController?.value;
-    // VideoPlayerValue value = _videoPlayerController?.value;
-    // print('视频信息有没有');
-    // if (value != null) {
-    //   return value.size.aspectRatio;
-    // // print(value.size.aspectRatio);
-    // //   double newAspectRatio = value.size != null ? value.aspectRatio : null;
-    // //   if (newAspectRatio != null && newAspectRatio != _aspectRatio) {
-    // //     setState(() {
-    // //       _aspectRatio = newAspectRatio;
-    // //     });
-    // //   }
-    // }
-    // return 1;
   }
 
   // 播放器
@@ -231,7 +197,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   }
 
   String durationFormat(int time) {
-    int hour = (time /3600 % 24).floor();
+    int hour = (time / 3600 % 24).floor();
     int min = time % 3600 ~/ 60;
     int sec = time % 3600 % 60;
     String minStr = min > 9 ? '$min:' : '0$min:';
@@ -287,7 +253,6 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
             Container(
                 width: G.setWidth(252),
                 height: G.setWidth(142),
-                
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(G.setWidth(10)),
                     child: Stack(
@@ -314,13 +279,16 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                       ],
                     ))),
             G.spacing(15),
-            Text(item.contactType == 1 ? item.videoName : item.imgName,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontSize: G.setSp(28),
-                    color: hex('#333'),
-                    height: 40 / 28)),
+            Container(
+              constraints: BoxConstraints(maxWidth: G.setWidth(252)),
+              child: Text(item.contactType == 1 ? item.videoName : item.imgName,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: G.setSp(28),
+                      color: hex('#333'),
+                      height: 40 / 28)),
+            ),
             Validate.isNon(item.tutorName)
                 ? Container()
                 : Container(
@@ -445,34 +413,34 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
         value: SystemUiOverlayStyle.dark,
         child: Scaffold(
             body: SafeArea(
-            child: Container(
-                height: G.setHeight(1334),
-                child: FutureBuilder(
-                  future: detailFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Container(
-                        child: Column(
-                          children: <Widget>[
-                            _headerPlayer(),
-                            Expanded(
-                                child: SingleChildScrollView(
-                              child: Column(
-                                children: <Widget>[
-                                  _title(),
-                                  _courseMenu(),
-                                  _tutor(),
-                                  _contentHtml()
-                                ],
-                              ),
-                            ))
-                          ],
-                        ),
-                      );
-                    } else {
-                      return VLoading();
-                    }
-                  },
-                )))));
+                child: Container(
+                    height: G.setHeight(1334),
+                    child: FutureBuilder(
+                      future: detailFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Container(
+                            child: Column(
+                              children: <Widget>[
+                                _headerPlayer(),
+                                Expanded(
+                                    child: SingleChildScrollView(
+                                  child: Column(
+                                    children: <Widget>[
+                                      _title(),
+                                      _courseMenu(),
+                                      _tutor(),
+                                      _contentHtml()
+                                    ],
+                                  ),
+                                ))
+                              ],
+                            ),
+                          );
+                        } else {
+                          return VLoading();
+                        }
+                      },
+                    )))));
   }
 }

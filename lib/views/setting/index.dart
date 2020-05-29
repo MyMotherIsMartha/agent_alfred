@@ -107,7 +107,7 @@ class SettingPage extends StatelessWidget {
     return ListTile(
       title: Text('版本号',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
-      trailing: Text(Provider.of<PackageInfoProvide>(context).packageInfo.version,
+      trailing: Text('1.0.0',
           style: TextStyle(fontSize: G.setSp(30), color: hex('#999'))),
       onTap: () {},
     );
@@ -139,7 +139,7 @@ class SettingPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Container(
-                  height: G.setHeight(300),
+                  height: G.setWidth(360),
                   color: hex('#FFF'),
                   child: ListView.separated(
                       physics: NeverScrollableScrollPhysics(),
@@ -240,10 +240,9 @@ class SettingPage extends StatelessWidget {
   YYDialog yyAlertDialog(BuildContext context) {
     return YYDialog().build(context)
       ..width = G.setWidth(440)
-      ..height = G.setHeight(240)
       ..borderRadius = G.setWidth(20)
       ..text(
-        padding: EdgeInsets.all(G.setHeight(60)),
+        padding: EdgeInsets.all(G.setWidth(60)),
         alignment: Alignment.center,
         text: "是否退出登录",
         color: hex('#333'),
