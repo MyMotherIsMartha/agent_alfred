@@ -43,7 +43,7 @@ class SettingSafePage extends StatelessWidget {
                               color: hex('#333'), fontSize: G.setSp(30))),
                       Row(
                         children: <Widget>[
-                          !userAuthInfo.isSettingPassword
+                          userAuthInfo.isSettingPassword
                               ? Text('未设置',
                                   style: TextStyle(
                                       color: hex('#999'),

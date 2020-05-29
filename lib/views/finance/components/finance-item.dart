@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class FinanceItem extends StatelessWidget {
   final FinanceItemModel item;
-  FinanceItem(this.item);
+  final int status;
+  FinanceItem(this.item, this.status);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,7 @@ class FinanceItem extends StatelessWidget {
                           // 内容区域
                           // flex: 1,
                           child: Container(
-                              height: G.setWidth(170),
+                              height: G.setWidth(190),
                               padding: EdgeInsets.symmetric(
                                   horizontal: G.setWidth(20)),
                               child: Column(
@@ -123,7 +124,7 @@ class FinanceItem extends StatelessWidget {
                                   G.spacing(20),
                                   product.refundOrderTime != null
                                       ? Text(
-                                          '退款时间：${G.formatTime(product.refundOrderTime)}',
+                                          '退款时间：${G.formatTime(product.refundOrderTime, type: 'date')}',
                                           style: TextStyle(
                                               color: hex('#85868A'),
                                               fontSize: G.setSp(24)))
@@ -212,14 +213,14 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
-                item.commissionFeeRate != null
+                item.commissionFeeRate != null && status != 3
                     ? Text('比例：${item.commissionFeeRate}%',
                         style: TextStyle(
                             height: 36 / 24,
                             color: hex('#252525'),
                             fontSize: G.setSp(26)))
                     : Container(),
-                Text.rich(TextSpan(
+                status != 3 ? Text.rich(TextSpan(
                     text: '预估服务费：',
                     style: TextStyle(
                         height: 36 / 24,
@@ -234,7 +235,7 @@ class FinanceItem extends StatelessWidget {
                           text: G.moneyToStr(item.commission),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
-                    ])),
+                    ])) : Container(),
               ],
             ))
           ],
@@ -318,7 +319,7 @@ class FinanceProduct extends StatelessWidget {
                     height: G.setWidth(170),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(G.setWidth(10)),
-                        image: data.orderImageUrl != null
+                        image: !Validate.isNon(data.orderImageUrl)
                             ? DecorationImage(
                                 image: NetworkImage(
                                   // 产品图
@@ -326,7 +327,7 @@ class FinanceProduct extends StatelessWidget {
                                 ),
                                 fit: BoxFit.fill)
                             : null),
-                    child: data.orderImageUrl != null
+                    child: !Validate.isNon(data.orderImageUrl)
                             ? null
                             : Image.asset('${G.imgBaseUrl}package_icon.png'),
                   ),

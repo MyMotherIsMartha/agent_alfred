@@ -628,6 +628,7 @@ class _HomePageState extends State<HomePage>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
+                                  index < 3 ? G.spacing(18) : Container(),
                                   Container(
                                     alignment: Alignment.center,
                                     child: Text.rich(TextSpan(children: [
@@ -652,8 +653,8 @@ class _HomePageState extends State<HomePage>
                               ),
                               index < 3
                                   ? Positioned(
-                                      top: G.setWidth(20),
-                                      right: G.setWidth(20),
+                                      top: G.setWidth(14),
+                                      right: G.setWidth(10),
                                       child: InkWell(
                                         onTap: () {
                                           statisticsDialog(context,

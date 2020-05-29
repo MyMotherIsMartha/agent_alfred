@@ -142,13 +142,13 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
                 maxLength: 4,
                 onChange: (value) {
                   _smsValidate(value, formValidate2);
-                  setState(() {
-                    smsDisabled = formValidate2['mobile'] != null;
-                  });
+                  // setState(() {
+                  //   smsDisabled = formValidate2['mobile'] != null;
+                  // });
                   smsChange = value;
                 },
                 suffix: VTimerBtn(
-                  smsDisabled,
+                  !formValidate2['mobile'],
                   () => SettingApi().applyChangeSmsCode(mobile),
                   color: '#0091F0',
                 ),

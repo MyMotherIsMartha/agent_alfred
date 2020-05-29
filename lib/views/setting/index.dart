@@ -54,7 +54,7 @@ class SettingPage extends StatelessWidget {
         statusMsg = '待审核';
         break;
       case 2:
-        statusMsg = '审核通过';
+        statusMsg = '';
         break;
       default:
     }
