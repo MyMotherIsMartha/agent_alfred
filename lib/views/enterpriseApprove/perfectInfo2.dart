@@ -51,7 +51,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
   Map formValidate = {
     'name': true,
     'mobile': true,
-    'email': true,
+    'email': false,
     'areaCode': true,
     'addressStr': true,
     'legalName': true,

@@ -321,6 +321,7 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
       body: SingleChildScrollView(
         child: Container(
           color: hex('#F3F4F6'),
+          padding: EdgeInsets.only(bottom: G.setWidth(50)),
           child: Column(
             children: <Widget>[
               currentStatus != 2 ?

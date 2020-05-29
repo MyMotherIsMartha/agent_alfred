@@ -40,22 +40,34 @@ class _MarketingPageState extends State<MarketingPage> {
             padding: EdgeInsets.symmetric(
                 horizontal: G.setWidth(30), vertical: G.setWidth(12)),
             alignment: Alignment.center,
-            child: Container(
-              height: G.setWidth(64),
-              padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
-              decoration: BoxDecoration(
-                  color: hex('#F3F4F6'),
-                  borderRadius: BorderRadius.circular(G.setWidth(32))),
-              child: Row(
-                children: <Widget>[
-                  iconsearch(color: hex('#BFBFBF')),
-                  G.spacing(20, dir: 'x'),
-                  Text(
-                    '搜索',
-                    style: TextStyle(fontSize: G.setSp(28), color: hex('#999')),
-                  )
-                ],
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                  width: G.setWidth(600),
+                  height: G.setWidth(64),
+                  padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
+                  decoration: BoxDecoration(
+                      color: hex('#F3F4F6'),
+                      borderRadius: BorderRadius.circular(G.setWidth(32))),
+                  child: Row(
+                    children: <Widget>[
+                      iconsearch(color: hex('#BFBFBF')),
+                      G.spacing(20, dir: 'x'),
+                      Text(
+                        '搜索',
+                        style: TextStyle(fontSize: G.setSp(28), color: hex('#999')),
+                      )
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    G.navigateTo(context, '/setting');
+                  },
+                  child: Text('设置')
+                )
+              ],
             )));
   }
 

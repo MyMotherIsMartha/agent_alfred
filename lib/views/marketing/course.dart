@@ -420,12 +420,22 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   void initState() {
     super.initState();
     detailFuture = _getDetail();
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeLeft,
+    //   DeviceOrientation.landscapeRight,
+    // ]);
+
   }
 
   @override
   void dispose() {
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
     super.dispose();
   }
 
