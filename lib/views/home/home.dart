@@ -214,6 +214,7 @@ class _HomePageState extends State<HomePage>
                             fontSize: G.setSp(30), color: hex('#FFF'))),
                   ),
                   Container(width: G.setWidth(10)),
+                  isSpecialAccount ? Container() :
                   Image.asset(
                     homeinfo.role == 0
                         ? '${G.imgBaseUrl}home/check-status_icon.png'
@@ -420,6 +421,8 @@ class _HomePageState extends State<HomePage>
                         ],
                       ),
                     ),
+                    isSpecialAccount ? 
+                    Container() : 
                     Container(
                         height: G.setWidth(80),
                         alignment: Alignment.centerRight,
@@ -748,47 +751,70 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _menu() {
-    List<Map> menuList = [
-      {
-        'title': '财务管理',
-        'icon': '${G.imgBaseUrl}home/finance.png',
-        'url': '/finance?type=thisMonth&index=0'
-      },
-      {
-        'title': '邀请分享',
-        'icon': '${G.imgBaseUrl}home/share.png',
-        'url': '/',
-        'isShare': true
-      },
-      {
-        'title': '我的钱包',
-        'icon': '${G.imgBaseUrl}home/wallet.png',
-        'url': '/walletMain'
-      },
-      {
-        'title': '会员管理',
-        'icon': '${G.imgBaseUrl}home/agent.png',
-        'url': '/vipManage'
-      },
-      {
-        'title': '代理商管理',
-        'icon': '${G.imgBaseUrl}home/vip.png',
-        'url': '/agentManage'
-      },
-      {
-        'title': '客户服务',
-        'icon': '${G.imgBaseUrl}home/contact.png',
-        'url': 
-            '/customerService?nickname=$nicknameForUrl&shareCode=$shareCode&mobile=$mobile'
-      },
-    ];
+    List<Map> menuList = [];
+    if (isSpecialAccount) {
+      menuList = [
+        {
+          'title': '邀请分享',
+          'icon': '${G.imgBaseUrl}home/share.png',
+          'url': '/',
+          'isShare': true
+        },
+        {
+          'title': '会员管理',
+          'icon': '${G.imgBaseUrl}home/agent.png',
+          'url': '/vipManage'
+        },
+        {
+          'title': '客户服务',
+          'icon': '${G.imgBaseUrl}home/contact.png',
+          'url': 
+              '/customerService?nickname=$nicknameForUrl&shareCode=$shareCode&mobile=$mobile'
+        },
+      ];
+    } else {
+      menuList = [
+        {
+          'title': '财务管理',
+          'icon': '${G.imgBaseUrl}home/finance.png',
+          'url': '/finance?type=thisMonth&index=0'
+        },
+        {
+          'title': '邀请分享',
+          'icon': '${G.imgBaseUrl}home/share.png',
+          'url': '/',
+          'isShare': true
+        },
+        {
+          'title': '我的钱包',
+          'icon': '${G.imgBaseUrl}home/wallet.png',
+          'url': '/walletMain'
+        },
+        {
+          'title': '会员管理',
+          'icon': '${G.imgBaseUrl}home/agent.png',
+          'url': '/vipManage'
+        },
+        {
+          'title': '代理商管理',
+          'icon': '${G.imgBaseUrl}home/vip.png',
+          'url': '/agentManage'
+        },
+        {
+          'title': '客户服务',
+          'icon': '${G.imgBaseUrl}home/contact.png',
+          'url': 
+              '/customerService?nickname=$nicknameForUrl&shareCode=$shareCode&mobile=$mobile'
+        },
+      ];
+    }
     return Container(
         margin: EdgeInsets.symmetric(vertical: G.setWidth(20)),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(G.setWidth(10)),
             color: hex('#FFF')),
         width: G.setWidth(710),
-        height: G.setWidth(390),
+        height: isSpecialAccount ? G.setWidth(200): G.setWidth(390),
         child: MediaQuery.removePadding(
           context: context,
           removeTop: true,
@@ -798,9 +824,9 @@ class _HomePageState extends State<HomePage>
                 // mainAxisSpacing: G.setWidth(20),
                 // crossAxisSpacing: G.setWidth(20),
                 crossAxisCount: 3, //横轴三个子widget
-                childAspectRatio: 1.2 //宽高比为1时，子widget
+                childAspectRatio: isSpecialAccount ? 1 : 1.2 //宽高比为1时，子widget
                 ),
-            itemCount: 6,
+            itemCount: isSpecialAccount ? 3:6,
             itemBuilder: (context, index) {
               Map item = menuList[index];
               return InkWell(
@@ -896,6 +922,8 @@ class _HomePageState extends State<HomePage>
                         _head(),
                         _userInfo(),
                         _mission(),
+                        isSpecialAccount ? 
+                        Container() :
                         _statistics(),
                         _menu()
                       ],
