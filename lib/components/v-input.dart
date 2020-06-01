@@ -88,7 +88,7 @@ class _VInputState extends State<VInput> {
            ? [widget.inputFormatters]
            : null,
             style: TextStyle(
-              height: widget.lineHeight ?? 1.5,
+              height: widget.lineHeight ?? 1.6,
               fontSize: widget.fontSize ?? G.setSp(30),
                 color: widget.readOnly ?? false ? hex('#999') : hex('#333')),
             keyboardType: widget.type,
@@ -153,12 +153,9 @@ class _VInputState extends State<VInput> {
                 )),
             onChanged: (str) {
               String newStr = str;
-              // if (widget.maxLength != null && str.length > widget.maxLength) {
-              //   String newStr = str.substring(0, widget.maxLength);
-              //   widget.controller.value = G.setTextEdit(newStr);
-              // } else {
+              if (str.length < widget.maxLength??99999) {
                 widget.onChange(newStr);
-              // }
+              }
               setState(() {
                 _hasdeleteIcon = (str.isNotEmpty);
               });

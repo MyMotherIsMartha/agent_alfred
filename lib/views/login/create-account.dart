@@ -53,13 +53,21 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         alignment: Alignment.center,
         child: FlatButton(
           // 按钮禁用指示
-            onPressed: () {
+            onPressed: () async {
               if (addressProvide.address == null ||
                   Validate.isNon(addressProvide.address.address)) {
                 G.toast('请填写地址');
                 return;
               }
               if (!Validate.isNon(selectedPackageNo)) {
+                var result = await MemberApi().giftpackageDetail(selectedPackageNo);
+                if (result.data['code'] != 200) {
+                  G.toast(result.data['message']);
+                  _getGiftsList();
+                  return;
+                }
+                // selectedPackageNo
+                G.removePref('orderOverTime');
                 G.navigateTo(
                     context,
                     '/create-order?price=' +

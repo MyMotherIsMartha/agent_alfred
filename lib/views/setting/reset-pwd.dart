@@ -52,7 +52,7 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
                   height: G.setWidth(100),
                   color: hex('#fff'),
                   child: VInput(
-                    maxLength: 16,
+                    maxLength: 15,
                     suffix: InkWell(
                       onTap: () {
                         setState(() {
@@ -78,7 +78,7 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
                   height: G.setWidth(100),
                   color: hex('#fff'),
                   child: VInput(
-                    maxLength: 16,
+                    maxLength: 15,
                     suffix: InkWell(
                       onTap: () {
                         setState(() {
@@ -88,8 +88,8 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
                       child: _showNewPwd ? iconeye() : iconcloseeye(),
                     ),
                     
-                    // type: _showNewPwd ? TextInputType.text : TextInputType.visiblePassword,
-                    type: TextInputType.text,
+                    type: _showNewPwd ? TextInputType.text : TextInputType.visiblePassword,
+                    // type: TextInputType.text,
                     controller: _newPwdController,
                     hintText: '请输入新密码',
                     label: '新密码',

@@ -129,6 +129,10 @@ class _CertificatePageState extends State<CertificatePage> {
           });
         }
       });
+      if (curGift == null) {
+        G.toast('礼包已失效，请重新选择');
+        G.navigateTo(context, '/create-account', replace: true);
+      }
       return 'end';
     }
   }
@@ -284,6 +288,7 @@ class _CertificatePageState extends State<CertificatePage> {
                   var result = await OrderApi().offlinePay(data);
                   if (result.data['code'] == 200 && result.data['data'] == true) {
                     // G.toast('提交凭证成功');
+                    G.removePref('orderOverTime');
                     Provider.of<UserProvide>(context).updateUserAuth();
                   } else {
                     G.toast('凭证提交失败');

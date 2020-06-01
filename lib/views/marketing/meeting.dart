@@ -1,7 +1,5 @@
 import 'package:agent37_flutter/api/marketing.dart';
 import 'package:agent37_flutter/env.dart';
-import 'package:agent37_flutter/routes/routes.dart';
-import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +30,7 @@ class _WebViewState extends State<MarketMeetingPage> {
   @override
   void initState() {
     super.initState();
-    url = EnvConfig.dev['web-address'] + '#/applymeeting/' + widget.id;
+    url = EnvConfig.dev['web-address'] +  "#/meeting/" + widget.id;
     getDetail();
   }
 
@@ -105,8 +103,7 @@ class _WebViewState extends State<MarketMeetingPage> {
                           _share(WeChatScene.TIMELINE);
                         }),
                         _showItem('share_link', '复制链接', () {
-                          String link = EnvConfig.dev['web-address'] +  "#/meeting/" +
-                              widget.id;
+                          String link = url;
                           G.setClipboard(link);
                           G.router.pop(context);
                         }),

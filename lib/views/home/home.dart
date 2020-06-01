@@ -407,7 +407,7 @@ class _HomePageState extends State<HomePage>
                               InkWell(
                                 onTap: () {
                                   statisticsDialog(
-                                      context, '1341234', 'sdfdsfs');
+                                      context, '服务费减少说明', '倒计时结束后，前3个会员开通的居间服务费会减半哦！');
                                 },
                                 child: Image.asset(
                                   '${G.imgBaseUrl}pic-icon/info_icon.png',

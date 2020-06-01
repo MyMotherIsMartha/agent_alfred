@@ -56,6 +56,8 @@ class FinanceItemModel {
   double commission;
   bool isShowTodayFlag;
   int status;
+  int orderType;
+  int toRole;
   List<RefundOrders> refundOrders;
 
   FinanceItemModel(
@@ -72,6 +74,8 @@ class FinanceItemModel {
       this.commission,
       this.isShowTodayFlag,
       this.status,
+      this.orderType,
+      this.toRole,
       this.refundOrders});
 
   FinanceItemModel.fromJson(Map<String, dynamic> json) {
@@ -88,6 +92,10 @@ class FinanceItemModel {
     commission = json['commission'];
     isShowTodayFlag = json['isShowTodayFlag'];
     status = json['status'];
+    orderType = json['orderType'];
+    if (json['toRole'] != null) {
+      toRole = json['toRole'];
+    }
     if (json['refundOrders'] != null) {
       refundOrders = new List<RefundOrders>();
       json['refundOrders'].forEach((v) {
@@ -111,6 +119,10 @@ class FinanceItemModel {
     data['commission'] = this.commission;
     data['isShowTodayFlag'] = this.isShowTodayFlag;
     data['status'] = this.status;
+    data['orderType'] = this.orderType;
+    if (this.toRole != null) {
+      data['toRole'] = this.toRole;
+    }
     if (this.refundOrders != null) {
       data['refundOrders'] = this.refundOrders.map((v) => v.toJson()).toList();
     }

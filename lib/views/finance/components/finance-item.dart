@@ -169,12 +169,12 @@ class FinanceItem extends StatelessWidget {
               children: <Widget>[
                 Container(
                    constraints: BoxConstraints(
-                    maxWidth: G.setWidth(360)
+                    maxWidth: G.setWidth(336)
                   ),
                   // width: G.setWidth(360),
                   child: Text('购买企业：${item.enterpriseName ?? ""}',
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      maxLines: 2,
                       style: TextStyle(
                           color: hex('#666'),
                           fontSize: G.setSp(24),
@@ -329,7 +329,9 @@ class FinanceProduct extends StatelessWidget {
                             : null),
                     child: !Validate.isNon(data.orderImageUrl)
                             ? null
-                            : Image.asset('${G.imgBaseUrl}package_icon.png'),
+                            : data.toRole == null
+                            ? Image.asset('${G.imgBaseUrl}package_icon.png')
+                            : Image.asset('${G.imgBaseUrl}member-order${data.toRole.toString()}_icon.png'),
                   ),
                   Expanded(
                     // 内容区域
@@ -383,10 +385,13 @@ class FinanceProduct extends StatelessWidget {
                                     style: TextStyle(
                                         color: hex('#85868A'),
                                         fontSize: G.setSp(26))),
-                                // Text('X${data.quantity}',
-                                //     style: TextStyle(
-                                //         color: hex('#85868A'),
-                                //         fontSize: G.setSp(26)))
+                                  
+                                  data.orderType == 7 
+                                  ? Text('X${data.quantity}',
+                                    style: TextStyle(
+                                        color: hex('#85868A'),
+                                        fontSize: G.setSp(26)))
+                                  : Container()
                               ],
                             ),
                           ],
