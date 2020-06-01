@@ -51,6 +51,11 @@ class OrderApi{
     return await service().get('$orderPrefix/v1/appOrderItems/pageForPurchaseOrderCommission', queryParameters: data);
   }
 
+  // 查询指定代理指定类型的总佣金
+  getAgentMemberServiceCharge(data) async {
+    return await service().get('$orderPrefix/v1/agentMemberServiceCharges/getAgentMemberServiceCharge', queryParameters: data);
+  }
+
   // ------------- 发票相关接口 ---------------
   //  服务费结款详细
   getMakeMoneyById(id) async {

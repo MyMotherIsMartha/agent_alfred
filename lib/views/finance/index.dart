@@ -1,5 +1,5 @@
 import 'package:agent37_flutter/api/finance.dart';
-import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-data-picker.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
@@ -28,6 +28,7 @@ class _FinancePageState extends State<FinancePage>
 
   DateTime startTime;
   DateTime endTime;
+  int currentType;
   // tabbar选项栏
   List<Widget> _appTabItem() {
     List<String> types = ['商品销售', '会员订单', '礼包销售'];
@@ -78,6 +79,7 @@ class _FinancePageState extends State<FinancePage>
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
     _tabController.animateTo(int.parse(widget.index));
+
     switch (widget.type) {
       case 'today':
         startTime = DateTime(
@@ -108,20 +110,17 @@ class _FinancePageState extends State<FinancePage>
         children: <Widget>[
           OrderView(
               FinanceApi().fetchProduct,
-              'pendingPurchaseOrderServiceCharge',
-              'entryPurchaseOrderServiceCharge',
+              7,
               start: startTime,
               end: endTime),
           OrderView(
               FinanceApi().fetchMemberOrder,
-              'pendingMemberOrderServiceCharge',
-              'entryMemberOrderServiceCharge	',
+              8,
               start: startTime,
               end: endTime),
           OrderView(
               FinanceApi().fetchPackageOrder,
-              'pendingGiftPackageOrderServiceCharge',
-              'entryGiftPackageOrderServiceCharge',
+              11,
               start: startTime,
               end: endTime)
         ],
@@ -132,11 +131,14 @@ class _FinancePageState extends State<FinancePage>
 
 class OrderView extends StatefulWidget {
   final Function getListFn;
-  final String pending;
-  final String entry;
+  // final String pending;
+  // final String entry;
+  final int orderType;
   final DateTime start;
   final DateTime end;
-  OrderView(this.getListFn, this.pending, this.entry, {this.start, this.end});
+
+  OrderView(this.getListFn, this.orderType, {this.start, this.end});
+
   @override
   _OrderViewState createState() => _OrderViewState();
 }
@@ -148,7 +150,7 @@ class _OrderViewState extends State<OrderView>
   int total; // 总条数
   List<String> settleStatusList = ['', '待结算', '已结算', '已关闭'];
   int settleStatus = 1; // 当前栏目
-  List<double> serviceCharge = [];
+  // List<double> serviceCharge = [];
   EasyRefreshController _refreshController = EasyRefreshController();
   int listCount = 10;
   DateTime startTime = DateTime(DateTime.now().year, DateTime.now().month);
@@ -200,6 +202,9 @@ class _OrderViewState extends State<OrderView>
           });
           G.showLoading(context);
           await _getList(refresh: true);
+          setState(() {
+            chargeFuture = _getCharge();
+          });
           G.closeLoading();
         },
         child: Container(
@@ -258,6 +263,7 @@ class _OrderViewState extends State<OrderView>
                   setState(() {
                     startTime = time;
                   });
+                  chargeFuture = _getCharge();
                   await _getList(refresh: true);
                 },
                 maxValue: endTime,
@@ -273,6 +279,7 @@ class _OrderViewState extends State<OrderView>
                 setState(() {
                   endTime = time;
                 });
+                chargeFuture = _getCharge();
                 await _getList(refresh: true);
               }, minValue: startTime)
             ],
@@ -290,7 +297,7 @@ class _OrderViewState extends State<OrderView>
                       Text(settleStatus == 1 ? '预估服务费：' : '服务费',
                           style: TextStyle(
                               fontSize: G.setSp(22), color: hex('#666'))),
-                      Text('￥${shapshot.data[settleStatus].toStringAsFixed(2)}',
+                      Text('￥${shapshot.data}',
                           style: TextStyle(
                               fontSize: G.setSp(24), color: hex('#E84747')))
                     ],
@@ -334,17 +341,20 @@ class _OrderViewState extends State<OrderView>
   }
 
   Future _getCharge() async {
-    var result = await MemberApi().serviceCharges();
-    Map data = result.data['data'];
-    if (data != null) {
-      return [0, data[widget.pending] ?? 0, data[widget.entry] ?? 0];
-      // serviceCharge = [0, data[widget.pending] ?? 0, data[widget.entry] ?? 0];
-      // setState(() {
-
-      // });
+    if (settleStatus == 3) {
+      return;
     }
-
-    return [0, 0, 0];
+    var params = {
+      'orderType': widget.orderType,
+      'settleStatus': settleStatus,
+      'beginPayDate': G.formatTime(startTime.millisecondsSinceEpoch, type: 'date' ),
+      'endPayDate': G.formatTime(endTime.millisecondsSinceEpoch, type: 'date' )
+    };
+    var result = await OrderApi().getAgentMemberServiceCharge(params);
+    if (result.data['code'] == 200) {
+      return result.data['data']['orderServiceCharge'];
+    }
+    return 0.00;
   }
 
   // 财务列表
@@ -386,8 +396,6 @@ class _OrderViewState extends State<OrderView>
     startTime = widget.start;
     endTime = widget.end;
     _getList(refresh: true);
-    
-    
     chargeFuture = _getCharge();
     getDateCalc();
   }

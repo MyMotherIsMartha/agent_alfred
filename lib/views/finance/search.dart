@@ -32,13 +32,13 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
     List list = SearchUtil.getHistoryList();
     // print(list);
     print('listlistlist');
-    // List<String> tempList = [];
-    // list.forEach((item) {
-    //   tempList.add(item.toString());
-    // });
-    // setState(() {
-    //   historyList = tempList;
-    // });
+    List<String> tempList = [];
+    list.forEach((item) {
+      tempList.add(item.toString());
+    });
+    setState(() {
+      historyList = tempList;
+    });
   }
 
   Future goSearch() async {
@@ -208,6 +208,9 @@ class _FinanceSearchState extends State<FinanceSearchPage> {
       pageNo = 1;
       itemList = <FinanceItemModel>[];
     } else {
+      if (itemList.length >= total) {
+        return;
+      }
       ++pageNo;
     }
 

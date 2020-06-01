@@ -1,6 +1,5 @@
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/api/oss.dart';
-import 'package:agent37_flutter/utils/oss.dart';
 import 'package:flutter/material.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
@@ -156,7 +155,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
   YYDialog yyAlertDialog(BuildContext context) {
   return YYDialog().build(context)
     ..width = G.setWidth(440)
-    ..height = G.setWidth(215)
+    // ..height = G.setWidth(215)
     ..borderRadius = G.setWidth(20)
     ..text(
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setWidth(40)),
@@ -208,6 +207,7 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
       appBar: AppBar( //导航栏
         title: Text("企业认证"),
         centerTitle: true,
+        leading: Container(),
         elevation: 0,
         actions: <Widget>[
           FlatButton(

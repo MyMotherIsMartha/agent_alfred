@@ -94,6 +94,22 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                 // child: videoController != null && videoController.value.initialized ? VideoPlayer(videoController) : _buildInitingWidget(),
                 ),
             Positioned(
+              top: 0,
+              left: 0,
+              child: Container(
+                width: G.setWidth(750),
+                height: G.setWidth(128),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                      rgba(51, 51, 51, 0.6),
+                      rgba(51, 51, 51, 0),
+                    ])),
+              ),
+            ),
+            Positioned(
               top: G.statusHeight,
               left: 0,
               child: Container(
@@ -110,7 +126,8 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                   ),
                 ),
               ),
-            )
+            ),
+            
           ],
         ));
   }
@@ -392,7 +409,6 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
     //   DeviceOrientation.landscapeLeft,
     //   DeviceOrientation.landscapeRight,
     // ]);
-
   }
 
   @override
@@ -400,17 +416,20 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
 
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
+        value: SystemUiOverlayStyle(
+            statusBarColor: Colors.cyan,
+            //有Appbar时，会被覆盖
+            statusBarIconBrightness: Brightness.dark,
+            //底部navigationBar背景颜色
+            systemNavigationBarColor: Colors.black),
         child: Scaffold(
             body: SafeArea(
                 child: Container(

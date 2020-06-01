@@ -75,7 +75,7 @@ class SettingSafePage extends StatelessWidget {
                               color: hex('#333'), fontSize: G.setSp(30))),
                       Row(
                         children: <Widget>[
-                          Text(userAuthInfo.mobile,
+                          Text(G.mixMobile(userAuthInfo.mobile),
                               style: TextStyle(
                                   color: hex('#999'), fontSize: G.setSp(30))),
                           G.spacing(20, dir: 'x'),
