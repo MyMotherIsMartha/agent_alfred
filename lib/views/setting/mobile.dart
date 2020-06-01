@@ -62,7 +62,7 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
               height: G.setWidth(100),
               color: hex('#fff'),
               child: VInput(
-                value: userAuthInfo.mobile,
+                value: G.mixMobile(userAuthInfo.mobile),
                 controller: _mobileController,
                 hintText: '',
                 label: '原手机号',
@@ -124,6 +124,7 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
                 controller: _mobileChangeController,
                 hintText: '请输入新手机号',
                 label: '新手机号',
+                maxLength: 11,
                 onChange: (e) {
                   setState(() {
                     formValidate2['mobile'] = Validate.checkMobile(e) == null;

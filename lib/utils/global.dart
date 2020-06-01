@@ -234,4 +234,8 @@ class G {
       return (money / 10000).toStringAsFixed(2) + 'W';
     }
   }
+
+  static mixMobile(String mobile) {
+    return mobile.substring(0, 3) + '****' + mobile.substring(7, 11);
+  }
 }

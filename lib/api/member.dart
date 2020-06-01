@@ -29,6 +29,11 @@ class MemberApi{
     return await service().get('$giftpackageApi/v1/giftPackages');
   }
 
+  // 查询指定礼包
+  giftpackageDetail(no) async {
+    return await service().get('$giftpackageApi/v1/giftPackages/$no');
+  }
+
   // ----会员企业接口-----
   //  当前企业信息
   getEnterpriseInfo() async {

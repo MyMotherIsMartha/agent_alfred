@@ -5,6 +5,7 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class SettingNicknamePage extends StatefulWidget {
@@ -106,6 +107,11 @@ class _SettingNicknamePageState extends State<SettingNicknamePage> {
                       // _getHistoryFromPref();
                       //   }
                       // },
+                      maxLength: 16,
+                      buildCounter: (context, {currentLength = 10, maxLength = 10, isFocused = false}) {
+                        return null;
+                      },
+                      inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[0-9]"))],
                       style: TextStyle(fontSize: G.setSp(28)),
                       decoration: InputDecoration(
                         fillColor: hex('#fff'),

@@ -45,7 +45,7 @@ class _SettingPwdPageState extends State<SettingPwdPage> {
                   padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
                   alignment: Alignment.centerLeft,
                   height: G.setWidth(60),
-                  child: Text('请输入1-16位，可由中英文、数字组成',
+                  child: Text('请输入6-15位登录密码，需同时包含英文和数字',
                       style:
                           TextStyle(fontSize: G.setSp(24), color: hex('#999'))),
                 ),
