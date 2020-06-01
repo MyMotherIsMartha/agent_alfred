@@ -232,6 +232,14 @@ class _VipManageSearchState extends State<VipManageSearch> {
   @override
   void initState() {
     super.initState();
+    G.setContext(context);
+    
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
     _getHistoryFromPref();
   }
 

@@ -89,7 +89,7 @@ class _VipDetailState extends State<VipDetail>
             padding: EdgeInsets.all(G.setWidth(20)),
             child: Container(
               height: G.setWidth(360),
-              padding: EdgeInsets.fromLTRB(G.setWidth(30), G.setWidth(30), G.setWidth(60), G.setWidth(30)),
+              padding: EdgeInsets.fromLTRB(G.setWidth(30), G.setWidth(30), G.setWidth(80), G.setWidth(30)),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(currentRole == '1' ? "lib/assets/images/vip/bg1.png" : "lib/assets/images/vip/bg2.png"),
@@ -100,7 +100,13 @@ class _VipDetailState extends State<VipDetail>
                 Row(children: [
                   Image(width: G.setWidth(80), height: G.setWidth(80),image: AssetImage(currentRole == '1' ? 'lib/assets/images/vip/diamond.png' : 'lib/assets/images/vip/diamond2.png')),
                   G.spacingWidth(20),
-                  Text(_enterpriseName, style: TextStyle(fontWeight: FontWeight.w500, color: hex(mainTextColor)))
+                  Container(
+                    width: G.setWidth(500),
+                    child: Text(_enterpriseName, 
+                      softWrap: true,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w500, color: hex(mainTextColor)))
+                  )
                 ]),
                 G.spacing(30),
                 Text.rich(TextSpan(

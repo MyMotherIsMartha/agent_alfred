@@ -4,6 +4,7 @@ import 'package:agent37_flutter/provide/packageinfo.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:provider/provider.dart';
@@ -132,6 +133,9 @@ class SettingPage extends StatelessWidget {
           //   },
           // ),
           elevation: 0,
+          leading: BackButton(onPressed: () {
+            G.navigateTo(context, '/index', replace: true, transition: TransitionType.inFromLeft);
+          },),
         ),
         backgroundColor: hex('#F3F4F6'),
         body: Container(

@@ -156,7 +156,6 @@ class G {
   static closeLoading() {
     var context = G.currentContext;
     Provider.of<CommonProvide>(context).toggleLoadingWindow(false, context);
-
   }
 
   /// 每隔 x位 加 pattern

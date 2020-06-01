@@ -99,9 +99,12 @@ class VipManageMainState extends State<VipManageMain>
         vsync: this,
       );
     });
-
-    var result = await OrderApi().getAppMemberAmount();
-    print('app member amount');
+    var params = {
+      'beginDate': G.formatTime(startTime.millisecondsSinceEpoch, type: 'date' ),
+      'endDate': G.formatTime(endTime.millisecondsSinceEpoch, type: 'date' )
+    };
+    var result = await OrderApi().getAppMemberAmount(params);
+    print('app member amount---------------');
     print(result.data['data'].toString());
     var resultData = result.data['data'];
     setState(() {
@@ -118,6 +121,7 @@ class VipManageMainState extends State<VipManageMain>
       appBar: AppBar(
               title: Text("会员管理"),
               centerTitle: true,
+              elevation: 0,
               // expandedHeight: 190.0,
               // flexibleSpace: SingleChildScrollView(
               //   physics: NeverScrollableScrollPhysics(),
@@ -222,8 +226,15 @@ class _MemberListState extends State<MemberList> {
   // }
 
   Future _getList(refresh) async {
+    if (refresh) {
+      _controller?.finishLoad(success: true, noMore: false);
+      pageNo = 1;
+      _listData = [];
+    } else {
+      ++pageNo;
+    }
     if (_listData.length == total && !refresh) {
-      G.toast('已加载全部');
+      // G.toast('已加载全部');
       _controller.finishLoad(success: true, noMore: true);
       return null;
     }
@@ -242,22 +253,19 @@ class _MemberListState extends State<MemberList> {
       VipResultModel resultData = VipResultModel.fromJson(originalData);
       if (resultData == null) return;
       print(resultData);
-      setState(() {
-        total = resultData.total;
-      });
       if (refresh) {
+        print('refresh');
         setState(() {
+          total = resultData.total;
           _listData = resultData.records;
         });
       } else {
-        _listData.addAll(resultData.records);
+        setState(() {
+          total = resultData.total;
+          _listData.addAll(resultData.records);
+        });
       }
     }
-
-    setState(() {
-      pageNo = refresh ? 1 : pageNo + 1;
-    });
-
     _api();
   }
 

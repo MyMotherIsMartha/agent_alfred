@@ -20,6 +20,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String loginType = 'sms';
   final _formKey = GlobalKey<FormState>();
+  bool btnCanClick = true;
   String errorMsg;
   bool pwdVisible = false;
   String mobile = '';
@@ -163,6 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                       VButton(
                         text: '登录',
                         fn: () async {
+                          if (!btnCanClick) {
+                            return;
+                          }
+                          btnCanClick = false;
                           FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {
                             errorMsg = null;
@@ -180,6 +185,9 @@ class _LoginPageState extends State<LoginPage> {
                             G.showLoading(context);
                             var result = await LoginApi().login(mobile, data);
                             G.closeLoading();
+                            Future.delayed(Duration(seconds: 2), () {
+                              btnCanClick = true;
+                            });
                             if (result.data['code'] == 200) {
                               String token = result.data['data']['jwtToken'];
                               G.setPref('token', 'bearer ' + token);

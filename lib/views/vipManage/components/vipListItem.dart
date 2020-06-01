@@ -1,8 +1,10 @@
 import 'package:agent37_flutter/models/vipManage.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:agent37_flutter/routes/routes.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:provider/provider.dart';
 class VipListItem extends StatefulWidget {
   final VipItemModel item;
 
@@ -13,6 +15,7 @@ class VipListItem extends StatefulWidget {
 
 class _VipListItemState extends State<VipListItem> {
   bool showRefuse = false;
+  bool isSpecialAccount;
 
   Widget leftTopText(statusCode, role) {
     String statusStr;
@@ -93,6 +96,7 @@ class _VipListItemState extends State<VipListItem> {
   @override
   Widget build(BuildContext context) {
     VipItemModel item = widget.item;
+    isSpecialAccount = Provider.of<UserProvide>(context).specialAccount;
 
     return Container(
       margin: EdgeInsets.only(bottom: 20),
@@ -147,7 +151,7 @@ class _VipListItemState extends State<VipListItem> {
             String vipId = item.memberId.toString();
             print('vipId');
             print(vipId);
-            if (item.role != 0) {
+            if (item.role != 0 && !isSpecialAccount) {
               G.navigateTo(context, Routes.vipDetail + '?vipId=$vipId&role=${item.role}');
             }
           },

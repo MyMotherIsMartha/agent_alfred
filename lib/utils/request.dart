@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 Dio service() {
   BaseOptions _baseOptions =
       BaseOptions(
-        baseUrl: EnvConfig.dev['api'],
+        baseUrl: EnvConfig.dev()['api'],
         headers: {'platform': 'agent_app'},
         connectTimeout: 12000
       );

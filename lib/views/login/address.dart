@@ -20,6 +20,7 @@ class AddressPage extends StatefulWidget {
 
 class _AddressPageState extends State<AddressPage> {
   final _formKey = GlobalKey<FormState>();
+  bool btnCanClick = true;
   AddressModel addressModel;
   String address;
   String areaCode;
@@ -274,6 +275,10 @@ class _AddressPageState extends State<AddressPage> {
                   width: 690,
                   height: 100,
                   fn: () async {
+                    if (!btnCanClick) {
+                      return;
+                    }
+                    btnCanClick = false;
                     G.showLoading(context);
                     List<String> areaLev = areaName.split(',');
                     Map data = {
@@ -293,6 +298,9 @@ class _AddressPageState extends State<AddressPage> {
                     }
                     var result = await addressProvide.updateAddress(data);
                     G.closeLoading();
+                    Future.delayed(Duration(seconds: 2), () {
+                      btnCanClick = true;
+                    });
                     if (result.data['code'] == 200) {
                       G.router.pop(context);
                       // G.navigateTo(context, '/create-account');

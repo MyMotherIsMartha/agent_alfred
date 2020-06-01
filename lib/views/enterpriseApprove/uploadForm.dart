@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/api/dic.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agent37_flutter/utils/global.dart';
@@ -30,6 +31,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
   String name;
   String memberId;
   String id;
+  bool btnCanClick = true;
 
   List<dynamic> jobList;
 
@@ -111,7 +113,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('企业认证'),
-        centerTitle: true
+        centerTitle: true,
+        leading: BackButton(onPressed: () {
+          G.navigateTo(context, '/resultPage?status=1', replace: true, transition: TransitionType.inFromLeft);
+        },),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -386,7 +391,11 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                   textColor: Colors.white,
                   onPressed: () async {
                     // Validate returns true if the form is valid, otherwise false.
-                    // G.showLoading(context);
+                    if (!btnCanClick) {
+                      return;
+                    }
+                    G.showLoading(context);
+                    btnCanClick = false;
                     if (_formKey.currentState.validate()) {
                       print('test1121');
                       var areaAry = areaName.split(',');
@@ -404,60 +413,48 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         'district': areaAry[2]
                         // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
                       };
-                      print(params);
-                      // G.navigateTo(context, '/resultPage');
                       var result = await MemberApi().updateEnterpriseInfo(params);
+
                       G.closeLoading();
-                      print(result.data.toString());
+                      
                       if (result.data['code'] == 200) {
                         print('test');
                         if (result.data['isPopup']) {
-                          bool goHome = false;
-                          return YYDialog().build(context)
-                            ..width = G.setWidth(500)
-                            ..borderRadius = G.setWidth(20)
-                            ..text(
-                              padding: EdgeInsets.all(G.setWidth(60)),
-                              alignment: Alignment.center,
-                              text: "资质审核已通过",
-                              color: hex('#333'),
-                              fontSize: G.setSp(36),
-                              fontWeight: FontWeight.w500,
-                            )
-                            ..divider()
-                            ..doubleButton(
-                              padding: EdgeInsets.only(top: 10.0),
-                              gravity: Gravity.center,
-                              withDivider: true,
-                              text1: "取消",
-                              color1: hex('#85868A'),
-                              fontSize1: G.setSp(36),
-                              onTap1: () {
-                                print("取消");
-                                goHome = false;
-                              },
-                              text2: "进入我的管家",
-                              color2: hex('##0091F0'),
-                              fontSize2: G.setSp(36),
-                              onTap2: () {
-                                print("进入我的管家");
-                                goHome = true;
-                              },
-                            )
-                            ..dismissCallBack = () {
-                              if (goHome) {
-                                Future.delayed(Duration(microseconds: 100), () {
-                                  G.navigateTo(context, '/index');
-                                });
-                              }
-                            }
-                            ..show();
+                          showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return CupertinoAlertDialog(
+                                title: Text('资质审核已通过'),
+                                // content:Text('我是content'),
+                                actions:<Widget>[
+                                  
+                                  CupertinoDialogAction(
+                                    child: Text('取消', style: TextStyle(color: hex('#85868A')),),
+                                    onPressed: (){
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                              
+                                  CupertinoDialogAction(
+                                    child: Text('确定'),
+                                    onPressed: (){
+                                      Navigator.of(context).pop();
+                                      G.navigateTo(context, '/index');
+                                    },
+                                  )
+                                ]
+                              );
+                            },
+                          );
                         } else {
                           G.navigateTo(context, '/resultPage?status=1');
                         }
                       } else {
                         print('出错');
                       }
+                      Future.delayed(Duration(seconds: 2), () {
+                        btnCanClick = true;
+                      });
                       
                     }
                   },
