@@ -32,7 +32,7 @@ class _WebViewState extends State<MarketMeetingPage> {
   @override
   void initState() {
     super.initState();
-    url = EnvConfig.dev['web-address'] + '#/applymeeting/' + widget.id;
+    url = EnvConfig.dev()['web-address'] + '#/applymeeting/' + widget.id;
     getDetail();
   }
 
@@ -105,7 +105,7 @@ class _WebViewState extends State<MarketMeetingPage> {
                           _share(WeChatScene.TIMELINE);
                         }),
                         _showItem('share_link', '复制链接', () {
-                          String link = EnvConfig.dev['web-address'] +  "#/meeting/" +
+                          String link = EnvConfig.dev()['web-address'] +  "#/meeting/" +
                               widget.id;
                           G.setClipboard(link);
                           G.router.pop(context);

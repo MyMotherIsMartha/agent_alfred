@@ -94,7 +94,10 @@ class _HomePageState extends State<HomePage>
   Future _getHomeinfo() async {
     try {
       var result = await MemberApi().getHomeInfo();
-      var result2 = await MemberApi().getMessageCount();
+      var result2;
+      if (result.data['data'] != null) {
+        result2 = await MemberApi().getMessageCount();
+      }
       if (result.data['data'] != null) {
         setState(() {
           homeinfo = homeInfoModelFromJson(result.data['data']);
@@ -869,6 +872,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   void didChangeDependencies() {
+    print('test');
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
       // msgFuture = _getMsgCount();

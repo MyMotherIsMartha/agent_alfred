@@ -104,7 +104,7 @@ class _PerfectEnterpriseAuditState extends State<PerfectEnterpriseAudit> {
             children: <Widget>[
             RaisedButton(
               onPressed: () {
-                Navigator.of(context)..pop()..pop();
+                G.navigateTo(context, '/setting', replace: true);
               },
               elevation: 4.0,
               color: hex('#69A5FF'),

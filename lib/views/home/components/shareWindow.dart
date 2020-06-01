@@ -164,7 +164,7 @@ void openShareWindow(context, String type, int role) {
                                 ]),
                           ),
                           QrImage(
-                            data: EnvConfig.dev['web-address'] + middleUrl + shareCode,
+                            data: EnvConfig.dev()['web-address'] + middleUrl + shareCode,
                             version: QrVersions.auto,
                             foregroundColor: type == 'member' ? Colors.black : hex('#E7D1A8'),
                             size: G.setWidth(380),

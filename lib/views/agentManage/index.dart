@@ -384,7 +384,7 @@ class _MemberListState extends State<MemberList> {
             smsValid = value;
           });
           G.showLoading(context);
-          await _getList(true);
+          _getList(true);
           G.closeLoading();
         },
         child: Container(
@@ -435,6 +435,13 @@ class _MemberListState extends State<MemberList> {
   }
 
   Future _getList(refresh) async {
+    if (refresh) {
+      _controller?.finishLoad(success: true, noMore: false);
+      pageNo = 1;
+      _listData = [];
+    } else {
+      ++pageNo;
+    }
     if (_listData.length == total && !refresh) {
       
       // List<AgentItemModel> tempList = _listData;
@@ -466,22 +473,29 @@ class _MemberListState extends State<MemberList> {
     void _api() async {
       var result = await MemberApi().getAgentChildren(params);
       Map originalData = result.data['data'];
+      print('---------originalData----------');
+      print(originalData);
+      print(originalData['records'].length);
       AgentResultModel resultData = AgentResultModel.fromJson(originalData);
       if (resultData == null) return;
-      setState(() {
-        total = resultData.total;
-      });
+      
       if (refresh) {
+        print('refresh');
         setState(() {
+          total = resultData.total;
           _listData = resultData.records;
         });
       } else {
-        _listData.addAll(resultData.records);
+        setState(() {
+          total = resultData.total;
+          _listData.addAll(resultData.records);
+        });
+        
       }
     }
-    setState(() {
-      pageNo = refresh ? 1 : pageNo + 1;
-    });
+    // setState(() {
+    //   pageNo = refresh ? 1 : pageNo + 1;
+    // });
     _api();
   }
 
