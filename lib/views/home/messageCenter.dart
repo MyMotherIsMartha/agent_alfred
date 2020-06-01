@@ -27,7 +27,7 @@ class _WebViewState extends State<MessageCenterPage> {
   @override
   void initState() {
     super.initState();
-    url = EnvConfig.dev['web-address'] + '#/newsCenter?noHeader=yes';
+    url = EnvConfig.dev()['web-address'] + '#/newsCenter?noHeader=yes';
     print(url);
   }
 

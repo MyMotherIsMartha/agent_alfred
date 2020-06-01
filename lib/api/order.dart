@@ -39,8 +39,8 @@ class OrderApi{
     return await service().get('$orderPrefix/v1/appMemberInfos/page', queryParameters: data);
   }
   //  统计会员总数
-  getAppMemberAmount() async {
-    return await service().get('$orderPrefix/v1/appMemberInfos/statisticsMemberNum');
+  getAppMemberAmount(data) async {
+    return await service().get('$orderPrefix/v1/appMemberInfos/statisticsMemberNum', queryParameters: data);
   }
   //  会员服务费详细
   getAppMemberDetail(id) async {

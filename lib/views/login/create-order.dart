@@ -42,7 +42,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
     // bool result = await SyFlutterWechat.register('wx8d911664a4bc3963');
     
     registerWxApi(
-        appId: EnvConfig.dev['wx-appid'],
+        appId: EnvConfig.dev()['wx-appid'],
         universalLink: "https://agent37app.woouo.com");
     // print(result);
     var result = await FlutterAlipay.setIosUrlSchema('com.woouo.agent37.alipay');

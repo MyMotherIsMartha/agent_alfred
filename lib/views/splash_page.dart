@@ -47,7 +47,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   _initFluwx() async {
     await registerWxApi(
-        appId: EnvConfig.dev['wx-appid'],
+        appId: EnvConfig.dev()['wx-appid'],
         doOnAndroid: true,
         doOnIOS: true,
         universalLink: "https://agent37app.woouo.com/"

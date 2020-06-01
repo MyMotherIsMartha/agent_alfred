@@ -41,7 +41,6 @@ class _ResultPageState extends State<ResultPage> {
     }
     // _getCurrentWidgetAndTitle();
   }
-
   // @override
   // void didChangeDependencies() {
   //   print('didChangeDependencies');

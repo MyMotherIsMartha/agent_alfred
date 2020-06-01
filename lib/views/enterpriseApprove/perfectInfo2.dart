@@ -244,6 +244,11 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
       var areaAry = areaName.split(',');
       print('test');
       print(areaAry);
+      var emailReg = new RegExp(r"^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$");
+      if (!emailReg.hasMatch(email)) {
+        G.toast('请输入正确的邮箱');
+        return;
+      }
       Map params = {
         "address": addressStr,
         "areaCode": areaCode,

@@ -12,13 +12,15 @@ class CommonProvide with ChangeNotifier {
       isLoadingShow = loadingStatus;
       showDialog(
         barrierDismissible: false,
-        context: G.currentContext,
+        context: context,
         builder: (BuildContext context) {
           return Center(child: VLoading());
         });
     } else if (!loadingStatus && isLoadingShow) {
       isLoadingShow = loadingStatus;
       Navigator.of(context, rootNavigator: true).pop();
+    } else {
+      notifyListeners();
     }
     // notifyListeners();
   }
