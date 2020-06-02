@@ -71,9 +71,9 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   Widget _headerPlayer() {
     return Container(
         width: double.infinity,
-        // padding: EdgeInsets.only(top: G.statusHeight),
+        padding: EdgeInsets.only(top: G.statusHeight),
         // height: G.setWidth(420),
-        color: hex('#999'),
+        color: hex('#000'),
         child: Stack(
           children: <Widget>[
             Container(
@@ -424,15 +424,9 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-            statusBarColor: Colors.cyan,
-            //有Appbar时，会被覆盖
-            statusBarIconBrightness: Brightness.dark,
-            //底部navigationBar背景颜色
-            systemNavigationBarColor: Colors.black),
+        value: SystemUiOverlayStyle.light,
         child: Scaffold(
-            body: SafeArea(
-                child: Container(
+            body: Container(
                     height: G.setHeight(1334),
                     child: FutureBuilder(
                       future: detailFuture,
@@ -460,6 +454,6 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                           return VLoading();
                         }
                       },
-                    )))));
+                    ))));
   }
 }
