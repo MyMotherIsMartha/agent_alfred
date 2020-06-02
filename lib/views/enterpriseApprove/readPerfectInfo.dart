@@ -41,7 +41,7 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     // G.setContext(context);
     // G.setPref('token', 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpemF0aW9uIjoiIiwibmJmIjoxNTg2MzI2MjE0LCJpc3MiOiIzN2R1bGlnb3UiLCJtb2JpbGUiOiIxODg5MjY2MzAyNSIsImV4cCI6MTU4NjkzMTAxNCwiaWF0IjoxNTg2MzI2MjE0LCJ1c2VySWQiOjEyMDQ1ODkwNDYxNjM5MDI0NjYsInVzZXJuYW1lIjoiMTg4OTI2NjMwMjUifQ.FwMvr15n_TU7kmJwKCSGO97gx5qcwtQCFIn0-tEv65c');
     
-    _getEnterpriseInfo();
+    // _getEnterpriseInfo();
     _getPerfectInfo();
   }
 
@@ -117,6 +117,34 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     var result = await MemberApi().getPerfectInfo();
     var resultData = result.data['data'];
     print(result.data.toString());
+
+    formData1['jobName']['val'] = resultData['industryName'];
+    formData1['enterpriseName']['val'] = resultData['enterpriseName'];
+    formData1['registerCode']['val'] = resultData['registerCode'];
+    formData1['areaName']['val'] = resultData['enterpriseProvince'] + resultData['enterpriseCity'] + resultData['enterpriseDistrict'];
+    formData1['addressStr']['val'] = resultData['registerAddress'];
+    formData1['legalName']['val'] = resultData['legalPerson'];
+    formData1['legalMobile']['val'] = resultData['legalMobile'];
+    formData1['legalIdNo']['val'] = resultData['legalIdCard'];
+    
+
+
+    List<Widget> fieldWidgetAry1 = [];
+    formData1.forEach((key, val) {
+      print(val);
+      fieldWidgetAry1.add(
+        VField(
+          label: val['label'],
+          fieldVal: val['val'],
+        )
+      );
+    });
+    setState(() {
+      formDataWrap1 = Column(
+        children: fieldWidgetAry1
+      );
+    });
+
     resultData2['legalName'] = resultData['name'];
     resultData2['frontIdCard1'] = resultData['legalIdCardFront'];
     resultData2['backIdCard1'] = resultData['legalIdCardBack'];
@@ -126,7 +154,12 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     formData2['principalName']['val'] = resultData['name'];
     formData2['mobile']['val'] = resultData['mobile'];
     formData2['email']['val'] = resultData['email'];
-    formData2['areaName']['val'] = resultData['province'] + resultData['city'] + resultData['district'];
+
+    var provinceStr = resultData['province']??'';
+    var cityStr = resultData['city'] ?? '';
+    var districtStr = resultData['district'] ?? '';
+
+    formData2['areaName']['val'] = provinceStr + cityStr + districtStr;
     formData2['addressStr']['val'] = resultData['address'];
 
     currentStatus = resultData['auditStatus'];
@@ -140,6 +173,7 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
       topBarStr = '已提交成功，请耐心等待审核';
     }
 
+    print(formData2);
     List<Widget> fieldWidgetAry2 = [];
     formData2.forEach((key, val) {
       print(val);
