@@ -389,7 +389,6 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                                   onSaved: (e) {
                                     setState(() {
                                       _enterpriseNameCtrl.text = e;
-                                      formValidate['enterpriseName'] = Validate.isNon(e);
                                     });
                                   },
                                   validator: (value) {
