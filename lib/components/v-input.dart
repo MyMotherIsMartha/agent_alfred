@@ -25,6 +25,7 @@ class VInput extends StatefulWidget {
   final MainAxisAlignment fontSize;
   final FocusNode focus;
   final double lineHeight;
+  final Color textColor;
   VInput(
       {@required this.controller,
       @required this.hintText,
@@ -44,6 +45,7 @@ class VInput extends StatefulWidget {
       this.inputFormatters,
       this.focus,
       this.lineHeight,
+      this.textColor,
       this.value});
   @override
   _VInputState createState() => _VInputState();
@@ -90,7 +92,7 @@ class _VInputState extends State<VInput> {
             style: TextStyle(
               height: widget.lineHeight ?? 1.6,
               fontSize: widget.fontSize ?? G.setSp(30),
-                color: widget.readOnly ?? false ? hex('#999') : hex('#333')),
+                color: widget.textColor != null ? widget.textColor : widget.readOnly ?? false ? hex('#999') : hex('#333')),
             keyboardType: widget.type,
             controller: widget.controller,
             focusNode: widget.readOnly != null ? _focusReadonly : _focus,
@@ -153,7 +155,7 @@ class _VInputState extends State<VInput> {
                 )),
             onChanged: (str) {
               String newStr = str;
-              if (str.length < widget.maxLength??99999) {
+              if (str.length <= widget.maxLength??99999) {
                 widget.onChange(newStr);
               }
               setState(() {

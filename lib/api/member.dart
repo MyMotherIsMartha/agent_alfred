@@ -30,8 +30,10 @@ class MemberApi{
   }
 
   // 查询指定礼包
-  giftpackageDetail(no) async {
-    return await service().get('$giftpackageApi/v1/giftPackages/$no');
+  giftpackageDetail(no, {promotionNo}) async {
+    return await service().get('$giftpackageApi/v1/giftPackages/$no', queryParameters: {
+      'giftPackagePromotionNo': promotionNo
+    });
   }
 
   // ----会员企业接口-----

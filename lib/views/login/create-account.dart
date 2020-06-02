@@ -8,6 +8,7 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:agent37_flutter/views/login/components/gift-item.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
@@ -60,10 +61,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 return;
               }
               if (!Validate.isNon(selectedPackageNo)) {
-                var result = await MemberApi().giftpackageDetail(selectedPackageNo);
+                var result = await MemberApi().giftpackageDetail(selectedPackageNo, promotionNo: selectedGiftPackagePromotionNo);
                 if (result.data['code'] != 200) {
+                  print('1234123412341234');
                   G.toast(result.data['message']);
-                  _getGiftsList();
+                  G.navigateTo(context, '/create-account', transition: TransitionType.fadeIn);
+                  // _getGiftsList();
+                  // packageList = packageList.where((item) {
+                  //   return item.giftPackageNo != selectedPackageNo;
+                  // });
+                  // packageList.removeWhere((element) => element.giftPackageNo == selectedPackageNo);
+                  // _getGiftsList();
+                  // giftListFuture = _getGiftsList();
                   return;
                 }
                 // selectedPackageNo
@@ -326,7 +335,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     return Container(
       padding: EdgeInsets.only(bottom: G.setHeight(20)),
       child: FutureBuilder(
-        future: _getGiftsList(),
+        future: _getGiftsList(), //giftListFuture,
         builder: (context, shapshot) {
           if (shapshot.hasData) {
             return Container(
@@ -354,7 +363,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             setState(() {
               selectedPackageNo = gift.giftPackageNo;
               selectedGiftPackagePromotionNo =
-                  Validate.isNon(selectedGiftPackagePromotionNo)
+                  Validate.isNon(gift.giftPackagePromotionNo)
                       ? ''
                       : gift.giftPackagePromotionNo;
               selectedPackagePrice = gift.promotionAmount != null
@@ -383,14 +392,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           fn: () {
             G.removePref('orderOverTime');
             setState(() {
-              selectedPackageNo = item.giftPackageNo;
+              selectedPackageNo = gift.giftPackageNo;
               selectedGiftPackagePromotionNo =
-                  Validate.isNon(selectedGiftPackagePromotionNo)
+                  Validate.isNon(gift.giftPackagePromotionNo)
                       ? ''
-                      : item.giftPackagePromotionNo;
-              selectedPackagePrice = item.promotionAmount != null
-                  ? item.promotionAmount.toString()
-                  : item.amount.toString();
+                      : gift.giftPackagePromotionNo;
+              selectedPackagePrice = gift.promotionAmount != null
+                  ? gift.promotionAmount.toString()
+                  : gift.amount.toString();
             });
           },
         ));
