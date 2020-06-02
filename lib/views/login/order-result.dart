@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
@@ -61,6 +59,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
       'desc': '你的支付凭证未通过，请在x小时内完成上传。',
       'btn': '重传支付凭证',
       'fn': (String no) {
+        // print('/certificate?no=' + no + '&from=order');
         G.navigateTo(
                 G.currentContext,
                 '/certificate?no=' + no + '&from=order');
@@ -89,23 +88,14 @@ class _OrderResultPageState extends State<OrderResultPage> {
     var orderOverHours = result.data['data']['overtimePeriodHours'];
     setState(() {
       statusMap['verifyFail']['desc'] = '你的支付凭证未通过，请在$orderOverHours小时内完成上传。';
-      giftPackageNo = result.data['data']['giftPackageNo'];
+      giftPackageNo = result.data['data']['giftPackageNo']??'000720200529094022955005';
       orderOverTime = result.data['data']['orderOverime'];
     });
   }
 
   Widget statusWidget(String type) {
     Map status = statusMap[type];
-    List<String> refund;
-    String reason;
-    String remark;
-    if (type == 'verifyFail') {
-      refund = (userinfoAuth.voucherRefuseReason??'').split('##');
-      print(refund);
-      print('拒绝');
-      reason = refund[1];
-      remark = refund[0];
-    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -144,7 +134,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
           text: status['btn'],
           fn: () {
             if (type == 'verifyFail') {
-              print(giftPackageNo);
+              // print(giftPackageNo);
               // G.navigateTo(G.currentContext, '/create-account');
               // G.navigateTo(
               //   G.currentContext,
