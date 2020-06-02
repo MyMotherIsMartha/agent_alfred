@@ -150,21 +150,21 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
     return '剩余支付时间：计算中……';
   }
 
-  void startCountdownTimer() {
-    const oneSec = const Duration(seconds: 1);
+  // void startCountdownTimer() {
+  //   const oneSec = const Duration(seconds: 1);
 
-    var callback = (timer) {
-      return setState(() {
-        if (_countdownTime < 1) {
-          _timer.cancel();
-        } else {
-          _countdownTime = _countdownTime - 1;
-        }
-      });
-    };
+  //   var callback = (timer) {
+  //     return setState(() {
+  //       if (_countdownTime < 1) {
+  //         _timer.cancel();
+  //       } else {
+  //         _countdownTime = _countdownTime - 1;
+  //       }
+  //     });
+  //   };
 
-    _timer = Timer.periodic(oneSec, callback);
-  }
+  //   _timer = Timer.periodic(oneSec, callback);
+  // }
 
   Widget _payContent() {
     return Container(

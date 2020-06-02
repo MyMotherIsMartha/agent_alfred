@@ -132,6 +132,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                           controller: birtydayController,
                           hintText: '请选择日期',
                           label: '生日',
+                          textColor: hex('#333'),
                           readOnly: true,
                           suffix: iconarrow(size: G.setSp(36)),
                           // suffixWidth: G.setWidth(10),
