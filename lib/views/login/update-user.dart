@@ -170,7 +170,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                 VButton(
                   disabled: formValidate.containsValue(false),
                   width: 690,
-                  text: '开通代理商',
+                  text: '选择礼包购买',
                   fn: () async {
                     setState(() {
                       errorMsg = null;

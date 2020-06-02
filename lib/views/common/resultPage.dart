@@ -177,7 +177,7 @@ class _ResultPageState extends State<ResultPage> {
         Text('企业信息审核通过',
               style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
           G.spacing(G.setHeight(10)),      
-        Text('已开通代理商，快去完成考核任务吧', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+        Text('购买礼包成功，快去完成考核任务吧', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
         Container(
           height: G.setHeight(265),
           child: Row(
@@ -424,7 +424,7 @@ class _ResultPageState extends State<ResultPage> {
         Text('短信验证成功',
               style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
         //   G.spacing(G.setHeight(10)),      
-        // Text('已开通代理商，快去完成考核任务吧', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+        // Text('购买礼包成功，快去完成考核任务吧', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
         Container(
           height: G.setHeight(265),
           child: Row(
@@ -468,7 +468,7 @@ class _ResultPageState extends State<ResultPage> {
         Text('发票提交成功，请尽快寄出发票',
               style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
         //   G.spacing(G.setHeight(10)),      
-        // Text('已开通代理商，快去完成考核任务吧', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+        // Text('购买礼包成功，快去完成考核任务吧', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
         Container(
           height: G.setHeight(265),
           child: Row(
