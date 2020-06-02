@@ -47,6 +47,7 @@ class _WebViewState extends State<MarketMeetingPage> {
     var model = WeChatShareWebPageModel(
       url,
       title: title,
+      description: '董超云董内裤是什么颜色的啊？',
       thumbnail: WeChatImage.network(thumb), //WeChatImage.network(thumb),
       scene: sence,
     );

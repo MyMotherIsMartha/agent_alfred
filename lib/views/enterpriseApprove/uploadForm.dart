@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/api/dic.dart';
+import 'package:agent37_flutter/components/v-button.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,7 +62,12 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
   String legalPerson;
 
   Map formValidate = {
+    'jobCode': false,
     'areaCode': false,
+    'registerCode': false,
+    'enterpriseName': false,
+    'addressStr': false,
+    'legalPerson': false
   };
 
   @override
@@ -75,6 +81,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
       registerCode = _registerCodeCtrl.text = uploadData['registerCode'];
       addressStr = _addressCtrl.text = uploadData['address'];
       legalPerson = _legalPersonCtrl.text = uploadData['legalPerson'];
+      formValidate['enterpriseName'] = enterpriseName != null;
+      formValidate['registerCode'] = registerCode != null;
+      formValidate['addressStr'] = addressStr != null;
+      formValidate['legalPerson'] = legalPerson != null;
     }
     _getJobList();
   }
@@ -88,16 +98,25 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
     var result = await MemberApi().getEnterpriseInfo();
     var resultData = result.data['data'];
     print(result.data.toString());
-    uploadData =  resultData;
-    uploadData['businessLicenseUrl'] = uploadData['businessLicensePicture'];
-    jobCode = resultData['industryCode'];
-    jobCodeCtrl.text = resultData['industryName'];
-    enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
-    areaName = areaCtrl.text = resultData['province'] + ',' + resultData['city'] + ',' + resultData['district'];
-    areaCode = resultData['areaCode'];
-    registerCode = _registerCodeCtrl.text = resultData['registerCode'];
-    addressStr = _addressCtrl.text = resultData['registerAddress'];
-    legalPerson = _legalPersonCtrl.text = resultData['legalPerson'];
+    
+    setState(() {
+      uploadData =  resultData;
+      uploadData['businessLicenseUrl'] = uploadData['businessLicensePicture'];
+      jobCode = resultData['industryCode'];
+      jobCodeCtrl.text = resultData['industryName'];
+      enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
+      areaName = areaCtrl.text = resultData['province'] + ',' + resultData['city'] + ',' + resultData['district'];
+      areaCode = resultData['areaCode'];
+      registerCode = _registerCodeCtrl.text = resultData['registerCode'];
+      addressStr = _addressCtrl.text = resultData['registerAddress'];
+      legalPerson = _legalPersonCtrl.text = resultData['legalPerson'];
+      formValidate['enterpriseName'] = enterpriseName != null;
+      formValidate['registerCode'] = registerCode != null;
+      formValidate['addressStr'] = addressStr != null;
+      formValidate['legalPerson'] = legalPerson != null;
+      formValidate['areaCode'] = areaCode != null;
+      formValidate['jobCode'] = jobCode != null;
+    });
   }
 
   
@@ -111,9 +130,11 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: hex('#f3f4f6'),
       appBar: AppBar(
         title: Text('企业认证'),
         centerTitle: true,
+        
         leading: BackButton(onPressed: () {
           G.navigateTo(context, '/resultPage?status=1', replace: true, transition: TransitionType.inFromLeft);
         },),
@@ -221,8 +242,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                     InputDecoration(border: InputBorder.none, hintText: '请输入企业名称'),
                                 controller: _enterpriseNameCtrl,
                                 onChanged: (e) {
+                                  
                                   setState(() {
                                     enterpriseName = e;
+                                    formValidate['enterpriseName'] = !Validate.isNon(e);
                                   });
                                 },
                                 validator: (value) {
@@ -261,8 +284,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                     InputDecoration(border: InputBorder.none, hintText: '请输入统一社会信用代码'),
                                 controller: _registerCodeCtrl,
                                 onChanged: (e) {
+                                  
                                   setState(() {
                                     registerCode = e;
+                                    formValidate['registerCode'] = !Validate.isNon(e);
                                   });
                                 },
                                 validator: (value) {
@@ -317,8 +342,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                     InputDecoration(border: InputBorder.none, hintText: '请输入详细注册地址'),
                                 controller: _addressCtrl,
                                 onChanged: (e) {
+                                  
                                   setState(() {
                                     addressStr = e;
+                                    formValidate['addressStr'] = !Validate.isNon(e);
                                   });
                                 },
                                 validator: (value) {
@@ -361,6 +388,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                 onChanged: (e) {
                                   setState(() {
                                     legalPerson = e;
+                                    formValidate['legalPerson'] = !Validate.isNon(e);
                                   });
                                 },
                                 validator: (value) {
@@ -379,17 +407,11 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                 ),
               ),
               Container(
-                width: G.setWidth(710),
-                height: G.setHeight(100),
-                margin: EdgeInsets.only(top: 60),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
-                  borderRadius: BorderRadius.circular(G.setHeight(50))
-                ),
-                child: FlatButton(
-                  color: Colors.transparent,
-                  textColor: Colors.white,
-                  onPressed: () async {
+                margin: EdgeInsets.only(top: 60, bottom: 30),
+                child: VButton(
+                  disabled: formValidate.containsValue(false),
+                  text: '提交审核', 
+                  fn: () async {
                     // Validate returns true if the form is valid, otherwise false.
                     if (!btnCanClick) {
                       return;
@@ -457,13 +479,95 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                       });
                       
                     }
-                  },
-                  child: Text('提交审核', style: TextStyle(
-                    fontSize: G.setSp(36),
-                    color: Colors.white
-                  )),
-                ),
+                  }
+                )
               ),
+              // Container(
+              //   width: G.setWidth(710),
+              //   height: G.setHeight(100),
+              //   margin: EdgeInsets.only(top: 60),
+              //   decoration: BoxDecoration(
+              //     gradient: LinearGradient(colors: [hex('#685AFF'), hex('#69A5FF')]),
+              //     borderRadius: BorderRadius.circular(G.setHeight(50))
+              //   ),
+              //   child: FlatButton(
+              //     color: Colors.transparent,
+              //     textColor: Colors.white,
+              //     onPressed: () async {
+              //       // Validate returns true if the form is valid, otherwise false.
+              //       if (!btnCanClick) {
+              //         return;
+              //       }
+              //       G.showLoading(context);
+              //       btnCanClick = false;
+              //       if (_formKey.currentState.validate()) {
+              //         print('test1121');
+              //         var areaAry = areaName.split(',');
+              //         Map params = {
+              //           'industryCode': jobCode,
+              //           'industryName': jobCodeCtrl.text,
+              //           'registerAddress': addressStr,
+              //           'areaCode': areaCode,
+              //           'businessLicensePicture': uploadData['businessLicenseUrl'],
+              //           'enterpriseName': enterpriseName,
+              //           'legalPerson': legalPerson,
+              //           'registerCode': registerCode,
+              //           'province': areaAry[0],
+              //           'city': areaAry[1],
+              //           'district': areaAry[2]
+              //           // 'memberId': Provider.of<UserinfoProvide>(context).userinfo.id
+              //         };
+              //         var result = await MemberApi().updateEnterpriseInfo(params);
+
+              //         G.closeLoading();
+                      
+              //         if (result.data['code'] == 200) {
+              //           print('test');
+              //           if (result.data['isPopup']) {
+              //             showDialog(
+              //               context: context,
+              //               builder: (ctx) {
+              //                 return CupertinoAlertDialog(
+              //                   title: Text('资质审核已通过'),
+              //                   // content:Text('我是content'),
+              //                   actions:<Widget>[
+                                  
+              //                     CupertinoDialogAction(
+              //                       child: Text('取消', style: TextStyle(color: hex('#85868A')),),
+              //                       onPressed: (){
+              //                         Navigator.of(context).pop();
+              //                       },
+              //                     ),
+                              
+              //                     CupertinoDialogAction(
+              //                       child: Text('确定'),
+              //                       onPressed: (){
+              //                         Navigator.of(context).pop();
+              //                         G.navigateTo(context, '/index');
+              //                       },
+              //                     )
+              //                   ]
+              //                 );
+              //               },
+              //             );
+              //           } else {
+              //             G.navigateTo(context, '/resultPage?status=1');
+              //           }
+              //         } else {
+              //           print('出错');
+              //         }
+              //         Future.delayed(Duration(seconds: 2), () {
+              //           btnCanClick = true;
+              //         });
+                      
+              //       }
+              //     },
+              //     child: Text('提交审核', style: TextStyle(
+              //       fontSize: G.setSp(36),
+              //       color: Colors.white
+              //     )),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -485,10 +589,12 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
       onConfirm: (Picker picker, List value) {
         print(value.toString());
         print(picker.getSelectedValues().first);
-        formValidate['jobCode'] = true;
         jobCodeCtrl.value = TextEditingValue(text: picker.getSelectedValues().first);
         jobCode = picker.getSelectedValues().first;
         jobCodeCtrl.text = jobList[value.first]['name'];
+        setState(() {
+          formValidate['jobCode'] = true;
+        });
         print(jobCodeCtrl.text);
       }
     );

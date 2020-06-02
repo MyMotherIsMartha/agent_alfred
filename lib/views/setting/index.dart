@@ -188,7 +188,10 @@ class SettingPage extends StatelessWidget {
                 ),
               ),
               Container(
-                  height: G.setWidth(380),
+                constraints: BoxConstraints(
+                  maxHeight: G.setWidth(330)
+                ),
+                  height: G.setWidth(330),
                   color: hex('#FFF'),
                   child: ListView.separated(
                       physics: NeverScrollableScrollPhysics(),
