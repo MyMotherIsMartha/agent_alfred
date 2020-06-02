@@ -99,7 +99,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   gradient: addressProvide.address?.areaCode != null && selectedPackageNo != null
                       ? LinearGradient(colors: [hex('#4C5873'), hex('#333949')])
                       : LinearGradient(colors: [hex('#c9ccd4'), hex('#c9ccd4')])),
-              child: Text('确认开通',
+              child: Text('提交礼包订单',
                   style: TextStyle(
                     fontSize: G.setSp(36),
                     color: addressProvide.address?.areaCode != null && selectedPackageNo != null

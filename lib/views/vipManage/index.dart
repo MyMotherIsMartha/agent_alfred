@@ -5,6 +5,8 @@ import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-data-picker.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/models/vipManage.dart';
+import 'package:agent37_flutter/provide/user.dart';
+import 'package:agent37_flutter/views/home/components/shareWindow.dart';
 import 'package:agent37_flutter/views/vipManage/components/vipListItem.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/utils/global.dart';
+import 'package:provider/provider.dart';
 
 /// NestedScrollView示例页面
 class VipManageMain extends StatefulWidget {
@@ -90,7 +93,7 @@ class VipManageMainState extends State<VipManageMain>
     for (int i = 0; i < statusMap.length; i++) {
       Map model = list[i];
       myTabsTmp.add(Tab(text: model['label']));
-      bodys.add(MemberList(model['value'], model['label'], start: startTime, end: endTime));
+      bodys.add(MemberList(model['value'], model['label'], start: startTime, end: endTime, callback: changeTabState));
     }
     setState(() {
       tabs.addAll(myTabsTmp);
@@ -105,12 +108,26 @@ class VipManageMainState extends State<VipManageMain>
     };
     var result = await OrderApi().getAppMemberAmount(params);
     print('app member amount---------------');
-    print(result.data['data'].toString());
     var resultData = result.data['data'];
     setState(() {
       tabs[0] = Tab(text: '普通(${resultData['normalMemberNum']})');
       tabs[1] = Tab(text: '体验版(${resultData['standMemberNum']})');
       tabs[2] = Tab(text: '企业版(${resultData['diamondMemberNum']})');
+    });
+  }
+
+  void changeTabState(role, memberNum) {
+    print('index 111');
+    String tabStr = '';
+    if (role == 0) {
+      tabStr = '普通';
+    } else if (role == 1) {
+      tabStr = '体验版';
+    } else {
+      tabStr = '企业版';
+    }
+    setState(() {
+        tabs[role] = Tab(text: '$tabStr($memberNum)');
     });
   }
 
@@ -174,7 +191,8 @@ class MemberList extends StatefulWidget {
   final String label;
   final DateTime start;
   final DateTime end;
-  MemberList(this.role, this.label, {this.start, this.end});
+  final callback;
+  MemberList(this.role, this.label, {this.start, this.end, this.callback});
 
   @override
   _MemberListState createState() => _MemberListState();
@@ -189,6 +207,7 @@ class _MemberListState extends State<MemberList> {
   DateTime beginRegisterDate = DateTime(DateTime.now().year, DateTime.now().month);
   DateTime endRegisterDate = DateTime.now();
   List<VipItemModel> _listData = [];
+  bool isSpecialAccount;
   
 
   @override
@@ -253,6 +272,7 @@ class _MemberListState extends State<MemberList> {
       VipResultModel resultData = VipResultModel.fromJson(originalData);
       if (resultData == null) return;
       print(resultData);
+      widget.callback(role, resultData.total);
       if (refresh) {
         print('refresh');
         setState(() {
@@ -271,40 +291,57 @@ class _MemberListState extends State<MemberList> {
 
   @override
   Widget build(BuildContext context) {
+    isSpecialAccount = Provider.of<UserProvide>(context).specialAccount;
+
     return Container(
       color: hex('#F3F4F6'),
-      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setHeight(30)),
+      padding: EdgeInsets.symmetric(horizontal: G.setWidth(20), vertical: G.setHeight(15)),
       child: Stack(
         children: <Widget>[
           Positioned(
             left: 0,
             right: 0,
             top: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[   
-              Text(role == 0 ? '注册时间' : '购买时间'),
-              G.spacingWidth(60),
-              VDatePicker(beginRegisterDate, (time) async {
-                setState(() {
-                  beginRegisterDate = time;
-                });
-                await _getList(true);
-              }, maxValue: endRegisterDate,),
-              Container(
-                alignment: Alignment.center,
-                width: G.setWidth(46),
-                child: Text('至',
-                    style: TextStyle(
-                        fontSize: G.setSp(24), color: hex('#424242'))),
-              ),
-              VDatePicker(endRegisterDate, (time) async {
-                setState(() {
-                  endRegisterDate = time;
-                });
-                await _getList(true);
-              }, minValue: beginRegisterDate)
-            ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                isSpecialAccount ?
+                GestureDetector(
+                  onTap: () {
+                    openShareWindow(context, 'member', Provider.of<UserProvide>(context).userAuthInfo.role);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: G.setWidth(15), right: G.setWidth(40)),
+                    child: Text('邀请会员', style: TextStyle(color: hex('#708CF7')))
+                  )
+                ) : Container(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[   
+                  Text(role == 0 ? '注册时间' : '购买时间'),
+                  G.spacingWidth(60),
+                  VDatePicker(beginRegisterDate, (time) async {
+                    setState(() {
+                      beginRegisterDate = time;
+                    });
+                    await _getList(true);
+                  }, maxValue: endRegisterDate,),
+                  Container(
+                    alignment: Alignment.center,
+                    width: G.setWidth(46),
+                    child: Text('至',
+                        style: TextStyle(
+                            fontSize: G.setSp(24), color: hex('#424242'))),
+                  ),
+                  VDatePicker(endRegisterDate, (time) async {
+                    setState(() {
+                      endRegisterDate = time;
+                    });
+                    await _getList(true);
+                  }, minValue: beginRegisterDate)
+                ]),
+              ]
+            )
           ),
           Container(
             margin: EdgeInsets.only(top: G.setHeight(80)),
