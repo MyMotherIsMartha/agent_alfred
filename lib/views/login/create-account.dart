@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/models/address.dart';
@@ -63,7 +64,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               if (!Validate.isNon(selectedPackageNo)) {
                 var result = await MemberApi().giftpackageDetail(selectedPackageNo, promotionNo: selectedGiftPackagePromotionNo);
                 if (result.data['code'] != 200) {
-                  print('1234123412341234');
                   G.toast(result.data['message']);
                   G.navigateTo(context, '/create-account', transition: TransitionType.fadeIn);
                   // _getGiftsList();
@@ -77,6 +77,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 }
                 // selectedPackageNo
                 G.removePref('orderOverTime');
+                await OrderApi().getGiftPackageOrders(
+                  giftPackageNo: selectedPackageNo,
+                  giftPackagePromotionNo: selectedGiftPackagePromotionNo
+                );
                 G.navigateTo(
                     context,
                     '/create-order?price=' +
