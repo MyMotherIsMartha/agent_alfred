@@ -41,6 +41,9 @@ Dio service() {
 
     }
     G.closeLoading();
+    
+    // print(ModalRoute.of(G.currentContext).settings);
+    // print('当前路由');
     if(ModalRoute.of(G.currentContext).settings.name != '/') {
       G.navigateTo(G.currentContext, '/netErrorPage');
     }

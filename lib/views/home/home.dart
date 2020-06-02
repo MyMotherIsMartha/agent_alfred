@@ -101,20 +101,18 @@ class _HomePageState extends State<HomePage>
       if (result.data['data'] != null) {
         setState(() {
           homeinfo = homeInfoModelFromJson(result.data['data']);
-          print('homeinfo');
-          print(result.data['data']);
         });
+        print(homeinfo.checkStatus);
+        print('首页数据 homeinfo');
         countDown();
       }
       if (result2.data['data'] != null) {
-        messageCountInfo = result2.data['data'];
-        print('messageCountInfo');
-        print(messageCountInfo);
+        messageCountInfo = 2; //result2.data['data'];
       }
-      nickname = Provider.of<UserProvide>(context).userAuthInfo.nickname;
-      nicknameForUrl = FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname.toString());
-      shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode;
-      mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
+      nickname = '昵称';//Provider.of<UserProvide>(context).userAuthInfo.nickname;
+      nicknameForUrl = '1234234'; // FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname.toString());
+      shareCode = '122300'; //Provider.of<UserProvide>(context).userAuthInfo.shareCode;
+      mobile = '12323'; //Provider.of<UserProvide>(context).userAuthInfo.mobile;
       return 'future end';
     } catch (e) {
       return 'future error';
@@ -355,18 +353,18 @@ class _HomePageState extends State<HomePage>
 
   countDown() {
     setState(() {
-      _countdownTime = restTime(homeinfo.checkEndTime);
+      _countdownTime = restTime(homeinfo.checkEndTime??(DateTime.now().millisecondsSinceEpoch).round());
     });
     _timer = Timer.periodic(Duration(seconds: 30), (timer) async {
       setState(() {
-        _countdownTime = restTime(homeinfo.checkEndTime);
+        _countdownTime = restTime(homeinfo.checkEndTime??(DateTime.now().millisecondsSinceEpoch).round());
       });
     });
   }
 
   // 资格任务
   Widget _mission() {
-    return homeinfo.checkStatus == 1 // 2
+    return homeinfo.checkStatus != null && homeinfo.checkStatus == 2
         ? Container()
         : Container(
             margin: EdgeInsets.only(bottom: G.setWidth(20)),
@@ -400,7 +398,7 @@ class _HomePageState extends State<HomePage>
                           Row(
                             children: <Widget>[
                               Text(
-                                  homeinfo.checkStatus == 1
+                                  homeinfo.checkStatus != null && homeinfo.checkStatus == 1
                                       ? '考核时间已过期，未完成考核无法获得服务费'
                                       // : '距结束：${restTime(homeinfo.checkEndTime)}',
                                       : '距服务费减少：$_countdownTime',
@@ -460,14 +458,14 @@ class _HomePageState extends State<HomePage>
                           children: <Widget>[
                             _missionItem(
                                 '开通企业会员',
-                                homeinfo.openedDiamondMemberNum,
-                                homeinfo.checkDiamondMemberNum),
-                            _missionItem('企业会员有效订单', homeinfo.effectiveOrderNum,
-                                homeinfo.checkEffectiveOrderNum)
+                                homeinfo.openedDiamondMemberNum??1,
+                                homeinfo.checkDiamondMemberNum??1),
+                            _missionItem('企业会员有效订单', homeinfo.effectiveOrderNum??1,
+                                homeinfo.checkEffectiveOrderNum??1)
                           ],
                         ),
                       ),
-                      homeinfo.checkStatus == 1
+                      homeinfo.checkStatus != null && homeinfo.checkStatus == 1
                           ? Positioned(
                               top: 0,
                               left: 0,
@@ -872,7 +870,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   void didChangeDependencies() {
-    print('test');
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
       // msgFuture = _getMsgCount();

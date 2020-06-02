@@ -100,7 +100,10 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
   }
 
   void _getOrderInfo() async {
-    var result = await OrderApi().getGiftPackageOrders();
+    var result = await OrderApi().getGiftPackageOrders(
+      giftPackageNo: widget.no,
+      giftPackagePromotionNo: widget.promotionNo
+    );
     setState(() {
       _orderOverTime = result.data['data']['orderOverime'];
     });

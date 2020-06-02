@@ -7,9 +7,16 @@ import 'package:color_dart/color_dart.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/material_header.dart';
 import 'package:provider/provider.dart';
 
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
+  @override
+  _SettingPageState createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
   void logout(context) {
     if (G.getPref('token') == null) {
       Future.delayed(Duration(seconds: 1000), () {
@@ -78,7 +85,8 @@ class SettingPage extends StatelessWidget {
         if (userAuthInfo.prefectStatus == -1) {
           G.navigateTo(context, '/perfectEnterprise1');
         } else {
-          G.navigateTo(context, '/readPerfectInfo?status=${userAuthInfo.prefectStatus}');
+          G.navigateTo(
+              context, '/readPerfectInfo?status=${userAuthInfo.prefectStatus}');
         }
       },
     );
@@ -133,115 +141,161 @@ class SettingPage extends StatelessWidget {
           //   },
           // ),
           elevation: 0,
-          leading: BackButton(onPressed: () {
-            G.navigateTo(context, '/index', replace: true, transition: TransitionType.inFromLeft);
-          },),
+          leading: BackButton(
+            onPressed: () {
+              G.navigateTo(context, '/index',
+                  replace: true, transition: TransitionType.inFromLeft);
+            },
+          ),
         ),
         backgroundColor: hex('#F3F4F6'),
-        body: Container(
-          margin: EdgeInsets.only(top: G.setWidth(20)),
-          child: Column(
-            children: <Widget>[
-              Container(
-                  height: G.setWidth(360),
-                  color: hex('#FFF'),
-                  child: ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, index) {
-                        return Divider(
-                          thickness: 1, // 分隔线宽度
-                          height: 0,
-                          color: hex('#EEEEEE'), // 分隔线颜色
-                        );
-                      },
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return _userMsg(context);
-                        } else if (index == 1) {
-                          return _safe(context);
-                        } else if (index == 2) {
-                          return _companyInfo(context);
-                        } else {
-                          return Container();
-                        }
-                        // return listTileList[index](userinfo);
-                      })),
-              Container(
-                height: G.setWidth(60),
-                padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
-                child: Row(
-                  children: <Widget>[
-                    Text('要修改通知，您可以在系统设置中修改',
-                        style: TextStyle(
-                            fontSize: G.setSp(24), color: hex('#999'))),
-                    // G.spacing(10, dir: 'x'),
-                    // InkWell(
-                    //   onTap: () {
-                    //     G.toast('功能开发中');
-                    //   },
-                    //   child: Text('设置',
-                    //       style: TextStyle(
-                    //           fontSize: G.setSp(24), color: hex('#0091F0'))),
-                    // )
-                  ],
-                ),
-              ),
-              Container(
-                constraints: BoxConstraints(
-                  maxHeight: G.setWidth(330)
-                ),
-                  height: G.setWidth(330),
-                  color: hex('#FFF'),
-                  child: ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, index) {
-                        if (index == 0) {
-                          return Container(
-                            height: G.setWidth(20),
-                            color: hex('#f3f4f6'),
-                          );
-                        } else {
-                          return Divider(
+        body: EasyRefresh(
+            header: MaterialHeader(),
+            onRefresh: () async {
+              await Provider.of<UserProvide>(context)
+                  .updateUserAuth(isInit: false);
+            },
+            child: Container(
+              margin: EdgeInsets.only(top: G.setWidth(20)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      // height: G.setHeight(290),
+                      color: hex('#FFF'),
+                      child: Column(
+                        children: <Widget>[
+                          _userMsg(context),
+                          Divider(
                             thickness: 1, // 分隔线宽度
                             height: 0,
                             color: hex('#EEEEEE'), // 分隔线颜色
-                          );
-                        }
+                          ),
+                          _safe(context),
+                          Divider(
+                            thickness: 1, // 分隔线宽度
+                            height: 0,
+                            color: hex('#EEEEEE'), // 分隔线颜色
+                          ),
+                          _companyInfo(context)
+                        ],
+                      )
+                      // ListView.separated(
+                      //     physics: NeverScrollableScrollPhysics(),
+                      //     separatorBuilder: (context, index) {
+                      //       return Divider(
+                      //         thickness: 1, // 分隔线宽度
+                      //         height: 0,
+                      //         color: hex('#EEEEEE'), // 分隔线颜色
+                      //       );
+                      //     },
+                      //     itemCount: 3,
+                      //     itemBuilder: (context, index) {
+                      //       if (index == 0) {
+                      //         return _userMsg(context);
+                      //       } else if (index == 1) {
+                      //         return _safe(context);
+                      //       } else if (index == 2) {
+                      //         return _companyInfo(context);
+                      //       } else {
+                      //         return Container();
+                      //       }
+                      //       // return listTileList[index](userinfo);
+                      //     })
+                      ),
+                  Container(
+                    height: G.setWidth(60),
+                    padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
+                    child: Row(
+                      children: <Widget>[
+                        Text('要修改通知，您可以在系统设置中修改',
+                            style: TextStyle(
+                                fontSize: G.setSp(24), color: hex('#999'))),
+                        // G.spacing(10, dir: 'x'),
+                        // InkWell(
+                        //   onTap: () {
+                        //     G.toast('功能开发中');
+                        //   },
+                        //   child: Text('设置',
+                        //       style: TextStyle(
+                        //           fontSize: G.setSp(24), color: hex('#0091F0'))),
+                        // )
+                      ],
+                    ),
+                  ),
+                  Container(
+                      // height: G.setHeight(300),
+                      color: hex('#FFF'),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: G.setWidth(20),
+                            color: hex('#f3f4f6'),
+                          ),
+                          _msgSwitch(),
+                          Divider(
+                            thickness: 1, // 分隔线宽度
+                            height: 0,
+                            color: hex('#EEEEEE'), // 分隔线颜色
+                          ),
+                          _clearCache(),
+                          Divider(
+                            thickness: 1, // 分隔线宽度
+                            height: 0,
+                            color: hex('#EEEEEE'), // 分隔线颜色
+                          ),
+                          _versionInfo(context)
+                        ],
+                      )
+                      // ListView.separated(
+                      //     physics: NeverScrollableScrollPhysics(),
+                      //     separatorBuilder: (context, index) {
+                      //       if (index == 0) {
+                      //         return Container(
+                      //           height: G.setWidth(20),
+                      //           color: hex('#f3f4f6'),
+                      //         );
+                      //       } else {
+                      //         return Divider(
+                      //           thickness: 1, // 分隔线宽度
+                      //           height: 0,
+                      //           color: hex('#EEEEEE'), // 分隔线颜色
+                      //         );
+                      //       }
+                      //     },
+                      //     // itemExtent: G.setWidth(100),
+                      //     itemCount: 3,
+                      //     itemBuilder: (context, index) {
+                      //       if (index == 0) {
+                      //         return _msgSwitch();
+                      //       } else if (index == 1) {
+                      //         return _clearCache();
+                      //       } else if (index == 2) {
+                      //         return _versionInfo(context);
+                      //       } else {
+                      //         return Container();
+                      //       }
+                      //     })
+                      ),
+                  G.spacing(20),
+                  Container(
+                    height: G.setWidth(100),
+                    color: hex('#FFF'),
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: InkWell(
+                      onTap: () {
+                        G.logout(context);
+                        // G.removePref('token');
+                        // G.navigateTo(context, '/login', replace: true);
                       },
-                      // itemExtent: G.setWidth(100),
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return _msgSwitch();
-                        } else if (index == 1) {
-                          return _clearCache();
-                        } else if (index == 2) {
-                          return _versionInfo(context);
-                        } else {
-                          return Container();
-                        }
-                      })),
-              G.spacing(20),
-              Container(
-                height: G.setWidth(100),
-                color: hex('#FFF'),
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: InkWell(
-                  onTap: () {
-                    G.logout(context);
-                    // G.removePref('token');
-                    // G.navigateTo(context, '/login', replace: true);
-                  },
-                  child: Text('退出登录',
-                      style:
-                          TextStyle(fontSize: G.setSp(30), color: hex('#333'))),
-                ),
-              )
-            ],
-          ),
-        ));
+                      child: Text('退出登录',
+                          style: TextStyle(
+                              fontSize: G.setSp(30), color: hex('#333'))),
+                    ),
+                  )
+                ],
+              ),
+            )));
   }
 
   YYDialog yyAlertDialog(BuildContext context) {
@@ -286,3 +340,7 @@ class SettingPage extends StatelessWidget {
       };
   }
 }
+
+// class SettingPage extends StatelessWidget {
+
+// }

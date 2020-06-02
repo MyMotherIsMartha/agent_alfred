@@ -88,7 +88,7 @@ class _OrderResultPageState extends State<OrderResultPage> {
     var orderOverHours = result.data['data']['overtimePeriodHours'];
     setState(() {
       statusMap['verifyFail']['desc'] = '你的支付凭证未通过，请在$orderOverHours小时内完成上传。';
-      giftPackageNo = result.data['data']['giftPackageNo']??'000720200529094022955005';
+      giftPackageNo = result.data['data']['giftPackageNo'];
       orderOverTime = result.data['data']['orderOverime'];
     });
   }

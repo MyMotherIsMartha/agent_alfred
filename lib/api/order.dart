@@ -7,8 +7,11 @@ class OrderApi{
   static String orderPrefix = '/orderApi';
 
   // 当前礼包订单信息
-  getGiftPackageOrders() async {
-    return await service().get('$orderPrefix/v1/giftPackageOrders/current');
+  getGiftPackageOrders({String giftPackageNo, String giftPackagePromotionNo}) async {
+    return await service().get('$orderPrefix/v1/giftPackageOrders/current', queryParameters: {
+      'giftPackageNo': giftPackageNo,
+      'giftPackagePromotionNo': giftPackagePromotionNo
+    });
   }
 
   // 阿里支付

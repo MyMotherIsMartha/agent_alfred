@@ -24,8 +24,10 @@ class _WebViewState extends State<MarketMeetingPage> {
   String url;
   String title;
   String thumb;
+  String desc;
   bool init = true;
   int urlLen = 1;
+  bool shareVisible = true;
 
   @override
   void initState() {
@@ -47,7 +49,7 @@ class _WebViewState extends State<MarketMeetingPage> {
     var model = WeChatShareWebPageModel(
       url,
       title: title,
-      description: '董超云董内裤是什么颜色的啊？',
+      description: desc,
       thumbnail: WeChatImage.network(thumb), //WeChatImage.network(thumb),
       scene: sence,
     );
@@ -172,6 +174,7 @@ class _WebViewState extends State<MarketMeetingPage> {
         onMessageReceived: (JavascriptMessage message) {
           setState(() {
             urlLen = int.parse(message.message);
+            shareVisible = int.parse(message.message) == 1;
           });
         });
   }
@@ -181,6 +184,7 @@ class _WebViewState extends State<MarketMeetingPage> {
   var result = await MarketingApi().detailMeeting(widget.id);
     setState(() {
       title = result.data['data']['meetingName'];
+      desc = result.data['data']['desc']??'';
       thumb = result.data['data']['sharePage'];
     });
   }
@@ -202,12 +206,14 @@ class _WebViewState extends State<MarketMeetingPage> {
             },
           ) : BackButton(),
           actions: <Widget>[
-            IconButton(
+            shareVisible 
+            ? IconButton(
               icon: Icon(Icons.share),
               onPressed: () {
                 _showShareMenu(context);
               },
             )
+            : Container()
           ],
         ),
         body: Container(
