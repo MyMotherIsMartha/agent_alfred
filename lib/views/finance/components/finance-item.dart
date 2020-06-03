@@ -37,7 +37,9 @@ class FinanceItem extends StatelessWidget {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Validate.isNon(product.orderImageUrl) 
+                              ? item.toRole == null 
                               ? Image.asset('${G.imgBaseUrl}package_icon.png')
+                              : Image.asset('${G.imgBaseUrl}member-order${item.toRole.toString()}_icon.png')
                               : CachedNetworkImage(
                                 imageUrl: product.orderImageUrl,
                                 placeholder: (context, url) =>
@@ -97,7 +99,7 @@ class FinanceItem extends StatelessWidget {
                                             text: '￥',
                                             children: [
                                               TextSpan(
-                                                  text: G.moneyToStr(product.refundAmount),
+                                                  text: product.refundAmount.toStringAsFixed(2),
                                                   style: TextStyle(
                                                       fontSize: G.setSp(26),
                                                       color: hex('#333'))),
@@ -115,10 +117,12 @@ class FinanceItem extends StatelessWidget {
                                           style: TextStyle(
                                               color: hex('#85868A'),
                                               fontSize: G.setSp(26))),
-                                      // Text('X${product.quantity}',
-                                      //     style: TextStyle(
-                                      //         color: hex('#85868A'),
-                                      //         fontSize: G.setSp(26)))
+                                     item.orderType == 7
+                                      ? Text('X${product.quantity}',
+                                          style: TextStyle(
+                                              color: hex('#85868A'),
+                                              fontSize: G.setSp(26)))
+                                      : Container()
                                     ],
                                   ),
                                   G.spacing(20),
@@ -232,7 +236,7 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(24))),
                       TextSpan(
-                          text: G.moneyToStr(item.commission),
+                          text: item.commission.toStringAsFixed(2),
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])) : Container(),

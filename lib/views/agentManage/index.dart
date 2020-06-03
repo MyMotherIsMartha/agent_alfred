@@ -443,25 +443,6 @@ class _MemberListState extends State<MemberList> {
       ++pageNo;
     }
     if (_listData.length == total && !refresh) {
-      
-      // List<AgentItemModel> tempList = _listData;
-      // _listData.map((e) {
-      //   tempList.add(e);
-      // });
-      // for (int i = 0; i < _listData.length; i++) {
-      //   tempList[i] = _listData[i];
-      // }
-      // print(tempList[1].shareCode);
-      // print('tempList[1].shareCode');
-      
-      // _listData = [];
-      // return await Future.delayed(Duration(microseconds: 1000), () {
-      //   setState(() {
-      //     _listData = tempList;
-      //   });
-      // });
-      // _controller.callLoad();
-
       _controller.finishLoad(success: true, noMore: true);
       return null;
     }
@@ -474,14 +455,10 @@ class _MemberListState extends State<MemberList> {
     void _api() async {
       var result = await MemberApi().getAgentChildren(params);
       Map originalData = result.data['data'];
-      print('---------originalData----------');
-      print(originalData);
-      print(originalData['records'].length);
       AgentResultModel resultData = AgentResultModel.fromJson(originalData);
       if (resultData == null) return;
       
       if (refresh) {
-        print('refresh');
         setState(() {
           total = resultData.total;
           _listData = resultData.records;
@@ -494,9 +471,6 @@ class _MemberListState extends State<MemberList> {
         
       }
     }
-    // setState(() {
-    //   pageNo = refresh ? 1 : pageNo + 1;
-    // });
     _api();
   }
 
