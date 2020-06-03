@@ -1,4 +1,5 @@
 import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/api/system.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:color_dart/hex_color.dart';
@@ -23,6 +24,7 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   String refuseReason = '';
   String refuseRemark = '';
+  var auditDay = 0;
   var statusCode = 1;
   var appTitle = '企业信息审核';
   final TelAndSmsService _service = locator<TelAndSmsService>();
@@ -40,6 +42,20 @@ class _ResultPageState extends State<ResultPage> {
       _getCurrentWidgetAndTitle();
     }
     // _getCurrentWidgetAndTitle();
+  }
+
+  Future _getSystemSetting() async {
+    var result = await SystemApi().getSystemSettings();
+    var resultData = result.data['data'];
+    print(resultData['agentQualificationsAuditPeriodDays']);
+    setState(() {
+      auditDay = resultData['agentQualificationsAuditPeriodDays'];
+    });
+    // setState(() {
+    //   monthlyStart = resultData['invoiceUploadBeginDateMonthly'];
+    //   monthlyEnd = resultData['invoiceUploadEndDateMonthly'];
+    //   paymentEnd = resultData['generateSettleBillDatesMonthly'];
+    // });
   }
   // @override
   // void didChangeDependencies() {
@@ -72,6 +88,7 @@ class _ResultPageState extends State<ResultPage> {
 
   void refreshFunc() async {
     // Provider.of<UserProvide>(context).updateUserAuth();
+    // _getSystemSetting();
     var result = await LoginApi().getUserAuth();
     print(result.data['data'].toString());
     int qualificationsStatus = result.data['data']['qualificationsStatus'];
@@ -126,7 +143,7 @@ class _ResultPageState extends State<ResultPage> {
         Text('企业信息待审核',
               style: TextStyle(color: hex('#000'), fontWeight: FontWeight.w500,fontSize: G.setSp(32))),
           G.spacing(G.setHeight(10)),      
-        Text('您的企业信息正在审核中，将在24小时内审核完成，请耐心等候', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
+        Text('您的企业信息正在审核中，将在2个工作日内审核完成，请耐心等候', style: TextStyle(color: hex('#666'), fontSize: G.setSp(28)),),
         Container(
           height: G.setHeight(265),
           child: Row(

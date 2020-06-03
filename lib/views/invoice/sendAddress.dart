@@ -26,6 +26,7 @@ class _SendAddressState extends State<SendAddress> {
   Future _getCompanyInfo() async {
     var result = await SystemApi().getCompanyInfos();
     Map resultData = result.data['data'];
+    print(resultData);
     setState(() {
       contactName = resultData['contactName'];
       mobile = resultData['contactMobile'];

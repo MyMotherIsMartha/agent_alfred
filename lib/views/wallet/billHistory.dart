@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:agent37_flutter/api/finance.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 // import 'package:agent37_flutter/api/order.dart';
@@ -110,6 +111,12 @@ class _BillHistoryState extends State<BillHistory> {
         backgroundColor: Colors.white,
         centerTitle: true,
         iconTheme: IconThemeData(color: hex('#000')),
+        leading: BackButton(
+          onPressed: () {
+            G.navigateTo(context, '/walletMain',
+                replace: true, transition: TransitionType.inFromLeft);
+          },
+        ),
         title: Text(
           '账单',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),

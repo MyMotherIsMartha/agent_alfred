@@ -123,9 +123,9 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     formData1['registerCode']['val'] = resultData['registerCode'];
     formData1['areaName']['val'] = resultData['enterpriseProvince'] + resultData['enterpriseCity'] + resultData['enterpriseDistrict'];
     formData1['addressStr']['val'] = resultData['registerAddress'];
-    formData1['legalName']['val'] = resultData['legalPerson'];
-    formData1['legalMobile']['val'] = resultData['legalMobile'];
-    formData1['legalIdNo']['val'] = resultData['legalIdCard'];
+    formData1['legalName']['val'] = resultData['legalPerson'] ?? '';
+    formData1['legalMobile']['val'] = resultData['legalMobile'] ?? '';
+    formData1['legalIdNo']['val'] = resultData['legalIdCard'] ?? '';
     
 
 

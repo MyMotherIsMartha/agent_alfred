@@ -3,6 +3,7 @@ import 'package:agent37_flutter/api/system.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -64,6 +65,12 @@ class _InvoiceListState extends State<InvoiceList> {
         title: Text(
           '服务费发票',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),
+        ),
+        leading: BackButton(
+          onPressed: () {
+            G.navigateTo(context, '/walletMain',
+                replace: true, transition: TransitionType.inFromLeft);
+          },
         ),
       ),
       body: Column(
@@ -178,7 +185,7 @@ class _InvoiceListState extends State<InvoiceList> {
               Text.rich(TextSpan(
                 children: [
                   TextSpan(
-                    text: getOrderTypeStr(item['orderType']),
+                    text: '增值税发票',
                     style: TextStyle(color: hex('#333'), fontSize: G.setSp(28), fontWeight: FontWeight.w400)
                   ),
                   TextSpan(

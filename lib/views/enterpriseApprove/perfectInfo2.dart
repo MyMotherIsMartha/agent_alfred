@@ -83,9 +83,18 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
       areaCode = resultData['areaCode'];
       mobile = mobileController.text = resultData['mobile'];
       email = emailController.text = resultData['email'];
-      formValidate['email'] = !Validate.isNon(email);
-      areaName = areaController.text = resultData['province'] + ',' + resultData['city'] + ',' + resultData['district'];
+
+      var provinceStr = resultData['province']??'';
+      var cityStr = resultData['city'] ?? '';
+      var districtStr = resultData['district'] ?? '';
+      areaName = areaController.text = provinceStr + ',' +cityStr + ',' + districtStr;
+
       addressStr = addressStrController.text = resultData['address'];
+
+      formValidate['mobile'] = !Validate.isNon(mobile);
+      formValidate['email'] = !Validate.isNon(email);
+      formValidate['areaCode'] = !Validate.isNon(areaCode);
+      formValidate['addressStr'] = !Validate.isNon(addressStr);
     });
     // resultData2['legalName'] = resultData['name'];
     // resultData2['frontIdCard1'] = resultData['legalIdCardFront'];
@@ -242,14 +251,13 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
     // Validate returns true if the form is valid, otherwise false.
     if (_formKey.currentState.validate()) {
       var areaAry = areaName.split(',');
-      print('test');
-      print(areaAry);
       var emailReg = new RegExp(r"^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$");
       if (!emailReg.hasMatch(email)) {
         G.toast('请输入正确的邮箱');
         return;
       }
-      Map params = {
+      Map params = stepJson;
+      Map params2 = {
         "address": addressStr,
         "areaCode": areaCode,
         'province': areaAry[0],
@@ -263,13 +271,8 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
         "mobile": mobile,
         "name": nameController.text
       };
-
-      params.addAll(stepJson);
-
-      print('params:');
-      print(params);
-
-      var result = await MemberApi().perfectEnterpriseInfo(params);
+      params2.addAll(params);
+      var result = await MemberApi().perfectEnterpriseInfo(params2);
       print(result.data.toString());
       if (result.data['code'] == 200) {
         var statusCode = 1;
@@ -375,9 +378,9 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
                         type: TextInputType.text,
                         onChange: (e) {
                           setState(() {
+                            email = e;
                             formValidate['email'] = !Validate.isNon(e);
                           });
-                          email = e;
                         },
                       ),
                       VAddress(

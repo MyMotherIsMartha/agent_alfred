@@ -33,6 +33,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
   Future _getInvoiceInfo() async {
     var result = await OrderApi().getMakeMoneyById(invoiceId);
     Map resultData = result.data['data'];
+    print(resultData);
     invoiceInfo = InvoiceInfoModel.fromJson(resultData);
     invoicePic = invoiceInfo.checkInvoiceUrl;
     return 'end';
@@ -152,7 +153,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
     print(result.data['data']);
     if (result.data['code'] == 200) {
       // var appTitle = FluroConvertUtils.fluroCnParamsEncode('上传发票');
-      G.navigateTo(context, '/resultPage?status=12&haveExit=no');
+      G.navigateTo(context, '/resultPage?status=12&haveExit=no', replace: true);
     }
   }
 
@@ -182,7 +183,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
                   children: [
                     G.spacing(20),
                     VField(label: '开票金额', fieldVal: '¥' + invoiceInfo.serviceCharge.toStringAsFixed(2)),
-                    VField(label: '开票类型', fieldVal: getOrderTypeStr(invoiceInfo.orderType)),
+                    VField(label: '开票类型', fieldVal: '增值税发票'),
                     Container(
                       constraints: BoxConstraints(
                         minWidth: double.infinity
@@ -195,7 +196,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
                       shrinkWrap: true, 
                       itemCount: invoiceInfo.invoiceItems.length,
                       itemBuilder: (context, index) {
-                          return VField(label: invoiceInfo.invoiceItems[index].invoiceItemContent, fieldVal: invoiceInfo.invoiceItems[index].invoiceItemName);
+                          return VField(label: invoiceInfo.invoiceItems[index].invoiceItemName, fieldVal: invoiceInfo.invoiceItems[index].invoiceItemContent);
                       }),
                     G.spacing(20),
                     Container(
