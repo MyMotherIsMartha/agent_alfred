@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage>
                               border: Border.all(color: hex('#FFF'))),
                           child: InkWell(
                             onTap: () {
-                              G.setClipboard('1234143');
+                              G.setClipboard(homeinfo.shareCode);
                             },
                             child: Text(
                               '复制',

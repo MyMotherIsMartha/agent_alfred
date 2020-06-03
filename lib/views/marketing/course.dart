@@ -65,6 +65,12 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
         );
       },
     );
+    _videoPlayerController.addListener(() async {
+      if (!_videoPlayerController.value.isPlaying && _videoPlayerController.value.position == _videoPlayerController.value.duration) {
+        await _videoPlayerController.seekTo(Duration(microseconds: 0));
+        await _videoPlayerController.pause();
+      }
+     });
   }
 
   // 播放器
