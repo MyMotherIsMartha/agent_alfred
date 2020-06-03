@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage>
         countDown();
       }
       if (result2.data['data'] != null) {
-        messageCountInfo = 2; //result2.data['data'];
+        messageCountInfo = result2.data['data'];
       }
       nickname = Provider.of<UserProvide>(context).userAuthInfo.nickname;
       nicknameForUrl = FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname.toString());
