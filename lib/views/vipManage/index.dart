@@ -109,6 +109,7 @@ class VipManageMainState extends State<VipManageMain>
     var result = await OrderApi().getAppMemberAmount(params);
     print('app member amount---------------');
     var resultData = result.data['data'];
+    print(resultData);
     setState(() {
       tabs[0] = Tab(text: '普通(${resultData['normalMemberNum']})');
       tabs[1] = Tab(text: '体验版(${resultData['standMemberNum']})');
@@ -344,7 +345,7 @@ class _MemberListState extends State<MemberList> {
             )
           ),
           Container(
-            margin: EdgeInsets.only(top: G.setHeight(80)),
+            margin: EdgeInsets.only(top: isSpecialAccount ? G.setHeight(140) : G.setHeight(80)),
             child: extended.NestedScrollViewInnerScrollPositionKeyWidget(
             Key('Tab-' + widget.role.toString()),
             EasyRefresh(

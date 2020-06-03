@@ -3,6 +3,7 @@ import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/components/v-empty.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 class BankMainPage extends StatefulWidget {
@@ -160,6 +161,12 @@ class _BankMainPageState extends State<BankMainPage> {
         backgroundColor: Colors.white,
         centerTitle: true,
         iconTheme: IconThemeData(color: hex('#000')),
+        leading: BackButton(
+          onPressed: () {
+            G.navigateTo(context, '/walletMain',
+                replace: true, transition: TransitionType.inFromLeft);
+          },
+        ),
         title: Text(
           '银行卡管理',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),

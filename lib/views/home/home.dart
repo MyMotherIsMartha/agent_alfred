@@ -109,10 +109,10 @@ class _HomePageState extends State<HomePage>
       if (result2.data['data'] != null) {
         messageCountInfo = 2; //result2.data['data'];
       }
-      nickname = '昵称';//Provider.of<UserProvide>(context).userAuthInfo.nickname;
-      nicknameForUrl = '1234234'; // FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname.toString());
-      shareCode = '122300'; //Provider.of<UserProvide>(context).userAuthInfo.shareCode;
-      mobile = '12323'; //Provider.of<UserProvide>(context).userAuthInfo.mobile;
+      nickname = Provider.of<UserProvide>(context).userAuthInfo.nickname;
+      nicknameForUrl = FluroConvertUtils.fluroCnParamsEncode(Provider.of<UserProvide>(context).userAuthInfo.nickname.toString());
+      shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode;
+      mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
       return 'future end';
     } catch (e) {
       return 'future error';
@@ -319,7 +319,7 @@ class _HomePageState extends State<HomePage>
               vertical: G.setWidth(38), horizontal: G.setWidth(30)),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: title == '开通企业会员'
+                  image: title == '已开通企业会员数'
                       ? AssetImage('${G.imgBaseUrl}home/subordinate_bg.png')
                       : AssetImage('${G.imgBaseUrl}home/order-num_bg.png'),
                   fit: BoxFit.fill)),
@@ -457,7 +457,7 @@ class _HomePageState extends State<HomePage>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             _missionItem(
-                                '开通企业会员',
+                                '已开通企业会员数',
                                 homeinfo.openedDiamondMemberNum??1,
                                 homeinfo.checkDiamondMemberNum??1),
                             _missionItem('企业会员有效订单', homeinfo.effectiveOrderNum??1,
