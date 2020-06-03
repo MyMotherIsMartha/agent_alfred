@@ -4,6 +4,7 @@ import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -121,6 +122,12 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
         backgroundColor: Colors.white,
         centerTitle: true,
         iconTheme: IconThemeData(color: hex('#000')),
+        leading: BackButton(
+          onPressed: () {
+            G.navigateTo(context, '/walletMain',
+                replace: true, transition: TransitionType.inFromLeft);
+          },
+        ),
         title: Text(
           '提现',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),

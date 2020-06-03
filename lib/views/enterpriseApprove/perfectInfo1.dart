@@ -109,8 +109,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     registerCode = _registerCodeCtrl.text = resultData['registerCode'];
     addressStr = _addressCtrl.text = resultData['registerAddress'];
     legalName = _legalPersonCtrl.text = resultData['legalPerson'];
-    mobile = mobileController.text = resultData['legalMobile'];
-    idNo = idNoController.text = resultData['legalIdCard'];
+    mobile = mobileController.text = resultData['legalMobile'] ?? '';
+    idNo = idNoController.text = resultData['legalIdCard'] ?? '';
     formValidate['mobile'] = mobile != null;
     formValidate['idNo'] = idNo != null;
   }
@@ -570,7 +570,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                           },
                         ),
                         VInput(
-                            type: TextInputType.number,
+                            // type: TextInputType.number,
                             controller: idNoController,
                             hintText: '请输入身份证号',
                             label: '法人身份证',
@@ -578,10 +578,10 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                             labelWidth: G.setWidth(180),
                             onChange: (e) {
                               idNo = e;
-                              var reg =
-                                  r"(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)";
+                              // var reg =
+                              //     r"(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)";
                               setState(() {
-                                formValidate['idNo'] = RegExp(reg).hasMatch(e);
+                                formValidate['idNo'] = !Validate.isNon(e);
                               });
                             },
                           ),
@@ -599,6 +599,12 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                         var areaAry = areaName.split(',');
                         print('test');
                         print(areaAry);
+                        var reg =
+                                  r"(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)";
+                        if (!RegExp(reg).hasMatch(idNo)) {
+                          G.toast('请输入正确的身份证号');
+                          return;
+                        }
                         Map params = {
                           'industryCode': jobCode,
                           'industryName': jobCodeCtrl.text,

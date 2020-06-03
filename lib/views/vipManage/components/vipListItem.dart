@@ -78,7 +78,7 @@ class _VipListItemState extends State<VipListItem> {
           ])
         );
     } else {
-      return Text(statusStr);
+      return Text(role == 0 ? statusStr : '');
     }
   }
 
@@ -96,6 +96,7 @@ class _VipListItemState extends State<VipListItem> {
   @override
   Widget build(BuildContext context) {
     VipItemModel item = widget.item;
+    item.enterpriseName = item.enterpriseName ?? '';
     isSpecialAccount = Provider.of<UserProvide>(context).specialAccount;
 
     return Container(
@@ -166,18 +167,25 @@ class _VipListItemState extends State<VipListItem> {
                 child: Image(width: G.setWidth(100),image: _getImageByRole(item.role))
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(children: <Widget>[
-                    Text('手机号:'),
+                    Text('手机号:', style: TextStyle(color: hex('#999999')),),
                     G.spacingWidth(25),
                     Text(item.mobile)
                   ],),
                   Row(children: <Widget>[
-                    Text('注册时间:'),
+                    Text(item.role == 0 ? '注册时间:' : '购买时间:', style: TextStyle(color: hex('#999999'))),
                     G.spacingWidth(20),
-                    Text(G.formatTime(item.registerTime, type: 'date'))
+                    Text(G.formatTime(item.role == 0 ? item.registerTime : item.payTime, type: 'date'))
                     // Text(formatDate(DateTime(fromMillisecondsSinceEpoch(item.registerTime)) ,[yyyy,'-',mm,'-',dd]);)
-                  ],)
+                  ],),
+                  item.role != 0 ?
+                  Row(children: <Widget>[
+                    Text('预估服务费:', style: TextStyle(color: hex('#999999'))),
+                    G.spacingWidth(25),
+                    // Text(item.pendingPurchaseOrderServiceCharge.toStringAsFixed(2))
+                  ],) : Container(),
                 ]
               )
             ],)

@@ -3,6 +3,7 @@ import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/api/system.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
@@ -114,10 +115,16 @@ class _WalletMainState extends State<WalletMain> {
           '我的钱包',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),
         ),
+        leading: BackButton(
+          onPressed: () {
+            G.navigateTo(context, '/index',
+                replace: true, transition: TransitionType.inFromLeft);
+          },
+        ),
         actions: <Widget>[
           FlatButton(
               onPressed: () {
-                G.navigateTo(context, '/walletMain/billHistory');
+                G.navigateTo(context, '/walletMain/billHistory', replace: true);
               },
               child: Text('账单',
                   style: TextStyle(color: hex('#000'), fontSize: G.setSp(32))))
@@ -180,7 +187,7 @@ class _WalletMainState extends State<WalletMain> {
                             child: Text('确定'),
                             onPressed: (){
                               Navigator.of(context).pop();
-                              G.navigateTo(context, '/bankMain');
+                              G.navigateTo(context, '/bankMain', replace: true);
                             },
                           )
                         ]
@@ -188,7 +195,7 @@ class _WalletMainState extends State<WalletMain> {
                     },
                   );
                 } else {
-                  G.navigateTo(context, '/walletMain/withdraw');
+                  G.navigateTo(context, '/walletMain/withdraw', replace: true);
                 }
                 
               },
@@ -227,7 +234,7 @@ class _WalletMainState extends State<WalletMain> {
             if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus != 2) {
               _showEnterpriseAlert();
             } else {
-              G.navigateTo(context, '/invoiceList');
+              G.navigateTo(context, '/invoiceList', replace: true);
             }
           },
           child:
@@ -258,7 +265,7 @@ class _WalletMainState extends State<WalletMain> {
             if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus != 2) {
               _showEnterpriseAlert();
             } else {
-              G.navigateTo(context, '/bankMain');
+              G.navigateTo(context, '/bankMain', replace: true);
             }
           },
           child: Container(

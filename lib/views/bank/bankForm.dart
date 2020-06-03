@@ -49,21 +49,29 @@ class _BankFormPageState extends State<BankFormPage> {
         print(value.toString());
         print(picker.getSelectedValues().first);
         print(picker.adapter.text);
-        formValidate['bankName'] = true;
-        _bankNameCtrl.value = G.setTextEdit(bankList[value.first]['bankName']);
-        bankId = picker.getSelectedValues().first;
+        setState(() {
+          formValidate['bankName'] = true;
+          _bankNameCtrl.value = G.setTextEdit(bankList[value.first]['bankName']);
+          bankId = picker.getSelectedValues().first;
+        });
       }
     );
     picker.showModal(context);
   }
 
   submitFunc() async {
+    var regx = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9.]+$");
+    if (!regx.hasMatch(_subBankCtrl.value.text)) {
+      G.toast('姓名只能输入中英文');
+      return;
+    }
     Map params = {
       'bankBranchName': _subBankCtrl.value.text,
       'bankId': bankId,
       'bankUserCode': _bankCodeCtrl.value.text,
       'bankUserName': _bankNameCtrl.value.text
     };
+    
     print(params);
     var result = await LLpayApi().bindBankCard(params);
     print(result.data['data']);
@@ -155,6 +163,7 @@ class _BankFormPageState extends State<BankFormPage> {
                         controller: _subBankCtrl,
                         hintText: '请选择银行支行',
                         label: '银行支行',
+                        maxLength: 30,
                         onChange: (e) {
                           setState(() {
                             formValidate['subBank'] = !Validate.isNon(e);
@@ -165,6 +174,7 @@ class _BankFormPageState extends State<BankFormPage> {
                         type: TextInputType.number,
                         controller: _bankCodeCtrl,
                         hintText: '请输入银行卡号',
+                        maxLength: 19,
                         label: '银行卡号',
                         onChange: (e) {
                           setState(() {

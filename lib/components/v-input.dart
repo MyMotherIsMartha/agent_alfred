@@ -155,9 +155,14 @@ class _VInputState extends State<VInput> {
                 )),
             onChanged: (str) {
               String newStr = str;
-              if (str.length <= widget.maxLength??99999) {
+              if (widget.maxLength != null) {
+                if (str.length <= widget.maxLength) {
+                  widget.onChange(newStr);
+                }
+              } else {
                 widget.onChange(newStr);
               }
+              
               setState(() {
                 _hasdeleteIcon = (str.isNotEmpty);
               });
