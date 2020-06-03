@@ -54,6 +54,11 @@ class _SettingNicknamePageState extends State<SettingNicknamePage> {
                 G.toast('请输入昵称');
                 return;
               }
+              const regExp = r"[a-zA-Z]|[\u4e00-\u9fa5]|[0-9]";
+              if (!RegExp(regExp).hasMatch(nickname)) {
+                G.toast('昵称不合法，请重新输入');
+                return;
+              }
               Map data = {'nickname': nickname};
               var result = await SettingApi().updateNameAndAvatar(data);
               if (result.data['code'] == 200) {
@@ -111,7 +116,7 @@ class _SettingNicknamePageState extends State<SettingNicknamePage> {
                       buildCounter: (context, {currentLength = 10, maxLength = 10, isFocused = false}) {
                         return null;
                       },
-                      inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[0-9]"))],
+                      // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[0-9]"))],
                       style: TextStyle(fontSize: G.setSp(28)),
                       decoration: InputDecoration(
                         fillColor: hex('#fff'),

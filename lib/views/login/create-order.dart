@@ -228,6 +228,16 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     var payInfo = result.data['data'];
                     print(payInfo['appid']);
                     // print(payInfo['appid']);
+                    weChatResponseEventHandler.listen((res) {
+                      print(res.errStr);
+                      print(res.errCode);
+                      print(res.isSuccessful);
+                      print('微信支付结果 怎么回事！！！！！！！');
+                      G.toast(res.errCode.toString());
+                      if (res is WeChatPaymentResponse) {
+                          // do something here
+                      }
+                    });
                     var result2 = await payWithWeChat(
                       appId: payInfo['appid'],
                       partnerId: payInfo['mch_id'],

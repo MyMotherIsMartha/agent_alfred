@@ -308,6 +308,7 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                         cb: (value, areaStr) {
                           print('areaId');
                           print(areaStr.split(',').toString());
+                          print(value);
                           setState(() {
                             areaCode = value;
                             areaName = areaStr;
