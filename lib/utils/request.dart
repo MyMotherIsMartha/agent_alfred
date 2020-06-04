@@ -23,6 +23,7 @@ Dio service() {
     return options;
   }, onResponse: (Response response) async {
     if (response.data['code'] == 401) {
+      G.closeLoading();
       G.clearPref();
       G.toast(response.data['message'] ?? '请重新登录');
       G.key.currentState.pushNamed('/login');

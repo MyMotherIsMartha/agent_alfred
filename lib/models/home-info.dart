@@ -37,6 +37,9 @@ class HomeInfoModel {
     double todayPendingGiftPackageServiceFee;
     double thisMonthPendingGiftPackageServiceFee;
     double lastMonthPendingGiftPackageServiceFee;
+    double todayOriginEstimateMemberServiceFee;
+    double thisMonthOriginEstimateMemberServiceFee;
+    double lastMonthOriginEstimateMemberServiceFee;
     int increasedShowOrderNum;
     int increasedShowMemberNum;
     int increasedShowAgentNum;
@@ -73,6 +76,9 @@ class HomeInfoModel {
         this.todayPendingGiftPackageServiceFee,
         this.thisMonthPendingGiftPackageServiceFee,
         this.lastMonthPendingGiftPackageServiceFee,
+        this.todayOriginEstimateMemberServiceFee,
+        this.thisMonthOriginEstimateMemberServiceFee,
+        this.lastMonthOriginEstimateMemberServiceFee,
         this.increasedShowOrderNum,
         this.increasedShowMemberNum,
         this.increasedShowAgentNum,
@@ -110,6 +116,9 @@ class HomeInfoModel {
         todayPendingGiftPackageServiceFee: json["todayPendingGiftPackageServiceFee"],
         thisMonthPendingGiftPackageServiceFee: json["thisMonthPendingGiftPackageServiceFee"],
         lastMonthPendingGiftPackageServiceFee: json["lastMonthPendingGiftPackageServiceFee"],
+        todayOriginEstimateMemberServiceFee: json["todayOriginEstimateMemberServiceFee"],
+        thisMonthOriginEstimateMemberServiceFee: json["thisMonthOriginEstimateMemberServiceFee"],
+        lastMonthOriginEstimateMemberServiceFee: json["lastMonthOriginEstimateMemberServiceFee"],
         increasedShowOrderNum: json["increasedShowOrderNum"],
         increasedShowMemberNum: json["increasedShowMemberNum"],
         increasedShowAgentNum: json["increasedShowAgentNum"],
@@ -147,6 +156,9 @@ class HomeInfoModel {
         "todayPendingGiftPackageServiceFee": todayPendingGiftPackageServiceFee,
         "thisMonthPendingGiftPackageServiceFee": thisMonthPendingGiftPackageServiceFee,
         "lastMonthPendingGiftPackageServiceFee": lastMonthPendingGiftPackageServiceFee,
+        "todayOriginEstimateMemberServiceFee": todayOriginEstimateMemberServiceFee,
+        "thisMonthOriginEstimateMemberServiceFee": thisMonthOriginEstimateMemberServiceFee,
+        "lastMonthOriginEstimateMemberServiceFee": lastMonthOriginEstimateMemberServiceFee,
         "increasedShowOrderNum": increasedShowOrderNum,
         "increasedShowMemberNum": increasedShowMemberNum,
         "increasedShowAgentNum": increasedShowAgentNum,
