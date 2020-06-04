@@ -85,8 +85,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     legalName = _legalPersonCtrl.text = resultData['legalPerson'];
     mobile = mobileController.text = resultData['legalMobile'];
     idNo = idNoController.text = resultData['legalIdCard'];
-    formValidate['mobile'] = mobile != null;
-    formValidate['idNo'] = idNo != null;
+    formValidate['mobile'] = !Validate.isNon(mobile);
+    formValidate['idNo'] = !Validate.isNon(idNo);
   }
 
   _getJobList() async {
@@ -111,8 +111,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     legalName = _legalPersonCtrl.text = resultData['legalPerson'];
     mobile = mobileController.text = resultData['legalMobile'] ?? '';
     idNo = idNoController.text = resultData['legalIdCard'] ?? '';
-    formValidate['mobile'] = mobile != null;
-    formValidate['idNo'] = idNo != null;
+    formValidate['mobile'] = !Validate.isNon(mobile);
+    formValidate['idNo'] = !Validate.isNon(idNo);
   }
 
   @override

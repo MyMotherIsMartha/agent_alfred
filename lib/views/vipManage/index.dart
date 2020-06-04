@@ -185,6 +185,7 @@ class VipManageMainState extends State<VipManageMain>
           children: bodys),
       );
   }
+  
 }
 
 class MemberList extends StatefulWidget {
@@ -199,7 +200,8 @@ class MemberList extends StatefulWidget {
   _MemberListState createState() => _MemberListState();
 }
 
-class _MemberListState extends State<MemberList> {
+class _MemberListState extends State<MemberList> 
+   with AutomaticKeepAliveClientMixin {
   EasyRefreshController _controller = EasyRefreshController();
   var scrollController = new ScrollController();
   int pageNo = 1;
@@ -384,5 +386,5 @@ class _MemberListState extends State<MemberList> {
     );
   }
 
-
+  bool get wantKeepAlive => true;
 }
