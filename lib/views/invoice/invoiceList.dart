@@ -172,7 +172,14 @@ class _InvoiceListState extends State<InvoiceList> {
       padding: EdgeInsets.symmetric(horizontal: G.setWidth(20)),
       child: InkWell(
         onTap: () {
-          G.navigateTo(context, '/invoiceDetail?invoiceId=' + item['statisticsMakeMoneyId'] + '&status=' + item['invoiceStatus'].toString());
+          var now = new DateTime.now();
+          var nowDay = now.day;
+          if (nowDay >= monthlyStart && nowDay <= monthlyEnd) {
+            G.navigateTo(context, '/invoiceDetail?invoiceId=' + item['statisticsMakeMoneyId'] + '&status=' + item['invoiceStatus'].toString());
+          } else {
+            G.toast('今天非发票上传日期，请在每月$monthlyStart日-$monthlyEnd日上传');
+          }
+          // if ()
         },
         child: Container(
           height: G.setWidth(80),
@@ -185,7 +192,7 @@ class _InvoiceListState extends State<InvoiceList> {
               Text.rich(TextSpan(
                 children: [
                   TextSpan(
-                    text: '增值税发票',
+                    text: getOrderTypeStr(item['orderType']),
                     style: TextStyle(color: hex('#333'), fontSize: G.setSp(28), fontWeight: FontWeight.w400)
                   ),
                   TextSpan(

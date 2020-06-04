@@ -87,7 +87,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
       var provinceStr = resultData['province']??'';
       var cityStr = resultData['city'] ?? '';
       var districtStr = resultData['district'] ?? '';
-      areaName = areaController.text = provinceStr + ',' +cityStr + ',' + districtStr;
+      areaName = areaController.text = provinceStr + cityStr + districtStr;
 
       addressStr = addressStrController.text = resultData['address'];
 
