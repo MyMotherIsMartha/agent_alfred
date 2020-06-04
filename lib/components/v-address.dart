@@ -1,14 +1,8 @@
-import 'dart:convert';
-
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/address-picker/address_picker.dart';
-import 'package:agent37_flutter/utils/city-data.dart';
-import 'package:agent37_flutter/utils/citys.dart';
 import 'package:agent37_flutter/utils/global.dart';
-import 'package:city_pickers/city_pickers.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 
 class VAddress extends StatelessWidget {
   final TextEditingController controller;
@@ -73,36 +67,6 @@ class VAddress extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  _addressSelect(context) async {
-    Result result2 = await CityPickers.showCityPicker(
-        context: context,
-        locationCode: areaId ?? '110000',
-        height: G.setHeight(500),
-        cancelWidget: Text('取消',
-            style: TextStyle(fontSize: G.setSp(32), color: hex('#999'))),
-        confirmWidget: Text('确认',
-            style: TextStyle(fontSize: G.setSp(32), color: hex('#108EE9'))),
-        citiesData: citiesData, // citiesData,
-        provincesData: provincesData);
-    if (result2 != null) {
-      String area;
-      String areaName;
-      if (result2.areaId != null && result2.areaId.isNotEmpty) {
-        area = result2.areaId;
-        areaName = result2.provinceName +
-            ',' +
-            result2.cityName +
-            ',' +
-            result2.areaName;
-      } else {
-        area = result2.cityId;
-        areaName = result2.provinceName + ',' + result2.cityName;
-      }
-      controller.value = TextEditingValue(text: areaName);
-      cb(area, areaName);
-    }
   }
 
   _addressSelect2(context) {

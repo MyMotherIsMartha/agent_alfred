@@ -60,8 +60,6 @@ class UserProvide with ChangeNotifier {
     notifyListeners();
   }
 
-  
-
   setUserInfo(data) async {
     var result = await LoginApi().setUserInfo(data);
     if (result.data['code'] == 200) {
@@ -97,11 +95,8 @@ class UserProvide with ChangeNotifier {
         notifyListeners();
         return;
       }
-      if (userAuthInfo.giftPackageOrderStatus == null
-          //  || userAuthInfo.giftPackageOrderStatus == 0
-          ||
+      if (userAuthInfo.giftPackageOrderStatus == null ||
           userAuthInfo.giftPackageOrderStatus == -1 ||
-          // userAuthInfo.giftPackageOrderStatus == -2 ||
           userAuthInfo.giftPackageOrderStatus == 3 ||
           userAuthInfo.giftPackageOrderStatus == -3 ||
           userAuthInfo.giftPackageOrderStatus == 5) {
@@ -113,28 +108,32 @@ class UserProvide with ChangeNotifier {
             userAuthInfo.payType != 3) {
           G.navigateTo(G.currentContext, '/create-account', replace: true);
           // notifyListeners();
-        } else { 
-          int status = userAuthInfo.voucherStatus;
-          switch (status) {
-            case 1:
-            case 0:
-            case 3:
-              G.navigateTo(G.currentContext, '/order-result',
-                  replace: true, transition: transition);
-              break;
-            case 4:
-              G.toast('订单已超时，请重新下单');
-              G.navigateTo(G.currentContext, '/create-account',
-                  replace: true);
-              break;
-            case 2:
-              qualificationsStatus();
-              break;
-            // case 0: // 待验证状态，后台可能状态提供的有问题
-            //   G.navigateTo(G.currentContext, '/create-account', replace: true);
-            //   break;
-            default:
-              print('获取一下最新信息');
+        } else {
+          if (userAuthInfo.payType != 3) {
+            qualificationsStatus();
+          } else {
+            int status = userAuthInfo.voucherStatus;
+            switch (status) {
+              case 1:
+              case 0:
+              case 3:
+                G.navigateTo(G.currentContext, '/order-result',
+                    replace: true, transition: transition);
+                break;
+              case 4:
+                G.toast('订单已超时，请重新下单');
+                G.navigateTo(G.currentContext, '/create-account',
+                    replace: true);
+                break;
+              case 2:
+                qualificationsStatus();
+                break;
+              // case 0: // 待验证状态，后台可能状态提供的有问题
+              //   G.navigateTo(G.currentContext, '/create-account', replace: true);
+              //   break;
+              default:
+                print('获取一下最新信息');
+            }
           }
         }
       }
@@ -174,7 +173,8 @@ class UserProvide with ChangeNotifier {
             replace: true);
         break;
       case -1:
-        G.navigateTo(G.currentContext, '/resultPage?status=$status&refuseReason=${userAuthInfo.auditRefuseReason}',
+        G.navigateTo(G.currentContext,
+            '/resultPage?status=$status&refuseReason=${userAuthInfo.auditRefuseReason}',
             replace: true);
         break;
       case 4:

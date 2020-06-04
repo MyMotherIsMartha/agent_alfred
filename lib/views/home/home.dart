@@ -14,7 +14,6 @@ import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:badges/badges.dart';
 import 'package:color_dart/color_dart.dart';
-import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
@@ -554,6 +553,7 @@ class _HomePageState extends State<HomePage>
           homeinfo.todayIncreasedOrderNum,
           homeinfo.todayIncreasedAppMemberNum,
           homeinfo.todayIncreasedAgentNum,
+          homeinfo.todayOriginEstimateMemberServiceFee
         ];
         break;
       case 'thisMonth':
@@ -564,6 +564,7 @@ class _HomePageState extends State<HomePage>
           homeinfo.thisMonthIncreasedOrderNum,
           homeinfo.thisMonthIncreasedAppMemberNum,
           homeinfo.thisMonthIncreasedAgentNum,
+          homeinfo.thisMonthOriginEstimateMemberServiceFee
         ];
         break;
       case 'lastMonth':
@@ -574,10 +575,13 @@ class _HomePageState extends State<HomePage>
           homeinfo.lastMonthIncreasedOrderNum,
           homeinfo.lastMonthIncreasedAppMemberNum,
           homeinfo.lastMonthIncreasedAgentNum,
+          homeinfo.lastMonthOriginEstimateMemberServiceFee
         ];
         break;
       default:
     }
+
+    bool originFeeVisible = data[6] != data[1];
     return MediaQuery.removePadding(
         removeTop: true,
         context: context,
@@ -651,7 +655,17 @@ class _HomePageState extends State<HomePage>
                                               fontSize: G.setSp(36))),
                                     ])),
                                   ),
-                                  G.spacing(15),
+                                  index == 1 && originFeeVisible
+                                  ? Text(
+                                    data[6].toStringAsFixed(2),
+                                    style: TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                      fontSize: G.setSp(24),
+                                      color: hex('#999')
+                                    ),
+                                  )
+                                  : Container(),
+                                  index == 1 && originFeeVisible ? G.spacing(5) : G.spacing(15),
                                   Text(title[index],
                                       style: TextStyle(
                                           fontSize: G.setSp(24),
