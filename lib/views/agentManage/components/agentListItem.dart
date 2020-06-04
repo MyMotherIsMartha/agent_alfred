@@ -28,7 +28,7 @@ class _AgentListItemState extends State<AgentListItem> {
     }
   }
 
-  Widget leftTopText(qualiStatus, role, voucherStatus) {
+  Widget leftTopText(qualiStatus, role, voucherStatus, checkStatus, settleStatus) {
     String statusStr;
     if (role == -1) {
       switch (voucherStatus) {
@@ -43,9 +43,6 @@ class _AgentListItemState extends State<AgentListItem> {
       }
     } else {
       switch (qualiStatus) {
-        case -3:
-          statusStr = '资质审核关闭';
-          break;
         case -2:
           statusStr = '资质审核超时';
           break;
@@ -53,19 +50,44 @@ class _AgentListItemState extends State<AgentListItem> {
           statusStr = '资质审核拒绝';
           break;
         case 0:
-          statusStr = '待资质审核提交';
+          statusStr = '资质待提交';
           break;
         case 1:
-          statusStr = '资质审核已提交';
+          statusStr = '资质待审核';
           break;
         case 2:
-          statusStr = '待资质审核';
+          statusStr = '资质待审核';
           break;
         case 3:
-          statusStr = '资质审核延迟申请';
+          statusStr = '延时申请';
           break;
         case 4:
-          statusStr = '资质审核成功';
+          
+          switch (checkStatus) {
+            case -1: 
+              statusStr = '未开始考核';
+              break;
+            case 0: case 3: case 1:
+              statusStr = '考核中';
+              break;
+            case 2:
+              switch (settleStatus) {
+                case 0:
+                  statusStr = '考察期';
+                  break;
+                case 1:
+                  statusStr = '待结算';
+                  break;
+                case 2:
+                  statusStr = '已结算';
+                  break;
+                default:
+                  statusStr = '未知状态';
+              }
+              break;
+            default:
+              statusStr = '未知状态';
+          }
           break;
         default:
           statusStr = '未知状态';
@@ -138,7 +160,7 @@ class _AgentListItemState extends State<AgentListItem> {
                 ),
                 item.isNewShowFlag ? Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')) : Text(''),
               ]),
-              leftTopText(item.qualificationsStatus, item.role, item.voucherStatus),
+              leftTopText(item.qualificationsStatus, item.role, item.voucherStatus, item.checkStatus, item.settleStatus),
             ]
           ),
         ),

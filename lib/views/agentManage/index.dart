@@ -6,6 +6,7 @@ import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/models/agentManage.dart';
 import 'package:agent37_flutter/views/agentManage/components/agentListItem.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
@@ -294,6 +295,12 @@ class AgentManageMainState extends State<AgentManageMain>
               // ),
               // floating: false,
               // pinned: true,
+              leading: BackButton(
+                onPressed: () {
+                  G.navigateTo(context, '/index',
+                      replace: true, transition: TransitionType.inFromLeft);
+                },
+              ),
               actions: <Widget>[
                 IconButton(
                   onPressed: () {

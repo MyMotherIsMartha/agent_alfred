@@ -184,7 +184,7 @@ class _VipListItemState extends State<VipListItem> {
                   Row(children: <Widget>[
                     Text('预估服务费:', style: TextStyle(color: hex('#999999'))),
                     G.spacingWidth(25),
-                    // Text(item.pendingPurchaseOrderServiceCharge.toStringAsFixed(2))
+                    Text((item.pendingPurchaseOrderServiceCharge + item.entryPurchaseOrderServiceCharge).toStringAsFixed(2))
                   ],) : Container(),
                 ]
               )

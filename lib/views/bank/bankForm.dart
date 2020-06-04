@@ -7,6 +7,7 @@ import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +63,7 @@ class _BankFormPageState extends State<BankFormPage> {
   submitFunc() async {
     var regx = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9.]+$");
     if (!regx.hasMatch(_subBankCtrl.value.text)) {
-      G.toast('姓名只能输入中英文');
+      G.toast('银行支行仅支持中文');
       return;
     }
     Map params = {
@@ -130,6 +131,12 @@ class _BankFormPageState extends State<BankFormPage> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         iconTheme: IconThemeData(color: hex('#000')),
+        leading: BackButton(
+          onPressed: () {
+            G.navigateTo(context, '/bankMain',
+                replace: true, transition: TransitionType.inFromLeft);
+          },
+        ),
         title: Text(
           formStatus == '0' ? '新增银行卡' : '编辑银行卡',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),

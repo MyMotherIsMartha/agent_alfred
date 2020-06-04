@@ -863,6 +863,7 @@ class _HomePageState extends State<HomePage>
     // msgFuture = _getMsgCount();
     homeFuture = _getHomeinfo();
     Future.delayed(Duration.zero, () {
+      Provider.of<UserProvide>(context).updateUserAuth(isInit: false);
       checkInfo(context);
     });
     // checkInfo(context);
@@ -873,9 +874,16 @@ class _HomePageState extends State<HomePage>
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
       // msgFuture = _getMsgCount();
-      homeFuture = _getHomeinfo();
+      // Provider.of<UserProvide>(context).updateUserAuth(isInit: false);
+      // homeFuture = _getHomeinfo();
     }
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
