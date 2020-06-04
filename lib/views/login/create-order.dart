@@ -3,12 +3,14 @@ import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/env.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alipay/flutter_alipay.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:provider/provider.dart';
 
 class CreateOrderPage extends StatefulWidget {
   final String price;
@@ -222,22 +224,40 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     print(result2);
                     break;
                   case 'wechat':
+                    G.showLoading(context);
                     var result = await OrderApi().wechatPay(data);
-                    print(result);
+                    G.closeLoading();
                     if (result.data['code'] != 200) return;
                     var payInfo = result.data['data'];
+                    if (result.data['data']['result_code'] == 'FAIL') {
+                      G.toast(result.data['data']['err_code_des']);
+                      return;
+                    }
                     print(payInfo['appid']);
                     // print(payInfo['appid']);
                     weChatResponseEventHandler.listen((res) {
+                      G.closeLoading();
                       print(res.errStr);
                       print(res.errCode);
                       print(res.isSuccessful);
                       print('微信支付结果 怎么回事！！！！！！！');
-                      G.toast(res.errCode.toString());
+                      // G.toast(res.errCode.toString());
                       if (res is WeChatPaymentResponse) {
+                        int code = res.errCode;
+                        switch (code) {
+                          case -2:
+                            G.toast('已取消支付');
+                            break;
+                          case 0:
+                            Provider.of<UserProvide>(context).updateUserAuth();
+                            break;
+                          default:
+                            G.toast('支付失败，请重试');
+                        }
                           // do something here
                       }
                     });
+                    
                     var result2 = await payWithWeChat(
                       appId: payInfo['appid'],
                       partnerId: payInfo['mch_id'],
@@ -248,6 +268,10 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                       sign: payInfo['sign'],
                     );
                     print(result2);
+                    print('result2');
+                    if (!result2) {
+                      G.closeLoading();
+                    }
                     // SyPayResult payResult = await SyFlutterWechat.pay(
                     //   SyPayInfo.fromJson(payInfo));
                     // print('payResult');

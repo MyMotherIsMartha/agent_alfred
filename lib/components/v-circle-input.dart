@@ -82,8 +82,8 @@ class _VCircleInputState extends State<VCircleInput> {
             Expanded(
               child: Container(
                 alignment: Alignment.center,
-                // height: G.setWidth(60),
-                margin: EdgeInsets.only(bottom: G.setWidth(56)),
+                height: G.setWidth(100),
+                // margin: EdgeInsets.only(top: G.setWidth(15)),
                 child: TextFormField(
                 // strutStyle: StrutStyle(
                 //   height: 1
@@ -103,14 +103,10 @@ class _VCircleInputState extends State<VCircleInput> {
                   
                   style: TextStyle(
                       fontSize: G.setSp(32),
-                      height: 1.2,
+                      height: 1.24,
                       ),
                   decoration: InputDecoration(
-                      
-                      contentPadding: EdgeInsets.all(0),
                       border: InputBorder.none,
-                      // fillColor: Colors.red,
-                      // filled: true,
                       hintText: widget.hintText,
                       // prefixIcon: Container(
                       //   margin: EdgeInsets.only(top: 10),

@@ -108,21 +108,12 @@ class _FinancePageState extends State<FinancePage>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          OrderView(
-              FinanceApi().fetchProduct,
-              7,
-              start: startTime,
-              end: endTime),
-          OrderView(
-              FinanceApi().fetchMemberOrder,
-              8,
-              start: startTime,
-              end: endTime),
-          OrderView(
-              FinanceApi().fetchPackageOrder,
-              11,
-              start: startTime,
-              end: endTime)
+          OrderView(FinanceApi().fetchProduct, 7,
+              start: startTime, end: endTime),
+          OrderView(FinanceApi().fetchMemberOrder, 8,
+              start: startTime, end: endTime),
+          OrderView(FinanceApi().fetchPackageOrder, 11,
+              start: startTime, end: endTime)
         ],
       ),
     );
@@ -297,7 +288,7 @@ class _OrderViewState extends State<OrderView>
                       Text(settleStatus == 1 ? '预估服务费：' : '服务费',
                           style: TextStyle(
                               fontSize: G.setSp(22), color: hex('#666'))),
-                      Text('￥${shapshot.data}',
+                      Text('￥${shapshot.data.toStringAsFixed(2)}',
                           style: TextStyle(
                               fontSize: G.setSp(24), color: hex('#E84747')))
                     ],
@@ -323,21 +314,24 @@ class _OrderViewState extends State<OrderView>
     }
 
     FinanceModel sourceData;
-    var result = await widget.getListFn(pageNo, settleStatus,
-        beginPayDate: startTime, endPayDate: endTime);
-    var data = result.data['data'];
-    if (data == null) return;
-    sourceData = FinanceModel.fromJson(data);
-    Future.delayed(Duration(microseconds: 0), (){
-      setState(() {
-        total = sourceData.total;
+    try {
+      var result = await widget.getListFn(pageNo, settleStatus,
+          beginPayDate: startTime, endPayDate: endTime);
+      var data = result.data['data'];
+      if (data == null) return;
+      sourceData = FinanceModel.fromJson(data);
+      Future.delayed(Duration(microseconds: 0), () {
+        setState(() {
+          total = sourceData.total;
+        });
+        itemList.addAll(sourceData.records);
+        if (itemList.length >= total) {
+          _refreshController?.finishLoad(success: true, noMore: true);
+        }
       });
-      itemList.addAll(sourceData.records);
-      if (itemList.length >= total) {
-        _refreshController?.finishLoad(success: true, noMore: true);
-      }
-    });
-    
+    } catch (e) {
+      G.closeLoading();
+    }
   }
 
   Future _getCharge() async {
@@ -347,8 +341,9 @@ class _OrderViewState extends State<OrderView>
     var params = {
       'orderType': widget.orderType,
       'settleStatus': settleStatus,
-      'beginPayDate': G.formatTime(startTime.millisecondsSinceEpoch, type: 'date' ),
-      'endPayDate': G.formatTime(endTime.millisecondsSinceEpoch, type: 'date' )
+      'beginPayDate':
+          G.formatTime(startTime.millisecondsSinceEpoch, type: 'date'),
+      'endPayDate': G.formatTime(endTime.millisecondsSinceEpoch, type: 'date')
     };
     var result = await OrderApi().getAgentMemberServiceCharge(params);
     if (result.data['code'] == 200) {
@@ -378,6 +373,7 @@ class _OrderViewState extends State<OrderView>
                   }),
               onRefresh: () async {
                 await _getList(refresh: true);
+                chargeFuture = _getCharge();
               },
               onLoad: () async {
                 await _getList();

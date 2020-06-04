@@ -68,7 +68,7 @@ class FinanceItem extends StatelessWidget {
                           child: Container(
                               height: G.setWidth(190),
                               padding: EdgeInsets.symmetric(
-                                  horizontal: G.setWidth(20)),
+                                  horizontal: G.setWidth(20), vertical: G.setWidth(10)),
                               child: Column(
                                 // 规格说明
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -173,7 +173,7 @@ class FinanceItem extends StatelessWidget {
               children: <Widget>[
                 Container(
                    constraints: BoxConstraints(
-                    maxWidth: G.setWidth(336)
+                    maxWidth: G.setWidth(316)
                   ),
                   // width: G.setWidth(360),
                   child: Text('购买企业：${item.enterpriseName ?? ""}',
