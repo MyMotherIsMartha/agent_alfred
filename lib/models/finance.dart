@@ -54,6 +54,8 @@ class FinanceItemModel {
   double totalOrderAmount; // 订单金额
   double commissionFeeRate;
   double commission;
+  double originCommission;
+  double originCommissionFeeRate;
   bool isShowTodayFlag;
   int status;
   int orderType;
@@ -72,6 +74,8 @@ class FinanceItemModel {
       this.totalOrderAmount,
       this.commissionFeeRate,
       this.commission,
+      this.originCommission,
+      this.originCommissionFeeRate,
       this.isShowTodayFlag,
       this.status,
       this.orderType,
@@ -93,6 +97,12 @@ class FinanceItemModel {
     isShowTodayFlag = json['isShowTodayFlag'];
     status = json['status'];
     orderType = json['orderType'];
+    if (json['originCommission'] != null) {
+      originCommission = json['originCommission'];
+    }
+    if (json['originCommissionFeeRate'] != null) {
+      originCommissionFeeRate = json['originCommissionFeeRate'];
+    }
     if (json['toRole'] != null) {
       toRole = json['toRole'];
     }
@@ -120,6 +130,13 @@ class FinanceItemModel {
     data['isShowTodayFlag'] = this.isShowTodayFlag;
     data['status'] = this.status;
     data['orderType'] = this.orderType;
+    
+    if (this.originCommission != null) {
+      data['originCommission'] = this.originCommission;
+    }
+    if (this.originCommissionFeeRate != null) {
+      data['originCommissionFeeRate'] = this.originCommissionFeeRate;
+    }
     if (this.toRole != null) {
       data['toRole'] = this.toRole;
     }

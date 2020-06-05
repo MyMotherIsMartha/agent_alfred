@@ -39,11 +39,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           children: <Widget>[
             _bannerTop(),
             Expanded(
-            child: SingleChildScrollView(child: Column(
-              children: <Widget>[
-                _addressWrap(),
-                _giftWrapWidget()
-              ],
+                child: SingleChildScrollView(
+                    child: Column(
+              children: <Widget>[_addressWrap(), _giftWrapWidget()],
             )))
           ],
         ),
@@ -54,7 +52,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         height: G.setHeight(120),
         alignment: Alignment.center,
         child: FlatButton(
-          // 按钮禁用指示
+            // 按钮禁用指示
             onPressed: () async {
               if (addressProvide.address == null ||
                   Validate.isNon(addressProvide.address.address)) {
@@ -62,33 +60,42 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 return;
               }
               if (!Validate.isNon(selectedPackageNo)) {
-                var result = await MemberApi().giftpackageDetail(selectedPackageNo, promotionNo: selectedGiftPackagePromotionNo);
-                if (result.data['code'] != 200) {
-                  G.toast(result.data['message']);
-                  G.navigateTo(context, '/create-account', transition: TransitionType.fadeIn);
-                  // _getGiftsList();
-                  // packageList = packageList.where((item) {
-                  //   return item.giftPackageNo != selectedPackageNo;
-                  // });
-                  // packageList.removeWhere((element) => element.giftPackageNo == selectedPackageNo);
-                  // _getGiftsList();
-                  // giftListFuture = _getGiftsList();
-                  return;
+                try {
+                  var result = await MemberApi().giftpackageDetail(
+                      selectedPackageNo,
+                      promotionNo: selectedGiftPackagePromotionNo);
+                  if (result.data['code'] != 200) {
+                    G.toast(result.data['message']);
+                    if (result.data['code'] == 401) {
+                      return;
+                    }
+                    G.navigateTo(context, '/create-account',
+                        transition: TransitionType.fadeIn);
+                    // _getGiftsList();
+                    // packageList = packageList.where((item) {
+                    //   return item.giftPackageNo != selectedPackageNo;
+                    // });
+                    // packageList.removeWhere((element) => element.giftPackageNo == selectedPackageNo);
+                    // _getGiftsList();
+                    // giftListFuture = _getGiftsList();
+                    return;
+                  }
+                  // selectedPackageNo
+                  G.removePref('orderOverTime');
+                  await OrderApi().getGiftPackageOrders(
+                      giftPackageNo: selectedPackageNo,
+                      giftPackagePromotionNo: selectedGiftPackagePromotionNo);
+                  G.navigateTo(
+                      context,
+                      '/create-order?price=' +
+                          selectedPackagePrice +
+                          '&no=' +
+                          selectedPackageNo +
+                          '&promotionNo=' +
+                          selectedGiftPackagePromotionNo);
+                } catch (e) {
+                  print(e);
                 }
-                // selectedPackageNo
-                G.removePref('orderOverTime');
-                await OrderApi().getGiftPackageOrders(
-                  giftPackageNo: selectedPackageNo,
-                  giftPackagePromotionNo: selectedGiftPackagePromotionNo
-                );
-                G.navigateTo(
-                    context,
-                    '/create-order?price=' +
-                        selectedPackagePrice +
-                        '&no=' +
-                        selectedPackageNo +
-                        '&promotionNo=' +
-                        selectedGiftPackagePromotionNo);
               } else {
                 G.toast('请先选择礼包');
               }
@@ -100,15 +107,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               // 按钮禁用指示
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(G.setWidth(40)),
-                  gradient: addressProvide.address?.areaCode != null && selectedPackageNo != null
+                  gradient: addressProvide.address?.areaCode != null &&
+                          selectedPackageNo != null
                       ? LinearGradient(colors: [hex('#4C5873'), hex('#333949')])
-                      : LinearGradient(colors: [hex('#c9ccd4'), hex('#c9ccd4')])),
+                      : LinearGradient(
+                          colors: [hex('#c9ccd4'), hex('#c9ccd4')])),
               child: Text('提交礼包订单',
                   style: TextStyle(
                     fontSize: G.setSp(36),
-                    color: addressProvide.address?.areaCode != null && selectedPackageNo != null
-                    ? hex('#E7D1A8')
-                    : hex('#e9e5de'),
+                    color: addressProvide.address?.areaCode != null &&
+                            selectedPackageNo != null
+                        ? hex('#E7D1A8')
+                        : hex('#e9e5de'),
                   )),
             )),
       ),
@@ -214,8 +224,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Image.asset("lib/assets/images/icon_temp1.png",
-              width: G.setWidth(80), height: G.setWidth(80)),
+          Image.asset(item.icon, width: G.setWidth(80), height: G.setWidth(80)),
           G.spacing(10),
           Text(item.title,
               style: TextStyle(
@@ -309,19 +318,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ],
               ),
               Container(
-                    constraints: BoxConstraints(
-                      maxWidth: G.setWidth(600),
-                    ),
-                    child:
-              Text(
-                  address.province +
-                      address.city +
-                      address.district +
-                      address.address,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style:
-                      TextStyle(color: hex('#999999'), fontSize: G.setSp(24))))
+                  constraints: BoxConstraints(
+                    maxWidth: G.setWidth(600),
+                  ),
+                  child: Text(
+                      address.province +
+                          address.city +
+                          address.district +
+                          address.address,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: hex('#999999'), fontSize: G.setSp(24))))
             ],
           ),
           iconarrow(size: G.setSp(30))
