@@ -445,7 +445,10 @@ class _MemberListState extends State<MemberList> {
     if (refresh) {
       _controller?.finishLoad(success: true, noMore: false);
       pageNo = 1;
-      _listData = [];
+     
+      setState(() {
+        _listData = [];
+      });
     } else {
       ++pageNo;
     }
