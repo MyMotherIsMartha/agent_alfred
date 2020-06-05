@@ -275,11 +275,11 @@ class _AddressPageState extends State<AddressPage> {
                   width: 690,
                   height: 100,
                   fn: () async {
+                    
                     if (!btnCanClick) {
                       return;
                     }
                     btnCanClick = false;
-                    G.showLoading(context);
                     List<String> areaLev = areaName.split(',');
                     Map data = {
                       'consigneeName': consigneeName,
@@ -290,12 +290,21 @@ class _AddressPageState extends State<AddressPage> {
                       'city': areaLev[1],
                       'district': areaLev[2],
                     };
-                    print(data);
+                    
                     var regx = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9.]+$");
                     if (!regx.hasMatch(consigneeName)) {
                       G.toast('姓名只能输入中英文');
+                      btnCanClick = true;
                       return;
                     }
+                    var regaddress = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9\-\_.]+$");
+                    if (!regaddress.hasMatch(address)) {
+                      G.toast('非法详细地址');
+                      btnCanClick = true;
+                      return;
+                    }
+                    print(data);
+                    G.showLoading(context);
                     var result = await addressProvide.updateAddress(data);
                     G.closeLoading();
                     Future.delayed(Duration(seconds: 2), () {

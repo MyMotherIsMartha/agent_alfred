@@ -226,6 +226,7 @@ class _FinePointPageState extends State<FinePointPage> {
       appBar: AppBar(
         title: Text('资格任务细则'),
         centerTitle: true,
+        elevation: 0,
       ),
       body: FutureBuilder(
         future: futureRes,

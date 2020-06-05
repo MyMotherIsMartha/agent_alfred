@@ -62,7 +62,7 @@ Dio service() {
   //   // config the http client
   //   client.findProxy = (uri) {
   //     //proxy all request to localhost:8888
-  //     return "PROXY 192.168.10.64:8888";
+  //     return "PROXY 192.168.10.37:8888";
   //   };
   //   // you can also create a HttpClient to dio
   //   // return HttpClient();

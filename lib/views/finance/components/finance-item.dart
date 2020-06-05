@@ -218,12 +218,20 @@ class FinanceItem extends StatelessWidget {
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])),
                 item.commissionFeeRate != null && status != 3
-                    ? Text('比例：${item.commissionFeeRate}%',
+                    ? Text('比例：${item.commissionFeeRate.toStringAsFixed(2)}%',
                         style: TextStyle(
                             height: 36 / 24,
                             color: hex('#252525'),
                             fontSize: G.setSp(26)))
                     : Container(),
+                    // TODO:: 划线价格
+                // item.commissionFeeRate != null && status != 3 && item.originCommissionFeeRate != null && item.commissionFeeRate != item.originCommissionFeeRate
+                //     ? Text('比例：${item.originCommissionFeeRate.toStringAsFixed(2)}%',
+                //         style: TextStyle(
+                //             height: 36 / 24,
+                //             color: hex('#252525'),
+                //             fontSize: G.setSp(26)))
+                //     : Container(),
                 status != 3 ? Text.rich(TextSpan(
                     text: '预估服务费：',
                     style: TextStyle(
@@ -240,6 +248,24 @@ class FinanceItem extends StatelessWidget {
                           style: TextStyle(
                               color: hex('#252525'), fontSize: G.setSp(30))),
                     ])) : Container(),
+                    // status != 3 && item.originCommission != null && item.originCommission != item.commission
+                    // ? Text.rich(TextSpan(
+                    // text: '预估服务费：',
+                    // style: TextStyle(
+                    //     height: 36 / 24,
+                    //     color: hex('#252525'),
+                    //     fontSize: G.setSp(30)),
+                    // children: [
+                    //   TextSpan(
+                    //       text: '￥',
+                    //       style: TextStyle(
+                    //           color: hex('#252525'), fontSize: G.setSp(24))),
+                    //   TextSpan(
+                    //       text: item.originCommission.toStringAsFixed(2),
+                    //       style: TextStyle(
+                    //           color: hex('#252525'), fontSize: G.setSp(30))),
+                    // ]))
+                    // : Container(),
               ],
             ))
           ],
