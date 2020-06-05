@@ -226,7 +226,7 @@ class _BillHistoryState extends State<BillHistory> {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: item['fundDirection'] == 0 ? '' : '-',
+                      text: item['fundDirection'] == 0 ? '+' : '-',
                       style: TextStyle(
                         fontSize: G.setSp(30),
                         color: hex('#333'),

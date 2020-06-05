@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/api/finance.dart';
 import 'package:agent37_flutter/api/member.dart';
+import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/api/system.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/hex_color.dart';
@@ -48,6 +49,16 @@ class _WalletMainState extends State<WalletMain> {
     });
   }
 
+  Future _getCharge2() async {
+    var result = await OrderApi().getSettlementingStatisticsSum();
+    setState(() {
+      pendingMemberOrderServiceCharge = result.data['data'];
+    });
+    // setState(() {
+    //   pendingMemberOrderServiceCharge = resultData['pendingMemberOrderServiceCharge'];
+    // });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -55,7 +66,7 @@ class _WalletMainState extends State<WalletMain> {
     print('test initState wallet');
     _getAccountInfo();
     _getSystemSetting();
-    _getCharge();
+    _getCharge2();
   }
 
   @override
