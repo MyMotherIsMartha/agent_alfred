@@ -237,11 +237,6 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     // print(payInfo['appid']);
                     weChatResponseEventHandler.listen((res) {
                       G.closeLoading();
-                      print(res.errStr);
-                      print(res.errCode);
-                      print(res.isSuccessful);
-                      print('微信支付结果 怎么回事！！！！！！！');
-                      // G.toast(res.errCode.toString());
                       if (res is WeChatPaymentResponse) {
                         int code = res.errCode;
                         switch (code) {

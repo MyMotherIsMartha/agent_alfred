@@ -657,7 +657,7 @@ class _HomePageState extends State<HomePage>
                                   ),
                                   index == 1 && originFeeVisible
                                   ? Text(
-                                    data[6].toStringAsFixed(2),
+                                    '￥' + data[6].toStringAsFixed(2),
                                     style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       fontSize: G.setSp(24),
