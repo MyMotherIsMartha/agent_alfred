@@ -56,7 +56,10 @@ class FinanceApi{
     });
   }
 
-
+  //  获取提现短信验证码
+  getWithDrawalApplyCode() async {
+    return await service().post('$agentFinanceApi/v1/agentTradeOrders/sendWithDrawalApplySmsCode');
+  }
   // 不对接连连支付提现申请
   withDrawalApply(params) async {
     return await service().post('$agentFinanceApi/v1/agentTradeOrders/withDrawalApply', data: params);

@@ -64,6 +64,10 @@ class OrderApi{
   getMakeMoneyById(id) async {
     return await service().get('$orderPrefix/v1/statisticsMakeMoneyRecords/$id');
   }
+  //  服务费发票待入账金额
+  getSettlementingStatisticsSum() async {
+    return await service().get('$orderPrefix/v1/statisticsMakeMoneyRecords/settlementingStatisticsSum');
+  }
   //  当前结算服务费列表
   getMakeMoneyList(params) async {
     return await service().get('$orderPrefix/v1/statisticsMakeMoneyRecords/settlementStatisticsOrders', queryParameters: params);
