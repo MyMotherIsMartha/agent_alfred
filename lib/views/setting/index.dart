@@ -205,11 +205,13 @@ class _SettingPageState extends State<SettingPage> {
                   Container(
                     height: G.setWidth(60),
                     padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
+                    alignment: Alignment.center,
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text('要修改通知，您可以在系统设置中修改',
                             style: TextStyle(
-                                fontSize: G.setSp(24), color: hex('#999'))),
+                                fontSize: G.setSp(24), color: hex('#999'), height: 60 / 24)),
                         // G.spacing(10, dir: 'x'),
                         // InkWell(
                         //   onTap: () {
