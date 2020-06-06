@@ -8,9 +8,10 @@ import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alipay/flutter_alipay.dart';
+// import 'package:flutter_alipay/flutter_alipay.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:provider/provider.dart';
+import 'package:tobias/tobias.dart';
 
 class CreateOrderPage extends StatefulWidget {
   final String price;
@@ -47,8 +48,8 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
         appId: EnvConfig.dev()['wx-appid'],
         universalLink: "https://agent37app.woouo.com");
     // print(result);
-    var result = await FlutterAlipay.setIosUrlSchema('com.woouo.agent37.alipay');
-    print(result);
+    // var result = await FlutterAlipay.setIosUrlSchema('com.woouo.agent37.alipay');
+    // print(result);
   }
 
   @override
@@ -209,19 +210,38 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                 switch (payType) {
                   case 'ali':
                     var result = await OrderApi().aliPay(data);
-                    print(result);
                     if (result.data['code'] != 200) return;
                     String payInfo = result.data['data'];
-                    print(payInfo);
-                    var result2 = await FlutterAlipay.pay(
-                      payInfo,
-                    );
+                    try {
+                      // 根据环境确定是什么模式  目前是沙箱
+                      var res = await aliPay(payInfo, evn: AliPayEvn.SANDBOX);
+                      print(res['resultStatus']);
+                      print("res['resultStatus']");
+                      print(res['resultStatus'] == "9000");
+                      if (res['resultStatus'] == "9000") {
+                        G.toast('支付成功');
+                        Provider.of<UserProvide>(context).updateUserAuth();
+                      } else {
+                         G.toast('支付宝支付失败');
+                      }
+                    } on Exception catch (e) {
+                      print(e);
+                      G.toast('支付宝支付失败');
+                    }
+                    
+                    // isAliPayInstalled().then((data){
+                    //   print("installed $data");
+                    // });
+                    // TODO::
+                    // var result2 = await FlutterAlipay.pay(
+                    //   payInfo,
+                    // );
                     // var result2 = await SyFlutterAlipay.pay(
                     //   payInfo,
                     //   urlScheme: '', //前面配置的urlScheme
                     //   isSandbox: true //是否是沙箱环境，只对android有效
                     // );
-                    print(result2);
+                    // print(result2);
                     break;
                   case 'wechat':
                     G.showLoading(context);
@@ -244,6 +264,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                             G.toast('已取消支付');
                             break;
                           case 0:
+                            G.toast('支付成功');
                             Provider.of<UserProvide>(context).updateUserAuth();
                             break;
                           default:

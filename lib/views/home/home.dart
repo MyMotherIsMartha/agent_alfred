@@ -464,42 +464,42 @@ class _HomePageState extends State<HomePage>
                           ],
                         ),
                       ),
-                      homeinfo.checkStatus != null && homeinfo.checkStatus == 1
-                          ? Positioned(
-                              top: 0,
-                              left: 0,
-                              width: G.setWidth(690),
-                              height: G.setWidth(230),
-                              child: Opacity(
-                                opacity: 0.6,
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: hex('#333'),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: InkWell(
-                                      onTap: () {
-                                        yyAlertDialog(context);
-                                      },
-                                      child: Container(
-                                        width: G.setWidth(200),
-                                        height: G.setWidth(60),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: hex('#fff')),
-                                          borderRadius: BorderRadius.circular(
-                                              G.setWidth(50)),
-                                        ),
-                                        child: Text('申请延时',
-                                            style: TextStyle(
-                                                color: hex('#FFF'),
-                                                fontSize: G.setSp(28))),
-                                      ),
-                                    )),
-                              ))
-                          : SizedBox()
+                      // homeinfo.checkStatus != null && homeinfo.checkStatus == 1
+                      //     ? Positioned(
+                      //         top: 0,
+                      //         left: 0,
+                      //         width: G.setWidth(690),
+                      //         height: G.setWidth(230),
+                      //         child: Opacity(
+                      //           opacity: 0.6,
+                      //           child: Container(
+                      //               alignment: Alignment.center,
+                      //               decoration: BoxDecoration(
+                      //                   color: hex('#333'),
+                      //                   borderRadius:
+                      //                       BorderRadius.circular(10)),
+                      //               child: InkWell(
+                      //                 onTap: () {
+                      //                   yyAlertDialog(context);
+                      //                 },
+                      //                 child: Container(
+                      //                   width: G.setWidth(200),
+                      //                   height: G.setWidth(60),
+                      //                   alignment: Alignment.center,
+                      //                   decoration: BoxDecoration(
+                      //                     border:
+                      //                         Border.all(color: hex('#fff')),
+                      //                     borderRadius: BorderRadius.circular(
+                      //                         G.setWidth(50)),
+                      //                   ),
+                      //                   child: Text('申请延时',
+                      //                       style: TextStyle(
+                      //                           color: hex('#FFF'),
+                      //                           fontSize: G.setSp(28))),
+                      //                 ),
+                      //               )),
+                      //         ))
+                      //     : SizedBox()
                     ],
                   ),
                 )
