@@ -173,7 +173,7 @@ class FinanceItem extends StatelessWidget {
               children: <Widget>[
                 Container(
                    constraints: BoxConstraints(
-                    maxWidth: G.setWidth(316)
+                    maxWidth: G.setWidth(290)
                   ),
                   // width: G.setWidth(360),
                   child: Text('购买企业：${item.enterpriseName ?? ""}',

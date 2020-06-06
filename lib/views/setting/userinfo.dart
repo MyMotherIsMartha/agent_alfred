@@ -94,9 +94,17 @@ class SettingUserInfoPage extends StatelessWidget {
                           //     }
                           //   },
                           // ),
-                          Text(nickname ?? '',
+                          Container(
+                            constraints: BoxConstraints(
+                              maxWidth: G.setWidth(540),
+                            ),
+                            child: Text(nickname ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: hex('#333'), fontSize: G.setSp(30))),
+                          ),
+                          
                           G.spacing(20, dir: 'x'),
                           iconarrow(color: hex('#999'), size: G.setSp(26))
                         ],
