@@ -45,39 +45,6 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     _getPerfectInfo();
   }
 
-  _getEnterpriseInfo() async {
-    var result = await MemberApi().getEnterpriseInfo();
-    var resultData = result.data['data'];
-    print(result.data.toString());
-    licenseUrl = resultData['businessLicensePicture'];
-    formData1['jobName']['val'] = resultData['industryName'];
-    formData1['enterpriseName']['val'] = resultData['enterpriseName'];
-    formData1['registerCode']['val'] = resultData['registerCode'];
-    formData1['areaName']['val'] = resultData['province'] + resultData['city'] + resultData['district'];
-    formData1['addressStr']['val'] = resultData['registerAddress'];
-    formData1['legalName']['val'] = resultData['legalPerson'];
-    formData1['legalMobile']['val'] = resultData['mobile'];
-    formData1['legalIdNo']['val'] = resultData['legalIdCard'];
-    
-
-
-    List<Widget> fieldWidgetAry1 = [];
-    formData1.forEach((key, val) {
-      print(val);
-      fieldWidgetAry1.add(
-        VField(
-          label: val['label'],
-          fieldVal: val['val'],
-        )
-      );
-    });
-    setState(() {
-      formDataWrap1 = Column(
-        children: fieldWidgetAry1
-      );
-    });
-  }
-
   Map formData1 = {
     'jobName': {'label': '所属行业', 'val': ''},
     'enterpriseName': {'label': '企业名称', 'val': ''},
@@ -117,7 +84,9 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
     var result = await MemberApi().getPerfectInfo();
     var resultData = result.data['data'];
     print(result.data.toString());
-
+    licenseUrl = resultData['businessLicensePicture'];
+    print('testt1111111-------');
+    print(licenseUrl);
     formData1['jobName']['val'] = resultData['industryName'];
     formData1['enterpriseName']['val'] = resultData['enterpriseName'];
     formData1['registerCode']['val'] = resultData['registerCode'];
@@ -131,7 +100,7 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
 
     List<Widget> fieldWidgetAry1 = [];
     formData1.forEach((key, val) {
-      print(val);
+      // print(val);
       fieldWidgetAry1.add(
         VField(
           label: val['label'],
