@@ -153,7 +153,7 @@ class AgentManageMainState extends State<AgentManageMain>
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('每推荐${_agentNumObj['eachAddDiamondMemberNum']}个钻石会员即可获赠名额', style: TextStyle(fontSize: G.setSp(30), color: hex('#000'))),
+                          Text('每推荐${_agentNumObj['eachAddDiamondMemberNum']}个企业会员即可获赠名额', style: TextStyle(fontSize: G.setSp(30), color: hex('#000'))),
                           Text('无次数限制，满足自动新增', style: TextStyle(fontSize: G.setSp(24), color: hex('#999999')))
                         ]
                       )

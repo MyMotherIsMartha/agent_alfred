@@ -3,6 +3,7 @@ import 'package:agent37_flutter/provide/common.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:date_format/date_format.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
@@ -184,47 +185,79 @@ class G {
     // return formatDate(new Date(item.payTime), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])
   }
 
-  static YYDialog logout(BuildContext context, {String msg}) {
-    return YYDialog().build(context)
-      ..width = G.setWidth(440)
-      ..borderRadius = G.setWidth(20)
-      ..text(
-        padding: EdgeInsets.all(G.setWidth(60)),
-        alignment: Alignment.center,
-        text: msg ?? "退出登录",
-        color: hex('#333'),
-        fontSize: G.setSp(36),
-        fontWeight: FontWeight.w500,
-      )
-      ..divider()
-      ..doubleButton(
-        padding: EdgeInsets.only(top: 10.0),
-        gravity: Gravity.center,
-        withDivider: true,
-        text1: "取消",
-        color1: hex('#85868A'),
-        fontSize1: G.setSp(36),
-        onTap1: () {
-          print("取消");
-        },
-        text2: "确定",
-        color2: hex('##0091F0'),
-        fontSize2: G.setSp(36),
-        onTap2: () {
-          // G.clearPref();
-          G.removePref('token');
-          G.removePref('orderOverTime');
-        },
-      )
-      ..dismissCallBack = () {
-        if (Validate.isNon(G.getPref('token'))) {
-          Provider.of<AddressProvide>(context).resetAddress();
-          Future.delayed(Duration(microseconds: 100), () {
-            G.navigateTo(context, '/login', replace: true);
-          });
-        }
-      }
-      ..show();
+  static void logout(BuildContext context, {String msg}) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return CupertinoAlertDialog(
+          title: Text(msg ?? "退出登录"),
+          // content:Text('我是content'),
+          actions:<Widget>[
+            
+            CupertinoDialogAction(
+              child: Text('取消', style: TextStyle(color: hex('#85868A')),),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+        
+            CupertinoDialogAction(
+              child: Text('确定'),
+              onPressed: (){
+                G.removePref('token');
+                G.removePref('orderOverTime');
+                if (Validate.isNon(G.getPref('token'))) {
+                  Provider.of<AddressProvide>(context).resetAddress();
+                  Future.delayed(Duration(microseconds: 100), () {
+                    G.navigateTo(context, '/login', replace: true);
+                  });
+                }
+              },
+            )
+          ]
+        );
+      },
+    );
+    // return YYDialog().build(context)
+    //   ..width = G.setWidth(440)
+    //   ..borderRadius = G.setWidth(20)
+    //   ..text(
+    //     padding: EdgeInsets.all(G.setWidth(60)),
+    //     alignment: Alignment.center,
+    //     text: msg ?? "退出登录",
+    //     color: hex('#333'),
+    //     fontSize: G.setSp(36),
+    //     fontWeight: FontWeight.w500,
+    //   )
+    //   ..divider()
+    //   ..doubleButton(
+    //     padding: EdgeInsets.only(top: 10.0),
+    //     gravity: Gravity.center,
+    //     withDivider: true,
+    //     text1: "取消",
+    //     color1: hex('#85868A'),
+    //     fontSize1: G.setSp(36),
+    //     onTap1: () {
+    //       print("取消");
+    //     },
+    //     text2: "确定",
+    //     color2: hex('##0091F0'),
+    //     fontSize2: G.setSp(36),
+    //     onTap2: () {
+    //       // G.clearPref();
+    //       G.removePref('token');
+    //       G.removePref('orderOverTime');
+    //     },
+    //   )
+    //   ..dismissCallBack = () {
+    //     if (Validate.isNon(G.getPref('token'))) {
+    //       Provider.of<AddressProvide>(context).resetAddress();
+    //       Future.delayed(Duration(microseconds: 100), () {
+    //         G.navigateTo(context, '/login', replace: true);
+    //       });
+    //     }
+    //   }
+    //   ..show();
   }
 
   static String moneyToStr(double money) {
