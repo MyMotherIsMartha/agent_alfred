@@ -14,18 +14,21 @@ class EnvConfig {
       return {
         'api': 'http://192.168.10.186:31050/', // 测试环境
         'web-address': 'http://192.168.10.186:9000/',
+        'qr-register-url': 'http://192.168.10.184:9015/',
         'wx-appid': 'wx902617a0eaaca56f'
       };
     } else if (env == 'uat') {
       return {
         'api': 'https://api-uat-37agent.woouo.com/', // 测试环境
         'web-address': 'https://h5-uat-37agent.woouo.com/',
+        'qr-register-url': 'http://192.168.10.184:9015/',
         'wx-appid': 'wx902617a0eaaca56f'
       };
     } else {
       return {
         'api': 'http://192.168.10.181:31050/', // 开发环境
         'web-address': 'http://192.168.10.142:8080/',
+        'qr-register-url': 'http://192.168.10.184:9015/',
         'wx-appid': 'wx902617a0eaaca56f'
       };
     }
