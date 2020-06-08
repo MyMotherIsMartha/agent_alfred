@@ -71,7 +71,7 @@ class FinanceItem extends StatelessWidget {
                                   horizontal: G.setWidth(20), vertical: G.setWidth(10)),
                               child: Column(
                                 // 规格说明
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   // 标题与价格
