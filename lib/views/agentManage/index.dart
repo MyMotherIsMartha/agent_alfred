@@ -20,6 +20,9 @@ import 'package:date_format/date_format.dart';
 
 /// NestedScrollView示例页面
 class AgentManageMain extends StatefulWidget {
+  final String tabIndex;
+
+  AgentManageMain({this.tabIndex});
   @override
   AgentManageMainState createState() {
     return AgentManageMainState();
@@ -54,6 +57,7 @@ class AgentManageMainState extends State<AgentManageMain>
   void initState() {
     super.initState();
     loadCateGoryData();
+    _tabController.animateTo(int.parse(widget.tabIndex));
     _scrollController = ScrollController();
   }
 

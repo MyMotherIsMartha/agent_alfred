@@ -138,7 +138,7 @@ Handler finePointHandel = Handler(
 
 Handler uploadEnterPrisePicHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    String isFirstUpload = params['isFirstUpload']?.first ?? 'yes';;
+    String isFirstUpload = params['isFirstUpload']?.first ?? 'yes';
   return UploadEnterprisePic(
     isFirstUpload: isFirstUpload
   );
@@ -330,7 +330,10 @@ Handler resetMobileHandler = Handler(
 
 Handler agentManageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return AgentManageMain();
+    String tabIndex = params['tabIndex']?.first ?? '0';
+    return AgentManageMain(
+      tabIndex: tabIndex
+    );
   }
 );
 
