@@ -494,7 +494,7 @@ class _ResultPageState extends State<ResultPage> {
             children: <Widget>[
             RaisedButton(
               onPressed: () {
-                Navigator.pop(context);
+                G.navigateTo(context, '/invoiceList', replace: true);
               },
               elevation: 4.0,
               color: hex('#69A5FF'),
