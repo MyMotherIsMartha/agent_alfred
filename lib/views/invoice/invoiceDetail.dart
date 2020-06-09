@@ -5,6 +5,7 @@ import 'package:agent37_flutter/models/invoiceInfo.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/oss.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,9 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
   String invoicePic;
   InvoiceInfoModel invoiceInfo;
   var invoiceFuture;
+  List collapseList = [];
+  bool collapse = false;
+  bool isEditStatus;
 
   @override
   void initState() { 
@@ -35,6 +39,12 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
     Map resultData = result.data['data'];
     print(resultData);
     invoiceInfo = InvoiceInfoModel.fromJson(resultData);
+    if (invoiceInfo.invoiceItems.length > 4) {
+      collapseList = invoiceInfo.invoiceItems.sublist(0, 4);
+    } else {
+      collapseList = invoiceInfo.invoiceItems;
+    }
+    
     invoicePic = invoiceInfo.checkInvoiceUrl;
     return 'end';
   }
@@ -173,6 +183,12 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
           '上传发票',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),
         ),
+        leading: BackButton(
+          onPressed: () {
+            G.navigateTo(context, '/invoiceList',
+                replace: true, transition: TransitionType.inFromLeft);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: FutureBuilder(
@@ -194,10 +210,39 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true, 
-                      itemCount: invoiceInfo.invoiceItems.length,
+                      itemCount: collapseList.length,
                       itemBuilder: (context, index) {
-                          return VField(label: invoiceInfo.invoiceItems[index].invoiceItemName, fieldVal: invoiceInfo.invoiceItems[index].invoiceItemContent);
+                          return VField(label: collapseList[index].invoiceItemName, fieldVal: collapseList[index].invoiceItemContent);
                       }),
+                    invoiceInfo.invoiceItems.length > 4 ? 
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          collapse = !collapse;
+                          if (collapse) {
+                            collapseList = invoiceInfo.invoiceItems;
+                          } else {
+                            collapseList = invoiceInfo.invoiceItems.sublist(0, 4);
+                          }
+                        });
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: G.setWidth(20)),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(collapse ? '收起' : '展开更多信息', style: TextStyle(color: hex('#999'), fontSize: G.setSp(24))),
+                            Icon(collapse ? Icons.arrow_drop_up : Icons.arrow_drop_down, color: hex('#999'))
+                          ],
+                        )
+                      )
+                    ) : Container(),
+                    
                     G.spacing(20),
                     Container(
                       color: Colors.white,

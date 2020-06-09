@@ -161,20 +161,24 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     FormData data = FormData.fromMap({
         "file": await MultipartFile.fromFile(path,filename: name + '.' + suffix)
     });
-    var resultInfo = await OssApi().uploadEnterpriseLicense(data);
+    G.showLoading(context);
+    var resultInfo = await OssApi().uploadLicenseCanFail(data);
+    G.closeLoading();
     if (resultInfo.data['success'] == true) {
-      Map resultData = resultInfo.data['data'];
+      print('success');
+      var licenseInfo = resultInfo.data['data']['licenseInfo'];
       setState(() {
-        licenseUrl = resultData['businessLicenseUrl'];
-        enterpriseName = _enterpriseNameCtrl.text = resultData['enterpriseName'];
-        registerCode = _registerCodeCtrl.text = resultData['registerCode'];
-        _addressCtrl.text = resultData['registerAddress'];
-        addressStr = _addressCtrl.text = resultData['registerAddress'];
-        legalName = _legalPersonCtrl.text = resultData['legalPerson'];
+        licenseUrl = resultInfo.data['data']['businessLicenseUrl'];
       });
-      // var uploadJson = FluroConvertUtils.object2string(uploadData);
-      // G.navigateTo(
-      //   context, Routes.uploadLicenseForm + "?uploadJson=$uploadJson");
+      if (licenseInfo != null) {
+        setState(() {
+          enterpriseName = _enterpriseNameCtrl.text = licenseInfo['enterpriseName'];
+          registerCode = _registerCodeCtrl.text = licenseInfo['registerCode'];
+          _addressCtrl.text = licenseInfo['registerAddress'];
+          addressStr = _addressCtrl.text = licenseInfo['registerAddress'];
+          legalName = _legalPersonCtrl.text = licenseInfo['legalPerson'];
+        });
+      }
     } else {
       print(resultInfo.data['message']);
     }
@@ -381,14 +385,9 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                                   decoration:
                                       InputDecoration(border: InputBorder.none, hintText: '请输入企业名称'),
                                   controller: _enterpriseNameCtrl,
-                                  // onChanged: (e) {
-                                  //   setState(() {
-                                  //     _enterpriseNameCtrl.value = G.setTextEdit(e);
-                                  //   });
-                                  // },
-                                  onSaved: (e) {
+                                  onChanged: (e) {
                                     setState(() {
-                                      _enterpriseNameCtrl.text = e;
+                                      enterpriseName = e;
                                     });
                                   },
                                   validator: (value) {
@@ -428,10 +427,9 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                                   decoration:
                                       InputDecoration(border: InputBorder.none, hintText: '请输入统一社会信用代码'),
                                   controller: _registerCodeCtrl,
-                                  onSaved: (e) {
+                                  onChanged: (e) {
                                     setState(() {
-                                      _registerCodeCtrl.text = e;
-                                      formValidate['registerCode'] = Validate.isNon(e);
+                                      registerCode = e;
                                     });
                                   },
                                   validator: (value) {

@@ -86,7 +86,7 @@ class _FinePointPageState extends State<FinePointPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('开通钻石会员'),
+                Text('开通企业会员'),
                 Row(
                   children: <Widget>[
                     Container(
@@ -117,7 +117,7 @@ class _FinePointPageState extends State<FinePointPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('钻石会员有效订单'),
+                Text('企业会员有效订单'),
                 Row(
                   children: <Widget>[
                     Container(

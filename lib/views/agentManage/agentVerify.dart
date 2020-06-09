@@ -6,6 +6,7 @@ import 'package:agent37_flutter/components/v-timer-btn.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 class AgentVerify extends StatefulWidget {
@@ -33,7 +34,8 @@ class _AgentVerifyState extends State<AgentVerify> {
     var result = await MemberApi().verifySubAgent(params);
     if (result.data['code'] == 200) {
       G.toast('验证成功');
-      G.router.pop(context);
+      // G.router.pop(context);
+      G.navigateTo(context, '/agentManage?tabIndex=1', replace: true, transition: TransitionType.inFromLeft);
     }
   }
   
@@ -74,7 +76,12 @@ class _AgentVerifyState extends State<AgentVerify> {
     return Scaffold(
       appBar: AppBar(
         title: Text('代理商短信验证'),
-        centerTitle: true
+        centerTitle: true,
+        // leading: BackButton(
+        //   onPressed: () {
+        //     G.navigateTo(context, '/agentManage?tabIndex=1', replace: true, transition: TransitionType.inFromLeft);
+        //   },
+        // ),
       ),
       body: Container(
         color: hex('#F3F4F6'),
