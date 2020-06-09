@@ -103,9 +103,9 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
                   if (withdrawMoney > withdrawalBalance) {
                     hintText = '超出可提现金额';
                   } else if (withdrawMoney < lessMoney) {
-                    hintText = '提现金额不能少于${lessMoney.toStringAsFixed(0)}元';
+                    hintText = '提现金额需大于${lessMoney.toStringAsFixed(0)}元';
                   } else {
-                    if (withdrawMoney >= overMoney) {
+                    if (withdrawMoney > overMoney) {
                       currentFee = withdrawMoney * percentFee / 100;
                     } else {
                       currentFee = serviceFee;
@@ -132,6 +132,12 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
                   onTap: () {
                     setState(() {
                       _moneyCtrl.value = G.setTextEdit(withdrawalBalance.toStringAsFixed(2));
+                      if (withdrawalBalance > overMoney) {
+                        currentFee = withdrawalBalance * percentFee / 100;
+                      } else {
+                        currentFee = serviceFee;
+                      }
+                      hintText = '服务费¥${currentFee.toStringAsFixed(2)}';
                     });
                   },
                   child: Text('全部', style: TextStyle(fontSize: G.setSp(30), color: hex('#424242'), fontWeight: FontWeight.w500))
@@ -230,7 +236,7 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
     }
     double withdrawMoney = double.parse(inputMoney);
     if (withdrawMoney < lessMoney) {
-      G.toast('提现金额不能少于${lessMoney.toStringAsFixed(0)}元');
+      G.toast('提现金额需大于${lessMoney.toStringAsFixed(0)}元');
       return;
     }
     if (withdrawMoney > withdrawalBalance) {
