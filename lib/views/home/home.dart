@@ -91,6 +91,8 @@ class _HomePageState extends State<HomePage>
   }
 
   Future _getHomeinfo() async {
+    print(ModalRoute.of(context).settings.name);
+    print("ModalRoute.of(context).settings.name");
     try {
       var result = await MemberApi().getHomeInfo();
       var result2;
@@ -408,7 +410,7 @@ class _HomePageState extends State<HomePage>
                               InkWell(
                                 onTap: () {
                                   statisticsDialog(
-                                      context, '服务费减少说明', '倒计时结束后，前3个会员开通的居间服务费会减半哦！');
+                                      context, '服务费减少说明', '倒计时结束后，前5个会员开通的居间服务费会减半哦！');
                                 },
                                 child: Image.asset(
                                   '${G.imgBaseUrl}pic-icon/info_icon.png',
