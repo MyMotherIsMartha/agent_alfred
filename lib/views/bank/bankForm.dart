@@ -78,7 +78,7 @@ class _BankFormPageState extends State<BankFormPage> {
     print(result.data['data']);
     if (result.data['code'] == 200) {
       Provider.of<UserProvide>(context).updateBankCardInfo();
-      G.router.pop(context);
+      G.navigateTo(context, '/bankMain', replace: true, transition: TransitionType.inFromLeft);
     }
   }
 
@@ -131,12 +131,12 @@ class _BankFormPageState extends State<BankFormPage> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         iconTheme: IconThemeData(color: hex('#000')),
-        leading: BackButton(
-          onPressed: () {
-            G.navigateTo(context, '/bankMain',
-                replace: true, transition: TransitionType.inFromLeft);
-          },
-        ),
+        // leading: BackButton(
+        //   onPressed: () {
+        //     G.navigateTo(context, '/bankMain',
+        //         replace: true, transition: TransitionType.inFromLeft);
+        //   },
+        // ),
         title: Text(
           formStatus == '0' ? '新增银行卡' : '编辑银行卡',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),

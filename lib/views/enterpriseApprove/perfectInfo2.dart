@@ -93,7 +93,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
         areaName = '';
       }
       
-
+      nameController.value = G.setTextEdit(resultData['name']);
       addressStr = addressStrController.text = resultData['address'];
 
       formValidate['mobile'] = !Validate.isNon(mobile);
@@ -282,6 +282,7 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
       if (result.data['code'] == 200) {
         var statusCode = 1;
         Provider.of<UserProvide>(context).updateUserAuth(isInit: false);
+        Provider.of<UserProvide>(context).updateEnterpriseinfo();
         G.navigateTo(
           context, Routes.perfectEnterpriseAudit + "?currentStatus=$statusCode", replace: true);
       }

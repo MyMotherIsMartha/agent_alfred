@@ -114,7 +114,7 @@ class _ReadPerfectInfoState extends State<ReadPerfectInfo>
       );
     });
 
-    resultData2['legalName'] = resultData['name'];
+    resultData2['legalName'] = resultData['legalPerson'];
     resultData2['frontIdCard1'] = resultData['legalIdCardFront'];
     resultData2['backIdCard1'] = resultData['legalIdCardBack'];
     resultData2['frontIdCard2'] = resultData['idCardFront'];

@@ -45,14 +45,14 @@ void openShareWindow(context, String type, int role) {
     return null;
     }
 
-  void saveScreen() async {
-    RenderRepaintBoundary boundary =
-        qrCodeKey.currentContext.findRenderObject();
-    ui.Image image = await boundary.toImage();
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    final result = await ImageGallerySaver2.saveImage(byteData.buffer.asUint8List());
-    print(result);
-  }
+  // void saveScreen() async {
+  //   RenderRepaintBoundary boundary =
+  //       qrCodeKey.currentContext.findRenderObject();
+  //   ui.Image image = await boundary.toImage();
+  //   ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  //   final result = await ImageGallerySaver2.saveImage(byteData.buffer.asUint8List());
+  //   print(result);
+  // }
 
   void saveQrcode() async {
     print('qr code save');

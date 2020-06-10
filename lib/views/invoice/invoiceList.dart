@@ -132,7 +132,7 @@ class _InvoiceListState extends State<InvoiceList> {
     String str;
     switch (type) {
       case 7:
-        str = '采购商品服务费';
+        str = '商品服务费';
         break;
       case 8:
         str = '会员服务费';
@@ -141,7 +141,7 @@ class _InvoiceListState extends State<InvoiceList> {
         str = '礼包服务费';
         break;
       default:
-        str = '采购商品服务费';
+        str = '商品服务费';
     }
     return str;
   }
