@@ -220,7 +220,8 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                       print(res['resultStatus'] == "9000");
                       if (res['resultStatus'] == "9000") {
                         G.toast('支付成功');
-                        Provider.of<UserProvide>(context).updateUserAuth();
+                        G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+                        // Provider.of<UserProvide>(context).updateUserAuth();
                       } else {
                          G.toast('支付宝支付失败');
                       }
@@ -265,7 +266,8 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                             break;
                           case 0:
                             G.toast('支付成功');
-                            Provider.of<UserProvide>(context).updateUserAuth();
+                            G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+                            // Provider.of<UserProvide>(context).updateUserAuth();
                             break;
                           default:
                             G.toast('支付失败，请重试');

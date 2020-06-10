@@ -12,7 +12,6 @@ class FinanceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     // 财务列表子项产品内容
     List<Widget> _financeItemProduct() {
       Widget product(RefundOrders product) {
@@ -36,18 +35,20 @@ class FinanceItem extends StatelessWidget {
                           height: G.setWidth(170),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Validate.isNon(product.orderImageUrl) 
-                              ? item.toRole == null 
-                              ? Image.asset('${G.imgBaseUrl}package_icon.png')
-                              : Image.asset('${G.imgBaseUrl}member-order${item.toRole.toString()}_icon.png')
-                              : CachedNetworkImage(
-                                imageUrl: product.orderImageUrl,
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                                fit: BoxFit.fill,
-                              ))
+                              child: Validate.isNon(product.orderImageUrl)
+                                  ? item.toRole == null
+                                      ? Image.asset(
+                                          '${G.imgBaseUrl}package_icon.png')
+                                      : Image.asset(
+                                          '${G.imgBaseUrl}member-order${item.toRole.toString()}_icon.png')
+                                  : CachedNetworkImage(
+                                      imageUrl: product.orderImageUrl,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                      fit: BoxFit.fill,
+                                    ))
                           // decoration: BoxDecoration(
                           //     borderRadius:
                           //         BorderRadius.circular(G.setWidth(10)),
@@ -68,10 +69,12 @@ class FinanceItem extends StatelessWidget {
                           child: Container(
                               height: G.setWidth(190),
                               padding: EdgeInsets.symmetric(
-                                  horizontal: G.setWidth(20), vertical: G.setWidth(10)),
+                                  horizontal: G.setWidth(20),
+                                  vertical: G.setWidth(10)),
                               child: Column(
                                 // 规格说明
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   // 标题与价格
@@ -99,7 +102,8 @@ class FinanceItem extends StatelessWidget {
                                             text: '￥',
                                             children: [
                                               TextSpan(
-                                                  text: product.refundAmount.toStringAsFixed(2),
+                                                  text: product.refundAmount
+                                                      .toStringAsFixed(2),
                                                   style: TextStyle(
                                                       fontSize: G.setSp(26),
                                                       color: hex('#333'))),
@@ -117,12 +121,12 @@ class FinanceItem extends StatelessWidget {
                                           style: TextStyle(
                                               color: hex('#85868A'),
                                               fontSize: G.setSp(26))),
-                                     item.orderType == 7
-                                      ? Text('X${product.quantity}',
-                                          style: TextStyle(
-                                              color: hex('#85868A'),
-                                              fontSize: G.setSp(26)))
-                                      : Container()
+                                      item.orderType == 7
+                                          ? Text('X${product.quantity}',
+                                              style: TextStyle(
+                                                  color: hex('#85868A'),
+                                                  fontSize: G.setSp(26)))
+                                          : Container()
                                     ],
                                   ),
                                   G.spacing(20),
@@ -164,113 +168,138 @@ class FinanceItem extends StatelessWidget {
     // 财务列表页脚
     Widget _financeItemFooter() {
       return Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                   constraints: BoxConstraints(
-                    maxWidth: G.setWidth(290)
+          child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    constraints: BoxConstraints(maxWidth: G.setWidth(300)),
+                    // width: G.setWidth(360),
+                    child: Text('购买企业：${item.enterpriseName ?? ""}',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            color: hex('#666'),
+                            fontSize: G.setSp(24),
+                            height: 36 / 24)),
                   ),
-                  // width: G.setWidth(360),
-                  child: Text('购买企业：${item.enterpriseName ?? ""}',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                  // G.spacing(6),
+
+                  Text('支付时间：${G.formatTime(item.payTime, type: "date")}',
                       style: TextStyle(
                           color: hex('#666'),
                           fontSize: G.setSp(24),
-                          height: 36 / 24)),
-                ),
-                // G.spacing(6),
-
-                Text('支付时间：${G.formatTime(item.payTime, type: "date")}',
-                    style: TextStyle(
-                        color: hex('#666'),
-                        fontSize: G.setSp(24),
-                        height: 36 / 24))
-              ],
-            ),
-            Container(
-              // constraints: BoxConstraints(
-              //   maxWidth: G.setWidth(550)
-              // ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Text.rich(
-                  TextSpan(
-                    text: '订单金额：',
-                    style: TextStyle(
-                        color: hex('#252525'),
-                        fontSize: G.setSp(30),
-                        height: 36 / 24),
-                    children: [
-                      TextSpan(
-                          text: '￥',
-                          style: TextStyle(
-                              color: hex('#252525'), fontSize: G.setSp(24))),
-                      TextSpan(
-                          text: item.totalOrderAmount.toStringAsFixed(2),
-                          style: TextStyle(
-                              color: hex('#252525'), fontSize: G.setSp(30))),
-                    ])),
-                item.commissionFeeRate != null && status != 3
-                    ? Text('比例：${item.commissionFeeRate.toStringAsFixed(2)}%',
-                        style: TextStyle(
-                            height: 36 / 24,
-                            color: hex('#252525'),
-                            fontSize: G.setSp(26)))
-                    : Container(),
-                    // TODO:: 划线价格
-                // item.commissionFeeRate != null && status != 3 && item.originCommissionFeeRate != null && item.commissionFeeRate != item.originCommissionFeeRate
-                //     ? Text('比例：${item.originCommissionFeeRate.toStringAsFixed(2)}%',
-                //         style: TextStyle(
-                //             height: 36 / 24,
-                //             color: hex('#252525'),
-                //             fontSize: G.setSp(26)))
-                //     : Container(),
-                status != 3 ? Text.rich(TextSpan(
-                    text: '预估服务费：',
-                    style: TextStyle(
-                        height: 36 / 24,
-                        color: hex('#252525'),
-                        fontSize: G.setSp(30)),
-                    children: [
-                      TextSpan(
-                          text: '￥',
-                          style: TextStyle(
-                              color: hex('#252525'), fontSize: G.setSp(24))),
-                      TextSpan(
-                          text: item.commission.toStringAsFixed(2),
-                          style: TextStyle(
-                              color: hex('#252525'), fontSize: G.setSp(30))),
-                    ])) : Container(),
-                    // status != 3 && item.originCommission != null && item.originCommission != item.commission
-                    // ? Text.rich(TextSpan(
-                    // text: '预估服务费：',
-                    // style: TextStyle(
-                    //     height: 36 / 24,
-                    //     color: hex('#252525'),
-                    //     fontSize: G.setSp(30)),
-                    // children: [
-                    //   TextSpan(
-                    //       text: '￥',
-                    //       style: TextStyle(
-                    //           color: hex('#252525'), fontSize: G.setSp(24))),
-                    //   TextSpan(
-                    //       text: item.originCommission.toStringAsFixed(2),
-                    //       style: TextStyle(
-                    //           color: hex('#252525'), fontSize: G.setSp(30))),
-                    // ]))
-                    // : Container(),
-              ],
-            ))
-          ],
-        ),
-      );
+                          height: 36 / 24))
+                ],
+              ),
+              Container(
+                  // constraints: BoxConstraints(
+                  //   maxWidth: G.setWidth(550)
+                  // ),
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text.rich(TextSpan(
+                      text: '订单金额：',
+                      style: TextStyle(
+                          color: hex('#252525'),
+                          fontSize: G.setSp(30),
+                          height: 36 / 24),
+                      children: [
+                        TextSpan(
+                            text: '￥',
+                            style: TextStyle(
+                                color: hex('#252525'), fontSize: G.setSp(24))),
+                        TextSpan(
+                            text: item.totalOrderAmount.toStringAsFixed(2),
+                            style: TextStyle(
+                                color: hex('#252525'), fontSize: G.setSp(30))),
+                      ])),
+                  Row(
+                    children: <Widget>[
+                      item.commissionFeeRate != null && status != 3
+                          ? Text(
+                              '比例：${item.commissionFeeRate.toStringAsFixed(2)}%',
+                              style: TextStyle(
+                                  height: 36 / 24,
+                                  color: hex('#252525'),
+                                  fontSize: G.setSp(26)))
+                          : Container(),
+                      item.commissionFeeRate != null &&
+                              status != 3 &&
+                              item.originCommissionFeeRate != null &&
+                              item.commissionFeeRate !=
+                                  item.originCommissionFeeRate
+                          ? Container(
+                              margin: EdgeInsets.only(left: G.setWidth(20)),
+                              child: Text(
+                                  '${item.originCommissionFeeRate.toStringAsFixed(2)}%',
+                                  style: TextStyle(
+                                      height: 36 / 24,
+                                      color: hex('#999'),
+                                      fontSize: G.setSp(26))),
+                            )
+                          : Container(),
+                    ],
+                  ),
+                ],
+              )),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            // crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              status != 3
+                  ? Text.rich(TextSpan(
+                      text: '预估服务费：',
+                      style: TextStyle(
+                          height: 36 / 24,
+                          color: hex('#252525'),
+                          fontSize: G.setSp(30)),
+                      children: [
+                          TextSpan(
+                              text: '￥',
+                              style: TextStyle(
+                                  height: 36 / 24,
+                                  color: hex('#252525'),
+                                  fontSize: G.setSp(24))),
+                          TextSpan(
+                              text: item.commission.toStringAsFixed(2),
+                              style: TextStyle(
+                                  height: 36 / 24,
+                                  color: hex('#252525'),
+                                  fontSize: G.setSp(30))),
+                        ]))
+                  : Container(),
+              status != 3 &&
+                      item.originCommission != null &&
+                      item.originCommission == item.commission
+                  ? Container(
+                      margin: EdgeInsets.only(left: G.setWidth(20)),
+                      child: Text.rich(TextSpan(
+                          children: [
+                            TextSpan(
+                                text: '￥',
+                                style: TextStyle(
+                                    color: hex('#999'),
+                                    fontSize: G.setSp(24))),
+                            TextSpan(
+                                text: item.originCommission.toStringAsFixed(2),
+                                style: TextStyle(
+                                    color: hex('#999'),
+                                    fontSize: G.setSp(24))),
+                          ])))
+                  : Container(),
+            ],
+          )
+        ],
+      ));
     }
 
     return Container(
@@ -358,10 +387,11 @@ class FinanceProduct extends StatelessWidget {
                                 fit: BoxFit.fill)
                             : null),
                     child: !Validate.isNon(data.orderImageUrl)
-                            ? null
-                            : data.toRole == null
+                        ? null
+                        : data.toRole == null
                             ? Image.asset('${G.imgBaseUrl}package_icon.png')
-                            : Image.asset('${G.imgBaseUrl}member-order${data.toRole.toString()}_icon.png'),
+                            : Image.asset(
+                                '${G.imgBaseUrl}member-order${data.toRole.toString()}_icon.png'),
                   ),
                   Expanded(
                     // 内容区域
@@ -398,7 +428,8 @@ class FinanceProduct extends StatelessWidget {
                                       text: '￥',
                                       children: [
                                         TextSpan(
-                                            text: data.goodsAmount.toStringAsFixed(2),
+                                            text: data.goodsAmount
+                                                .toStringAsFixed(2),
                                             style: TextStyle(
                                                 fontSize: G.setSp(26),
                                                 color: hex('#333'))),
@@ -415,13 +446,12 @@ class FinanceProduct extends StatelessWidget {
                                     style: TextStyle(
                                         color: hex('#85868A'),
                                         fontSize: G.setSp(26))),
-                                  
-                                  data.orderType == 7 
-                                  ? Text('X${data.quantity}',
-                                    style: TextStyle(
-                                        color: hex('#85868A'),
-                                        fontSize: G.setSp(26)))
-                                  : Container()
+                                data.orderType == 7
+                                    ? Text('X${data.quantity}',
+                                        style: TextStyle(
+                                            color: hex('#85868A'),
+                                            fontSize: G.setSp(26)))
+                                    : Container()
                               ],
                             ),
                           ],

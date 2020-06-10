@@ -96,6 +96,7 @@ class UserProvide with ChangeNotifier {
         return;
       }
       if (userAuthInfo.giftPackageOrderStatus == null ||
+          userAuthInfo.giftPackageOrderStatus == -2 ||
           userAuthInfo.giftPackageOrderStatus == -1 ||
           userAuthInfo.giftPackageOrderStatus == 3 ||
           userAuthInfo.giftPackageOrderStatus == -3 ||
