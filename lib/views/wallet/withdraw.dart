@@ -231,7 +231,7 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
     var regx = RegExp(r"^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$");
     var inputMoney = _moneyCtrl.value.text;
     if (!regx.hasMatch(_moneyCtrl.value.text)) {
-      G.toast('请输入正确的提现金额');
+      G.toast('请输入正确的提现金额,最多两位小数');
       return;
     }
     double withdrawMoney = double.parse(inputMoney);
@@ -353,7 +353,7 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
                   G.spacingWidth(5),
                   Expanded(
                     child: Text(
-                      '提现金额不可少于${lessMoney.toStringAsFixed(0)}元；',
+                      '提现金额需大于${lessMoney.toStringAsFixed(0)}元；',
                       style: TextStyle(color: hex('#999999'), fontSize: G.setSp(24)),
                     ),
                   )
