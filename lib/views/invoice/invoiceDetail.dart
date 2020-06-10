@@ -20,17 +20,19 @@ class InvoiceDetail extends StatefulWidget {
 
 class _InvoiceDetailState extends State<InvoiceDetail> {
   String invoiceId;
+  String invoiceStatus;
   String invoicePic;
   InvoiceInfoModel invoiceInfo;
   var invoiceFuture;
   List collapseList = [];
   bool collapse = false;
-  bool isEditStatus;
+  bool isEditStatus = false;
 
   @override
   void initState() { 
     super.initState();
     invoiceId = widget.invoiceId;
+    invoiceStatus = widget.status;
     invoiceFuture = _getInvoiceInfo();
   }
 
@@ -38,14 +40,17 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
     var result = await OrderApi().getMakeMoneyById(invoiceId);
     Map resultData = result.data['data'];
     print(resultData);
-    invoiceInfo = InvoiceInfoModel.fromJson(resultData);
-    if (invoiceInfo.invoiceItems.length > 4) {
-      collapseList = invoiceInfo.invoiceItems.sublist(0, 4);
-    } else {
-      collapseList = invoiceInfo.invoiceItems;
-    }
+    setState(() {
+      invoiceInfo = InvoiceInfoModel.fromJson(resultData);
+      if (invoiceInfo.invoiceItems.length > 4) {
+        collapseList = invoiceInfo.invoiceItems.sublist(0, 4);
+      } else {
+        collapseList = invoiceInfo.invoiceItems;
+      }
+      isEditStatus = invoiceInfo.invoiceStatus == 3;
+      invoicePic = invoiceInfo.checkInvoiceUrl;
+    });
     
-    invoicePic = invoiceInfo.checkInvoiceUrl;
     return 'end';
   }
 
@@ -56,12 +61,14 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
   Widget uploadInvoice() {
     return InkWell(
       onTap: () {
-        G.setContext(context);
-        Oss.selectSource((path) {
-          setState(() {
-            invoicePic = path;
+        if (isEditStatus) {
+          G.setContext(context);
+          Oss.selectSource((path) {
+            setState(() {
+              invoicePic = path;
+            });
           });
-        });
+        }
       },
       child: Stack(
           children: <Widget>[
@@ -86,7 +93,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
               width: G.setWidth(400),
               height: G.setHeight(256),
             ),
-            Container(
+            isEditStatus ? Container(
               width: G.setWidth(400),
               height: G.setHeight(256),
               child: Column(
@@ -107,11 +114,70 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
                   Text('点击上传发票', style: TextStyle(color: Colors.white, fontSize: G.setSp(24)))
                 ],
               ),
-            ),
+            ) : Container(),
           ],
         ),
       );
                 
+  }
+
+  Widget topArea() {
+    if (invoiceStatus == '3') {
+      return Container();
+    } else if (invoiceStatus == '4') {
+      return GestureDetector(
+        onTap: () {
+          G.navigateTo(context, '/sendAdress');
+        },
+        child: Container(
+          width: double.infinity,
+          color: hex('#CABEA6'),
+          padding: EdgeInsets.all(G.setWidth(20)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('待核验', style: TextStyle(color: Colors.white, fontSize: G.setSp(28))),
+                  Text('已提交成功，请尽快寄出发票以便核验', style: TextStyle(color: Colors.white, fontSize: G.setSp(24)))
+                ]
+              ),
+              Row(
+                children: [
+                  Text('查看寄票地址', style: TextStyle(color: Colors.white, fontSize: G.setSp(28))),
+                  Icon(Icons.arrow_right, color: Colors.white)
+                ]
+              )
+            ],
+          )
+        )
+      );
+    } else if (invoiceStatus == '5') {
+      return Container(
+        width: double.infinity,
+        color: hex('#CABEA6'),
+        padding: EdgeInsets.all(G.setWidth(20)),
+        child:  Text('已开票', style: TextStyle(color: Colors.white, fontSize: G.setSp(28), fontWeight: FontWeight.w400)),
+      );
+    } else if (invoiceStatus == '6') {
+      return Container(
+        width: double.infinity,
+        color: hex('#CABEA6'),
+        padding: EdgeInsets.all(G.setWidth(20)),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('核验失败', style: TextStyle(color: Colors.white, fontSize: G.setSp(28))),
+              Text(invoiceInfo.checkRefuseReason ?? '', style: TextStyle(color: Colors.white, fontSize: G.setSp(24)))
+            ]
+          ),
+      );
+    } else {
+      return Container(
+        child:Text('未知发票状态')
+      );
+    }
   }
 
   String getOrderTypeStr(int type) {
@@ -197,6 +263,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
               if (snapshot.hasData) {
                 return Column(
                   children: [
+                    topArea(),
                     G.spacing(20),
                     VField(label: '开票金额', fieldVal: '¥' + invoiceInfo.serviceCharge.toStringAsFixed(2)),
                     VField(label: '开票类型', fieldVal: '增值税发票'),
@@ -207,13 +274,17 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
                       padding: EdgeInsets.symmetric(horizontal: G.setWidth(30), vertical: G.setWidth(12)),
                       child: Text('开票信息', style: TextStyle(fontSize: G.setSp(24), color: hex('#999'))),
                     ),
-                    ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true, 
-                      itemCount: collapseList.length,
-                      itemBuilder: (context, index) {
-                          return VField(label: collapseList[index].invoiceItemName, fieldVal: collapseList[index].invoiceItemContent);
-                      }),
+                    MediaQuery.removePadding(
+                      removeBottom: true,
+                      context:  context,
+                      child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true, 
+                          itemCount: collapseList.length,
+                          itemBuilder: (context, index) {
+                              return VField(label: collapseList[index].invoiceItemName, fieldVal: collapseList[index].invoiceItemContent);
+                          }),
+                    ),
                     invoiceInfo.invoiceItems.length > 4 ? 
                     GestureDetector(
                       onTap: () {
@@ -258,7 +329,13 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
                     Container(
                       padding: EdgeInsets.only(bottom: G.setWidth(40)),
                       margin: EdgeInsets.only(top: G.setWidth(60)),
-                      child: VButton(text: '提交审核', fn: submitFunc, disabled: invoicePic == null || invoicePic == ''),
+                      child: isEditStatus ? 
+                      VButton(text: '提交审核', fn: submitFunc, disabled: invoicePic == null || invoicePic == '')
+                      : VButton(text: '编辑', fn: () {
+                        setState(() {
+                          isEditStatus = true;
+                        });
+                      }),
                     )
                   ],
                 );

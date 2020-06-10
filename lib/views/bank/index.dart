@@ -22,6 +22,7 @@ class _BankMainPageState extends State<BankMainPage> {
   void initState() {
     // implement initState
     super.initState();
+    print('testbank--------');
     _getUserBankInfo();
   }
 
