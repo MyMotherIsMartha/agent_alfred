@@ -46,6 +46,7 @@ class HomeInfoModel {
     bool newlyIncreasedShowOrderFlag;
     bool newlyIncreasedShowMemberFlag;
     bool newlyIncreasedShowAgentFlag;
+    bool isExpireCheck;
 
     HomeInfoModel({
         this.shareCode,
@@ -85,6 +86,7 @@ class HomeInfoModel {
         this.newlyIncreasedShowOrderFlag,
         this.newlyIncreasedShowMemberFlag,
         this.newlyIncreasedShowAgentFlag,
+        this.isExpireCheck,
     });
 
     factory HomeInfoModel.fromJson(Map<String, dynamic> json) => HomeInfoModel(
@@ -125,6 +127,7 @@ class HomeInfoModel {
         newlyIncreasedShowOrderFlag: json["newlyIncreasedShowOrderFlag"],
         newlyIncreasedShowMemberFlag: json["newlyIncreasedShowMemberFlag"],
         newlyIncreasedShowAgentFlag: json["newlyIncreasedShowAgentFlag"],
+        isExpireCheck: json["isExpireCheck"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -165,5 +168,6 @@ class HomeInfoModel {
         "newlyIncreasedShowOrderFlag": newlyIncreasedShowOrderFlag,
         "newlyIncreasedShowMemberFlag": newlyIncreasedShowMemberFlag,
         "newlyIncreasedShowAgentFlag": newlyIncreasedShowAgentFlag,
+        "isExpireCheck": isExpireCheck,
     };
 }

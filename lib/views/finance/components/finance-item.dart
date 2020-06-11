@@ -240,6 +240,7 @@ class FinanceItem extends StatelessWidget {
                               child: Text(
                                   '${item.originCommissionFeeRate.toStringAsFixed(2)}%',
                                   style: TextStyle(
+                                      decoration: TextDecoration.lineThrough,
                                       height: 36 / 24,
                                       color: hex('#999'),
                                       fontSize: G.setSp(26))),
@@ -279,7 +280,7 @@ class FinanceItem extends StatelessWidget {
                   : Container(),
               status != 3 &&
                       item.originCommission != null &&
-                      item.originCommission == item.commission
+                      item.originCommission != item.commission
                   ? Container(
                       margin: EdgeInsets.only(left: G.setWidth(20)),
                       child: Text.rich(TextSpan(
@@ -292,6 +293,7 @@ class FinanceItem extends StatelessWidget {
                             TextSpan(
                                 text: item.originCommission.toStringAsFixed(2),
                                 style: TextStyle(
+                                    decoration: TextDecoration.lineThrough,
                                     color: hex('#999'),
                                     fontSize: G.setSp(24))),
                           ])))

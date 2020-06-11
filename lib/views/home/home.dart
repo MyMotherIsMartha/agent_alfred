@@ -91,8 +91,6 @@ class _HomePageState extends State<HomePage>
   }
 
   Future _getHomeinfo() async {
-    print(ModalRoute.of(context).settings.name);
-    print("ModalRoute.of(context).settings.name");
     try {
       var result = await MemberApi().getHomeInfo();
       var result2;
@@ -103,8 +101,6 @@ class _HomePageState extends State<HomePage>
         setState(() {
           homeinfo = homeInfoModelFromJson(result.data['data']);
         });
-        print(homeinfo.checkStatus);
-        print('首页数据 homeinfo');
         countDown();
       }
       if (result2.data['data'] != null) {
@@ -583,7 +579,7 @@ class _HomePageState extends State<HomePage>
       default:
     }
 
-    bool originFeeVisible = data[6] != data[1];
+    bool originFeeVisible = data[6] != data[1] && homeinfo.isExpireCheck;
     return MediaQuery.removePadding(
         removeTop: true,
         context: context,

@@ -299,7 +299,7 @@ class _AddressPageState extends State<AddressPage> {
                     }
                     var regaddress = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9\-\_.]+$");
                     if (!regaddress.hasMatch(address)) {
-                      G.toast('非法详细地址');
+                      G.toast('请输入中文、英文、数字及符号-和_');
                       btnCanClick = true;
                       return;
                     }
