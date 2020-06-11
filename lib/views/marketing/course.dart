@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:video_player/video_player.dart';
+import './components/custom_controls.dart';
 
 class MarketCoursePage extends StatefulWidget {
   final String id;
@@ -44,6 +45,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
     currentCourse = item;
     _videoPlayerController = VideoPlayerController.network(item.linkUrl);
     _chewieController = ChewieController(
+      customControls: CustomControls(),
       videoPlayerController: _videoPlayerController,
       // aspectRatio: _videoPlayerController.value.size.aspectRatio,
       aspectRatio: item.videoWidth / item.videoHeight,
@@ -66,11 +68,13 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
       },
     );
     _videoPlayerController.addListener(() async {
-      if (!_videoPlayerController.value.isPlaying && _videoPlayerController.value.position == _videoPlayerController.value.duration) {
+      if (!_videoPlayerController.value.isPlaying &&
+          _videoPlayerController.value.position ==
+              _videoPlayerController.value.duration) {
         await _videoPlayerController.seekTo(Duration(microseconds: 0));
         await _videoPlayerController.pause();
       }
-     });
+    });
   }
 
   // 播放器
@@ -84,7 +88,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
           children: <Widget>[
             Container(
                 width: double.infinity,
-                height: G.setWidth(420),
+                // height: G.setWidth(420),
                 child: currentCourse.contactType == 1
                     ? _videoPlayerController != null
                         ? Chewie(
@@ -116,7 +120,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
               ),
             ),
             Positioned(
-              top: G.statusHeight,
+              // top: G.statusHeight / 2,
               left: 0,
               child: Container(
                 alignment: Alignment.center,
@@ -133,7 +137,6 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                 ),
               ),
             ),
-            
           ],
         ));
   }
@@ -433,33 +436,33 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
         value: SystemUiOverlayStyle.light,
         child: Scaffold(
             body: Container(
-                    height: G.setHeight(1334),
-                    child: FutureBuilder(
-                      future: detailFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Container(
-                            child: Column(
-                              children: <Widget>[
-                                _headerPlayer(),
-                                Expanded(
-                                    child: SingleChildScrollView(
-                                  child: Column(
-                                    children: <Widget>[
-                                      _title(),
-                                      _courseMenu(),
-                                      _tutor(),
-                                      _contentHtml()
-                                    ],
-                                  ),
-                                ))
-                              ],
-                            ),
-                          );
-                        } else {
-                          return VLoading();
-                        }
-                      },
-                    ))));
+                height: G.setHeight(1334),
+                child: FutureBuilder(
+                  future: detailFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(
+                        child: Column(
+                          children: <Widget>[
+                            _headerPlayer(),
+                            Expanded(
+                                child: SingleChildScrollView(
+                              child: Column(
+                                children: <Widget>[
+                                  _title(),
+                                  _courseMenu(),
+                                  _tutor(),
+                                  _contentHtml()
+                                ],
+                              ),
+                            ))
+                          ],
+                        ),
+                      );
+                    } else {
+                      return VLoading();
+                    }
+                  },
+                ))));
   }
 }

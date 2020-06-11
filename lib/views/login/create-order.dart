@@ -3,14 +3,12 @@ import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/Icon.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/env.dart';
-import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_alipay/flutter_alipay.dart';
 import 'package:fluwx/fluwx.dart';
-import 'package:provider/provider.dart';
 import 'package:tobias/tobias.dart';
 
 class CreateOrderPage extends StatefulWidget {
@@ -22,15 +20,37 @@ class CreateOrderPage extends StatefulWidget {
   _CreateOrderPageState createState() => _CreateOrderPageState();
 }
 
-class _CreateOrderPageState extends State<CreateOrderPage> {
+class _CreateOrderPageState extends State<CreateOrderPage> with WidgetsBindingObserver{
   Timer _timer;
   int _countdownTime = 0;
   int _orderOverTime = 0;
   String payType = 'ali';
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    print("--" + state.toString() + '大师法第三方士大夫发');
+    if (AppLifecycleState.resumed == state) {
+      var orderResult = await OrderApi().orderQuery();
+      if (orderResult.data['data'] != null && orderResult.data['data'] == true) {
+        G.closeLoading();
+        G.toast('支付成功');
+        G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+      }
+    }
+    // switch (state) {
+    //   case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+    //     break;
+    //   case AppLifecycleState.resumed:// 应用程序可见，前台
+    //     break;
+    //   case AppLifecycleState.paused: // 应用程序不可见，后台
+    //     break;
+    // }
+  }
+
+  @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // orderInfoSubscription = eventBus.on<OrderInfoBus>().listen((event) {
     //   print(event.price);
     //   setState(() {
@@ -54,10 +74,11 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
 
   @override
   void dispose() {
-    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     if (_timer != null) {
       _timer?.cancel();
     }
+    super.dispose();
   }
 
   @override
@@ -172,6 +193,32 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
   //   _timer = Timer.periodic(oneSec, callback);
   // }
 
+  void getOrderResult() {
+    print('12341232');
+    int count = 0;
+    const period = const Duration(seconds: 1);
+    Timer.periodic(period, (timer) async {
+      G.showLoading(context);
+      var orderResult = await OrderApi().orderQuery();
+      var flag = orderResult.data['data'];
+      if (flag != null && flag == true) {
+        timer.cancel();
+        timer = null;
+        G.closeLoading();
+        G.toast('支付成功');
+        G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+      } else {
+        count++;
+        if (count >= 5) {
+          G.closeLoading();
+          //取消定时器，避免无限回调
+          timer.cancel();
+          timer = null;
+        }
+      }
+    });
+  }
+
   Widget _payContent() {
     return Container(
       width: G.setWidth(750),
@@ -215,13 +262,10 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     try {
                       // 根据环境确定是什么模式  目前是沙箱
                       var res = await aliPay(payInfo, evn: AliPayEvn.SANDBOX);
-                      print(res['resultStatus']);
-                      print("res['resultStatus']");
-                      print(res['resultStatus'] == "9000");
                       if (res['resultStatus'] == "9000") {
-                        G.toast('支付成功');
-                        G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
-                        // Provider.of<UserProvide>(context).updateUserAuth();
+                        // G.toast('支付成功');
+                        // G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+                        getOrderResult();
                       } else {
                          G.toast('支付宝支付失败');
                       }
@@ -265,8 +309,9 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                             G.toast('已取消支付');
                             break;
                           case 0:
-                            G.toast('支付成功');
-                            G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+                            getOrderResult();
+                            // G.toast('支付成功');
+                            // G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
                             // Provider.of<UserProvide>(context).updateUserAuth();
                             break;
                           default:

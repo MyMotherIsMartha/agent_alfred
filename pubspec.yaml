@@ -58,6 +58,7 @@ dependencies:
   # sy_flutter_alipay: ^0.2.1
   # sy_flutter_wechat: ^0.2.2
   fluwx: ^2.0.7
+  # screen: ^0.0.5
   # flutter_easyloading: ^1.1.4
   flutter_spinkit: ^4.1.2
   simple_tooltip: ^0.1.3
