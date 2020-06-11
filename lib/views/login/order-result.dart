@@ -1,3 +1,4 @@
+import 'package:agent37_flutter/api/login.dart';
 import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/models/user-auth.dart';
@@ -132,20 +133,29 @@ class _OrderResultPageState extends State<OrderResultPage> {
         VButton(
           width: 400,
           text: status['btn'],
-          fn: () {
+          fn: () async {
             if (type == 'verifyFail') {
+              var result = await LoginApi().getUserAuth();
+              print("result.data['data']['voucherStatus'] == 4");
+              if (result.data['data']['voucherStatus'] == 4) {
+                G.toast('订单已超时，请重新下单');
+                G.navigateTo(G.currentContext, '/create-account',
+                  replace: true);
+              } else {
+                status['fn'](giftPackageNo);
+              }
               // print(giftPackageNo);
               // G.navigateTo(G.currentContext, '/create-account');
               // G.navigateTo(
               //   G.currentContext,
               //   '/certificate?no=' + giftPackageNo + '&from=order');
-              if (DateTime.now().millisecondsSinceEpoch > orderOverTime) {
-                G.toast('订单已超时，请重新下单');
-              G.navigateTo(G.currentContext, '/create-account',
-                  replace: true);
-              } else {
-                status['fn'](giftPackageNo);
-              }
+              // if (DateTime.now().millisecondsSinceEpoch > orderOverTime) {
+              //   G.toast('订单已超时，请重新下单');
+              //   G.navigateTo(G.currentContext, '/create-account',
+              //     replace: true);
+              // } else {
+              //   status['fn'](giftPackageNo);
+              // }
             } else {
               print('审核不是失败');
               status['fn']();
