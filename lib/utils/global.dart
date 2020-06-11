@@ -206,8 +206,10 @@ class G {
               onPressed: (){
                 G.removePref('token');
                 G.removePref('orderOverTime');
-                if (Validate.isNon(G.getPref('token'))) {
+                Future.delayed(Duration(microseconds: 100), () {
                   Provider.of<AddressProvide>(context).resetAddress();
+                });
+                if (Validate.isNon(G.getPref('token'))) {
                   Future.delayed(Duration(microseconds: 100), () {
                     G.navigateTo(context, '/login', replace: true);
                   });
