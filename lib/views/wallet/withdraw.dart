@@ -102,7 +102,7 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
                   double withdrawMoney = double.parse(e);
                   if (withdrawMoney > withdrawalBalance) {
                     hintText = '超出可提现金额';
-                  } else if (withdrawMoney < lessMoney) {
+                  } else if (withdrawMoney <= lessMoney) {
                     hintText = '提现金额需大于${lessMoney.toStringAsFixed(0)}元';
                   } else {
                     if (withdrawMoney > overMoney) {
@@ -235,7 +235,7 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
       return;
     }
     double withdrawMoney = double.parse(inputMoney);
-    if (withdrawMoney < lessMoney) {
+    if (withdrawMoney <= lessMoney) {
       G.toast('提现金额需大于${lessMoney.toStringAsFixed(0)}元');
       return;
     }
