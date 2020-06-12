@@ -28,7 +28,6 @@ class _CreateOrderPageState extends State<CreateOrderPage> with WidgetsBindingOb
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    print("--" + state.toString() + '大师法第三方士大夫发');
     if (AppLifecycleState.resumed == state) {
       var orderResult = await OrderApi().orderQuery();
       if (orderResult.data['data'] != null && orderResult.data['data'] == true) {
