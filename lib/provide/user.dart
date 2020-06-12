@@ -175,7 +175,7 @@ class UserProvide with ChangeNotifier {
         break;
       case -1:
         G.navigateTo(G.currentContext,
-            '/resultPage?status=$status&refuseReason=${userAuthInfo.auditRefuseReason}',
+            '/resultPage?status=$status&refuseReason=${userAuthInfo.qualificationsRefuseReason}',
             replace: true);
         break;
       case 4:

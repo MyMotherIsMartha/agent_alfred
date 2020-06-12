@@ -68,6 +68,37 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
               invoicePic = path;
             });
           });
+        } else {
+          showDialog(
+            barrierDismissible: true,
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                  child: Container(
+                    width: G.setWidth(750),
+                    // height: G.setWidth(200),
+                    // width: G.setWidth(400),
+                    height: G.setHeight(480),
+                    child: Container(
+                    
+                    // alignment: Alignment.center,
+                    
+                    decoration: BoxDecoration(
+                              // color: Colors.black26,
+                              // color: Colors.yellow,
+                      image: DecorationImage(
+                        image: idCardImg(),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    
+                    // child: Image(image: new AssetImage('lib/assets/images/enterprise/idCardFront.png')),
+                  ),
+                )
+              );
+              
+            }
+          );
         }
       },
       child: Stack(
