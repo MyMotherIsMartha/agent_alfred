@@ -135,9 +135,9 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
         title: Text('企业认证'),
         centerTitle: true,
         
-        leading: BackButton(onPressed: () {
-          G.navigateTo(context, '/resultPage?status=1', replace: true, transition: TransitionType.inFromLeft);
-        },),
+        // leading: BackButton(onPressed: () {
+        //   G.navigateTo(context, '/resultPage?status=1', replace: true, transition: TransitionType.inFromLeft);
+        // },),
       ),
       body: SingleChildScrollView(
         child: Container(

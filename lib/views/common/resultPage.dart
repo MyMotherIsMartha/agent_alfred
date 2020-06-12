@@ -1,5 +1,6 @@
 import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/api/system.dart';
+import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:color_dart/hex_color.dart';
@@ -9,6 +10,7 @@ import 'package:agent37_flutter/api/login.dart';
 import 'package:agent37_flutter/utils/global.dart';
 import 'package:agent37_flutter/utils/ServiceLocator.dart';
 import 'package:agent37_flutter/utils/TelAndSmsService.dart';
+import 'package:provider/provider.dart';
 
 class ResultPage extends StatefulWidget {
   final String status;
@@ -92,7 +94,12 @@ class _ResultPageState extends State<ResultPage> {
     var result = await LoginApi().getUserAuth();
     print(result.data['data'].toString());
     int qualificationsStatus = result.data['data']['qualificationsStatus'];
+    int giftPackageOrderStatus = result.data['data']['giftPackageOrderStatus'];
     print(qualificationsStatus);
+    if (giftPackageOrderStatus == -3) {
+      G.navigateTo(context, '/create-account', replace: true);
+      return;
+    }
     
     if (qualificationsStatus == 0) {
       G.navigateTo(context, '/uploadEnterPrisePic', replace: true);

@@ -28,14 +28,20 @@ class _CreateOrderPageState extends State<CreateOrderPage> with WidgetsBindingOb
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (AppLifecycleState.resumed == state) {
-      var orderResult = await OrderApi().orderQuery();
-      if (orderResult.data['data'] != null && orderResult.data['data'] == true) {
-        G.closeLoading();
-        G.toast('支付成功');
-        G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+    print("--" + state.toString() + '大师法第三方士大夫发');
+    var bool = ModalRoute.of(context).isCurrent;
+    if (bool) {
+      if (AppLifecycleState.resumed == state) {
+        var orderResult = await OrderApi().orderQuery();
+        print(orderResult);
+        if (orderResult.data['data'] != null && orderResult.data['data'] == true) {
+          G.closeLoading();
+          G.toast('支付成功');
+          G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
+        }
       }
     }
+    
     // switch (state) {
     //   case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
     //     break;
