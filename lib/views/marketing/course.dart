@@ -80,6 +80,9 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   // 播放器
   Widget _headerPlayer() {
     return Container(
+      constraints: BoxConstraints(
+        maxHeight: G.setWidth(420)
+      ),
         width: double.infinity,
         padding: EdgeInsets.only(top: G.statusHeight),
         // height: G.setWidth(420),

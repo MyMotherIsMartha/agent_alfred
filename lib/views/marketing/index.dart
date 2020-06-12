@@ -225,7 +225,7 @@ class _MarketingPageState extends State<MarketingPage> {
             children: <Widget>[
               Container(
                 width: G.setWidth(690),
-                height: G.setWidth(300),
+                height: G.setWidth(360),
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
