@@ -410,6 +410,8 @@ class _RegisterPageState extends State<RegisterPage> {
         prefixIcon: iconkey(),
         maxLength: 9,
         onChange: (e) {
+          print(e);
+          print('我的邀请码哦');
           setState(() {
             invite = e;
           });

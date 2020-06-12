@@ -156,6 +156,7 @@ class _VCircleInputState extends State<VCircleInput> {
   }
 
   void clearText(_controller) {
+    widget.onChange('');
     setState(() {
       _hasdeleteIcon = false;
     });

@@ -136,7 +136,6 @@ class _OrderResultPageState extends State<OrderResultPage> {
           fn: () async {
             if (type == 'verifyFail') {
               var result = await LoginApi().getUserAuth();
-              print("result.data['data']['voucherStatus'] == 4");
               if (result.data['data']['voucherStatus'] == 4) {
                 G.toast('订单已超时，请重新下单');
                 G.navigateTo(G.currentContext, '/create-account',
