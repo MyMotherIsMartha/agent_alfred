@@ -15,6 +15,8 @@ class UserProvide with ChangeNotifier {
   bool getInfoFlag = true;
 
   bool specialAccount = false;
+
+  bool needInfoDialog = true; // 是否需要弹窗提醒完善信息
   // getUserInfo() async {
   //   if (!getInfoFlag) return;
   //   print('get userinfo from provide');
@@ -36,6 +38,11 @@ class UserProvide with ChangeNotifier {
     } else {
       // G.toast('获取用户企业信息失败');
     }
+  }
+
+  toggleInfoDialog(bool flag) {
+    needInfoDialog = flag;
+    notifyListeners();
   }
 
   updateBankCardInfo() async {

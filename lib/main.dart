@@ -61,6 +61,8 @@ String _fontFamily() {
   }
 }
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -97,6 +99,9 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashPage(),
       navigatorKey: G.key,
+      navigatorObservers: [
+        routeObserver
+      ],
     );
   }
 }
