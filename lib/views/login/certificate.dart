@@ -28,6 +28,7 @@ class _CertificatePageState extends State<CertificatePage> {
   var giftListFuture;
   String offlineVoucher;
   int _orderOverTime = 0;
+  bool uploading = false;
 
   void _getOrderInfo() async {
     if (widget.from == 'order' && !Validate.isNon(G.getPref('orderOverTime'))) {
@@ -280,6 +281,11 @@ class _CertificatePageState extends State<CertificatePage> {
                 if (Validate.isNon(offlineVoucher)) {
                   G.toast('请上传凭证');
                 } else {
+                  if (uploading) { // 提交中
+                    return;
+                  }
+                  uploading = true;
+                  G.showLoading(context);
                   Map data = {
                     'giftPackageNo': curGift.giftPackageNo,
                     'giftPackagePromotionNo': curGift.giftPackagePromotionNo,
@@ -289,6 +295,8 @@ class _CertificatePageState extends State<CertificatePage> {
                   if (result.data['code'] == 200 && result.data['data'] == true) {
                     // G.toast('提交凭证成功');
                     G.removePref('orderOverTime');
+                    uploading = false;
+                    G.closeLoading();
                     Provider.of<UserProvide>(context).updateUserAuth();
                   } else {
                     G.toast('凭证提交失败');

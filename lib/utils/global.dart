@@ -7,13 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:agent37_flutter/components/v-loading.dart';
 
 class G {
   static Router router;
@@ -206,11 +204,11 @@ class G {
               onPressed: (){
                 G.removePref('token');
                 G.removePref('orderOverTime');
-                Future.delayed(Duration(microseconds: 100), () {
+                Future.delayed(Duration.zero, () {
                   Provider.of<AddressProvide>(context).resetAddress();
                 });
                 if (Validate.isNon(G.getPref('token'))) {
-                  Future.delayed(Duration(microseconds: 100), () {
+                  Future.delayed(Duration.zero, () {
                     G.navigateTo(context, '/login', replace: true);
                   });
                 }
