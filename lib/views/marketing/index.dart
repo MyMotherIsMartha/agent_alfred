@@ -44,7 +44,7 @@ class _MarketingPageState extends State<MarketingPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Container(
-                  width: G.setWidth(600),
+                  width: G.setWidth(670),
                   height: G.setWidth(64),
                   padding: EdgeInsets.symmetric(horizontal: G.setWidth(30)),
                   decoration: BoxDecoration(
@@ -61,12 +61,12 @@ class _MarketingPageState extends State<MarketingPage> {
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    G.navigateTo(context, '/setting');
-                  },
-                  child: Text('设置')
-                )
+                // GestureDetector(
+                //   onTap: () {
+                //     G.navigateTo(context, '/setting');
+                //   },
+                //   child: Text('设置')
+                // )
               ],
             )));
   }

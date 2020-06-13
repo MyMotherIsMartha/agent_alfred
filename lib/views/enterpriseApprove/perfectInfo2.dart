@@ -2,6 +2,7 @@ import 'package:agent37_flutter/api/member.dart';
 import 'package:agent37_flutter/components/v-button.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:color_dart/hex_color.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agent37_flutter/routes/routes.dart';
@@ -295,7 +296,36 @@ class _PerfectEnterprise2State extends State<PerfectEnterprise2> {
     return Scaffold(
       appBar: AppBar(
         title: Text('完善企业信息'),
-        centerTitle: true
+        centerTitle: true,
+        leading: BackButton(
+          onPressed: () {
+            showDialog(
+            context: context,
+            builder: (ctx) {
+              return CupertinoAlertDialog(
+                title: Text('填写的数据未保存，返回将清空'),
+                // content:Text('我是content'),
+                actions:<Widget>[
+                  
+                  CupertinoDialogAction(
+                    child: Text('取消', style: TextStyle(color: hex('#85868A')),),
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                  ),
+              
+                  CupertinoDialogAction(
+                    child: Text('确定'),
+                    onPressed: (){
+                      Navigator.of(context)..pop()..pop();
+                    },
+                  )
+                ]
+              );
+            },
+          );
+          },
+        )
       ),
       body: SingleChildScrollView(
         child: Container(
