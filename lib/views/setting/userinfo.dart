@@ -96,11 +96,11 @@ class SettingUserInfoPage extends StatelessWidget {
                           // ),
                           Container(
                             constraints: BoxConstraints(
-                              maxWidth: G.setWidth(540),
+                              maxWidth: G.setWidth(510),
                             ),
                             child: Text(nickname ?? '',
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.clip,
                               style: TextStyle(
                                   color: hex('#333'), fontSize: G.setSp(30))),
                           ),

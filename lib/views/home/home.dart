@@ -6,6 +6,7 @@ import 'package:agent37_flutter/components/v-loading.dart';
 import 'package:agent37_flutter/components/v-net-error.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
 import 'package:agent37_flutter/components/v-underline_indicator.dart';
+import 'package:agent37_flutter/main.dart';
 import 'package:agent37_flutter/models/home-info.dart';
 import 'package:agent37_flutter/provide/user.dart';
 import 'package:agent37_flutter/utils/fluro_convert_util.dart';
@@ -28,7 +29,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, RouteAware{
   TabController _tabController;
   EasyRefreshController _refreshController = EasyRefreshController();
   HomeInfoModel homeinfo;
@@ -46,7 +47,12 @@ class _HomePageState extends State<HomePage>
   bool isSpecialAccount;
 
   checkInfo(BuildContext context) {
-    if (Provider.of<UserProvide>(context).userAuthInfo.prefectStatus != -1) {
+    UserProvide userProvide = Provider.of<UserProvide>(context);
+    if (!userProvide.needInfoDialog) {
+      return;
+    }
+
+    if (userProvide.userAuthInfo.prefectStatus != -1) {
       return;
     }
     return YYDialog().build(context)
@@ -80,6 +86,7 @@ class _HomePageState extends State<HomePage>
         },
       )
       ..dismissCallBack = () {
+        userProvide.toggleInfoDialog(false);
         if (goInfo) {
           goInfo = false;
           Future.delayed(Duration(microseconds: 100), () {
@@ -883,18 +890,51 @@ class _HomePageState extends State<HomePage>
 
   @override
   void didChangeDependencies() {
-    var bool = ModalRoute.of(context).isCurrent;
-    if (bool) {
-      // msgFuture = _getMsgCount();
-      // Provider.of<UserProvide>(context).updateUserAuth(isInit: false);
-      // homeFuture = _getHomeinfo();
-    }
+    // var bool = ModalRoute.of(context).isCurrent;
+    // if (bool) {
+    //   print('this is home page');
+    //   // msgFuture = _getMsgCount();
+    //   // Provider.of<UserProvide>(context).updateUserAuth(isInit: false);
+    //   homeFuture = _getHomeinfo();
+    // }
     super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  // @override
+  // void deactivate() {
+  //   var bool = ModalRoute.of(context).isCurrent;
+  //   if (bool) {
+  //     print('this is home page');
+  //     // msgFuture = _getMsgCount();
+  //     // Provider.of<UserProvide>(context).updateUserAuth(isInit: false);
+  //     homeFuture = _getHomeinfo();
+  //   }
+  //   super.deactivate();
+  // }
+
+  // RouteAware
+ @override
+  void didPush() {
+    // Route was pushed onto navigator and is now topmost route.
+    // print('didPush');
+    // setState(() {
+    //   homeFuture = _getHomeinfo();
+    // });
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      homeFuture = _getHomeinfo();
+    });
+    // Covering route was popped off the navigator.
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    routeObserver.unsubscribe(this);
     super.dispose();
   }
 
@@ -923,7 +963,9 @@ class _HomePageState extends State<HomePage>
                     width: double.infinity,
                     child: VNetError(() {
                       // msgFuture = _getMsgCount();
-                      homeFuture = _getHomeinfo();
+                      setState(() {
+                        homeFuture = _getHomeinfo();
+                      });
                     }));
                 }
                 if (shapshot.hasData && homeinfo != null) {
