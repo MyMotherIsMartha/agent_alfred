@@ -31,7 +31,7 @@ void openShareWindow(context, String type, int role) {
   Uint8List bytes = Uint8List.fromList([71, 73, 70, 56, 57, 97, 1, 0, 1, 0, 128, 0, 0, 0, 0, 0, 255, 255, 255, 33, 249, 4, 1, 0, 0, 0, 0, 44, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 1, 68, 0, 59]);
 
   // 获取Uint8List数据
-    Future<Uint8List> toPng() async {
+  Future<Uint8List> toPng() async {
     try {
       RenderRepaintBoundary boundary =
       qrCodeKey.currentContext.findRenderObject();
@@ -42,7 +42,7 @@ void openShareWindow(context, String type, int role) {
     } catch (e) {
       print(e);
     }
-    return null;
+      return null;
     }
 
   // void saveScreen() async {
@@ -73,7 +73,7 @@ void openShareWindow(context, String type, int role) {
     }
     RenderRepaintBoundary boundary =
         qrCodeKey.currentContext.findRenderObject();
-    ui.Image image = await boundary.toImage();
+    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List picBytes = byteData.buffer.asUint8List();
     // var filePath = await ImagePickerSaver.saveFile(
@@ -100,6 +100,7 @@ void openShareWindow(context, String type, int role) {
         return
         Column(
           children: <Widget>[
+            G.spacing(100),
             RepaintBoundary(
               key: qrCodeKey,
               child: 
@@ -114,7 +115,7 @@ void openShareWindow(context, String type, int role) {
                               image: AssetImage(
                                   type == 'member' ? "lib/assets/images/home/member-share-bg.png" : "lib/assets/images/home/agent-share-bg.png"),
                               fit: BoxFit.contain)),
-                      margin: EdgeInsets.only(top: G.setWidth(100)),
+                      // margin: EdgeInsets.only(top: G.setWidth(100)),
                       width: G.setWidth(620),
                       height: G.setWidth(874),
                       child: Stack(children: <Widget>[
@@ -219,7 +220,7 @@ void openShareWindow(context, String type, int role) {
                                 // }
                                 RenderRepaintBoundary boundary =
                                     qrCodeKey.currentContext.findRenderObject();
-                                ui.Image image = await boundary.toImage();
+                                ui.Image image = await boundary.toImage(pixelRatio: 3.0);
                                 ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
                                 Uint8List picBytes = byteData.buffer.asUint8List();
 

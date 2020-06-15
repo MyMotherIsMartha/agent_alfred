@@ -280,6 +280,9 @@ class _AddressPageState extends State<AddressPage> {
                       return;
                     }
                     btnCanClick = false;
+                    Future.delayed(Duration(seconds: 1), () {
+                      btnCanClick = true;
+                    });
                     List<String> areaLev = areaName.split(',');
                     Map data = {
                       'consigneeName': consigneeName,
@@ -294,22 +297,18 @@ class _AddressPageState extends State<AddressPage> {
                     var regx = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9.]+$");
                     if (!regx.hasMatch(consigneeName)) {
                       G.toast('姓名只能输入中英文');
-                      btnCanClick = true;
                       return;
                     }
                     var regaddress = RegExp(r"^[\u4e00-\u9fa5a-zA-Z0-9\-\_.]+$");
                     if (!regaddress.hasMatch(address)) {
                       G.toast('请输入中文、英文、数字及符号-和_');
-                      btnCanClick = true;
                       return;
                     }
                     print(data);
                     G.showLoading(context);
                     var result = await addressProvide.updateAddress(data);
                     G.closeLoading();
-                    Future.delayed(Duration(seconds: 2), () {
-                      btnCanClick = true;
-                    });
+                    
                     if (result.data['code'] == 200) {
                       G.router.pop(context);
                       // G.navigateTo(context, '/create-account');

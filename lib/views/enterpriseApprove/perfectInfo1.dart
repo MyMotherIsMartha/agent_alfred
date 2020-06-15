@@ -35,6 +35,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     return tempList;
   }
   String errorMsg = '';
+  bool btnCanClick = true;
 
   Map uploadData;
 
@@ -593,6 +594,13 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
                     disabled: formValidate.containsValue(false),
                     text: '下一步', 
                     fn: () async {
+                      if (!btnCanClick) {
+                        return;
+                      }
+                      btnCanClick = false;
+                      Future.delayed(Duration(seconds: 1), () {
+                        btnCanClick = true;
+                      });
                       if (_formKey.currentState.validate()) {
                         var areaAry = areaName.split(',');
                         print('test');

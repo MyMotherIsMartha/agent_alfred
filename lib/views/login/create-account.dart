@@ -26,6 +26,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   String selectedPackageNo;
   String selectedPackagePrice;
   String selectedGiftPackagePromotionNo;
+  bool btnCanClick = true;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         child: FlatButton(
             // 按钮禁用指示
             onPressed: () async {
+              if (!btnCanClick) {
+                return;
+              }
+              btnCanClick = false;
+              Future.delayed(Duration(seconds: 2), () {
+                btnCanClick = true;
+              });
               if (addressProvide.address == null ||
                   Validate.isNon(addressProvide.address.address)) {
                 G.toast('请填写地址');
