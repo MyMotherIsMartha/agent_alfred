@@ -320,7 +320,7 @@ class FinanceItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('单号：${item.orderNo}'),
+                  Text('${item.orderNo}'),
                   item.isShowTodayFlag
                       ? Container(
                           margin: EdgeInsets.only(left: G.setWidth(10)),
