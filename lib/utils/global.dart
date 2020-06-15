@@ -15,9 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class G {
   static Router router;
-  static navigateTo(context, String path, {replace: false, TransitionType transition: TransitionType.inFromRight}) {
-    router.navigateTo(context, path,
-        replace: replace, transition: transition);
+  static navigateTo(context, String path,
+      {replace: false, TransitionType transition: TransitionType.inFromRight}) {
+    router.navigateTo(context, path, replace: replace, transition: transition);
   }
 
   static GlobalKey<NavigatorState> key = GlobalKey(debugLabel: 'navigate_key');
@@ -35,7 +35,9 @@ class G {
   // static BuildContext getCurrentContext() => key.currentContext;
 
   static Future toast(String msg,
-          {Color bgColor = Colors.grey, Color color = Colors.white, int duration = 1}) =>
+          {Color bgColor = Colors.grey,
+          Color color = Colors.white,
+          int duration = 1}) =>
       Fluttertoast.showToast(
           msg: msg,
           toastLength: Toast.LENGTH_SHORT,
@@ -149,7 +151,6 @@ class G {
   static showLoading(context) {
     G.setContext(context);
     Provider.of<CommonProvide>(context).toggleLoadingWindow(true, context);
-    
   }
 
   static closeLoading() {
@@ -187,35 +188,38 @@ class G {
     showDialog(
       context: context,
       builder: (ctx) {
-        return CupertinoAlertDialog(
-          title: Text(msg ?? "退出登录"),
-          // content:Text('我是content'),
-          actions:<Widget>[
-            
-            CupertinoDialogAction(
-              child: Text('取消', style: TextStyle(color: hex('#85868A')),),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
+        return Theme(
+            data: ThemeData(
+              dividerColor: hex('#e6e6e6'),
             ),
-        
-            CupertinoDialogAction(
-              child: Text('确定'),
-              onPressed: (){
-                G.removePref('token');
-                G.removePref('orderOverTime');
-                Future.delayed(Duration.zero, () {
-                  Provider.of<AddressProvide>(context).resetAddress();
-                });
-                if (Validate.isNon(G.getPref('token'))) {
-                  Future.delayed(Duration.zero, () {
-                    G.navigateTo(context, '/login', replace: true);
-                  });
-                }
-              },
-            )
-          ]
-        );
+            child: CupertinoAlertDialog(title: Text(msg ?? "退出登录"),
+                // content:Text('我是content'),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    child: Text(
+                      '取消',
+                      style: TextStyle(color: hex('#85868A')),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  CupertinoDialogAction(
+                    child: Text('确定'),
+                    onPressed: () {
+                      G.removePref('token');
+                      G.removePref('orderOverTime');
+                      Future.delayed(Duration.zero, () {
+                        Provider.of<AddressProvide>(context).resetAddress();
+                      });
+                      if (Validate.isNon(G.getPref('token'))) {
+                        Future.delayed(Duration.zero, () {
+                          G.navigateTo(context, '/login', replace: true);
+                        });
+                      }
+                    },
+                  )
+                ]));
       },
     );
     // return YYDialog().build(context)
