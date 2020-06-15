@@ -26,6 +26,7 @@ class _BankFormPageState extends State<BankFormPage> {
   String bankId;
   String formStatus;
   Map _bankInfo;
+  bool btnCanClick = true;
   final _bankNameCtrl = TextEditingController();
   final _subBankCtrl = TextEditingController();
   final _bankCodeCtrl = TextEditingController();
@@ -199,6 +200,13 @@ class _BankFormPageState extends State<BankFormPage> {
                   text: '保存',
                   disabled: formValidate.containsValue(false), 
                   fn: () {
+                    if (!btnCanClick) {
+                      return;
+                    }
+                    btnCanClick = false;
+                    Future.delayed(Duration(seconds: 1), () {
+                      btnCanClick = true;
+                    });
                     submitFunc();
                   }
                 )

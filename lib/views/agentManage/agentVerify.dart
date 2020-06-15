@@ -25,8 +25,16 @@ class _AgentVerifyState extends State<AgentVerify> {
   String smsCode = '';
   String mobile;
   String sharecode;
+  bool btnCanClick = true;
 
   void _verifyFunc() async {
+    if (!btnCanClick) {
+      return;
+    }
+    btnCanClick = false;
+    Future.delayed(Duration(seconds: 1), () {
+      btnCanClick = true;
+    });
     var params = {
       "shareCode": sharecode,
       "smsCode": smsCode

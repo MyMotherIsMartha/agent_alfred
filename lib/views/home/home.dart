@@ -15,6 +15,7 @@ import 'package:agent37_flutter/utils/resttime.dart';
 import 'package:agent37_flutter/utils/validate.dart';
 import 'package:badges/badges.dart';
 import 'package:color_dart/color_dart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
@@ -55,46 +56,35 @@ class _HomePageState extends State<HomePage>
     if (userProvide.userAuthInfo.prefectStatus != -1) {
       return;
     }
-    return YYDialog().build(context)
-      ..width = G.setWidth(440)
-      ..borderRadius = G.setWidth(20)
-      ..text(
-        padding: EdgeInsets.all(G.setWidth(60)),
-        alignment: Alignment.center,
-        text: "尚未完善企业信息",
-        color: hex('#333'),
-        fontSize: G.setSp(36),
-        fontWeight: FontWeight.w500,
-      )
-      ..divider()
-      ..doubleButton(
-        padding: EdgeInsets.only(top: 10.0),
-        gravity: Gravity.center,
-        withDivider: true,
-        text1: "取消",
-        color1: hex('#85868A'),
-        fontSize1: G.setSp(36),
-        onTap1: () {
-          print("取消");
-        },
-        text2: "去完善",
-        color2: hex('##0091F0'),
-        fontSize2: G.setSp(36),
-        onTap2: () {
-          print("去完善");
-          goInfo = true;
-        },
-      )
-      ..dismissCallBack = () {
-        userProvide.toggleInfoDialog(false);
-        if (goInfo) {
-          goInfo = false;
-          Future.delayed(Duration(microseconds: 100), () {
-            G.navigateTo(context, '/perfectEnterprise1');
-          });
-        }
-      }
-      ..show();
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return CupertinoAlertDialog(
+          title: Text("尚未完善企业信息"),
+          // content:Text('我是content'),
+          actions:<Widget>[
+            
+            CupertinoDialogAction(
+              child: Text('取消', style: TextStyle(color: hex('#85868A')),),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+        
+            CupertinoDialogAction(
+              child: Text('确定'),
+              onPressed: (){
+                Navigator.of(context).pop();
+                userProvide.toggleInfoDialog(false);
+                Future.delayed(Duration(microseconds: 100), () {
+                  G.navigateTo(context, '/perfectEnterprise1');
+                });
+              },
+            )
+          ]
+        );
+      },
+    );
   }
 
   Future _getHomeinfo() async {

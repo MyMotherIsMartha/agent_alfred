@@ -29,6 +29,7 @@ class _CertificatePageState extends State<CertificatePage> {
   String offlineVoucher;
   int _orderOverTime = 0;
   bool uploading = false;
+  bool btnCanClick = true;
 
   void _getOrderInfo() async {
     if (widget.from == 'order' && !Validate.isNon(G.getPref('orderOverTime'))) {
@@ -278,6 +279,13 @@ class _CertificatePageState extends State<CertificatePage> {
           VButton(
               width: 310,
               fn: () async {
+                if (!btnCanClick) {
+                  return;
+                }
+                btnCanClick = false;
+                Future.delayed(Duration(seconds: 1), () {
+                  btnCanClick = true;
+                });
                 if (Validate.isNon(offlineVoucher)) {
                   G.toast('请上传凭证');
                 } else {

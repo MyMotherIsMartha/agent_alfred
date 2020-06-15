@@ -27,6 +27,7 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
     'newPwd': false,
     // 'resetPwd': false,
   };
+  bool btnCanClick = true;
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +145,13 @@ class _SettingResetPwdPageState extends State<SettingResetPwdPage> {
                     //   G.toast('两次密码输入不同');
                     //   return;
                     // }
+                    if (!btnCanClick) {
+                      return;
+                    }
+                    btnCanClick = false;
+                    Future.delayed(Duration(seconds: 1), () {
+                      btnCanClick = true;
+                    });
                     Map data = {
                       "newPassword1": newPassword,
                       "newPassword2": newPassword,

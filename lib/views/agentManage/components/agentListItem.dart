@@ -135,7 +135,7 @@ class _AgentListItemState extends State<AgentListItem> {
     int currentTab = item.checkStatus == -1 ? 0 : 1;
 
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: G.setHeight(20)),
       padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       decoration: BoxDecoration(
         color: hex('#FFF'),

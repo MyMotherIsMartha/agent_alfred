@@ -29,6 +29,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   String birthday;
   DateTime birthdayVal = DateTime(1990, 01, 01, 0, 0, 0);
   String errorMsg = '';
+  bool btnCanClick = true;
   Map<String, bool> formValidate = {
     'name': false,
     'sex': false,
@@ -173,6 +174,13 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                   width: 690,
                   text: '选择礼包购买',
                   fn: () async {
+                    if (!btnCanClick) {
+                      return;
+                    }
+                    btnCanClick = false;
+                    Future.delayed(Duration(seconds: 2), () {
+                      btnCanClick = true;
+                    });
                     setState(() {
                       errorMsg = null;
                     });
