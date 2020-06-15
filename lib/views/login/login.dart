@@ -281,6 +281,11 @@ class _LoginPageState extends State<LoginPage> {
               return await LoginApi().getLoginSmsCode(mobile);
             }),
             maxLength: 4,
+            onChange: (e) {
+              setState(() {
+                sms = e;
+              });
+            },
             validator: (value) {
               if (loginType != 'sms') return null;
               if (errorMsg == null || errorMsg.isEmpty) {
