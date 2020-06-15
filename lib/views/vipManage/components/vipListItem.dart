@@ -96,11 +96,14 @@ class _VipListItemState extends State<VipListItem> {
   @override
   Widget build(BuildContext context) {
     VipItemModel item = widget.item;
-    item.enterpriseName = item.enterpriseName ?? '';
+    if (item.enterpriseName == '' || item.enterpriseName == null) {
+      item.enterpriseName = '普通会员';
+    } 
+    // item.enterpriseName = item.enterpriseName ?? '普通会员';
     isSpecialAccount = Provider.of<UserProvide>(context).specialAccount;
 
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: G.setHeight(20)),
       padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       decoration: BoxDecoration(
         color: hex('#FFF'),

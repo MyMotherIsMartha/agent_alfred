@@ -22,6 +22,7 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
   final FocusNode _nodeText = FocusNode();
   final _moneyCtrl = TextEditingController();
   bool haveValidate = false;
+  bool btnCanClick = true;
 
   double withdrawalBalance = 0;
 
@@ -227,7 +228,13 @@ class _WalletWithdrawState extends State<WalletWithdraw> {
   }
 
   void withdrawFunc() async {
-    
+    if (!btnCanClick) {
+      return;
+    }
+    btnCanClick = false;
+    Future.delayed(Duration(seconds: 1), () {
+      btnCanClick = true;
+    });
     var regx = RegExp(r"^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$");
     var inputMoney = _moneyCtrl.value.text;
     if (!regx.hasMatch(_moneyCtrl.value.text)) {
