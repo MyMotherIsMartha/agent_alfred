@@ -43,6 +43,21 @@ class HomeInfoModel {
     int increasedShowOrderNum;
     int increasedShowMemberNum;
     int increasedShowAgentNum;
+
+    bool lastMonthShowAgentFlag;
+    bool lastMonthShowMemberFlag;
+    bool lastMonthShowOrderFlag;
+
+    bool thisMonthShowAgentFlag;
+    bool thisMonthShowMemberFlag;
+    bool thisMonthShowOrderFlag;
+
+    bool todayShowAgentFlag;
+    bool todayShowMemberFlag;
+    bool todayShowOrderFlag;
+
+
+
     bool newlyIncreasedShowOrderFlag;
     bool newlyIncreasedShowMemberFlag;
     bool newlyIncreasedShowAgentFlag;
@@ -83,9 +98,15 @@ class HomeInfoModel {
         this.increasedShowOrderNum,
         this.increasedShowMemberNum,
         this.increasedShowAgentNum,
-        this.newlyIncreasedShowOrderFlag,
-        this.newlyIncreasedShowMemberFlag,
-        this.newlyIncreasedShowAgentFlag,
+        this.lastMonthShowAgentFlag,
+        this.lastMonthShowMemberFlag,
+        this.lastMonthShowOrderFlag,
+        this.thisMonthShowAgentFlag,
+        this.thisMonthShowMemberFlag,
+        this.thisMonthShowOrderFlag,
+        this.todayShowAgentFlag,
+        this.todayShowMemberFlag,
+        this.todayShowOrderFlag,
         this.isExpireCheck,
     });
 
@@ -124,9 +145,15 @@ class HomeInfoModel {
         increasedShowOrderNum: json["increasedShowOrderNum"],
         increasedShowMemberNum: json["increasedShowMemberNum"],
         increasedShowAgentNum: json["increasedShowAgentNum"],
-        newlyIncreasedShowOrderFlag: json["newlyIncreasedShowOrderFlag"],
-        newlyIncreasedShowMemberFlag: json["newlyIncreasedShowMemberFlag"],
-        newlyIncreasedShowAgentFlag: json["newlyIncreasedShowAgentFlag"],
+        lastMonthShowAgentFlag: json["lastMonthShowAgentFlag;"],
+        lastMonthShowMemberFlag: json["lastMonthShowMemberFlag;"],
+        lastMonthShowOrderFlag: json["lastMonthShowOrderFlag;"],
+        thisMonthShowAgentFlag: json["thisMonthShowAgentFlag;"],
+        thisMonthShowMemberFlag: json["thisMonthShowMemberFlag;"],
+        thisMonthShowOrderFlag: json["thisMonthShowOrderFlag;"],
+        todayShowAgentFlag: json["todayShowAgentFlag;"],
+        todayShowMemberFlag: json["todayShowMemberFlag;"],
+        todayShowOrderFlag: json["todayShowOrderFlag;"],
         isExpireCheck: json["isExpireCheck"],
     );
 
@@ -165,9 +192,15 @@ class HomeInfoModel {
         "increasedShowOrderNum": increasedShowOrderNum,
         "increasedShowMemberNum": increasedShowMemberNum,
         "increasedShowAgentNum": increasedShowAgentNum,
-        "newlyIncreasedShowOrderFlag": newlyIncreasedShowOrderFlag,
-        "newlyIncreasedShowMemberFlag": newlyIncreasedShowMemberFlag,
-        "newlyIncreasedShowAgentFlag": newlyIncreasedShowAgentFlag,
+        "lastMonthShowAgentFlag": lastMonthShowAgentFlag,
+        "lastMonthShowMemberFlag": lastMonthShowMemberFlag,
+        "lastMonthShowOrderFlag": lastMonthShowOrderFlag,
+        "thisMonthShowAgentFlag": thisMonthShowAgentFlag,
+        "thisMonthShowMemberFlag": thisMonthShowMemberFlag,
+        "thisMonthShowOrderFlag": thisMonthShowOrderFlag,
+        "todayShowAgentFlag": todayShowAgentFlag,
+        "todayShowMemberFlag": todayShowMemberFlag,
+        "todayShowOrderFlag": todayShowOrderFlag,
         "isExpireCheck": isExpireCheck,
     };
 }

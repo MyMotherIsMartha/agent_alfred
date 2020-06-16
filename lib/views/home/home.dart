@@ -67,6 +67,7 @@ class _HomePageState extends State<HomePage>
             CupertinoDialogAction(
               child: Text('取消', style: TextStyle(color: hex('#85868A')),),
               onPressed: (){
+                userProvide.toggleInfoDialog(false);
                 Navigator.of(context).pop();
               },
             ),
@@ -548,7 +549,10 @@ class _HomePageState extends State<HomePage>
           homeinfo.todayIncreasedOrderNum,
           homeinfo.todayIncreasedAppMemberNum,
           homeinfo.todayIncreasedAgentNum,
-          homeinfo.todayOriginEstimateMemberServiceFee
+          homeinfo.todayOriginEstimateMemberServiceFee,
+          homeinfo.todayShowOrderFlag,
+          homeinfo.todayShowMemberFlag,
+          homeinfo.todayShowAgentFlag
         ];
         break;
       case 'thisMonth':
@@ -559,7 +563,10 @@ class _HomePageState extends State<HomePage>
           homeinfo.thisMonthIncreasedOrderNum,
           homeinfo.thisMonthIncreasedAppMemberNum,
           homeinfo.thisMonthIncreasedAgentNum,
-          homeinfo.thisMonthOriginEstimateMemberServiceFee
+          homeinfo.thisMonthOriginEstimateMemberServiceFee,
+          homeinfo.thisMonthShowOrderFlag,
+          homeinfo.thisMonthShowMemberFlag,
+          homeinfo.thisMonthShowAgentFlag
         ];
         break;
       case 'lastMonth':
@@ -570,7 +577,10 @@ class _HomePageState extends State<HomePage>
           homeinfo.lastMonthIncreasedOrderNum,
           homeinfo.lastMonthIncreasedAppMemberNum,
           homeinfo.lastMonthIncreasedAgentNum,
-          homeinfo.lastMonthOriginEstimateMemberServiceFee
+          homeinfo.lastMonthOriginEstimateMemberServiceFee,
+          homeinfo.lastMonthShowOrderFlag,
+          homeinfo.lastMonthShowMemberFlag,
+          homeinfo.lastMonthShowAgentFlag
         ];
         break;
       default:
@@ -688,7 +698,7 @@ class _HomePageState extends State<HomePage>
                                       //         ? 'left'
                                       //         : 'down'),
                                       )
-                                  : isNew(index)
+                                  : isNew(data, index)
                                       ? Positioned(
                                           top: 0,
                                           right: 0,
@@ -708,17 +718,17 @@ class _HomePageState extends State<HomePage>
                 })));
   }
 
-  bool isNew(int index) {
+  bool isNew(data, int index) {
     bool flag;
     switch (index) {
       case 3:
-        flag = homeinfo.newlyIncreasedShowOrderFlag;
+        flag = data[7]??false;
         break;
       case 4:
-        flag = homeinfo.newlyIncreasedShowMemberFlag;
+        flag = data[8]??false;
         break;
       case 5:
-        flag = homeinfo.newlyIncreasedShowAgentFlag;
+        flag = data[9]??false;
         break;
       default:
         flag = false;

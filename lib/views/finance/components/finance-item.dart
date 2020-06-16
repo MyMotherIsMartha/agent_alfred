@@ -413,7 +413,7 @@ class FinanceProduct extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                    width: G.setWidth(284),
+                                    width: G.setWidth(264),
                                     child: Text(
                                       data.goodsName,
                                       maxLines: 2,
@@ -430,8 +430,7 @@ class FinanceProduct extends StatelessWidget {
                                       text: '￥',
                                       children: [
                                         TextSpan(
-                                            text: data.goodsAmount
-                                                .toStringAsFixed(2),
+                                            text: data.goodsAmount.toStringAsFixed(2),
                                             style: TextStyle(
                                                 fontSize: G.setSp(26),
                                                 color: hex('#333'))),
