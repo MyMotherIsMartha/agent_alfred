@@ -46,6 +46,32 @@ class _WebViewState extends State<MessageCenterPage> {
         });
   }
 
+  JavascriptChannel _alertJavascriptChannel(BuildContext context) {
+    return JavascriptChannel(
+        name: 'goToOtherPage',
+        onMessageReceived: (JavascriptMessage message) {
+          setState(() {
+            print(message.message);
+            switch (message.message) {
+              case 'home':
+                G.navigateTo(context, '/index', replace: true);
+                break;
+              case 'viplist':
+                G.navigateTo(context, '/vipManage', replace: true);
+                break;
+              case 'wallet':
+                G.navigateTo(context, '/walletMain', replace: true);
+                break;
+              case 'invoice':
+                G.navigateTo(context, '/invoiceList', replace: true);
+                break;
+              default:
+                break;
+            }
+          });
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +81,9 @@ class _WebViewState extends State<MessageCenterPage> {
           centerTitle: true,
           elevation: 0,
           title: Text('消息'),
-          leading: GestureDetector(
-            onTap: () {
-              G.router.pop(context);
-            },
-            child: Container(
-              padding: EdgeInsets.fromLTRB(G.setWidth(30), G.setWidth(10), G.setWidth(10), G.setWidth(10)),
-              child: Text('返回首页', style: TextStyle(fontSize: G.setSp(28)),)
-            ),
-          ),
+          leading: IconButton(icon: Icon(Icons.home), onPressed: () {
+            G.router.pop(context);
+          }),
         ),
         body: Container(
           child: WebView(
@@ -73,6 +93,9 @@ class _WebViewState extends State<MessageCenterPage> {
             onWebViewCreated: (WebViewController wvc) {
               _controller = wvc;
             },
+            javascriptChannels: <JavascriptChannel>[
+              _alertJavascriptChannel(context)
+            ].toSet(),
             // onPageStarted: (url) {
             //   setToken();
             // },
