@@ -41,6 +41,8 @@ class UserProvide with ChangeNotifier {
   }
 
   toggleInfoDialog(bool flag) {
+    print(flag);
+    print('this is info dialog flag');
     needInfoDialog = flag;
     notifyListeners();
   }
