@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                               String token = result.data['data']['jwtToken'];
                               G.setPref('token', 'bearer ' + token);
                               G.setContext(context);
-                              if (mobile == '18352975491') {
+                              if (mobile == '18352975492') {
                                 print('changeSpecial(true)');
                                 G.setPref('specialAccount', 'yes');
                                 Provider.of<UserProvide>(context).changeSpecial(true);
