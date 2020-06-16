@@ -23,7 +23,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 void openShareWindow(context, String type, int role) {
   GlobalKey qrCodeKey = GlobalKey();
-  String middleUrl = type == 'member' ? (EnvConfig.dev()['web-address'] + '#/createAccount/1?shareCode=') : (EnvConfig.dev()['qr-register-url'] + '#/?shareCode=');
+  String middleUrl = type == 'member' ? (EnvConfig.dev()['web-address'] + '#/createAccount/1?shareCode=') : (EnvConfig.dev()['qr-register-url'] + '?shareCode=');
   print(middleUrl);
 
   var shareCode = Provider.of<UserProvide>(context).userAuthInfo.shareCode ?? '';

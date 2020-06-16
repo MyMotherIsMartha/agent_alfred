@@ -55,6 +55,15 @@ class _WebViewState extends State<MessageCenterPage> {
           centerTitle: true,
           elevation: 0,
           title: Text('消息'),
+          leading: GestureDetector(
+            onTap: () {
+              G.router.pop(context);
+            },
+            child: Container(
+              padding: EdgeInsets.fromLTRB(G.setWidth(30), G.setWidth(10), G.setWidth(10), G.setWidth(10)),
+              child: Text('返回首页', style: TextStyle(fontSize: G.setSp(28)),)
+            ),
+          ),
         ),
         body: Container(
           child: WebView(
