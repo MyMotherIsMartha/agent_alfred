@@ -149,7 +149,7 @@ class _VipDetailState extends State<VipDetail>
                         widthFactor: _totalCharge <= 0 ? 0 : _pengdingCharge / _totalCharge,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: hex('#333'),
+                            color: hex(mainTextColor),
                             borderRadius: BorderRadius.circular(G.setHeight(6)),
                           ),
                         )
@@ -269,8 +269,17 @@ class _ServiceListState extends State<ServiceList> {
   List _listData = [];
 
   Future _getList(refresh) async {
+    if (refresh) {
+      _refreshController?.finishLoad(success: true, noMore: false);
+      pageNo = 1;
+     
+      setState(() {
+        _listData = [];
+      });
+    } else {
+      ++pageNo;
+    }
     if (_listData.length == total && !refresh) {
-      G.toast('已加载全部');
       _refreshController.finishLoad(success: true, noMore: true);
       return null;
     }
@@ -287,21 +296,16 @@ class _ServiceListState extends State<ServiceList> {
       // VipResultModel resultData = VipResultModel.fromJson(originalData);
       if (resultData == null) return;
       print(resultData);
-      setState(() {
-        total = resultData['total'];
-      });
       if (refresh) {
         setState(() {
+          total = resultData['total'];
           _listData = resultData['records'];
         });
       } else {
+        total = resultData['total'];
         _listData.addAll(resultData['records']);
       }
     }
-
-    setState(() {
-      pageNo = refresh ? 1 : pageNo + 1;
-    });
 
     _api();
   }
