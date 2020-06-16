@@ -13,8 +13,8 @@ class EnvConfig {
     if (env == 'test') {
       return {
         'api': 'http://192.168.10.186:31050/', // 测试环境
-        // 'web-address': 'http://192.168.10.186:9000/',
-        'web-address': 'http://192.168.10.142:8080/',
+        'web-address': 'http://192.168.10.186:9000/',
+        // 'web-address': 'http://192.168.10.142:8080/',
         'qr-register-url': 'http://192.168.10.184:9015/',
         'wx-appid': 'wx902617a0eaaca56f'
       };
