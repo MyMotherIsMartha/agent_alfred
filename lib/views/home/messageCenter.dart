@@ -46,6 +46,32 @@ class _WebViewState extends State<MessageCenterPage> {
         });
   }
 
+  JavascriptChannel _alertJavascriptChannel(BuildContext context) {
+    return JavascriptChannel(
+        name: 'goToOtherPage',
+        onMessageReceived: (JavascriptMessage message) {
+          setState(() {
+            print(message.message);
+            switch (message.message) {
+              case 'home':
+                G.navigateTo(context, '/index', replace: true);
+                break;
+              case 'viplist':
+                G.navigateTo(context, '/vipManage', replace: true);
+                break;
+              case 'wallet':
+                G.navigateTo(context, '/walletMain', replace: true);
+                break;
+              case 'invoice':
+                G.navigateTo(context, '/invoiceList', replace: true);
+                break;
+              default:
+                break;
+            }
+          });
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +99,9 @@ class _WebViewState extends State<MessageCenterPage> {
             onWebViewCreated: (WebViewController wvc) {
               _controller = wvc;
             },
+            javascriptChannels: <JavascriptChannel>[
+              _alertJavascriptChannel(context)
+            ].toSet(),
             // onPageStarted: (url) {
             //   setToken();
             // },

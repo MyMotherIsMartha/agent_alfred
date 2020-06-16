@@ -98,6 +98,7 @@ class AgentManageMainState extends State<AgentManageMain>
     var result = await MemberApi().getAgentStatistics();
     setState(() {
       _agentNumObj = result.data['data'];
+      print('_agentNumObj');
       print(_agentNumObj);
       var normalAgentNum = _agentNumObj["normalAgentNum"];
       var agentNum = _agentNumObj["agentNum"];
@@ -230,7 +231,7 @@ class AgentManageMainState extends State<AgentManageMain>
                     Text.rich(TextSpan(
                       children: [
                         TextSpan(text: '   ×', style: TextStyle(color: Colors.white, fontSize: G.setSp(28))),
-                        TextSpan(text: (_agentNumObj['giveAgentNum'] - _agentNumObj['checkAgentNum']).toString(), style: TextStyle(color: Colors.white, fontSize: G.setSp(42)))
+                        TextSpan(text: ((_agentNumObj['giveAgentNum'] ?? 0) - _agentNumObj['checkAgentNum']).toString(), style: TextStyle(color: Colors.white, fontSize: G.setSp(42)))
                       ]
                     ))
                   ]),
