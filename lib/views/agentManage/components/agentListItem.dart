@@ -158,6 +158,7 @@ class _AgentListItemState extends State<AgentListItem> {
                       overflow: TextOverflow.ellipsis, 
                       style: TextStyle(fontWeight: FontWeight.w600)),
                 ),
+                G.spacingWidth(G.setWidth(5)),
                 item.isNewShowFlag ? Image(height: G.setHeight(34),image: AssetImage('lib/assets/images/pic-icon/new-ellipse.png')) : Text(''),
               ]),
               leftTopText(item.qualificationsStatus, item.role, item.voucherStatus, item.checkStatus, item.settleStatus),
