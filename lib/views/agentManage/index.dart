@@ -450,7 +450,10 @@ class _MemberListState extends State<MemberList> {
     if (refresh) {
       _controller?.finishLoad(success: true, noMore: false);
       pageNo = 1;
+      setState(() {
         _listData = [];
+      });
+        
     } else {
       ++pageNo;
     }
@@ -467,6 +470,7 @@ class _MemberListState extends State<MemberList> {
     void _api() async {
       var result = await MemberApi().getAgentChildren(params);
       Map originalData = result.data['data'];
+      print(originalData);
       AgentResultModel resultData = AgentResultModel.fromJson(originalData);
       if (resultData == null) return;
       
