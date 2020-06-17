@@ -1,5 +1,5 @@
 class EnvConfig {
-  static const env = 'uat';
+  static const env = 'test';
   // Map dev;
   // if (env == 'test') {
   //   dev = {
