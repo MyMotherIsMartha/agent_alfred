@@ -265,8 +265,9 @@ class _CreateOrderPageState extends State<CreateOrderPage> with WidgetsBindingOb
                     if (result.data['code'] != 200) return;
                     String payInfo = result.data['data'];
                     try {
+                      const evn = EnvConfig.env == 'uat' ? AliPayEvn.ONLINE : AliPayEvn.SANDBOX;
                       // 根据环境确定是什么模式  目前是沙箱
-                      var res = await aliPay(payInfo, evn: AliPayEvn.SANDBOX);
+                      var res = await aliPay(payInfo, evn: evn);
                       if (res['resultStatus'] == "9000") {
                         // G.toast('支付成功');
                         // G.navigateTo(context, '/uploadEnterPrisePic', replace: true);
