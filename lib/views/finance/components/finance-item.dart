@@ -67,7 +67,7 @@ class FinanceItem extends StatelessWidget {
                           // 内容区域
                           // flex: 1,
                           child: Container(
-                              height: G.setWidth(190),
+                              height: G.setWidth(194),
                               padding: EdgeInsets.symmetric(
                                   horizontal: G.setWidth(20),
                                   vertical: G.setWidth(10)),
@@ -85,7 +85,7 @@ class FinanceItem extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                          width: G.setWidth(324),
+                                          width: G.setWidth(284),
                                           child: Text(
                                             product.goodsName,
                                             maxLines: 2,

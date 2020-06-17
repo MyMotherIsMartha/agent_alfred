@@ -204,6 +204,18 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
             ]
           ),
       );
+    } else if (invoiceStatus == '7') {
+      return Container(
+        width: double.infinity,
+        color: hex('#CABEA6'),
+        padding: EdgeInsets.all(G.setWidth(20)),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('已开票', style: TextStyle(color: Colors.white, fontSize: G.setSp(28)))
+            ]
+          ),
+      );
     } else {
       return Container(
         child:Text('未知发票状态')
@@ -233,7 +245,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
     String str;
     switch (type) {
       case 3:
-        str = '未开票';
+        str = '待开票';
         break;
       case 4:
         str = '待核验';
@@ -242,7 +254,10 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
         str = '已开票';
         break;
       case 6:
-        str = '核验失败';
+        str = '核销拒绝';
+        break;
+      case 7:
+        str = '核销成功';
         break;
       default:
         str = '未知';
@@ -357,6 +372,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
                         ]
                       ),
                     ),
+                    invoiceStatus != '7' ?
                     Container(
                       padding: EdgeInsets.only(bottom: G.setWidth(40)),
                       margin: EdgeInsets.only(top: G.setWidth(60)),
@@ -367,7 +383,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
                           isEditStatus = true;
                         });
                       }),
-                    )
+                    ) : Container()
                   ],
                 );
               } else {
