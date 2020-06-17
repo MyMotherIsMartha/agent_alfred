@@ -156,7 +156,7 @@ class _InvoiceListState extends State<InvoiceList> {
         str = '待核验';
         break;
       case 5:
-        str = '已入账';
+        str = '已开票';
         break;
       case 6:
         str = '核销拒绝';
