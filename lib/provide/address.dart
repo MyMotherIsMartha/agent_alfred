@@ -9,15 +9,14 @@ class AddressProvide with ChangeNotifier {
 
   getAddress() async {
     if (needRefresh) {
-      print('provide++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
       needRefresh = false;
       var result = await MemberApi().addressInfo();
-      print('get address!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      print(result.data['data']);
       if (result.data['code'] == 200 && result.data['data'] != null) {
         address = AddressModel.fromJson(result.data['data']);
-        notifyListeners();
+      } else {
+        address = null;
       }
+      notifyListeners();
     }
   }
 
