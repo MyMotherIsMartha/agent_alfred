@@ -92,14 +92,20 @@ class _HomePageState extends State<HomePage>
     try {
       var result = await MemberApi().getHomeInfo();
       var result2;
+      if (result.data['code'] != 200) {
+        return 'future end';
+      }
       if (result.data['data'] != null) {
         result2 = await MemberApi().getMessageCount();
       }
       if (result.data['data'] != null) {
         setState(() {
-          homeinfo = homeInfoModelFromJson(result.data['data']);
+          homeinfo = HomeInfoModel.fromJson(result.data['data']);
         });
         countDown();
+      }
+      if (result2.data['code'] != 200) {
+        return 'future end';
       }
       if (result2.data['data'] != null) {
         messageCountInfo = result2.data['data'];
@@ -110,6 +116,8 @@ class _HomePageState extends State<HomePage>
       mobile = Provider.of<UserProvide>(context).userAuthInfo.mobile;
       return 'future end';
     } catch (e) {
+      print(e);
+      print('up is error !!!!!!');
       return 'future error';
     }
   }
@@ -957,6 +965,8 @@ class _HomePageState extends State<HomePage>
             child: FutureBuilder(
               future: homeFuture,
               builder: (context, shapshot) {
+                print(shapshot.data);
+                print("怎么回事啊shapshot.data");
                 if (shapshot.data == 'future error') {
                   return Container(
                     height: G.setWidth(1334),
