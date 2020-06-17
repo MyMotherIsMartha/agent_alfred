@@ -226,7 +226,7 @@ class _MarketSearchPageState extends State<MarketSearchPage> {
                 ),
                 child: Text(item.contactName),
               ),
-              Text(item.createTime.toString())
+              // Text(item.createTime.toString())
             ],
           )
         ],
