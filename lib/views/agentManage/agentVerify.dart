@@ -85,6 +85,7 @@ class _AgentVerifyState extends State<AgentVerify> {
       appBar: AppBar(
         title: Text('代理商短信验证'),
         centerTitle: true,
+        elevation: 0,
         // leading: BackButton(
         //   onPressed: () {
         //     G.navigateTo(context, '/agentManage?tabIndex=1', replace: true, transition: TransitionType.inFromLeft);

@@ -22,7 +22,7 @@ class EnvConfig {
       return {
         'api': 'https://api-uat-37agent.woouo.com/', // 测试环境
         'web-address': 'https://h5-uat-37agent.woouo.com/',
-        'qr-register-url': 'http://192.168.10.184:9015/',
+        'qr-register-url': 'https://uni-h5-agent-uat.woouo.com/',
         'wx-appid': 'wx902617a0eaaca56f'
       };
     } else {

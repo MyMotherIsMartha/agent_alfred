@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:agent37_flutter/api/order.dart';
 import 'package:agent37_flutter/components/v-refresh-header.dart';
+import 'package:agent37_flutter/components/v-underline_indicator.dart';
 import 'package:color_dart/hex_color.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,7 @@ class _VipDetailState extends State<VipDetail>
       appBar: AppBar(
         title: Text("会员采购订单"),
         centerTitle: true,
+        elevation: 0
       ),
       backgroundColor: hex('#F3F4F6'),
       body: Column(
@@ -234,7 +236,10 @@ class _VipDetailState extends State<VipDetail>
             color: Colors.white,
             child: TabBar(
               controller: _tabController,
-              tabs: tabs.map((e) => Tab(text: e['label'])).toList()
+              tabs: tabs.map((e) => Tab(text: e['label'])).toList(),
+              indicator: VUnderlineTabIndicator(
+                        borderSide: BorderSide(
+                            width: G.setHeight(6), color: hex('#6982FF'))),
             )
           ),
           Expanded(
