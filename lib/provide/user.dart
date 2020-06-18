@@ -93,6 +93,7 @@ class UserProvide with ChangeNotifier {
     // if (!getInfoFlag) return;
     // getInfoFlag = false;
     var result = await LoginApi().getUserAuth();
+    print(result);
     if (result.data['code'] == 200) {
       userAuthInfo = UserAuthModel.fromJson(result.data['data']);
       if (!isInit) {
