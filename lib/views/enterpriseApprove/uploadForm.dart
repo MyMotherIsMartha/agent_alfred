@@ -238,6 +238,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                             Expanded(
                               child: TextFormField(
                                 keyboardType: TextInputType.text,
+                                maxLength: 50,
+                                buildCounter: (context, {currentLength = 10, maxLength = 10, isFocused = false}) {
+                                  return null;
+                                },
                                 decoration:
                                     InputDecoration(border: InputBorder.none, hintText: '请输入企业名称'),
                                 controller: _enterpriseNameCtrl,
@@ -283,6 +287,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                 decoration:
                                     InputDecoration(border: InputBorder.none, hintText: '请输入统一社会信用代码'),
                                 controller: _registerCodeCtrl,
+                                maxLength: 15,
+                                buildCounter: (context, {currentLength = 10, maxLength = 10, isFocused = false}) {
+                                  return null;
+                                },
                                 onChanged: (e) {
                                   
                                   setState(() {
@@ -339,6 +347,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                               child: TextFormField(
                                 // maxLines: 3,
                                 keyboardType: TextInputType.text,
+                                maxLength: 50,
+                                buildCounter: (context, {currentLength = 10, maxLength = 10, isFocused = false}) {
+                                  return null;
+                                },
                                 decoration:
                                     InputDecoration(border: InputBorder.none, hintText: '请输入详细注册地址'),
                                 controller: _addressCtrl,
@@ -385,6 +397,10 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
                                 // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9]"))],
                                 decoration:
                                     InputDecoration(border: InputBorder.none, hintText: '请输入企业法人名称'),
+                                maxLength: 15,
+                                buildCounter: (context, {currentLength = 10, maxLength = 10, isFocused = false}) {
+                                  return null;
+                                },
                                 controller: _legalPersonCtrl,
                                 onChanged: (e) {
                                   setState(() {
