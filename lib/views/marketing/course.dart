@@ -80,9 +80,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
   // 播放器
   Widget _headerPlayer() {
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: G.setWidth(420)
-      ),
+        constraints: BoxConstraints(maxHeight: G.setWidth(420)),
         width: double.infinity,
         padding: EdgeInsets.only(top: G.statusHeight),
         // height: G.setWidth(420),
@@ -104,6 +102,65 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                                 image: NetworkImage(detail.courseImg),
                                 fit: BoxFit.contain)),
                       )
+                // child: videoController != null && videoController.value.initialized ? VideoPlayer(videoController) : _buildInitingWidget(),
+                ),
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Container(
+                width: G.setWidth(750),
+                height: G.setWidth(128),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                      rgba(51, 51, 51, 0.6),
+                      rgba(51, 51, 51, 0),
+                    ])),
+              ),
+            ),
+            Positioned(
+              // top: G.statusHeight / 2,
+              left: 0,
+              child: Container(
+                alignment: Alignment.center,
+                child: IconButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: () {
+                    G.router.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.keyboard_arrow_left,
+                    size: 32,
+                    color: hex('#FFF'),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ));
+  }
+
+  // 图片封面
+  Widget _headerThumb() {
+    return Container(
+        constraints: BoxConstraints(maxHeight: G.setWidth(420)),
+        width: double.infinity,
+        padding: EdgeInsets.only(top: G.statusHeight),
+        // height: G.setWidth(420),
+        color: hex('#000'),
+        child: Stack(
+          children: <Widget>[
+            Container(
+                width: double.infinity,
+                // height: G.setWidth(420),
+                child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(detail.courseImg),
+                          fit: BoxFit.contain)),
+                )
                 // child: videoController != null && videoController.value.initialized ? VideoPlayer(videoController) : _buildInitingWidget(),
                 ),
             Positioned(
@@ -248,7 +305,7 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
             currentCourse = item;
             curIndex = index;
           });
-          _videoPlayerController.pause();
+          _videoPlayerController?.pause();
           if (item.contactType == 1) {
             _setVideo(item);
             // setState(() {
@@ -447,11 +504,16 @@ class _MarketCoursePageState extends State<MarketCoursePage> {
                       return Container(
                         child: Column(
                           children: <Widget>[
-                            _headerPlayer(),
+                            _videoPlayerController != null
+                                ? _headerPlayer()
+                                : Container(),
                             Expanded(
                                 child: SingleChildScrollView(
                               child: Column(
                                 children: <Widget>[
+                                  _videoPlayerController == null
+                                      ? _headerThumb()
+                                      : Container(),
                                   _title(),
                                   _courseMenu(),
                                   _tutor(),
