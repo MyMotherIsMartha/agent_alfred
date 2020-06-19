@@ -150,19 +150,19 @@ class _InvoiceListState extends State<InvoiceList> {
     String str;
     switch (type) {
       case 3:
-        str = '待开票';
+        str = '未开票';
         break;
       case 4:
         str = '待核验';
         break;
       case 5:
-        str = '已开票';
+        str = '待核验';
         break;
       case 6:
-        str = '核销拒绝';
+        str = '核验失败';
         break;
       case 7:
-        str = '核销成功';
+        str = '已开票';
         break;
       default:
         str = '未知';
