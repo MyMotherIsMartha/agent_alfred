@@ -5,9 +5,14 @@ import 'package:agent37_flutter/utils/request.dart';
 //  企业营业执照上传
 class DicApi{
   static String serviceAccountApi = '/dic';
+  static String marketingApi = '/agentMarketingApi';
   getOccupations() async {
     var r = await service().get('$serviceAccountApi/v1/occupations');
-    print(r);
+    return r;
+  }
+
+  getTradeList() async {
+    var r = await service().post('$marketingApi/v1/api/trade/findAllTradeList');
     return r;
   }
 }

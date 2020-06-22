@@ -86,12 +86,28 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
       formValidate['addressStr'] = addressStr != null;
       formValidate['legalPerson'] = legalPerson != null;
     }
-    _getJobList();
+    // _getJobList();
+    _getTradeList();
   }
 
   _getJobList() async {
     var response = await DicApi().getOccupations();
     jobList = response.data['data'];
+  }
+
+  _getTradeList() async {
+    var result = await DicApi().getTradeList();
+    List resultData = result.data['data'];
+    if (resultData != null) {
+      jobList = List.from(resultData.map((item) {
+        return {
+          'name': item['tradeName'],
+          'code': item['tradeId']
+        };
+      }));
+    } else {
+      jobList = [];
+    }
   }
 
   _getEnterpriseInfo() async {
