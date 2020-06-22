@@ -199,7 +199,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> with WidgetsBindingOb
   // }
 
   void getOrderResult() {
-    print('12341232');
+    G.closeLoading();
     int count = 0;
     const period = const Duration(seconds: 1);
     Timer.periodic(period, (timer) async {
