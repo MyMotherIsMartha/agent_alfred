@@ -95,6 +95,21 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     jobList = response.data['data'];
   }
 
+  _getTradeList() async {
+    var result = await DicApi().getTradeList();
+    List resultData = result.data['data'];
+    if (resultData != null) {
+      jobList = List.from(resultData.map((item) {
+        return {
+          'name': item['tradeName'],
+          'code': item['tradeId']
+        };
+      }));
+    } else {
+      jobList = [];
+    }
+  }
+
   _getPerfectInfo() async {
     var result = await MemberApi().getPerfectInfo();
     var resultData = result.data['data'];
@@ -124,7 +139,8 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
     
     // _getEnterpriseInfo();
     _getPerfectInfo();
-    _getJobList();
+    // _getJobList();
+    _getTradeList();
   }
 
   @override
