@@ -186,7 +186,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           _formKey.currentState.validate();
                           if (errorMsg == null) {
                             if (Validate.isNon(invite)) {
-                              registerApi();
+                              G.toast('请输入邀请码');
+                              // registerApi();
                             } else {
                               var result = await LoginApi().checkInviteCode(invite);
                               if (result.data['code'] == 200) {
