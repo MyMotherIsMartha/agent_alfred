@@ -245,19 +245,19 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
     String str;
     switch (type) {
       case 3:
-        str = '待开票';
+        str = '未开票';
         break;
       case 4:
         str = '待核验';
         break;
       case 5:
-        str = '已开票';
+        str = '待核验';
         break;
       case 6:
-        str = '核销拒绝';
+        str = '核验失败';
         break;
       case 7:
-        str = '核销成功';
+        str = '已开票';
         break;
       default:
         str = '未知';
@@ -292,7 +292,7 @@ class _InvoiceDetailState extends State<InvoiceDetail> {
         centerTitle: true,
         iconTheme: IconThemeData(color: hex('#000')),
         title: Text(
-          '上传发票',
+          invoiceStatus == '7' ? '查看发票' : '上传发票',
           style: TextStyle(color: hex('#000'), fontSize: G.setSp(36)),
         ),
         leading: BackButton(
