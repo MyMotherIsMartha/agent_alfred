@@ -241,58 +241,64 @@ class _OrderResultPageState extends State<OrderResultPage> {
   @override
   Widget build(BuildContext context) {
     G.setContext(context);
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
         body: Container(
-      color: hex('#F3F4F6'),
-      child: Stack(
-        children: <Widget>[
-          Container(
-              padding: EdgeInsets.only(top: G.setHeight(59)),
-              height: G.setHeight(278),
-              decoration: BoxDecoration(
-                  // 边色与边宽度
-                  gradient: LinearGradient(
-                      colors: [hex('#685AFF'), hex('#69A5FF')],
-                      begin: FractionalOffset(0, 1),
-                      end: FractionalOffset(1, 0)),
-                  borderRadius: BorderRadius.vertical(
-                      bottom: Radius.elliptical(120, 40)))),
-          AppBar(
-            brightness: Brightness.dark,
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            leading: Container(),
-            iconTheme: IconThemeData(color: hex('#E7D1A8')),
-            title: Text(
-              _getTitle(context),
-              style: TextStyle(color: hex('#fff'), fontSize: G.setSp(36)),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                  onPressed: () {
-                    G.logout(context);
-                  },
-                  child: Text('退出',
-                      style:
-                          TextStyle(color: hex('#fff'), fontSize: G.setSp(32))))
+          color: hex('#F3F4F6'),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                  padding: EdgeInsets.only(top: G.setHeight(59)),
+                  height: G.setHeight(278),
+                  decoration: BoxDecoration(
+                      // 边色与边宽度
+                      gradient: LinearGradient(
+                          colors: [hex('#685AFF'), hex('#69A5FF')],
+                          begin: FractionalOffset(0, 1),
+                          end: FractionalOffset(1, 0)),
+                      borderRadius: BorderRadius.vertical(
+                          bottom: Radius.elliptical(120, 40)))),
+              AppBar(
+                brightness: Brightness.dark,
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                centerTitle: true,
+                leading: Container(),
+                iconTheme: IconThemeData(color: hex('#E7D1A8')),
+                title: Text(
+                  _getTitle(context),
+                  style: TextStyle(color: hex('#fff'), fontSize: G.setSp(36)),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () {
+                        G.logout(context);
+                      },
+                      child: Text('退出',
+                          style:
+                              TextStyle(color: hex('#fff'), fontSize: G.setSp(32))))
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    left: G.setWidth(50),
+                    right: G.setWidth(50),
+                    top: G.setHeight(184)),
+                padding: EdgeInsets.symmetric(horizontal: G.setWidth(50)),
+                decoration: BoxDecoration(
+                  color: hex('#fff'),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+                height: G.setHeight(900),
+                child: getCurrentWidget(userinfoAuth.voucherStatus),
+              ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(
-                left: G.setWidth(50),
-                right: G.setWidth(50),
-                top: G.setHeight(184)),
-            padding: EdgeInsets.symmetric(horizontal: G.setWidth(50)),
-            decoration: BoxDecoration(
-              color: hex('#fff'),
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            ),
-            height: G.setHeight(900),
-            child: getCurrentWidget(userinfoAuth.voucherStatus),
-          ),
-        ],
-      ),
-    ));
+        )
+    )
+    );
   }
 }

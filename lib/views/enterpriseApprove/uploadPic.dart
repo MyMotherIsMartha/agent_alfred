@@ -203,123 +203,128 @@ class _UploadEnterprisePicState extends State<UploadEnterprisePic> {
     // G.setPref('token', 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpemF0aW9uIjoiIiwibmJmIjoxNTg2MzI2MjE0LCJpc3MiOiIzN2R1bGlnb3UiLCJtb2JpbGUiOiIxODg5MjY2MzAyNSIsImV4cCI6MTU4NjkzMTAxNCwiaWF0IjoxNTg2MzI2MjE0LCJ1c2VySWQiOjEyMDQ1ODkwNDYxNjM5MDI0NjYsInVzZXJuYW1lIjoiMTg4OTI2NjMwMjUifQ.FwMvr15n_TU7kmJwKCSGO97gx5qcwtQCFIn0-tEv65c');
     // Provider.of<UserProvide>(context).updateUserAuth();
 
-    return Scaffold(
-      appBar: AppBar( //导航栏
-        title: Text("企业认证"),
-        centerTitle: true,
-        leading: Container(),
-        elevation: 0,
-        actions: <Widget>[
-          FlatButton(
-              onPressed: () {
-                G.removePref('token');
-                G.router.navigateTo(context, '/login', replace: true);
-              },
-              child: Text('退出',
-                  style: TextStyle(color: hex('#333333'), fontSize: G.setSp(32))))
-        ],
-      ),
-      body: Container(
-        width: G.setWidth(750),
-        height: G.setHeight(1206),
-        padding: EdgeInsets.only(top: G.setHeight(150)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context){
-                      return new Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          new ListTile(
-                            leading: new Icon(Icons.photo_camera),
-                            title: new Text("拍照"),
-                            onTap: () {
-                              _takePhoto(ImageSource.camera);
-                            },
-                          ),
-                          new ListTile(
-                            leading: new Icon(Icons.photo_library),
-                            title: new Text("相册"),
-                            onTap: () {
-                              _takePhoto(ImageSource.gallery);
-                            },
-                          ),
-                        ],
-                      );
-                    }
-                );
-              },
-              child: 
-              Stack(
-                children: <Widget>[
-                  Container(
-                    width: G.setWidth(410),
-                    height: G.setWidth(592),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: haveUpload && licenseUrl != null ? NetworkImage(licenseUrl) : AssetImage("lib/assets/images/enterprise/defaultLicence.png"),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     image: DecorationImage(
-                  //       image: haveUpload ? NetworkImage(licenseUrl) : AssetImage("lib/assets/images/enterprise/defaultLicence.png"),
-                  //       fit: BoxFit.fill,
-                  //     ),
-                  //   ),
-                  // ),
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("lib/assets/images/enterprise/four-corner.png"),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    width: G.setWidth(410),
-                    height: G.setWidth(592),
-                    child: haveUpload ? haveUploadArea : noUploadArea,
-                  ),
-                ],
-              )
-              
-            ),
-            Container(
-              margin: EdgeInsets.only(top: G.setHeight(50)),
-              child: Text('请拍摄或上传清晰完整的营业执照图片，否则影响审核结果', style: TextStyle(
-                  color: hex('#85868A'),
-                  fontSize: G.setSp(24)
-                )
-              ),
-            ),
-            haveUpload ?
-            Container(
-              margin: EdgeInsets.only(top: G.setHeight(50)),
-              child: InkWell(
-                onTap: () {
-                  if (widget.isFirstUpload != 'yes') {
-                    uploadData['isRequest'] = true;
-                  }
-                  var uploadJson = FluroConvertUtils.object2string(uploadData);
-                  print(uploadData);
-                  G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar( //导航栏
+          title: Text("企业认证"),
+          centerTitle: true,
+          leading: Container(),
+          elevation: 0,
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () {
+                  G.removePref('token');
+                  G.router.navigateTo(context, '/login', replace: true);
                 },
-                child: Text('跳过这步 >', style: TextStyle(
-                  color: hex('#0091F0'),
-                  fontSize: G.setSp(28)
-                )),
-              )
-            ) : Text('')
-            // _ImageView(_imgPath)
+                child: Text('退出',
+                    style: TextStyle(color: hex('#333333'), fontSize: G.setSp(32))))
           ],
-        )
-      ),
+        ),
+        body: Container(
+          width: G.setWidth(750),
+          height: G.setHeight(1206),
+          padding: EdgeInsets.only(top: G.setHeight(150)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context){
+                        return new Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new ListTile(
+                              leading: new Icon(Icons.photo_camera),
+                              title: new Text("拍照"),
+                              onTap: () {
+                                _takePhoto(ImageSource.camera);
+                              },
+                            ),
+                            new ListTile(
+                              leading: new Icon(Icons.photo_library),
+                              title: new Text("相册"),
+                              onTap: () {
+                                _takePhoto(ImageSource.gallery);
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                  );
+                },
+                child: 
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      width: G.setWidth(410),
+                      height: G.setWidth(592),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: haveUpload && licenseUrl != null ? NetworkImage(licenseUrl) : AssetImage("lib/assets/images/enterprise/defaultLicence.png"),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     image: DecorationImage(
+                    //       image: haveUpload ? NetworkImage(licenseUrl) : AssetImage("lib/assets/images/enterprise/defaultLicence.png"),
+                    //       fit: BoxFit.fill,
+                    //     ),
+                    //   ),
+                    // ),
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("lib/assets/images/enterprise/four-corner.png"),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      width: G.setWidth(410),
+                      height: G.setWidth(592),
+                      child: haveUpload ? haveUploadArea : noUploadArea,
+                    ),
+                  ],
+                )
+                
+              ),
+              Container(
+                margin: EdgeInsets.only(top: G.setHeight(50)),
+                child: Text('请拍摄或上传清晰完整的营业执照图片，否则影响审核结果', style: TextStyle(
+                    color: hex('#85868A'),
+                    fontSize: G.setSp(24)
+                  )
+                ),
+              ),
+              haveUpload ?
+              Container(
+                margin: EdgeInsets.only(top: G.setHeight(50)),
+                child: InkWell(
+                  onTap: () {
+                    if (widget.isFirstUpload != 'yes') {
+                      uploadData['isRequest'] = true;
+                    }
+                    var uploadJson = FluroConvertUtils.object2string(uploadData);
+                    print(uploadData);
+                    G.navigateTo(context, '/uploadLicenseForm?uploadJson=$uploadJson');
+                  },
+                  child: Text('跳过这步 >', style: TextStyle(
+                    color: hex('#0091F0'),
+                    fontSize: G.setSp(28)
+                  )),
+                )
+              ) : Text('')
+              // _ImageView(_imgPath)
+            ],
+          )
+        ),
+      )
     );
   }
 }
