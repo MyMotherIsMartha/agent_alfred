@@ -96,8 +96,9 @@ class _UploadLicenseFormState extends State<UploadLicenseForm> {
   }
 
   _getTradeList() async {
+    
     var result = await DicApi().getTradeList();
-    List resultData = result.data['data'];
+    List resultData = result.data['data']['records'];
     if (resultData != null) {
       jobList = List.from(resultData.map((item) {
         return {

@@ -97,7 +97,7 @@ class _PerfectEnterprise1State extends State<PerfectEnterprise1> {
 
   _getTradeList() async {
     var result = await DicApi().getTradeList();
-    List resultData = result.data['data'];
+    List resultData = result.data['data']['records'];
     if (resultData != null) {
       jobList = List.from(resultData.map((item) {
         return {

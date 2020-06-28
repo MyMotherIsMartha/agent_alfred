@@ -11,8 +11,18 @@ class DicApi{
     return r;
   }
 
+  // getTradeList() async {
+  //   var r = await service().post('$marketingApi/v1/api/trade/findAllTradeList');
+  //   return r;
+  // }
+
   getTradeList() async {
-    var r = await service().post('$marketingApi/v1/api/trade/findAllTradeList');
+    var params = {
+      "companyRegister": 1,
+      "pageNo": 1,
+      "pageSize": 100
+    };
+    var r = await service().post('$marketingApi/v1/api/trade/findTradeList', data: params);
     return r;
   }
 }
