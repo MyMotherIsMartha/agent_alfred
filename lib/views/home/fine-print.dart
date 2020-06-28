@@ -59,27 +59,27 @@ class _FinePointPageState extends State<FinePointPage> {
                                   color: hex('#686868'))),
                   ],
                 ),
-                orderinfo.checkStatus == 1
-                ? InkWell(
-                  onTap: () {
-                    yyAlertDialog(context);
-                  },
-                  child: Container(
-                    width: G.setWidth(144),
-                    height: G.setHeight(44),
-                    decoration: BoxDecoration(
-                        color: hex('#E8B469'),
-                        borderRadius: BorderRadius.circular(G.setWidth(50))),
-                    child: Text('申请延迟',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: G.setSp(24),
-                          color: hex('#FFF'),
-                          height: 44 / 24,
-                        )),
-                  ),
-                )
-                : Container(),
+                // orderinfo.checkStatus == 1
+                // ? InkWell(
+                //   onTap: () {
+                //     yyAlertDialog(context);
+                //   },
+                //   child: Container(
+                //     width: G.setWidth(144),
+                //     height: G.setHeight(44),
+                //     decoration: BoxDecoration(
+                //         color: hex('#E8B469'),
+                //         borderRadius: BorderRadius.circular(G.setWidth(50))),
+                //     child: Text('申请延迟',
+                //         textAlign: TextAlign.center,
+                //         style: TextStyle(
+                //           fontSize: G.setSp(24),
+                //           color: hex('#FFF'),
+                //           height: 44 / 24,
+                //         )),
+                //   ),
+                // )
+                // : Container(),
               ],
             ),
             G.spacing(25),
@@ -195,7 +195,7 @@ class _FinePointPageState extends State<FinePointPage> {
               style: TextStyle(fontSize: G.setSp(30), color: hex('#424242'), fontWeight: FontWeight.bold)),
           G.spacing(15),
           Text('1、代理豪礼：精选好物，豪华大礼；', style: subStyle()),
-          Text('2、无限分享：标准版会员，无限数量分享；', style: subStyle()),
+          Text('2、无限分享：体验版会员，无限数量分享；', style: subStyle()),
           Text('3、推荐奖励：推荐有回报，分享赚不停；', style: subStyle()),
           Text('4、服务奖励：可享会员采购额分佣；', style: subStyle()),
           Text('5、培训支持：尊享总部专业订制，落地策划、培训服务；', style: subStyle()),

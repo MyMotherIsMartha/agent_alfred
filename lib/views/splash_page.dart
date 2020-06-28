@@ -75,10 +75,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       // };
       // var uploadJson = FluroConvertUtils.object2string(uploadData);
       // G.navigateTo(context, 'uploadLicenseForm?uploadJson=$uploadJson', replace: true);
-      // G.navigateTo(context, '/create-account', replace: true);
-      Provider.of<UserProvide>(context).updateUserAuth();
-      Provider.of<UserProvide>(context).updateEnterpriseinfo();
-      Provider.of<UserProvide>(context).updateBankCardInfo();
+      G.navigateTo(G.currentContext, '/resultPage?status=1', replace: true);
+      // Provider.of<UserProvide>(context).updateUserAuth();
+      // Provider.of<UserProvide>(context).updateEnterpriseinfo();
+      // Provider.of<UserProvide>(context).updateBankCardInfo();
     }
     
     // UserModel userModel = Provider.of<UserModel>(context);

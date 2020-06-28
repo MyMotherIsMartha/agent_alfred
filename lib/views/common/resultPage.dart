@@ -562,7 +562,17 @@ class _ResultPageState extends State<ResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        var noBackList = [-3, -2, -1, 0, 1, 2, 3, 4];
+        if (noBackList.contains(statusCode)) {
+          return false;
+        } else {
+          return true;
+        }
+        
+      },
+      child: Scaffold(
       body: Container(
         color: hex('#F3F4F6'),
         child: Stack(
@@ -609,6 +619,6 @@ class _ResultPageState extends State<ResultPage> {
           ],
         ),
       )
-    );
+    ));
   }
 }
